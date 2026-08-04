@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — THREE.JS 3D ACROSS ALL TABS & GLASS UI
+   HAVEN WELLNESS SANCTUARY — HIGH QUALITY REACTIVE 3D & GLASS UI
    ========================================================================== */
 
 :root {
@@ -74,6 +74,7 @@ body {
   min-height: 100vh; width: 100vw;
   overflow-x: hidden;
   transition: filter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  perspective: 1000px;
 }
 
 body.warm-tab-shift {
@@ -158,7 +159,7 @@ body.warm-tab-shift {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Glass Cards (.pro-card) */
+/* INTERACTIVE 3D TILT CARDS (.tilt-3d-card) */
 .pro-card {
   background: var(--glass-bg);
   backdrop-filter: blur(30px) saturate(190%);
@@ -167,21 +168,62 @@ body.warm-tab-shift {
   border-radius: var(--ios-card-radius);
   padding: 28px; display: flex; flex-direction: column; gap: 18px;
   box-shadow: var(--glass-shadow);
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  position: relative; overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, background 0.3s ease;
+  position: relative; overflow: hidden; transform-style: preserve-3d;
 }
 .pro-card:hover {
   background: var(--glass-bg-hover);
-  box-shadow: var(--glass-shadow-hover);
+  box-shadow: 0 35px 70px rgba(45, 10, 50, 0.22), inset 0 1px 2px rgba(255, 255, 255, 0.95);
   border-color: rgba(255, 255, 255, 0.85);
 }
 
 .relative-z { position: relative; z-index: 5; }
 
-/* Three.js Background Canvases inside cards */
-.card-3d-canvas {
+/* HIGH QUALITY 3D ASSETS & REACTIVE CONTAINERS */
+.hero-3d-asset-wrapper {
+  position: absolute; right: -20px; top: -20px; width: 340px; height: 340px;
+  pointer-events: none; opacity: 0.88; z-index: 1; filter: drop-shadow(0 15px 35px rgba(217, 70, 239, 0.35));
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.high-quality-3d-img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+
+.high-quality-3d-orb-wrapper {
+  width: 220px; height: 220px; margin: 0 auto; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  filter: drop-shadow(0 20px 45px rgba(217, 70, 239, 0.45));
+}
+.high-quality-3d-orb-img {
+  width: 100%; height: 100%; object-fit: contain; border-radius: 50%;
+  animation: orbFloat 4s ease-in-out infinite alternate;
+}
+@keyframes orbFloat {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-10px) rotate(6deg); }
+}
+
+.orb-overlay-canvas {
   position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important;
-  pointer-events: none; opacity: 0.85; z-index: 1; border-radius: var(--ios-card-radius);
+  pointer-events: none; border-radius: 50%;
+}
+
+.high-quality-3d-jar-wrapper {
+  width: 280px; height: 280px; margin: 0 auto; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  filter: drop-shadow(0 20px 45px rgba(255, 128, 82, 0.4));
+}
+.high-quality-3d-jar-img {
+  width: 100%; height: 100%; object-fit: contain; border-radius: 24px;
+  transition: transform 0.3s ease;
+}
+.high-quality-3d-jar-img:hover { transform: scale(1.05) rotate(2deg); }
+
+.jar-overlay-canvas {
+  position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important;
+  pointer-events: none; border-radius: 24px;
+}
+
+.reactive-3d-element {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s ease;
 }
 
 .grid-span-2 { grid-column: span 2; }
@@ -209,6 +251,7 @@ body.warm-tab-shift {
   .adaptive-grid-4col { grid-template-columns: repeat(2, 1fr); }
   .grid-span-2 { grid-column: span 1; }
   .desktop-nav-tabs .nav-tab-btn span { font-size: 0.8rem; }
+  .hero-3d-asset-wrapper { display: none; }
 }
 
 @media (max-width: 768px) {
@@ -222,13 +265,6 @@ body.warm-tab-shift {
 /* ==========================================================================
    THREE.JS 3D CANVASES & VIEWPORTS ACROSS ALL TABS
    ========================================================================== */
-
-/* TAB 2: Three.js 3D Voice Sphere Viewport */
-.threejs-ai-container {
-  width: 100%; max-width: 320px; height: 220px; margin: 0 auto; position: relative;
-  border-radius: 24px; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,0.4), rgba(42,8,59,0.1));
-}
-#ai-3d-canvas { width: 100% !important; height: 100% !important; display: block; }
 
 /* TAB 3: Three.js 3D Community Constellation Mini Box */
 .community-3d-mini-box {
@@ -284,13 +320,6 @@ body.warm-tab-shift {
   background: rgba(15, 8, 25, 0.6); border: 1px solid var(--glass-border-subtle);
 }
 #audio-3d-canvas { width: 100% !important; height: 100% !important; display: block; }
-
-/* TAB 8: Three.js 3D Memory Jar Viewport */
-.jar-3d-viewport {
-  width: 100%; max-width: 360px; height: 260px; margin: 0 auto; position: relative;
-  border-radius: 24px; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,0.6), rgba(255,128,82,0.15));
-}
-#jar-3d-canvas { width: 100% !important; height: 100% !important; display: block; cursor: grab; }
 
 /* TAB 9: Three.js 3D Emotional Heart Prism Viewport */
 .journal-3d-viewport {

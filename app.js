@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — THREE.JS 3D ENGINE ACROSS ALL 9 TABS
+   HAVEN WELLNESS SANCTUARY — HIGH QUALITY REACTIVE 3D ENGINE ACROSS ALL TABS
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,8 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSanctuaryCircleCommunity();
   initAppleCallEngine();
 
-  // Three.js 3D Engines for ALL 9 Tabs
-  initThreeJSHub();
+  // Three.js 3D Engines
   initThreeJSAIVoice();
   initThreeJSCommunityNodes();
   initThreeJSOrbStudio();
@@ -25,9 +24,85 @@ document.addEventListener('DOMContentLoaded', () => {
   initThreeJSMemoryJar();
   initThreeJSHeartPrism();
 
+  // High Quality 3D Mouse & Touch Tilt Reactivity Engine
+  init3DTiltReactivity();
+
   initSoundscapes();
   initSafeJournal();
 });
+
+/* ==========================================================================
+   1. HIGH QUALITY 3D MOUSE & TOUCH TILT PARALLAX REACTIVITY ENGINE
+   ========================================================================== */
+function init3DTiltReactivity() {
+  const tiltCards = document.querySelectorAll('.tilt-3d-card');
+  const reactiveElements = document.querySelectorAll('.reactive-3d-element');
+
+  tiltCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -8;
+      const rotateY = ((x - centerX) / centerX) * 8;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px) scale(1.02)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale(1)';
+    });
+
+    card.addEventListener('click', (e) => {
+      spawn3DParticleHalo(e.clientX, e.clientY);
+    });
+  });
+
+  reactiveElements.forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width / 2) * 0.08;
+      const y = (e.clientY - rect.top - rect.height / 2) * 0.08;
+      el.style.transform = `translate(${x}px, ${y}px) scale(1.08) rotate(${x * 0.5}deg)`;
+    });
+
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = 'translate(0px, 0px) scale(1) rotate(0deg)';
+    });
+  });
+}
+
+function spawn3DParticleHalo(x, y) {
+  for (let i = 0; i < 16; i++) {
+    const particle = document.createElement('div');
+    particle.textContent = ['✨', '💎', '🌸', '💖', '💛'][Math.floor(Math.random() * 5)];
+    particle.style.position = 'fixed';
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+    particle.style.pointerEvents = 'none';
+    particle.style.fontSize = `${Math.random() * 16 + 12}px`;
+    particle.style.zIndex = '9999';
+    particle.style.transition = 'all 0.9s cubic-bezier(0.1, 0.8, 0.3, 1)';
+
+    document.body.appendChild(particle);
+
+    const angle = Math.random() * Math.PI * 2;
+    const dist = Math.random() * 120 + 40;
+    const tx = Math.cos(angle) * dist;
+    const ty = Math.sin(angle) * dist - 40;
+
+    requestAnimationFrame(() => {
+      particle.style.transform = `translate(${tx}px, ${ty}px) scale(1.4) rotate(${(Math.random() - 0.5) * 60}deg)`;
+      particle.style.opacity = '0';
+    });
+
+    setTimeout(() => particle.remove(), 900);
+  }
+}
 
 /* ==========================================================================
    RESOLUTION DETECTOR
@@ -315,80 +390,6 @@ function initAmbientCanvas() {
   render();
 }
 
-/* ==========================================================================
-   TAB 1: THREE.JS 3D SANCTUARY HUB (#hub-3d-canvas)
-   ========================================================================== */
-function initThreeJSHub() {
-  const canvas = document.getElementById('hub-3d-canvas');
-  if (!canvas || !window.THREE) return;
-
-  const card = canvas.parentElement;
-  const width = card.clientWidth || 800;
-  const height = card.clientHeight || 280;
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-  camera.position.z = 5;
-
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-  scene.add(ambientLight);
-
-  const light1 = new THREE.PointLight(0xffcf56, 2, 10);
-  light1.position.set(3, 3, 3);
-  scene.add(light1);
-
-  const light2 = new THREE.PointLight(0xd946ef, 1.8, 10);
-  light2.position.set(-3, -3, 2);
-  scene.add(light2);
-
-  // Floating Sacred Geometry (Torus Knot)
-  const geom = new THREE.TorusKnotGeometry(1.2, 0.35, 128, 32);
-  const mat = new THREE.MeshStandardMaterial({
-    color: 0xff8052,
-    roughness: 0.2,
-    metalness: 0.1,
-    transparent: true,
-    opacity: 0.65
-  });
-  const mesh = new THREE.Mesh(geom, mat);
-  scene.add(mesh);
-
-  // Background Particles
-  const pGeo = new THREE.BufferGeometry();
-  const pCount = 100;
-  const pPos = new Float32Array(pCount * 3);
-  for (let i = 0; i < pCount * 3; i += 3) {
-    pPos[i] = (Math.random() - 0.5) * 8;
-    pPos[i + 1] = (Math.random() - 0.5) * 6;
-    pPos[i + 2] = (Math.random() - 0.5) * 4;
-  }
-  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-  const pMat = new THREE.PointsMaterial({ color: 0xffcf56, size: 0.06, transparent: true, opacity: 0.7 });
-  const particles = new THREE.Points(pGeo, pMat);
-  scene.add(particles);
-
-  function animate() {
-    requestAnimationFrame(animate);
-    mesh.rotation.x += 0.005;
-    mesh.rotation.y += 0.007;
-    particles.rotation.y -= 0.002;
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener('resize', () => {
-    if (card.clientWidth > 0) {
-      camera.aspect = card.clientWidth / card.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(card.clientWidth, card.clientHeight);
-    }
-  });
-}
-
 function initSanctuaryHub() {
   const timeGreetingEl = document.getElementById('time-greeting');
   const hour = new Date().getHours();
@@ -451,10 +452,10 @@ let ai3DState = { isListening: false, distortion: 0.12, speed: 0.004 };
 
 function initThreeJSAIVoice() {
   const canvas = document.getElementById('ai-3d-canvas');
-  const container = document.getElementById('threejs-ai-container');
+  const container = canvas?.parentElement;
   if (!canvas || !container || !window.THREE) return;
 
-  const width = container.clientWidth || 320;
+  const width = container.clientWidth || 220;
   const height = container.clientHeight || 220;
 
   const scene = new THREE.Scene();
@@ -472,10 +473,6 @@ function initThreeJSAIVoice() {
   pointLight1.position.set(2, 2, 3);
   scene.add(pointLight1);
 
-  const pointLight2 = new THREE.PointLight(0xffcf56, 2, 10);
-  pointLight2.position.set(-2, -2, 2);
-  scene.add(pointLight2);
-
   const geometry = new THREE.IcosahedronGeometry(1.3, 48);
   const originalPositions = geometry.attributes.position.clone();
 
@@ -484,7 +481,7 @@ function initThreeJSAIVoice() {
     roughness: 0.2,
     metalness: 0.1,
     transparent: true,
-    opacity: 0.9
+    opacity: 0.65
   });
 
   const voiceMesh = new THREE.Mesh(geometry, material);
@@ -515,14 +512,6 @@ function initThreeJSAIVoice() {
     renderer.render(scene, camera);
   }
   animate();
-
-  window.addEventListener('resize', () => {
-    if (container.clientWidth > 0) {
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    }
-  });
 }
 
 function initAutonomousAITherapistAura() {
@@ -875,8 +864,8 @@ function initThreeJSMemoryJar() {
   if (!canvas || !window.THREE) return;
   const parent = canvas.parentElement;
 
-  const width = parent.clientWidth || 360;
-  const height = parent.clientHeight || 260;
+  const width = parent.clientWidth || 280;
+  const height = parent.clientHeight || 280;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
@@ -889,18 +878,11 @@ function initThreeJSMemoryJar() {
   light.position.set(2, 2, 3);
   scene.add(light);
 
-  // Glass Cylinder Jar Mesh
-  const jarGeom = new THREE.CylinderGeometry(1.1, 1.0, 2.0, 32);
-  const jarMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1, transparent: true, opacity: 0.45 });
-  const jarMesh = new THREE.Mesh(jarGeom, jarMat);
-  scene.add(jarMesh);
-
-  // Floating Notes inside Jar
   const noteGroup = new THREE.Group();
   scene.add(noteGroup);
-  for (let i = 0; i < 12; i++) {
-    const nGeom = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-    const nMat = new THREE.MeshStandardMaterial({ color: 0xff8052 });
+  for (let i = 0; i < 14; i++) {
+    const nGeom = new THREE.BoxGeometry(0.18, 0.18, 0.18);
+    const nMat = new THREE.MeshStandardMaterial({ color: 0xffcf56, emissive: 0x442200 });
     const nMesh = new THREE.Mesh(nGeom, nMat);
     nMesh.position.set((Math.random() - 0.5) * 1.2, (Math.random() - 0.5) * 1.2, (Math.random() - 0.5) * 1.2);
     noteGroup.add(nMesh);
@@ -908,7 +890,6 @@ function initThreeJSMemoryJar() {
 
   function animate() {
     requestAnimationFrame(animate);
-    jarMesh.rotation.y += 0.005;
     noteGroup.rotation.y += 0.008;
     renderer.render(scene, camera);
   }
