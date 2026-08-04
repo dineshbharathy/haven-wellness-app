@@ -1,12 +1,12 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — APPLICATION ENGINE (JS)
+   HAVEN WELLNESS SANCTUARY — iOS APPLICATION ENGINE (JS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Init Modules
+  initIOSStatusBarClock();
   initAudioEngine();
   initThemeManager();
-  initTabNavigation();
+  initIOSTabNavigation();
   initAmbientCanvas();
   initSanctuaryHub();
   initMemoryOrbsAndStorybook();
@@ -16,6 +16,22 @@ document.addEventListener('DOMContentLoaded', () => {
   initMemoryJar();
   initSafeJournal();
 });
+
+/* ==========================================================================
+   iOS STATUS BAR REAL-TIME CLOCK
+   ========================================================================== */
+function initIOSStatusBarClock() {
+  const clockEl = document.getElementById('status-time');
+  function updateClock() {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    hours = hours % 12 || 12;
+    if (clockEl) clockEl.textContent = `${hours}:${minutes}`;
+  }
+  updateClock();
+  setInterval(updateClock, 10000);
+}
 
 /* ==========================================================================
    CENTRAL AUDIO ENGINE (WEB AUDIO API)
@@ -55,7 +71,7 @@ function playBellSound(freq = 440, type = 'sine', duration = 1.5, vol = 0.2) {
     osc.start();
     osc.stop(ctx.currentTime + duration + 0.1);
   } catch (e) {
-    console.log('Audio playback prevented or unsupported', e);
+    console.log('Audio playback prevented', e);
   }
 }
 
@@ -110,24 +126,28 @@ function setTheme(theme) {
 }
 
 /* ==========================================================================
-   2. TAB NAVIGATION
+   2. iOS TAB NAVIGATION & TOP TITLE
    ========================================================================== */
-function initTabNavigation() {
-  const navBtns = document.querySelectorAll('.nav-btn');
+function initIOSTabNavigation() {
+  const tabItems = document.querySelectorAll('.tab-item');
   const tabPanes = document.querySelectorAll('.tab-pane');
+  const pageTitleEl = document.getElementById('ios-page-title');
 
-  navBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+  tabItems.forEach(item => {
+    item.addEventListener('click', () => {
       getAudioContext();
       playBellSound(520, 'sine', 0.4, 0.06);
 
-      const tabId = btn.getAttribute('data-tab');
+      const tabId = item.getAttribute('data-tab');
+      const title = item.getAttribute('data-title') || 'Sanctuary';
 
-      navBtns.forEach(b => b.classList.remove('active'));
+      tabItems.forEach(b => b.classList.remove('active'));
       tabPanes.forEach(p => p.classList.remove('active'));
 
-      btn.classList.add('active');
+      item.classList.add('active');
       document.getElementById(`tab-${tabId}`)?.classList.add('active');
+
+      if (pageTitleEl) pageTitleEl.textContent = title;
 
       if (tabId === 'lanterns') {
         window.dispatchEvent(new Event('resize'));
@@ -244,10 +264,9 @@ function initSanctuaryHub() {
     createHeartBurst(e.clientX, e.clientY);
   });
 
-  // Storybook Shortcut
   const openStorybookBtn = document.getElementById('open-storybook-tab-btn');
   openStorybookBtn?.addEventListener('click', () => {
-    document.querySelector('.nav-btn[data-tab="memory-orbs"]')?.click();
+    document.querySelector('.tab-item[data-tab="memory-orbs"]')?.click();
   });
 
   const brewTeaBtn = document.getElementById('brew-tea-btn');
@@ -260,7 +279,7 @@ function initSanctuaryHub() {
     let secondsLeft = 30;
 
     playBellSound(440, 'sine', 1.0, 0.1);
-    brewTeaBtn.textContent = `🍵 Steeping Comfort... (${secondsLeft}s)`;
+    brewTeaBtn.textContent = `🍵 Steeping... (${secondsLeft}s)`;
     document.getElementById('tea-steam').style.opacity = '1';
 
     teaInterval = setInterval(() => {
@@ -269,14 +288,14 @@ function initSanctuaryHub() {
         playBellSound(587.33, 'sine', 0.5, 0.04);
       }
       if (secondsLeft > 0) {
-        brewTeaBtn.textContent = `🍵 Steeping Comfort... (${secondsLeft}s)`;
+        brewTeaBtn.textContent = `🍵 Steeping... (${secondsLeft}s)`;
       } else {
         clearInterval(teaInterval);
         brewTeaBtn.disabled = false;
         playHarmonicChime([523.25, 659.25, 783.99]);
-        brewTeaBtn.textContent = '✨ Cup Ready! Take a Mindful Sip';
+        brewTeaBtn.textContent = '✨ Cup Ready! Take a Sip';
         setTimeout(() => {
-          brewTeaBtn.textContent = '✨ Start 30s Tea Ritual';
+          brewTeaBtn.textContent = '✨ Brew Tea (30s)';
         }, 5000);
       }
     }, 1000);
@@ -331,7 +350,7 @@ const EMOTION_META = {
   joy: { name: 'Joy', color: '#ffd700', icon: '💛' },
   sadness: { name: 'Sadness / Longing', color: '#4169e1', icon: '💙' },
   nostalgia: { name: 'Nostalgia', color: '#ff69b4', icon: '🩷' },
-  fear: { name: 'Fear / Uncertainty', color: '#9370db', icon: '💜' },
+  fear: { name: 'Fear', color: '#9370db', icon: '💜' },
   anger: { name: 'Anger', color: '#ff4500', icon: '❤️' },
   anxiety: { name: 'Anxiety', color: '#00ced1', icon: '🩵' },
   disgust: { name: 'Disgust', color: '#3cb371', icon: '💚' },
@@ -340,6 +359,24 @@ const EMOTION_META = {
 };
 
 function initMemoryOrbsAndStorybook() {
+  // Segmented Control Switcher
+  const orbSegmentBtns = document.querySelectorAll('.segmented-btn[data-orb-view]');
+  const orbSubviews = document.querySelectorAll('.orb-subview');
+
+  orbSegmentBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(480, 'sine', 0.4, 0.06);
+
+      const targetView = btn.getAttribute('data-orb-view');
+      orbSegmentBtns.forEach(b => b.classList.remove('active'));
+      orbSubviews.forEach(v => v.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById(`orb-view-${targetView}`)?.classList.add('active');
+    });
+  });
+
   const emoRanges = document.querySelectorAll('.emo-range');
   const previewOrb = document.getElementById('preview-memory-orb');
   const particlesContainer = document.getElementById('orb-inner-particles');
@@ -355,7 +392,6 @@ function initMemoryOrbsAndStorybook() {
 
   let currentPhotoDataUrl = '';
 
-  // Photo Upload FileReader
   photoInput?.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -375,7 +411,6 @@ function initMemoryOrbsAndStorybook() {
     photoPreviewBox.classList.add('hidden');
   });
 
-  // Calculate Blended Orb Gradient & Particles
   function updatePreviewOrb() {
     const activeEmotions = [];
     let totalVal = 0;
@@ -390,16 +425,14 @@ function initMemoryOrbsAndStorybook() {
     });
 
     if (activeEmotions.length === 0) {
-      previewOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #f9a826 40%, #161733 100%)';
-      blendLabel.textContent = 'Neutral Quiet Orb';
+      previewOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #ffb347 40%, #14152b 100%)';
+      blendLabel.textContent = 'Blended Memory Sphere';
       particlesContainer.innerHTML = '';
       return;
     }
 
-    // Sort by intensity
     activeEmotions.sort((a, b) => b.val - a.val);
 
-    // Build gradient stops
     const stops = activeEmotions.map((e, index) => {
       const pct = Math.round(((index + 1) / activeEmotions.length) * 100);
       return `${e.meta.color} ${pct}%`;
@@ -407,16 +440,15 @@ function initMemoryOrbsAndStorybook() {
 
     const gradient = `radial-gradient(circle at 35% 35%, #ffffff, ${stops})`;
     previewOrb.style.background = gradient;
-    previewOrb.style.boxShadow = `0 0 40px ${activeEmotions[0].meta.color}`;
+    previewOrb.style.boxShadow = `0 0 35px ${activeEmotions[0].meta.color}`;
 
     blendLabel.textContent = activeEmotions.map(e => `${e.meta.icon} ${e.meta.name}`).join(' • ');
 
-    // Mini floating inner spheres
     particlesContainer.innerHTML = '';
     activeEmotions.slice(0, 5).forEach((e, idx) => {
       const particle = document.createElement('div');
       particle.className = 'orb-mini-particle';
-      const size = Math.max(12, Math.min(26, e.val / 3));
+      const size = Math.max(10, Math.min(22, e.val / 3.5));
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
       particle.style.background = e.meta.color;
@@ -434,7 +466,6 @@ function initMemoryOrbsAndStorybook() {
 
   updatePreviewOrb();
 
-  // Load Storybook Memory Entries
   let memories = JSON.parse(localStorage.getItem('haven_memories') || '[]');
   let currentPageIndex = 0;
 
@@ -443,9 +474,8 @@ function initMemoryOrbsAndStorybook() {
   const pageIndicator = document.getElementById('book-page-indicator');
 
   const pageOrb = document.getElementById('book-page-orb');
-  const pageOrbGlow = document.getElementById('book-page-orb-glow');
   const pageDate = document.getElementById('book-page-date');
-  const pageEmotions = document.getElementById('book-page-emotions');
+  const pageEmotions = document.getElementById('page-emotions');
   const pagePhotoBox = document.getElementById('book-page-photo-container');
   const pagePhotoImg = document.getElementById('book-page-photo');
 
@@ -456,26 +486,23 @@ function initMemoryOrbsAndStorybook() {
     if (memories.length === 0) {
       pageIndicator.textContent = 'Page 0 of 0';
       pageTitle.textContent = 'My Emotional Storybook';
-      pageText.textContent = 'No memories logged yet. Mix your emotions on the left and save your first Memory Orb to turn the pages of your storybook.';
+      pageText.textContent = 'No memories logged yet. Create your first Memory Orb on the left to turn the pages.';
       pageDate.textContent = new Date().toLocaleDateString();
-      pageOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #f9a826 40%, #161733 100%)';
-      pageEmotions.innerHTML = '<span class="emo-pill-badge" style="background:#f9a826;">💛 Warmth</span>';
+      pageOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #ffb347 40%, #14152b 100%)';
+      pageEmotions.innerHTML = '<span class="emo-pill-badge" style="background:#ffb347;">💛 Warmth</span>';
       pagePhotoBox.classList.add('hidden');
       return;
     }
 
-    // Clamp index
     currentPageIndex = Math.max(0, Math.min(index, memories.length - 1));
     const item = memories[currentPageIndex];
 
     pageIndicator.textContent = `Page ${currentPageIndex + 1} of ${memories.length}`;
 
-    // Left Page
     pageDate.textContent = `${item.date} • ${item.time || ''}`;
     pageOrb.style.background = item.gradient || 'radial-gradient(circle at 35% 35%, #ffffff, #ffd700 40%, #4169e1 100%)';
-    pageOrb.style.boxShadow = `0 0 25px ${item.primaryColor || '#ffd700'}`;
+    pageOrb.style.boxShadow = `0 0 20px ${item.primaryColor || '#ffd700'}`;
 
-    // Emotion Badges
     pageEmotions.innerHTML = Object.keys(item.emotions || {})
       .filter(k => item.emotions[k] > 0)
       .map(k => {
@@ -490,14 +517,12 @@ function initMemoryOrbsAndStorybook() {
       pagePhotoBox.classList.add('hidden');
     }
 
-    // Right Page
     pageTitle.textContent = item.title || 'Emotional Memory';
     pageText.textContent = item.note || 'No text written.';
   }
 
   renderStorybookPage(0);
 
-  // Storybook Controls
   prevPageBtn?.addEventListener('click', () => {
     if (currentPageIndex > 0) {
       getAudioContext();
@@ -514,7 +539,6 @@ function initMemoryOrbsAndStorybook() {
     }
   });
 
-  // Save Memory Orb
   saveBtn?.addEventListener('click', () => {
     const title = titleInput.value.trim() || 'Today\'s Emotional Memory';
     const note = noteInput.value.trim();
@@ -559,19 +583,20 @@ function initMemoryOrbsAndStorybook() {
     memories.unshift(newMemory);
     localStorage.setItem('haven_memories', JSON.stringify(memories));
 
-    // Reset Form
     titleInput.value = '';
     noteInput.value = '';
     currentPhotoDataUrl = '';
     photoInput.value = '';
     photoPreviewBox.classList.add('hidden');
 
+    // Switch to storybook view automatically
+    document.querySelector('.segmented-btn[data-orb-view="storybook"]')?.click();
     renderStorybookPage(0);
   });
 }
 
 /* ==========================================================================
-   6. SKY LANTERNS OF RELEASE & DATE-BASED VAULT
+   6. SKY LANTERNS OF RELEASE
    ========================================================================== */
 function initSkyLanterns() {
   const skyCanvas = document.getElementById('sky-canvas');
@@ -602,18 +627,17 @@ function initSkyLanterns() {
   localStorage.setItem('haven_lanterns', JSON.stringify(lanterns));
 
   const releasedCountEl = document.getElementById('released-count');
-  releasedCountEl.textContent = `${lanterns.length} lanterns floating softly`;
+  releasedCountEl.textContent = `${lanterns.length} lanterns floating`;
 
   let activeFilter = 'all';
-  let customDateVal = '';
 
   const activeLanternObjects = lanterns.map(l => ({
     ...l,
-    x: Math.random() * (width - 60) + 30,
-    y: Math.random() * (height - 100) + 50,
+    x: Math.random() * (width - 40) + 20,
+    y: Math.random() * (height - 80) + 40,
     vy: -Math.random() * 0.3 - 0.1,
     sway: Math.random() * Math.PI * 2,
-    size: 24
+    size: 20
   }));
 
   function getFilteredLanterns() {
@@ -625,8 +649,6 @@ function initSkyLanterns() {
     } else if (activeFilter === 'week') {
       const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
       return activeLanternObjects.filter(l => new Date(l.rawDate) >= sevenDaysAgo);
-    } else if (activeFilter === 'custom' && customDateVal) {
-      return activeLanternObjects.filter(l => l.rawDate === customDateVal);
     }
     return activeLanternObjects;
   }
@@ -634,7 +656,7 @@ function initSkyLanterns() {
   function renderSky() {
     ctx.clearRect(0, 0, width, height);
 
-    for (let i = 0; i < 45; i++) {
+    for (let i = 0; i < 35; i++) {
       const sx = (Math.sin(i * 99 + Date.now() * 0.001) * 0.5 + 0.5) * width;
       const sy = (Math.cos(i * 33 + Date.now() * 0.001) * 0.5 + 0.5) * height;
       ctx.fillStyle = `rgba(255, 255, 255, ${Math.sin(Date.now() * 0.002 + i) * 0.3 + 0.5})`;
@@ -650,25 +672,20 @@ function initSkyLanterns() {
       l.sway += 0.02;
       l.x += Math.sin(l.sway) * 0.3;
 
-      if (l.y < -50) l.y = height + 30;
+      if (l.y < -40) l.y = height + 20;
 
-      const glow = ctx.createRadialGradient(l.x, l.y, 2, l.x, l.y, l.size * 1.8);
+      const glow = ctx.createRadialGradient(l.x, l.y, 2, l.x, l.y, l.size * 1.6);
       glow.addColorStop(0, l.color || '#ffb347');
       glow.addColorStop(1, 'transparent');
 
       ctx.fillStyle = glow;
       ctx.beginPath();
-      ctx.arc(l.x, l.y, l.size * 1.8, 0, Math.PI * 2);
+      ctx.arc(l.x, l.y, l.size * 1.6, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.fillStyle = l.color || '#ffb347';
       ctx.beginPath();
-      ctx.roundRect(l.x - 10, l.y - 14, 20, 26, 4);
-      ctx.fill();
-
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.arc(l.x, l.y + 2, 4, 0, Math.PI * 2);
+      ctx.roundRect(l.x - 8, l.y - 12, 16, 22, 3);
       ctx.fill();
     });
 
@@ -694,8 +711,6 @@ function initSkyLanterns() {
   });
 
   const datePills = document.querySelectorAll('.date-pill');
-  const datePicker = document.getElementById('lantern-date-picker');
-  const vaultIndicator = document.getElementById('vault-filter-indicator');
   const galleryGrid = document.getElementById('lantern-gallery-grid');
 
   datePills.forEach(pill => {
@@ -705,39 +720,16 @@ function initSkyLanterns() {
 
       datePills.forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
-      if (datePicker) datePicker.value = '';
-
       activeFilter = pill.getAttribute('data-date-filter');
       updateVaultGallery();
     });
   });
 
-  datePicker?.addEventListener('change', (e) => {
-    if (e.target.value) {
-      getAudioContext();
-      playBellSound(580, 'sine', 0.4, 0.06);
-      datePills.forEach(p => p.classList.remove('active'));
-      activeFilter = 'custom';
-      customDateVal = e.target.value;
-      updateVaultGallery();
-    }
-  });
-
   function updateVaultGallery() {
     const filtered = getFilteredLanterns();
 
-    if (activeFilter === 'all') {
-      vaultIndicator.textContent = `Showing All Lanterns (${filtered.length})`;
-    } else if (activeFilter === 'today') {
-      vaultIndicator.textContent = `Released Today (${filtered.length})`;
-    } else if (activeFilter === 'week') {
-      vaultIndicator.textContent = `Past 7 Days (${filtered.length})`;
-    } else if (activeFilter === 'custom') {
-      vaultIndicator.textContent = `Date: ${customDateVal} (${filtered.length})`;
-    }
-
     if (filtered.length === 0) {
-      galleryGrid.innerHTML = `<p class="empty-state">No lanterns found for this date. Light a new lantern above whenever you feel ready.</p>`;
+      galleryGrid.innerHTML = `<p class="empty-state">No lanterns found for this date.</p>`;
       return;
     }
 
@@ -745,7 +737,7 @@ function initSkyLanterns() {
       <div class="lantern-card" data-id="${l.id}">
         <div class="lantern-card-header">
           <span class="lantern-badge" style="background: ${l.color};">🏮 ${getColorName(l.color)}</span>
-          <span class="lantern-date-tag">${l.date} (${l.time})</span>
+          <span class="lantern-date-tag">${l.date}</span>
         </div>
         <p class="lantern-snippet">"${escapeHtml(l.message)}"</p>
       </div>
@@ -793,18 +785,18 @@ function initSkyLanterns() {
       date: dateFormatted,
       rawDate: todayISO,
       time: timeFormatted,
-      x: width / 2 + (Math.random() - 0.5) * 100,
-      y: height - 60,
+      x: width / 2 + (Math.random() - 0.5) * 80,
+      y: height - 40,
       vy: -Math.random() * 0.4 - 0.2,
       sway: Math.random() * Math.PI * 2,
-      size: 26
+      size: 22
     };
 
     activeLanternObjects.push(newLantern);
     lanterns.push(newLantern);
     localStorage.setItem('haven_lanterns', JSON.stringify(lanterns));
 
-    releasedCountEl.textContent = `${lanterns.length} lanterns floating softly`;
+    releasedCountEl.textContent = `${lanterns.length} lanterns floating`;
     lanternMsgInput.value = '';
     lanternModal?.classList.add('hidden');
     updateVaultGallery();
@@ -832,10 +824,10 @@ function openViewLanternModal(lantern) {
 
 function getColorName(color) {
   switch (color) {
-    case '#ffb347': return 'Warm Amber';
-    case '#ff80bf': return 'Soft Rose';
-    case '#b388ff': return 'Twilight Lavender';
-    case '#80d8ff': return 'Starlight Blue';
+    case '#ffb347': return 'Amber';
+    case '#ff80bf': return 'Rose';
+    case '#b388ff': return 'Lavender';
+    case '#80d8ff': return 'Starlight';
     default: return 'Glow';
   }
 }
@@ -888,7 +880,7 @@ function initBreathingOasis() {
     startBtn.textContent = '▶ Start Breathing';
     breathPhase.textContent = 'Ready';
     breathTimer.textContent = '--';
-    breathInstruction.textContent = 'Click start whenever you are ready to begin softly breathing together.';
+    breathInstruction.textContent = 'Tap start when you are ready to breathe softly.';
     breathCircle.parentElement.className = 'breathing-visualizer';
   }
 
@@ -898,9 +890,9 @@ function initBreathingOasis() {
     let phases = [];
     if (mode === 'relax') {
       phases = [
-        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Breathe in softly through your nose...', pitch: 523.25 },
-        { name: 'Hold', duration: 7, class: 'breath-hold', guide: 'Hold softly and let peace settle...', pitch: 659.25 },
-        { name: 'Exhale', duration: 8, class: 'breath-shrink', guide: 'Release gently through your mouth...', pitch: 392.00 }
+        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Breathe in softly...', pitch: 523.25 },
+        { name: 'Hold', duration: 7, class: 'breath-hold', guide: 'Hold softly...', pitch: 659.25 },
+        { name: 'Exhale', duration: 8, class: 'breath-shrink', guide: 'Release gently...', pitch: 392.00 }
       ];
     } else if (mode === 'box') {
       phases = [
@@ -952,7 +944,7 @@ function initBreathingOasis() {
 }
 
 /* ==========================================================================
-   8. PROCEDURAL SOUNDSCAPES (WEB AUDIO API)
+   8. PROCEDURAL SOUNDSCAPES
    ========================================================================== */
 function initAudioEngine() {
   window.addEventListener('click', () => {
@@ -980,7 +972,7 @@ function initSoundscapes() {
     const ctx = getAudioContext();
 
     isAudioEnabled = !isAudioEnabled;
-    masterToggleBtn.textContent = isAudioEnabled ? '⏸ Pause Sanctuary Audio' : '▶ Enable Sound Generator';
+    masterToggleBtn.textContent = isAudioEnabled ? '⏸ Pause Sanctuary Audio' : '▶ Enable Generator';
     masterToggleBtn.classList.toggle('secondary-btn', isAudioEnabled);
 
     if (isAudioEnabled) {
@@ -1216,7 +1208,7 @@ function initMemoryJar() {
 
   function renderJarContents() {
     container.innerHTML = '';
-    const displayCount = Math.min(notes.length, 14);
+    const displayCount = Math.min(notes.length, 12);
     for (let i = 0; i < displayCount; i++) {
       const particle = document.createElement('div');
       particle.className = 'jar-note-particle';
@@ -1300,9 +1292,6 @@ function initSafeJournal() {
 
     listContainer.innerHTML = entries.map(e => `
       <div class="entry-card">
-        <div class="entry-card-header">
-          <span>${e.date}</span>
-        </div>
         <div class="entry-card-title">${escapeHtml(e.title)}</div>
         <div class="entry-card-body">${escapeHtml(e.body)}</div>
       </div>

@@ -2,673 +2,584 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Haven — Safe Sanctuary & Comfort Space</title>
-  <meta name="description" content="A warm, personal emotional support and wellness sanctuary designed to provide comfort, grounding, and quiet joy.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <title>Haven — iOS Sanctuary App</title>
+  <meta name="description" content="A personal iOS emotional support and wellness sanctuary app.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
-  <!-- Google Fonts -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body data-theme="twilight">
-  <!-- Interactive Ambient Canvas Background -->
+  <!-- Atmospheric Canvas Background -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Main App Shell -->
-  <div id="app" class="app-container">
-    
-    <!-- Header / Navbar -->
-    <header class="navbar glass-card">
-      <div class="brand">
-        <span class="brand-icon">✨</span>
-        <div class="brand-titles">
-          <h1 class="brand-title">Haven</h1>
-          <span class="brand-tagline">Sanctuary & Comfort</span>
-        </div>
-      </div>
-
-      <nav class="nav-tabs">
-        <button class="nav-btn active" data-tab="hub">
-          <span class="icon">🏡</span> Home
-        </button>
-        <button class="nav-btn" data-tab="memory-orbs">
-          <span class="icon">🔮</span> Memory Orbs
-        </button>
-        <button class="nav-btn" data-tab="lanterns">
-          <span class="icon">🏮</span> Sky Lanterns
-        </button>
-        <button class="nav-btn" data-tab="breathing">
-          <span class="icon">🌬️</span> Breathing
-        </button>
-        <button class="nav-btn" data-tab="soundscapes">
-          <span class="icon">🎶</span> Soundscapes
-        </button>
-        <button class="nav-btn" data-tab="memory-jar">
-          <span class="icon">🏺</span> Memory Jar
-        </button>
-        <button class="nav-btn" data-tab="journal">
-          <span class="icon">🤍</span> Heart Log
-        </button>
-      </nav>
-
-      <div class="header-actions">
-        <button id="theme-toggle-btn" class="icon-btn" title="Choose Atmosphere Theme">
-          🎨
-        </button>
-      </div>
-    </header>
-
-    <!-- Main Content Area -->
-    <main class="main-content">
+  <!-- iOS Device Wrapper (Centers phone mockup on desktop, full-screen on mobile) -->
+  <div class="ios-device-wrapper">
+    <div class="ios-phone-shell">
       
-      <!-- ================= TAB 1: SANCTUARY HUB ================= -->
-      <section id="tab-hub" class="tab-pane active">
-        <!-- Welcome Hero Banner -->
-        <div class="welcome-banner glass-card">
-          <div class="welcome-text">
-            <span class="time-greeting" id="time-greeting">Good Evening</span>
-            <h2 class="user-greeting" id="user-greeting">Welcome to your quiet safe space, friend.</h2>
-            <p class="greeting-subtitle">You are loved, your feelings are valid, and you are never truly alone.</p>
-          </div>
-          <div class="daily-quote-card">
-            <span class="quote-badge">Daily Comfort Thought</span>
-            <blockquote id="daily-quote">"It's okay to miss what isn't there, and still hold space for all the warmth that surrounds you."</blockquote>
-            <button id="new-quote-btn" class="text-btn">✨ Gentle New Thought</button>
-          </div>
+      <!-- iOS Status Bar -->
+      <div class="ios-status-bar">
+        <span class="status-time" id="status-time">9:41</span>
+        <div class="dynamic-island">
+          <span class="island-sparkle">✨ Haven</span>
         </div>
+        <div class="status-icons">
+          <span class="status-icon">📶</span>
+          <span class="status-icon">📡</span>
+          <span class="status-battery">🔋</span>
+        </div>
+      </div>
 
-        <!-- Quick Interactive Cards Grid -->
-        <div class="hub-grid">
+      <!-- iOS App Inner Content Container -->
+      <div id="app" class="ios-app-container">
+        
+        <!-- iOS Top Translucent Navigation Bar -->
+        <header class="ios-navbar">
+          <div class="ios-nav-top">
+            <div class="ios-brand">
+              <span class="brand-sparkle">✨</span>
+              <span class="ios-app-name">Haven</span>
+            </div>
+            <button id="theme-toggle-btn" class="ios-icon-btn" title="Sanctuary Theme">
+              🎨
+            </button>
+          </div>
+          <div class="ios-large-title-box">
+            <h1 class="ios-large-title" id="ios-page-title">Sanctuary</h1>
+          </div>
+        </header>
+
+        <!-- iOS Main Scrollable Viewport -->
+        <main class="ios-main-content">
           
-          <!-- Memory Storybook Dashboard Card -->
-          <div class="hub-card glass-card storybook-hub-card">
-            <div class="card-icon">📖</div>
-            <h3>Storybook of Memories</h3>
-            <p>Blend your daily emotions into glowing Memory Orbs and flip through your personal storybook.</p>
-            <button id="open-storybook-tab-btn" class="btn primary-btn pulse-glow">
-              ✨ Open Emotion Storybook
-            </button>
-          </div>
-
-          <!-- Virtual Hug Card -->
-          <div class="hub-card glass-card hug-card">
-            <div class="card-icon">🫂</div>
-            <h3>Send a Virtual Hug</h3>
-            <p>Whenever you need warmth, tap here to receive a glowing burst of love.</p>
-            <div class="hug-counter-container">
-              <span id="hug-count">0</span> hugs received today
-            </div>
-            <button id="hug-btn" class="btn primary-btn">
-              ❤️ Warm Hug For You
-            </button>
-          </div>
-
-          <!-- Tea Ritual Card -->
-          <div class="hub-card glass-card tea-card">
-            <div class="card-icon">🫖</div>
-            <h3>Brew a Cup of Comfort</h3>
-            <p>Take 30 seconds to pause, watch the steam rise, and breathe in peace.</p>
-            <div class="tea-cup-display">
-              <div class="tea-steam" id="tea-steam">
-                <span>~</span><span>~</span><span>~</span>
+          <!-- ================= TAB 1: HUB / HOME ================= -->
+          <section id="tab-hub" class="tab-pane active">
+            <!-- Hero Welcome Card -->
+            <div class="ios-card welcome-card">
+              <div class="welcome-header">
+                <span class="ios-pill" id="time-greeting">Good Evening</span>
+                <h2>Welcome to your quiet space.</h2>
+                <p>You are loved, your feelings are valid, and you are never alone.</p>
               </div>
-              <div class="tea-cup">🍵</div>
-            </div>
-            <button id="brew-tea-btn" class="btn secondary-btn">
-              ✨ Start 30s Tea Ritual
-            </button>
-          </div>
-
-          <!-- Affirmation Deck Card -->
-          <div class="hub-card glass-card affirmation-card">
-            <div class="card-icon">🌸</div>
-            <h3>Gentle Affirmation</h3>
-            <div class="affirmation-box" id="affirmation-box">
-              <p id="affirmation-text">"I am deserving of affection, peace, and soft quiet happiness."</p>
-            </div>
-            <button id="flip-affirmation-btn" class="btn outline-btn">
-              🔄 Draw Another Affirmation
-            </button>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ================= TAB 2: INSIDE OUT MEMORY ORBS & STORYBOOK ================= -->
-      <section id="tab-memory-orbs" class="tab-pane">
-        <div class="section-header center">
-          <h2>🔮 Memory Orbs & Emotion Storybook</h2>
-          <p>Mix your daily emotions into glowing memory spheres, attach notes & photos, and flip through your storybook of feelings.</p>
-        </div>
-
-        <div class="orbs-layout">
-          
-          <!-- Left: Memory Orb Creator Form -->
-          <div class="orb-creator-card glass-card">
-            <h3>✨ Create Today's Memory Orb</h3>
-            
-            <!-- Interactive Glowing Mixed Orb Visualizer -->
-            <div class="orb-visualizer-container">
-              <div class="memory-orb-sphere" id="preview-memory-orb">
-                <div class="orb-core-glow" id="orb-core-glow"></div>
-                <div class="orb-inner-particles" id="orb-inner-particles">
-                  <!-- Dynamic floating emotion spheres inside core -->
-                </div>
-              </div>
-              <span class="orb-label" id="orb-blend-label">Blended Memory Sphere</span>
-            </div>
-
-            <!-- Emotion Mix Controllers (Inside Out Refined Palette) -->
-            <div class="emotions-mix-panel">
-              <h4>Mix Your Emotions for Today</h4>
-              <div class="emotion-sliders-grid">
-                
-                <div class="emotion-slider-item" data-color="#ffd700">
-                  <span class="emo-icon">💛</span>
-                  <label>Joy</label>
-                  <input type="range" class="emo-range" data-emo="joy" min="0" max="100" value="50">
-                </div>
-
-                <div class="emotion-slider-item" data-color="#4169e1">
-                  <span class="emo-icon">💙</span>
-                  <label>Sadness / Longing</label>
-                  <input type="range" class="emo-range" data-emo="sadness" min="0" max="100" value="30">
-                </div>
-
-                <div class="emotion-slider-item" data-color="#ff69b4">
-                  <span class="emo-icon">🩷</span>
-                  <label>Nostalgia</label>
-                  <input type="range" class="emo-range" data-emo="nostalgia" min="0" max="100" value="40">
-                </div>
-
-                <div class="emotion-slider-item" data-color="#9370db">
-                  <span class="emo-icon">💜</span>
-                  <label>Fear / Uncertainty</label>
-                  <input type="range" class="emo-range" data-emo="fear" min="0" max="100" value="0">
-                </div>
-
-                <div class="emotion-slider-item" data-color="#ff4500">
-                  <span class="emo-icon">❤️</span>
-                  <label>Anger / Frustration</label>
-                  <input type="range" class="emo-range" data-emo="anger" min="0" max="100" value="0">
-                </div>
-
-                <div class="emotion-slider-item" data-color="#00ced1">
-                  <span class="emo-icon">🩵</span>
-                  <label>Anxiety / Overwhelm</label>
-                  <input type="range" class="emo-range" data-emo="anxiety" min="0" max="100" value="0">
-                </div>
-
-                <div class="emotion-slider-item" data-color="#3cb371">
-                  <span class="emo-icon">💚</span>
-                  <label>Disgust</label>
-                  <input type="range" class="emo-range" data-emo="disgust" min="0" max="100" value="0">
-                </div>
-
-                <div class="emotion-slider-item" data-color="#ff7f50">
-                  <span class="emo-icon">🧡</span>
-                  <label>Vulnerability</label>
-                  <input type="range" class="emo-range" data-emo="vulnerability" min="0" max="100" value="20">
-                </div>
-
-                <div class="emotion-slider-item" data-color="#708090">
-                  <span class="emo-icon">🩶</span>
-                  <label>Quiet Solitude</label>
-                  <input type="range" class="emo-range" data-emo="solitude" min="0" max="100" value="10">
-                </div>
-
-              </div>
-            </div>
-
-            <!-- Memory Form Inputs -->
-            <div class="form-group">
-              <label for="orb-title-input">Memory Title / Headline</label>
-              <input type="text" id="orb-title-input" class="input-field" placeholder="e.g., Thinking of dad & cutting cake softly...">
-            </div>
-
-            <div class="form-group">
-              <label for="orb-note-input">Today's Story & Thoughts</label>
-              <textarea id="orb-note-input" class="input-field" rows="4" placeholder="Write about what happened and how your heart felt today..."></textarea>
-            </div>
-
-            <div class="form-group">
-              <label for="orb-photo-input">📷 Attach Photo / Picture (Optional)</label>
-              <input type="file" id="orb-photo-input" accept="image/*" class="input-field file-input">
-              <div id="photo-preview-container" class="photo-preview-box hidden">
-                <img id="photo-preview-img" src="" alt="Memory Photo Preview">
-                <button id="remove-photo-btn" class="icon-btn small-btn">✕</button>
-              </div>
-            </div>
-
-            <button id="save-memory-orb-btn" class="btn primary-btn pulse-glow">
-              🔮 Save Memory Orb to Storybook
-            </button>
-          </div>
-
-          <!-- Right: Interactive Storybook Reader -->
-          <div class="storybook-reader-card glass-card">
-            <div class="storybook-reader-header">
-              <h3>📖 Storybook of Memories</h3>
-              <div class="storybook-nav-controls">
-                <button id="book-prev-btn" class="btn secondary-btn small-btn">◀ Previous</button>
-                <span id="book-page-indicator" class="page-indicator">Page 1 of 1</span>
-                <button id="book-next-btn" class="btn secondary-btn small-btn">Next ▶</button>
-              </div>
-            </div>
-
-            <!-- Storybook 2-Page Spread Component -->
-            <div class="storybook-spread" id="storybook-spread">
               
-              <!-- Left Page: Visual Orb & Photo -->
-              <div class="book-page book-left-page">
-                <div class="page-corner-badge">Left Page</div>
-                <div id="page-orb-display" class="page-orb-container">
-                  <div class="memory-orb-sphere small-orb" id="book-page-orb">
-                    <div class="orb-core-glow" id="book-page-orb-glow"></div>
+              <div class="ios-inset-group daily-quote-box">
+                <span class="ios-group-label">DAILY COMFORT</span>
+                <blockquote id="daily-quote">"It's okay to miss what isn't there, and still hold space for all the warmth that surrounds you."</blockquote>
+                <button id="new-quote-btn" class="ios-link-btn">✨ Gentle Thought</button>
+              </div>
+            </div>
+
+            <!-- iOS Widgets Grid -->
+            <div class="ios-widgets-grid">
+              
+              <!-- Storybook Widget -->
+              <div class="ios-card widget-card storybook-widget">
+                <div class="widget-icon">📖</div>
+                <h3>Memory Storybook</h3>
+                <p>Blend daily emotions into glowing Orbs.</p>
+                <button id="open-storybook-tab-btn" class="ios-btn primary-btn">
+                  ✨ Open Storybook
+                </button>
+              </div>
+
+              <!-- Virtual Hug Widget -->
+              <div class="ios-card widget-card hug-widget">
+                <div class="widget-icon">🫂</div>
+                <h3>Virtual Hug</h3>
+                <div class="hug-badge"><span id="hug-count">0</span> hugs today</div>
+                <button id="hug-btn" class="ios-btn primary-btn pulse-glow">
+                  ❤️ Send Hug
+                </button>
+              </div>
+
+              <!-- Tea Ritual Widget -->
+              <div class="ios-card widget-card tea-widget">
+                <div class="widget-icon">🫖</div>
+                <h3>Tea Ritual</h3>
+                <div class="tea-cup-display">
+                  <div class="tea-steam" id="tea-steam"><span>~</span><span>~</span><span>~</span></div>
+                  <div class="tea-cup">🍵</div>
+                </div>
+                <button id="brew-tea-btn" class="ios-btn secondary-btn">
+                  ✨ Brew Tea (30s)
+                </button>
+              </div>
+
+              <!-- Affirmation Widget -->
+              <div class="ios-card widget-card affirmation-widget">
+                <div class="widget-icon">🌸</div>
+                <h3>Affirmation</h3>
+                <div class="ios-inset-box" id="affirmation-box">
+                  <p id="affirmation-text">"I am deserving of affection, peace, and soft quiet happiness."</p>
+                </div>
+                <button id="flip-affirmation-btn" class="ios-btn outline-btn">
+                  🔄 Next Affirmation
+                </button>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ================= TAB 2: INSIDE OUT MEMORY ORBS & STORYBOOK ================= -->
+          <section id="tab-memory-orbs" class="tab-pane">
+            
+            <!-- Segmented Control View Switcher (Create vs Storybook) -->
+            <div class="ios-segmented-control">
+              <button class="segmented-btn active" data-orb-view="create">🔮 Create Memory Orb</button>
+              <button class="segmented-btn" data-orb-view="storybook">📖 Storybook Reader</button>
+            </div>
+
+            <!-- View A: Create Memory Orb -->
+            <div id="orb-view-create" class="orb-subview active">
+              <div class="ios-card">
+                
+                <div class="orb-preview-header">
+                  <div class="memory-orb-sphere" id="preview-memory-orb">
+                    <div class="orb-core-glow" id="orb-core-glow"></div>
+                    <div class="orb-inner-particles" id="orb-inner-particles"></div>
                   </div>
-                  <span id="book-page-date" class="book-date-tag">Aug 4, 2026</span>
+                  <span class="orb-blend-title" id="orb-blend-label">Blended Memory Sphere</span>
                 </div>
 
-                <div id="book-page-emotions" class="page-emotions-breakdown">
-                  <!-- Emotion breakdown badges -->
+                <!-- Emotions Sliders Group -->
+                <div class="ios-inset-group">
+                  <span class="ios-group-label">INSIDE OUT EMOTION SPECTRUM</span>
+                  <div class="ios-emotion-sliders">
+                    
+                    <div class="ios-slider-row">
+                      <span class="emo-icon">💛</span>
+                      <span class="emo-name">Joy</span>
+                      <input type="range" class="emo-range" data-emo="joy" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ios-slider-row">
+                      <span class="emo-icon">💙</span>
+                      <span class="emo-name">Sadness / Longing</span>
+                      <input type="range" class="emo-range" data-emo="sadness" min="0" max="100" value="30">
+                    </div>
+
+                    <div class="ios-slider-row">
+                      <span class="emo-icon">🩷</span>
+                      <span class="emo-name">Nostalgia</span>
+                      <input type="range" class="emo-range" data-emo="nostalgia" min="0" max="100" value="40">
+                    </div>
+
+                    <div class="ios-slider-row">
+                      <span class="emo-icon">💜</span>
+                      <span class="emo-name">Fear</span>
+                      <input type="range" class="emo-range" data-emo="fear" min="0" max="100" value="0">
+                    </div>
+
+                    <div class="ios-slider-row">
+                      <span class="emo-icon">❤️</span>
+                      <span class="emo-name">Anger</span>
+                      <input type="range" class="emo-range" data-emo="anger" min="0" max="100" value="0">
+                    </div>
+
+                    <div class="ios-slider-row">
+                      <span class="emo-icon">🩵</span>
+                      <span class="emo-name">Anxiety</span>
+                      <input type="range" class="emo-range" data-emo="anxiety" min="0" max="100" value="0">
+                    </div>
+
+                    <div class="ios-slider-row">
+                      <span class="emo-icon">💚</span>
+                      <span class="emo-name">Disgust</span>
+                      <input type="range" class="emo-range" data-emo="disgust" min="0" max="100" value="0">
+                    </div>
+
+                    <div class="ios-slider-row">
+                      <span class="emo-icon">🧡</span>
+                      <span class="emo-name">Vulnerability</span>
+                      <input type="range" class="emo-range" data-emo="vulnerability" min="0" max="100" value="20">
+                    </div>
+
+                    <div class="ios-slider-row">
+                      <span class="emo-icon">🩶</span>
+                      <span class="emo-name">Quiet Solitude</span>
+                      <input type="range" class="emo-range" data-emo="solitude" min="0" max="100" value="10">
+                    </div>
+
+                  </div>
                 </div>
 
-                <div id="book-page-photo-container" class="book-photo-frame hidden">
-                  <img id="book-page-photo" src="" alt="Memory Photo">
+                <!-- Form Inputs -->
+                <div class="ios-input-group">
+                  <input type="text" id="orb-title-input" class="ios-input" placeholder="Memory Title...">
+                  <textarea id="orb-note-input" class="ios-input ios-textarea" rows="3" placeholder="Write your thoughts of the day..."></textarea>
+                  
+                  <div class="file-picker-row">
+                    <label for="orb-photo-input" class="ios-btn secondary-btn small-btn">📷 Attach Photo</label>
+                    <input type="file" id="orb-photo-input" accept="image/*" class="hidden-file-input">
+                  </div>
+                  
+                  <div id="photo-preview-container" class="photo-preview-box hidden">
+                    <img id="photo-preview-img" src="" alt="Photo Preview">
+                    <button id="remove-photo-btn" class="ios-icon-btn small-btn">✕</button>
+                  </div>
+                </div>
+
+                <button id="save-memory-orb-btn" class="ios-btn primary-btn">
+                  🔮 Save Memory Orb
+                </button>
+
+              </div>
+            </div>
+
+            <!-- View B: Storybook Reader -->
+            <div id="orb-view-storybook" class="orb-subview">
+              <div class="ios-card storybook-reader-card">
+                <div class="storybook-reader-header">
+                  <div class="storybook-nav-controls">
+                    <button id="book-prev-btn" class="ios-btn secondary-btn small-btn">◀ Prev</button>
+                    <span id="book-page-indicator" class="page-indicator">Page 1 of 1</span>
+                    <button id="book-next-btn" class="ios-btn secondary-btn small-btn">Next ▶</button>
+                  </div>
+                </div>
+
+                <!-- 2-Page Book Spread -->
+                <div class="storybook-spread" id="storybook-spread">
+                  <div class="book-page book-left-page">
+                    <div id="page-orb-display" class="page-orb-container">
+                      <div class="memory-orb-sphere small-orb" id="book-page-orb">
+                        <div class="orb-core-glow" id="book-page-orb-glow"></div>
+                      </div>
+                      <span id="book-page-date" class="book-date-tag">Aug 4, 2026</span>
+                    </div>
+
+                    <div id="page-emotions" class="page-emotions-breakdown"></div>
+
+                    <div id="book-page-photo-container" class="book-photo-frame hidden">
+                      <img id="book-page-photo" src="" alt="Memory Photo">
+                    </div>
+                  </div>
+
+                  <div class="book-page book-right-page">
+                    <h4 id="book-page-title" class="book-story-title">My Emotional Journey</h4>
+                    <div class="book-story-content">
+                      <p id="book-page-text">No memories logged yet. Create your first Memory Orb to turn the pages of your storybook.</p>
+                    </div>
+                    <div class="book-footer-signature">~ Haven Sanctuary ~</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- ================= TAB 3: SKY LANTERNS ================= -->
+          <section id="tab-lanterns" class="tab-pane">
+            <div class="ios-card">
+              <div class="lantern-toolbar">
+                <button id="open-lantern-modal-btn" class="ios-btn primary-btn">
+                  ✨ Release Lantern
+                </button>
+                <span class="released-count" id="released-count">0 lanterns floating</span>
+              </div>
+
+              <!-- Date Filter -->
+              <div class="ios-segmented-control date-filter-control">
+                <button class="date-pill active" data-date-filter="all">All Time</button>
+                <button class="date-pill" data-date-filter="today">Today</button>
+                <button class="date-pill" data-date-filter="week">Past 7 Days</button>
+              </div>
+
+              <!-- Sky Canvas -->
+              <div class="sky-viewport" id="sky-viewport">
+                <canvas id="sky-canvas"></canvas>
+                <div class="sky-instructions">
+                  <p>✨ Tap floating lanterns in the sky to read their messages.</p>
                 </div>
               </div>
 
-              <!-- Right Page: Storybook Diary Text -->
-              <div class="book-page book-right-page">
-                <div class="page-corner-badge">Right Page</div>
-                <h4 id="book-page-title" class="book-story-title">My Emotional Journey</h4>
-                <div class="book-story-content">
-                  <p id="book-page-text">No memories logged yet. Blend your emotions on the left and save your first Memory Orb to turn the pages of your storybook.</p>
-                </div>
-                <div class="book-footer-signature">~ Haven Sanctuary ~</div>
+              <!-- Vault Grid -->
+              <div class="lantern-vault-section">
+                <span id="vault-filter-indicator" class="ios-group-label">RELEASED ARCHIVE</span>
+                <div id="lantern-gallery-grid" class="lantern-gallery-grid"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= TAB 4: BREATHING OASIS ================= -->
+          <section id="tab-breathing" class="tab-pane">
+            <div class="ios-card breathing-card">
+              <div class="ios-segmented-control">
+                <button class="mode-btn active" data-mode="relax">4-7-8 Relax</button>
+                <button class="mode-btn" data-mode="box">4-4-4 Box</button>
+                <button class="mode-btn" data-mode="calm">4-6 Calm</button>
               </div>
 
+              <div class="breathing-visualizer">
+                <div class="breath-ring-outer"></div>
+                <div class="breath-ring-middle"></div>
+                <div class="breath-circle" id="breath-circle">
+                  <span id="breath-phase">Ready</span>
+                  <span id="breath-timer">--</span>
+                </div>
+              </div>
+
+              <div class="breathing-guidance">
+                <p id="breath-instruction">Tap start when you are ready to breathe softly.</p>
+                <button id="start-breath-btn" class="ios-btn primary-btn pulse-glow">▶ Start Breathing</button>
+              </div>
             </div>
-          </div>
+          </section>
 
-        </div>
-      </section>
-
-      <!-- ================= TAB 3: SKY LANTERNS ================= -->
-      <section id="tab-lanterns" class="tab-pane">
-        <div class="section-header center">
-          <h2>🏮 Sky Lanterns of Release</h2>
-          <p>Write an unspoken thought, a message to someone you miss, or a quiet wish, and release it into the starlit sky.</p>
-        </div>
-
-        <div class="lanterns-container glass-card">
-          
-          <div class="lantern-toolbar">
-            <div class="toolbar-left">
-              <button id="open-lantern-modal-btn" class="btn primary-btn pulse-glow">
-                ✨ Release New Lantern
-              </button>
-              <span class="released-count" id="released-count">0 lanterns floating</span>
-            </div>
-
-            <div class="date-filter-group">
-              <span class="filter-label">📅 View by Date:</span>
-              <button class="date-pill active" data-date-filter="all">All Time</button>
-              <button class="date-pill" data-date-filter="today">Today</button>
-              <button class="date-pill" data-date-filter="week">Past 7 Days</button>
-              <input type="date" id="lantern-date-picker" class="date-picker-input" title="Filter by specific date">
-            </div>
-          </div>
-
-          <div class="sky-viewport" id="sky-viewport">
-            <canvas id="sky-canvas"></canvas>
-            <div class="sky-instructions">
-              <p>✨ Click any floating lantern in the sky to read its message, or release a new wish above.</p>
-            </div>
-          </div>
-
-          <div class="lantern-vault-section">
-            <div class="vault-header">
-              <h3>📜 Released Lanterns Archive</h3>
-              <span id="vault-filter-indicator" class="vault-indicator">Showing All Messages</span>
-            </div>
-
-            <div id="lantern-gallery-grid" class="lantern-gallery-grid">
-              <p class="empty-state">No lanterns released yet for this date. Light a lantern above whenever you feel ready.</p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ================= TAB 4: BREATHING OASIS ================= -->
-      <section id="tab-breathing" class="tab-pane">
-        <div class="section-header center">
-          <h2>🌬️ Grounding Breathing Oasis</h2>
-          <p>Allow your nervous system to rest. Follow the expanding ring and breathe at your own soft rhythm.</p>
-        </div>
-
-        <div class="breathing-container glass-card">
-          <div class="breathing-mode-selector">
-            <button class="mode-btn active" data-mode="relax">4-7-8 Deep Relax</button>
-            <button class="mode-btn" data-mode="box">4-4-4-4 Box Breathing</button>
-            <button class="mode-btn" data-mode="calm">4-6 Gentle Calm</button>
-          </div>
-
-          <div class="breathing-visualizer">
-            <div class="breath-ring-outer"></div>
-            <div class="breath-ring-middle"></div>
-            <div class="breath-circle" id="breath-circle">
-              <span id="breath-phase">Ready</span>
-              <span id="breath-timer">--</span>
-            </div>
-          </div>
-
-          <div class="breathing-guidance">
-            <p id="breath-instruction">Click start whenever you are ready to begin softly breathing together.</p>
-            <button id="start-breath-btn" class="btn primary-btn pulse-glow">▶ Start Breathing</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 5: SOUNDSCAPES ================= -->
-      <section id="tab-soundscapes" class="tab-pane">
-        <div class="section-header center">
-          <h2>🎶 Ambient Soundscapes</h2>
-          <p>Mix procedural relaxing sounds created entirely in real-time. Turn up rain, cozy campfire, waves, or celestial chimes.</p>
-        </div>
-
-        <div class="soundscapes-grid">
-          <div class="master-sound-card glass-card">
-            <div class="master-header">
-              <h3>🎵 Master Sanctuary Audio</h3>
-              <p class="master-subtitle">Real-time procedural ambient sound generator</p>
-            </div>
-            <div class="master-right-controls">
-              <button id="master-toggle-btn" class="btn primary-btn">▶ Enable Sound Generator</button>
+          <!-- ================= TAB 5: SOUNDSCAPES ================= -->
+          <section id="tab-soundscapes" class="tab-pane">
+            <div class="ios-card master-sound-card">
+              <div class="master-header">
+                <h3>🎵 Sanctuary Audio</h3>
+                <p>Real-time procedural ambient generator</p>
+              </div>
+              <button id="master-toggle-btn" class="ios-btn primary-btn">▶ Enable Generator</button>
               <div class="master-volume">
                 <label for="master-volume-slider">Volume</label>
                 <input type="range" id="master-volume-slider" min="0" max="1" step="0.01" value="0.7">
               </div>
             </div>
-          </div>
 
-          <div class="sound-card glass-card" data-sound="rain">
-            <div class="sound-icon">🌧️</div>
-            <div class="sound-info">
-              <h4>Soft Window Rain</h4>
-              <span class="sound-tag">Pink Noise & Raindrops</span>
-            </div>
-            <div class="sound-controls">
-              <button class="sound-toggle-btn icon-btn">▶</button>
-              <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
-            </div>
-          </div>
+            <div class="ios-inset-group soundscapes-list">
+              <div class="ios-list-row sound-card" data-sound="rain">
+                <span class="row-icon">🌧️</span>
+                <div class="row-info">
+                  <span class="row-title">Window Rain</span>
+                  <span class="row-subtitle">Pink Noise</span>
+                </div>
+                <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
+                <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
+              </div>
 
-          <div class="sound-card glass-card" data-sound="campfire">
-            <div class="sound-icon">🔥</div>
-            <div class="sound-info">
-              <h4>Cozy Campfire</h4>
-              <span class="sound-tag">Warm Crackle & Sparks</span>
-            </div>
-            <div class="sound-controls">
-              <button class="sound-toggle-btn icon-btn">▶</button>
-              <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
-            </div>
-          </div>
+              <div class="ios-list-row sound-card" data-sound="campfire">
+                <span class="row-icon">🔥</span>
+                <div class="row-info">
+                  <span class="row-title">Cozy Campfire</span>
+                  <span class="row-subtitle">Warm Crackle</span>
+                </div>
+                <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
+                <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
+              </div>
 
-          <div class="sound-card glass-card" data-sound="ocean">
-            <div class="sound-icon">🌊</div>
-            <div class="sound-info">
-              <h4>Gentle Ocean Waves</h4>
-              <span class="sound-tag">Rolling Tides & Waves</span>
-            </div>
-            <div class="sound-controls">
-              <button class="sound-toggle-btn icon-btn">▶</button>
-              <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
-            </div>
-          </div>
+              <div class="ios-list-row sound-card" data-sound="ocean">
+                <span class="row-icon">🌊</span>
+                <div class="row-info">
+                  <span class="row-title">Ocean Waves</span>
+                  <span class="row-subtitle">Rolling Tides</span>
+                </div>
+                <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
+                <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
+              </div>
 
-          <div class="sound-card glass-card" data-sound="breeze">
-            <div class="sound-icon">🍃</div>
-            <div class="sound-info">
-              <h4>Night Forest Breeze</h4>
-              <span class="sound-tag">Soft Whispering Wind</span>
-            </div>
-            <div class="sound-controls">
-              <button class="sound-toggle-btn icon-btn">▶</button>
-              <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
-            </div>
-          </div>
+              <div class="ios-list-row sound-card" data-sound="breeze">
+                <span class="row-icon">🍃</span>
+                <div class="row-info">
+                  <span class="row-title">Forest Breeze</span>
+                  <span class="row-subtitle">Soft Wind</span>
+                </div>
+                <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
+                <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
+              </div>
 
-          <div class="sound-card glass-card" data-sound="chimes">
-            <div class="sound-icon">🔔</div>
-            <div class="sound-info">
-              <h4>Celestial Chimes</h4>
-              <span class="sound-tag">Harmonic Chime Notes</span>
+              <div class="ios-list-row sound-card" data-sound="chimes">
+                <span class="row-icon">🔔</span>
+                <div class="row-info">
+                  <span class="row-title">Celestial Chimes</span>
+                  <span class="row-subtitle">Harmonic Notes</span>
+                </div>
+                <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
+                <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.4">
+              </div>
             </div>
-            <div class="sound-controls">
-              <button class="sound-toggle-btn icon-btn">▶</button>
-              <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.4">
-            </div>
-          </div>
+          </section>
 
-        </div>
-      </section>
-
-      <!-- ================= TAB 6: MEMORY JAR ================= -->
-      <section id="tab-memory-jar" class="tab-pane">
-        <div class="section-header center">
-          <h2>🏺 The Memory & Comfort Jar</h2>
-          <p>A vessel filled with warm reminders, affectionate words, and precious thoughts. Tap the jar to receive a note, or drop a new message inside.</p>
-        </div>
-
-        <div class="memory-jar-container glass-card">
-          <div class="jar-display-area">
-            <div class="glass-jar" id="glass-jar">
-              <div class="jar-lid"></div>
-              <div class="jar-body">
-                <div class="jar-glow"></div>
-                <div class="notes-inside-container" id="notes-inside-container">
-                  <!-- Dynamic floating note particles -->
+          <!-- ================= TAB 6: MEMORY JAR ================= -->
+          <section id="tab-memory-jar" class="tab-pane">
+            <div class="ios-card memory-jar-card">
+              <div class="jar-display-area">
+                <div class="glass-jar" id="glass-jar">
+                  <div class="jar-lid"></div>
+                  <div class="jar-body">
+                    <div class="jar-glow"></div>
+                    <div class="notes-inside-container" id="notes-inside-container"></div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div class="jar-actions">
-            <button id="draw-note-btn" class="btn primary-btn pulse-glow">
-              ✨ Pick a Comfort Note
-            </button>
-            <button id="add-note-btn" class="btn secondary-btn">
-              ✍️ Add Note to Jar
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 7: HEART LOG & JOURNAL ================= -->
-      <section id="tab-journal" class="tab-pane">
-        <div class="section-header center">
-          <h2>🤍 Heart Log & Safe Journal</h2>
-          <p>Check in with yourself softly. How does your heart feel right now? No judgment, only safe non-judgmental space.</p>
-        </div>
-
-        <div class="journal-layout">
-          <div class="heart-checkin-card glass-card">
-            <h3>How is your heart feeling today?</h3>
-            <div class="emotion-selector">
-              <button class="emotion-btn" data-emotion="missing">
-                <span class="emoji">💔</span>
-                <span>Missing Someone</span>
-              </button>
-              <button class="emotion-btn" data-emotion="seeking-warmth">
-                <span class="emoji">🕯️</span>
-                <span>Seeking Warmth</span>
-              </button>
-              <button class="emotion-btn" data-emotion="overwhelmed">
-                <span class="emoji">🌊</span>
-                <span>Overwhelmed</span>
-              </button>
-              <button class="emotion-btn" data-emotion="quiet">
-                <span class="emoji">🌌</span>
-                <span>Quiet & Reflective</span>
-              </button>
-              <button class="emotion-btn" data-emotion="peaceful">
-                <span class="emoji">🌸</span>
-                <span>Soft Peace</span>
-              </button>
-            </div>
-
-            <div id="heart-validation-box" class="validation-box hidden">
-              <p id="validation-text"></p>
-            </div>
-          </div>
-
-          <div class="journal-entry-card glass-card">
-            <h3>Safe Space Journal</h3>
-            <div class="form-group">
-              <input type="text" id="journal-title" placeholder="Entry Title or Mood (e.g. Thinking of dad, Soft twilight...)" class="input-field">
-            </div>
-            <div class="form-group">
-              <textarea id="journal-body" placeholder="Write whatever is on your heart. It stays completely private on your device..." rows="5" class="input-field"></textarea>
-            </div>
-            <button id="save-journal-btn" class="btn primary-btn">
-              🔒 Save Private Entry
-            </button>
-
-            <div class="journal-history">
-              <h4>Previous Entries</h4>
-              <div id="journal-entries-list" class="entries-list">
-                <p class="empty-state">No entries yet. Write whenever you feel ready.</p>
+              <div class="jar-actions">
+                <button id="draw-note-btn" class="ios-btn primary-btn pulse-glow">
+                  ✨ Draw Note
+                </button>
+                <button id="add-note-btn" class="ios-btn secondary-btn">
+                  ✍️ Add Note
+                </button>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-    </main>
+          <!-- ================= TAB 7: HEART LOG ================= -->
+          <section id="tab-journal" class="tab-pane">
+            <div class="ios-card">
+              <h3>How does your heart feel?</h3>
+              <div class="ios-emotion-picker">
+                <button class="emotion-btn" data-emotion="missing">💔 Missing Someone</button>
+                <button class="emotion-btn" data-emotion="seeking-warmth">🕯️ Seeking Warmth</button>
+                <button class="emotion-btn" data-emotion="overwhelmed">🌊 Overwhelmed</button>
+                <button class="emotion-btn" data-emotion="quiet">🌌 Quiet Reflection</button>
+                <button class="emotion-btn" data-emotion="peaceful">🌸 Soft Peace</button>
+              </div>
 
-    <!-- Footer -->
-    <footer class="footer glass-card">
-      <p>Haven Sanctuary — Dedicated to giving you comfort, peace, and warmth every day. ❤️</p>
-    </footer>
-  </div>
+              <div id="heart-validation-box" class="validation-box hidden">
+                <p id="validation-text"></p>
+              </div>
+            </div>
 
-  <!-- ================= MODALS ================= -->
+            <div class="ios-card margin-top">
+              <h3>Safe Journal</h3>
+              <input type="text" id="journal-title" placeholder="Title..." class="ios-input">
+              <textarea id="journal-body" placeholder="Write privately..." rows="4" class="ios-input ios-textarea"></textarea>
+              <button id="save-journal-btn" class="ios-btn primary-btn">🔒 Save Private Entry</button>
 
-  <!-- Release Lantern Modal -->
-  <div id="lantern-modal" class="modal-overlay hidden">
-    <div class="modal-content glass-card">
-      <button class="modal-close-btn" data-modal="lantern-modal">✕</button>
-      <h3>🏮 Light & Release a Lantern</h3>
-      <p class="modal-subtitle">Write a message, a memory, or a heartfelt wish. It will glow warmly as it ascends into the starry sky.</p>
-      
-      <div class="form-group">
-        <label for="lantern-message">Your Message or Wish</label>
-        <textarea id="lantern-message" class="input-field" rows="4" placeholder="Dear Dad... / Today I wish for... / I hold love in my heart for..."></textarea>
-      </div>
+              <div class="journal-history">
+                <span class="ios-group-label">PREVIOUS ENTRIES</span>
+                <div id="journal-entries-list" class="entries-list"></div>
+              </div>
+            </div>
+          </section>
 
-      <div class="form-group">
-        <label>Select Glow Color</label>
-        <div class="color-picker-options">
-          <label class="color-option">
-            <input type="radio" name="lantern-color" value="#ffb347" checked>
-            <span class="color-swatch" style="background: #ffb347;" title="Warm Amber"></span>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="lantern-color" value="#ff80bf">
-            <span class="color-swatch" style="background: #ff80bf;" title="Soft Rose"></span>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="lantern-color" value="#b388ff">
-            <span class="color-swatch" style="background: #b388ff;" title="Twilight Lavender"></span>
-          </label>
-          <label class="color-option">
-            <input type="radio" name="lantern-color" value="#80d8ff">
-            <span class="color-swatch" style="background: #80d8ff;" title="Starlight Blue"></span>
-          </label>
-        </div>
-      </div>
+        </main>
 
-      <div class="modal-actions">
-        <button id="release-lantern-confirm-btn" class="btn primary-btn pulse-glow">
-          ✨ Release Lantern into Sky
-        </button>
+        <!-- iOS Bottom Translucent Tab Bar -->
+        <nav class="ios-tab-bar">
+          <button class="tab-item active" data-tab="hub" data-title="Sanctuary">
+            <span class="tab-icon">🏡</span>
+            <span class="tab-label">Home</span>
+          </button>
+          <button class="tab-item" data-tab="memory-orbs" data-title="Memory Orbs">
+            <span class="tab-icon">🔮</span>
+            <span class="tab-label">Orbs</span>
+          </button>
+          <button class="tab-item" data-tab="lanterns" data-title="Sky Lanterns">
+            <span class="tab-icon">🏮</span>
+            <span class="tab-label">Sky</span>
+          </button>
+          <button class="tab-item" data-tab="breathing" data-title="Breathing">
+            <span class="tab-icon">🌬️</span>
+            <span class="tab-label">Breathe</span>
+          </button>
+          <button class="tab-item" data-tab="soundscapes" data-title="Audio">
+            <span class="tab-icon">🎶</span>
+            <span class="tab-label">Sounds</span>
+          </button>
+          <button class="tab-item" data-tab="memory-jar" data-title="Memory Jar">
+            <span class="tab-icon">🏺</span>
+            <span class="tab-label">Jar</span>
+          </button>
+          <button class="tab-item" data-tab="journal" data-title="Heart Log">
+            <span class="tab-icon">🤍</span>
+            <span class="tab-label">Journal</span>
+          </button>
+        </nav>
+
+        <!-- iOS Home Indicator Pill -->
+        <div class="ios-home-indicator"></div>
+
       </div>
     </div>
   </div>
 
-  <!-- Read/View Floating Lantern Modal -->
+  <!-- iOS Sheet Modals -->
+  <div id="lantern-modal" class="modal-overlay hidden">
+    <div class="ios-sheet-modal">
+      <div class="sheet-grabber"></div>
+      <button class="modal-close-btn" data-modal="lantern-modal">✕</button>
+      <h3>🏮 Release a Lantern</h3>
+      <textarea id="lantern-message" class="ios-input ios-textarea" rows="3" placeholder="Dear Dad... / Today I wish for..."></textarea>
+      
+      <div class="color-picker-options">
+        <label class="color-option">
+          <input type="radio" name="lantern-color" value="#ffb347" checked>
+          <span class="color-swatch" style="background: #ffb347;"></span>
+        </label>
+        <label class="color-option">
+          <input type="radio" name="lantern-color" value="#ff80bf">
+          <span class="color-swatch" style="background: #ff80bf;"></span>
+        </label>
+        <label class="color-option">
+          <input type="radio" name="lantern-color" value="#b388ff">
+          <span class="color-swatch" style="background: #b388ff;"></span>
+        </label>
+        <label class="color-option">
+          <input type="radio" name="lantern-color" value="#80d8ff">
+          <span class="color-swatch" style="background: #80d8ff;"></span>
+        </label>
+      </div>
+
+      <button id="release-lantern-confirm-btn" class="ios-btn primary-btn">
+        ✨ Release into Sky
+      </button>
+    </div>
+  </div>
+
   <div id="view-lantern-modal" class="modal-overlay hidden">
-    <div class="modal-content glass-card lantern-view-paper">
+    <div class="ios-sheet-modal">
+      <div class="sheet-grabber"></div>
       <button class="modal-close-btn" data-modal="view-lantern-modal">✕</button>
       <div class="lantern-modal-header">
         <span id="view-lantern-color-badge" class="lantern-badge">🏮 Released Lantern</span>
         <span id="view-lantern-date" class="lantern-modal-date">Aug 4, 2026</span>
       </div>
-      <div class="lantern-modal-body">
-        <p id="view-lantern-message">"I miss you and carry your love with me."</p>
-      </div>
-      <div class="modal-actions">
-        <button class="btn secondary-btn modal-close-btn" data-modal="view-lantern-modal">Keep Floating in Sky</button>
-      </div>
+      <p id="view-lantern-message" class="lantern-view-text">"I miss you."</p>
+      <button class="ios-btn secondary-btn modal-close-btn" data-modal="view-lantern-modal">Dismiss</button>
     </div>
   </div>
 
-  <!-- Note Display Modal -->
   <div id="note-display-modal" class="modal-overlay hidden">
-    <div class="modal-content glass-card note-paper-modal">
+    <div class="ios-sheet-modal">
+      <div class="sheet-grabber"></div>
       <button class="modal-close-btn" data-modal="note-display-modal">✕</button>
       <div class="paper-header">📜 Comfort Note</div>
-      <div class="paper-body">
-        <p id="note-modal-text">"You carry immense strength within you, even on days when you feel soft or quiet."</p>
-      </div>
-      <div class="modal-actions">
-        <button class="btn secondary-btn modal-close-btn" data-modal="note-display-modal">Keep in Heart</button>
-      </div>
+      <p id="note-modal-text" class="handwriting-text">"You carry immense strength within you."</p>
+      <button class="ios-btn secondary-btn modal-close-btn" data-modal="note-display-modal">Keep in Heart</button>
     </div>
   </div>
 
-  <!-- Add Custom Note Modal -->
   <div id="add-note-modal" class="modal-overlay hidden">
-    <div class="modal-content glass-card">
+    <div class="ios-sheet-modal">
+      <div class="sheet-grabber"></div>
       <button class="modal-close-btn" data-modal="add-note-modal">✕</button>
-      <h3>✍️ Add a Comfort Note to Jar</h3>
-      <p class="modal-subtitle">Add a sweet reminder, memory, or affirmation to draw in the future.</p>
-      <div class="form-group">
-        <textarea id="custom-note-input" class="input-field" rows="3" placeholder="Type a warm message..."></textarea>
-      </div>
-      <div class="modal-actions">
-        <button id="save-custom-note-btn" class="btn primary-btn">Drop Note into Jar</button>
-      </div>
+      <h3>✍️ Add Note to Jar</h3>
+      <textarea id="custom-note-input" class="ios-input ios-textarea" rows="3" placeholder="Type a message..."></textarea>
+      <button id="save-custom-note-btn" class="ios-btn primary-btn">Drop into Jar</button>
     </div>
   </div>
 
-  <!-- Theme Selector Modal -->
   <div id="theme-modal" class="modal-overlay hidden">
-    <div class="modal-content glass-card">
+    <div class="ios-sheet-modal">
+      <div class="sheet-grabber"></div>
       <button class="modal-close-btn" data-modal="theme-modal">✕</button>
-      <h3>🎨 Choose Sanctuary Atmosphere</h3>
+      <h3>🎨 Select Theme</h3>
       <div class="theme-options-grid">
         <button class="theme-option-btn active" data-theme="twilight">
           <span class="theme-preview twilight-preview"></span>
-          <span>Twilight Night</span>
+          <span>Twilight</span>
         </button>
         <button class="theme-option-btn" data-theme="sunset">
           <span class="theme-preview sunset-preview"></span>
-          <span>Warm Sunset</span>
+          <span>Sunset</span>
         </button>
         <button class="theme-option-btn" data-theme="rose">
           <span class="theme-preview rose-preview"></span>
-          <span>Soft Rose</span>
+          <span>Rose</span>
         </button>
         <button class="theme-option-btn" data-theme="emerald">
           <span class="theme-preview emerald-preview"></span>
-          <span>Emerald Peace</span>
+          <span>Emerald</span>
         </button>
       </div>
     </div>
