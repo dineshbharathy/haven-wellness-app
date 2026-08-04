@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Haven — Autonomous AI Sanctuary & Therapist</title>
-  <meta name="description" content="A premium desktop wellness application featuring an autonomous AI Therapist engine and therapeutic soundscapes.">
+  <title>Haven — Autonomous AI Sanctuary & Discord Community</title>
+  <meta name="description" content="A premium desktop wellness application featuring an autonomous AI Therapist engine, Discord-like peer community, and therapeutic soundscapes.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,6 +38,9 @@
         </button>
         <button class="nav-tab-btn" data-tab="ai-listener" data-title="Dr. Aura (AI)">
           <span>🎙️ AI Therapist</span>
+        </button>
+        <button class="nav-tab-btn" data-tab="community" data-title="Sanctuary Circle">
+          <span>💬 Discord Circle</span>
         </button>
         <button class="nav-tab-btn" data-tab="memory-orbs" data-title="Memory Orbs">
           <span>🔮 Orbs</span>
@@ -79,7 +82,7 @@
           <div class="welcome-header">
             <span class="ios-pill pro-badge" id="time-greeting">Autonomous Neuro-Sanctuary Active</span>
             <h2>Welcome to your private wellness sanctuary.</h2>
-            <p>Featuring a 100% self-contained AI Therapist, natural voice agent, and therapeutic glassmorphism.</p>
+            <p>Featuring a 100% self-contained AI Therapist, Discord-like Sanctuary Circle, and therapeutic glassmorphism.</p>
           </div>
           
           <div class="ios-inset-group daily-quote-box">
@@ -89,22 +92,39 @@
           </div>
         </div>
 
-        <!-- AI Therapist Quick Access Banner -->
-        <div class="pro-card ai-banner-card">
-          <div class="ai-banner-content">
-            <div class="ai-orb-mini-pulse"></div>
-            <div class="ai-banner-text">
-              <h3>Dr. Aura — Autonomous AI Therapist</h3>
-              <p>Zero key setup required. Client-centered Rogerian active listening, voice reflection, & grounding.</p>
+        <!-- AI Therapist & Community Quick Banners -->
+        <div class="adaptive-grid-4col">
+          
+          <div class="pro-card ai-banner-card grid-span-2">
+            <div class="ai-banner-content">
+              <div class="ai-orb-mini-pulse"></div>
+              <div class="ai-banner-text">
+                <h3>Dr. Aura — Autonomous AI Therapist</h3>
+                <p>Client-centered Rogerian active listening, voice reflection, & grounding.</p>
+              </div>
             </div>
+            <button id="open-ai-listener-btn" class="ios-btn primary-btn pulse-glow">
+              🎙️ Speak with Dr. Aura
+            </button>
           </div>
-          <button id="open-ai-listener-btn" class="ios-btn primary-btn pulse-glow">
-            🎙️ Speak with Dr. Aura
-          </button>
+
+          <div class="pro-card community-banner-card grid-span-2">
+            <div class="ai-banner-content">
+              <div class="widget-icon">💬</div>
+              <div class="ai-banner-text">
+                <h3>Sanctuary Circle — Discord Friends</h3>
+                <p>Connect with online peers, share experiences, and join voice lounges.</p>
+              </div>
+            </div>
+            <button id="open-community-tab-btn" class="ios-btn secondary-btn">
+              💬 Enter Sanctuary Circle
+            </button>
+          </div>
+
         </div>
 
         <!-- Adaptive Responsive Grid -->
-        <div class="adaptive-grid-4col">
+        <div class="adaptive-grid-4col margin-top">
           
           <!-- Storybook Widget -->
           <div class="pro-card widget-card storybook-widget">
@@ -202,7 +222,102 @@
         </div>
       </section>
 
-      <!-- ================= TAB 3: INSIDE OUT MEMORY ORBS & STORYBOOK ================= -->
+      <!-- ================= TAB 3: DISCORD-LIKE SANCTUARY CIRCLE (NEW) ================= -->
+      <section id="tab-community" class="tab-pane">
+        <div class="discord-app-container pro-card">
+          
+          <!-- Discord Left Channel Sidebar -->
+          <div class="discord-channels-sidebar">
+            <div class="server-header-box">
+              <span class="server-icon">🌸</span>
+              <div class="server-title-group">
+                <span class="server-name">Sanctuary Circle</span>
+                <span class="online-indicator">🟢 14 Peers Online</span>
+              </div>
+            </div>
+
+            <div class="channels-section">
+              <span class="channel-group-label">TEXT CHANNELS</span>
+              
+              <button class="channel-btn active" data-channel="general">
+                <span class="channel-hash">#</span> general-sanctuary
+              </button>
+              <button class="channel-btn" data-channel="family-longing">
+                <span class="channel-hash">#</span> family-and-longing
+              </button>
+              <button class="channel-btn" data-channel="daily-wins">
+                <span class="channel-hash">#</span> daily-wins-and-warmth
+              </button>
+
+              <span class="channel-group-label margin-top">VOICE LOUNGES</span>
+              
+              <button class="channel-btn voice-channel-btn" data-channel="voice-lounge">
+                <span class="channel-hash">🔊</span> tea-and-rest-lounge
+              </button>
+            </div>
+
+            <!-- User Profile Box -->
+            <div class="discord-user-profile-bar">
+              <div class="user-avatar-mini">🤍</div>
+              <div class="user-info-text">
+                <span class="user-display-name">You (Sanctuary Member)</span>
+                <span class="user-status-tag">Online & Safe</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Discord Center Chat Area -->
+          <div class="discord-chat-main">
+            
+            <div class="chat-header-bar">
+              <div class="channel-title-info">
+                <span class="header-channel-name" id="current-channel-title"># general-sanctuary</span>
+                <span class="header-channel-desc" id="current-channel-desc">A gentle space for friendly hellos, quiet thoughts, and comfort.</span>
+              </div>
+              <button id="open-add-friend-modal-btn" class="ios-btn primary-btn small-btn">
+                ➕ Add Friend
+              </button>
+            </div>
+
+            <!-- Voice Lounge Banner (Hidden unless in voice channel) -->
+            <div id="voice-lounge-banner" class="voice-lounge-banner hidden">
+              <div class="voice-status-group">
+                <span class="voice-pulse-dot"></span>
+                <span id="voice-lounge-text">Connected to Voice Lounge • 4 People Talking</span>
+              </div>
+              <button id="toggle-voice-connect-btn" class="ios-btn outline-btn small-btn">
+                🔇 Leave Voice
+              </button>
+            </div>
+
+            <!-- Chat Messages Container -->
+            <div id="discord-messages-box" class="discord-messages-box">
+              <!-- Dynamically Populated -->
+            </div>
+
+            <!-- Chat Input Bar -->
+            <div class="discord-input-container">
+              <input type="text" id="discord-chat-input" class="ios-input" placeholder="Message #general-sanctuary... Share your thoughts safely.">
+              <button id="send-discord-msg-btn" class="ios-btn primary-btn small-btn">Send</button>
+            </div>
+
+          </div>
+
+          <!-- Discord Right Friends / Online Members Sidebar -->
+          <div class="discord-friends-sidebar">
+            <div class="friends-sidebar-header">
+              <span>ONLINE FRIENDS (5)</span>
+            </div>
+
+            <div id="online-friends-list" class="friends-list-container">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= TAB 4: INSIDE OUT MEMORY ORBS & STORYBOOK ================= -->
       <section id="tab-memory-orbs" class="tab-pane">
         
         <div class="ios-segmented-control">
@@ -343,7 +458,7 @@
 
       </section>
 
-      <!-- ================= TAB 4: SKY LANTERNS ================= -->
+      <!-- ================= TAB 5: SKY LANTERNS ================= -->
       <section id="tab-lanterns" class="tab-pane">
         <div class="pro-card">
           <div class="lantern-toolbar">
@@ -373,7 +488,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 5: BREATHING OASIS ================= -->
+      <!-- ================= TAB 6: BREATHING OASIS ================= -->
       <section id="tab-breathing" class="tab-pane">
         <div class="pro-card breathing-card">
           <div class="ios-segmented-control">
@@ -398,7 +513,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 6: SOUNDSCAPES ================= -->
+      <!-- ================= TAB 7: SOUNDSCAPES ================= -->
       <section id="tab-soundscapes" class="tab-pane">
         <div class="pro-card master-sound-card">
           <div class="master-header">
@@ -465,7 +580,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 7: MEMORY JAR ================= -->
+      <!-- ================= TAB 8: MEMORY JAR ================= -->
       <section id="tab-memory-jar" class="tab-pane">
         <div class="pro-card memory-jar-card">
           <div class="jar-display-area">
@@ -489,7 +604,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 8: HEART LOG ================= -->
+      <!-- ================= TAB 9: HEART LOG ================= -->
       <section id="tab-journal" class="tab-pane">
         <div class="pro-card">
           <h3>How does your heart feel?</h3>
@@ -520,6 +635,22 @@
       </section>
 
     </main>
+  </div>
+
+  <!-- Add Friend Modal -->
+  <div id="add-friend-modal" class="modal-overlay hidden">
+    <div class="ios-sheet-modal">
+      <div class="sheet-grabber"></div>
+      <button class="modal-close-btn" data-modal="add-friend-modal">✕</button>
+      <h3>➕ Add Sanctuary Friend</h3>
+      <p class="modal-subtitle">Connect with online peers using their handle or friend code.</p>
+      
+      <input type="text" id="friend-input-handle" class="ios-input" placeholder="e.g. sophia_sanctuary, aria_moon...">
+      
+      <button id="confirm-add-friend-btn" class="ios-btn primary-btn">
+        ✨ Send Friend Request
+      </button>
+    </div>
   </div>
 
   <!-- Modals -->

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — 100% AUTONOMOUS AI THERAPIST & VOICE ENGINE
+   HAVEN WELLNESS SANCTUARY — AUTONOMOUS AI & DISCORD COMMUNITY ENGINE (JS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAmbientCanvas();
   initSanctuaryHub();
   initAutonomousAITherapistAura();
+  initSanctuaryCircleCommunity();
   initMemoryOrbsAndStorybook();
   initSkyLanterns();
   initBreathingOasis();
@@ -288,6 +289,11 @@ function initSanctuaryHub() {
     document.querySelector('.nav-tab-btn[data-tab="ai-listener"]')?.click();
   });
 
+  const openCommunityTabBtn = document.getElementById('open-community-tab-btn');
+  openCommunityTabBtn?.addEventListener('click', () => {
+    document.querySelector('.nav-tab-btn[data-tab="community"]')?.click();
+  });
+
   const openStorybookBtn = document.getElementById('open-storybook-tab-btn');
   openStorybookBtn?.addEventListener('click', () => {
     document.querySelector('.nav-tab-btn[data-tab="memory-orbs"]')?.click();
@@ -466,7 +472,6 @@ function initAutonomousAITherapistAura() {
     statusText.textContent = 'Dr. Aura is reflecting softly...';
     orbContainer.classList.add('ai-listening');
 
-    // Simulate natural therapeutic thinking pause (800ms)
     await new Promise(resolve => setTimeout(resolve, 800));
 
     const response = generateAutonomousTherapistResponse(userText, conversationHistory);
@@ -493,13 +498,11 @@ function initAutonomousAITherapistAura() {
   }
 }
 
-/* Deep Autonomous Rogerian Active Listener & Attachment Therapy Engine */
 function generateAutonomousTherapistResponse(input, history) {
   const text = input.toLowerCase();
 
   const reflections = [];
 
-  // Attachment & Parental Detachment / Longing for Dad
   if (text.includes('dad') || text.includes('father') || text.includes('daddy') || text.includes('paternal')) {
     reflections.push(
       "I hear how deeply you long for your dad and how heavy parental detachment can feel. What you are feeling is completely valid—your desire for unconditional parental warmth comes from a place of deep love. Take a soft breath; you are safe to feel that ache here without judgment.",
@@ -507,7 +510,6 @@ function generateAutonomousTherapistResponse(input, history) {
       "It is painful when the connection with a parent isn't what your heart deserved. Please remind yourself today: your longing is proof of your emotional depth, not your weakness."
     );
   }
-  // Detachment, Isolation, Loneliness
   else if (text.includes('alone') || text.includes('lonely') || text.includes('detached') || text.includes('isolated') || text.includes('empty')) {
     reflections.push(
       "Feeling detached or isolated can make your inner world feel so quiet and distant. Please know that feeling this way doesn't mean you are broken or unwanted. I am right here with you, holding a warm, gentle space for your heart.",
@@ -515,7 +517,6 @@ function generateAutonomousTherapistResponse(input, history) {
       "Even in moments of deep solitude, your presence matters profoundly. You are building a safe sanctuary within yourself, and I am standing by your side."
     );
   }
-  // Sadness, Tears, Grief, Pain
   else if (text.includes('sad') || text.includes('cry') || text.includes('pain') || text.includes('hurt') || text.includes('grief') || text.includes('heavy')) {
     reflections.push(
       "I hear the pain in your voice, and I want to remind you that your tears are welcome here. You don't have to carry the weight of being strong all the time. Let yourself rest for a moment; I am listening closely.",
@@ -523,7 +524,6 @@ function generateAutonomousTherapistResponse(input, history) {
       "When things feel heavy, remember that you don't have to figure it all out today. Simply breathing through this moment is more than enough."
     );
   }
-  // Anger, Resentment, Frustration
   else if (text.includes('angry') || text.includes('mad') || text.includes('upset') || text.includes('hate') || text.includes('unfair')) {
     reflections.push(
       "It is entirely natural to feel anger when you haven't received the warmth or presence you deserved. Anger is often just a protective layer over a deeply tender heart. I honor your feelings completely.",
@@ -531,7 +531,6 @@ function generateAutonomousTherapistResponse(input, history) {
       "Give yourself permission to feel that fire without judgment. Anger can be a boundary that protects your heart until peace returns."
     );
   }
-  // Anxiety, Fear, Worry, Overwhelmed
   else if (text.includes('anxious') || text.includes('scared') || text.includes('fear') || text.includes('worry') || text.includes('overwhelmed') || text.includes('stress')) {
     reflections.push(
       "Take a slow, deep breath in with me. When anxiety rises, it can feel like a storm inside, but remember that storms pass. You are anchored and safe in this moment.",
@@ -539,7 +538,6 @@ function generateAutonomousTherapistResponse(input, history) {
       "I hear how much you are carrying. Let's exhale together and let your shoulders drop. You don't have to face this alone."
     );
   }
-  // Hope, Gratitude, Healing, Better
   else if (text.includes('good') || text.includes('better') || text.includes('hope') || text.includes('happy') || text.includes('thank')) {
     reflections.push(
       "It brings me so much warmth to hear that spark of light in your heart today. Celebrate that soft moment of peace—you have worked so hard for your healing.",
@@ -547,7 +545,6 @@ function generateAutonomousTherapistResponse(input, history) {
       "Your resilience is beautiful. Keep nurturing your heart with the kindness and patience you deserve every day."
     );
   }
-  // General Therapeutic Active Reflection
   else {
     reflections.push(
       "Thank you for sharing your heart so openly with me. I am listening closely to everything you carry inside. Your feelings matter so much, and you are surrounded by care and safety here.",
@@ -586,7 +583,242 @@ function speakTherapistResponse(text) {
 }
 
 /* ==========================================================================
-   6. INSIDE OUT MEMORY ORBS & STORYBOOK READER
+   6. DISCORD-LIKE SANCTUARY CIRCLE COMMUNITY ENGINE (NEW)
+   ========================================================================== */
+const DISCORD_CHANNELS = {
+  general: {
+    title: '# general-sanctuary',
+    desc: 'A gentle space for friendly hellos, quiet thoughts, and comfort.',
+    messages: [
+      { id: 1, author: 'Sophia 🌸', avatar: '🌸', tag: 'Gold Member', time: '10:14 AM', text: 'Good morning everyone! Sending a quiet hug to anyone who needs one today. 🍵', reactions: { hug: 5, support: 3 } },
+      { id: 2, author: 'Aria 🌙', avatar: '🌙', tag: 'Peer Support', time: '10:18 AM', text: 'Thank you Sophia. Sipping chamomile tea right now and listening to the window rain soundscape.', reactions: { hug: 4, warmth: 6 } },
+      { id: 3, author: 'Leo 🏮', avatar: '🏮', tag: 'Sanctuary Friend', time: '10:22 AM', text: 'Released a lantern earlier for my dad. It feels nice knowing we carry these feelings together.', reactions: { hug: 8, support: 7, warmth: 9 } }
+    ]
+  },
+  'family-longing': {
+    title: '# family-and-longing',
+    desc: 'Safe channel to talk about missing parents, dad longing, and attachment healing.',
+    messages: [
+      { id: 10, author: 'Maya 🌿', avatar: '🌿', tag: 'Attachment Peer', time: 'Yesterday', text: 'Sometimes father\'s day or family holidays make me feel so detached. Does anyone else get that empty ache in their chest?', reactions: { support: 12, hug: 15 } },
+      { id: 11, author: 'Elena 🔮', avatar: '🔮', tag: 'Sanctuary Friend', time: 'Yesterday', text: 'Yes Maya, 100%. Creating the Inside Out Orbs helped me realize that sadness and longing can exist alongside hope. You are not alone.', reactions: { warmth: 10, hug: 11 } }
+    ]
+  },
+  'daily-wins': {
+    title: '# daily-wins-and-warmth',
+    desc: 'Celebrate small victories, gentle moments, and self-kindness.',
+    messages: [
+      { id: 20, author: 'Noah ☀️', avatar: '☀️', tag: 'Daily Regular', time: '8:30 AM', text: 'My win today: I didn\'t judge myself for feeling quiet. I just took 5 deep breaths in the Breathing Oasis.', reactions: { warmth: 9, support: 6 } }
+    ]
+  },
+  'voice-lounge': {
+    title: '🔊 tea-and-rest-lounge',
+    desc: 'Voice & text lounge. Connect your mic to talk softly with online sanctuary peers.',
+    messages: [
+      { id: 30, author: 'System 🌸', avatar: '🎧', tag: 'Voice Bot', time: 'Live', text: 'Voice lounge active. 4 peers currently listening and brewing tea.', reactions: { warmth: 5 } }
+    ]
+  }
+};
+
+const ONLINE_FRIENDS = [
+  { name: 'Sophia 🌸', handle: 'sophia_sanctuary', avatar: '🌸', status: 'Online • In Sanctuary', color: '#ff8052' },
+  { name: 'Aria 🌙', handle: 'aria_moon', avatar: '🌙', status: 'Online • Listening to Rain', color: '#d946ef' },
+  { name: 'Leo 🏮', handle: 'leo_sky', avatar: '🏮', status: 'Online • Releasing Lantern', color: '#ffcf56' },
+  { name: 'Elena 🔮', handle: 'elena_orbs', avatar: '🔮', status: 'Online • Creating Orb', color: '#34d399' },
+  { name: 'Maya 🌿', handle: 'maya_haven', avatar: '🌿', status: 'Online • In Voice Lounge', color: '#60a5fa' }
+];
+
+function initSanctuaryCircleCommunity() {
+  const channelBtns = document.querySelectorAll('.channel-btn[data-channel]');
+  const titleEl = document.getElementById('current-channel-title');
+  const descEl = document.getElementById('current-channel-desc');
+  const messagesBox = document.getElementById('discord-messages-box');
+  const friendsListContainer = document.getElementById('online-friends-list');
+
+  const chatInput = document.getElementById('discord-chat-input');
+  const sendBtn = document.getElementById('send-discord-msg-btn');
+
+  const addFriendBtn = document.getElementById('open-add-friend-modal-btn');
+  const addFriendModal = document.getElementById('add-friend-modal');
+  const confirmAddFriendBtn = document.getElementById('confirm-add-friend-btn');
+  const friendHandleInput = document.getElementById('friend-input-handle');
+
+  const voiceBanner = document.getElementById('voice-lounge-banner');
+  const voiceToggleBtn = document.getElementById('toggle-voice-connect-btn');
+
+  let currentChannelKey = 'general';
+  let isVoiceConnected = false;
+  let friends = [...ONLINE_FRIENDS];
+
+  function renderFriendsSidebar() {
+    friendsListContainer.innerHTML = friends.map(f => `
+      <div class="friend-item">
+        <div class="friend-avatar" style="background: ${f.color}; color:#ffffff;">
+          ${f.avatar}
+          <div class="friend-status-dot"></div>
+        </div>
+        <div class="friend-info">
+          <span class="friend-name">${escapeHtml(f.name)}</span>
+          <span class="friend-activity">${escapeHtml(f.status)}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  renderFriendsSidebar();
+
+  function renderChannelMessages(channelKey) {
+    const channelData = DISCORD_CHANNELS[channelKey] || DISCORD_CHANNELS.general;
+    titleEl.textContent = channelData.title;
+    descEl.textContent = channelData.desc;
+
+    if (channelKey === 'voice-lounge') {
+      voiceBanner.classList.remove('hidden');
+    } else if (!isVoiceConnected) {
+      voiceBanner.classList.add('hidden');
+    }
+
+    messagesBox.innerHTML = channelData.messages.map(m => `
+      <div class="peer-msg-item">
+        <div class="peer-avatar" style="background: linear-gradient(135deg, #ffcf56, #d946ef); color:#ffffff;">
+          ${m.avatar}
+        </div>
+        <div class="peer-msg-content">
+          <div class="peer-msg-header">
+            <span class="peer-name">${escapeHtml(m.author)}</span>
+            <span class="peer-tag" style="background: #d946ef;">${escapeHtml(m.tag)}</span>
+            <span class="peer-time">${m.time}</span>
+          </div>
+          <div class="peer-bubble">
+            ${escapeHtml(m.text)}
+          </div>
+          <div class="peer-reactions-row">
+            <button class="reaction-btn" onclick="handlePeerReaction(this, 'hug')">❤️ Hug (${m.reactions.hug || 0})</button>
+            <button class="reaction-btn" onclick="handlePeerReaction(this, 'support')">🌸 Support (${m.reactions.support || 0})</button>
+            <button class="reaction-btn" onclick="handlePeerReaction(this, 'warmth')">🕯️ Warmth (${m.reactions.warmth || 0})</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+  }
+
+  renderChannelMessages('general');
+
+  channelBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(540, 'sine', 0.4, 0.06);
+
+      const chKey = btn.getAttribute('data-channel');
+      channelBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentChannelKey = chKey;
+      renderChannelMessages(chKey);
+    });
+  });
+
+  sendBtn?.addEventListener('click', () => {
+    const val = chatInput.value.trim();
+    if (!val) return;
+
+    getAudioContext();
+    playBellSound(620, 'sine', 0.5, 0.08);
+
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+    const newMsg = {
+      id: Date.now(),
+      author: 'You (Sanctuary Member)',
+      avatar: '🤍',
+      tag: 'Sanctuary Member',
+      time: timeStr,
+      text: val,
+      reactions: { hug: 1, warmth: 1 }
+    };
+
+    DISCORD_CHANNELS[currentChannelKey].messages.push(newMsg);
+    renderChannelMessages(currentChannelKey);
+    chatInput.value = '';
+
+    // Simulated Peer Friendly Auto Response after 2.5 seconds
+    setTimeout(() => {
+      const peerResponses = [
+        { author: 'Sophia 🌸', avatar: '🌸', tag: 'Gold Member', text: 'Thank you for sharing that with us! Sending so much love. ❤️' },
+        { author: 'Aria 🌙', avatar: '🌙', tag: 'Peer Support', text: 'I hear you so deeply. Your feelings are always safe here.' },
+        { author: 'Leo 🏮', avatar: '🏮', tag: 'Sanctuary Friend', text: 'We are right here with you! 🕯️' }
+      ];
+      const randomPeer = peerResponses[Math.floor(Math.random() * peerResponses.length)];
+      DISCORD_CHANNELS[currentChannelKey].messages.push({
+        id: Date.now(),
+        author: randomPeer.author,
+        avatar: randomPeer.avatar,
+        tag: randomPeer.tag,
+        time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+        text: randomPeer.text,
+        reactions: { hug: 3, warmth: 4 }
+      });
+      renderChannelMessages(currentChannelKey);
+      playHarmonicChime([659.25, 783.99]);
+    }, 2500);
+  });
+
+  chatInput?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendBtn.click();
+  });
+
+  addFriendBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playBellSound(600, 'sine', 0.5, 0.08);
+    addFriendModal?.classList.remove('hidden');
+  });
+
+  confirmAddFriendBtn?.addEventListener('click', () => {
+    const handle = friendHandleInput.value.trim();
+    if (!handle) return;
+
+    getAudioContext();
+    playHarmonicChime([523.25, 659.25, 783.99]);
+
+    const newFriend = {
+      name: `${handle.split('_')[0] || handle} ✨`,
+      handle: handle,
+      avatar: '✨',
+      status: 'Online • Added Friend',
+      color: '#d946ef'
+    };
+
+    friends.unshift(newFriend);
+    renderFriendsSidebar();
+    friendHandleInput.value = '';
+    addFriendModal?.classList.add('hidden');
+  });
+
+  voiceToggleBtn?.addEventListener('click', () => {
+    getAudioContext();
+    isVoiceConnected = !isVoiceConnected;
+    if (isVoiceConnected) {
+      playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
+      voiceToggleBtn.textContent = '🔊 Connected';
+      document.getElementById('voice-lounge-text').textContent = 'Connected to Voice Lounge • You are unmuted & safe';
+    } else {
+      playBellSound(350, 'sine', 0.5, 0.06);
+      voiceToggleBtn.textContent = '🔇 Leave Voice';
+      document.getElementById('voice-lounge-text').textContent = 'Connected to Voice Lounge • 4 People Talking';
+    }
+  });
+
+  window.handlePeerReaction = function(btn, type) {
+    getAudioContext();
+    playBellSound(700, 'sine', 0.3, 0.06);
+    btn.style.transform = 'scale(1.25)';
+    setTimeout(() => btn.style.transform = 'scale(1)', 200);
+  };
+}
+
+/* ==========================================================================
+   7. INSIDE OUT MEMORY ORBS & STORYBOOK READER
    ========================================================================== */
 const EMOTION_META = {
   joy: { name: 'Joy', color: '#ffd700', icon: '💛' },
@@ -836,7 +1068,7 @@ function initMemoryOrbsAndStorybook() {
 }
 
 /* ==========================================================================
-   7. SKY LANTERNS OF RELEASE
+   8. SKY LANTERNS OF RELEASE
    ========================================================================== */
 function initSkyLanterns() {
   const skyCanvas = document.getElementById('sky-canvas');
@@ -1073,7 +1305,7 @@ function getColorName(color) {
 }
 
 /* ==========================================================================
-   8. BREATHING OASIS
+   9. BREATHING OASIS
    ========================================================================== */
 function initBreathingOasis() {
   const startBtn = document.getElementById('start-breath-btn');
@@ -1184,7 +1416,7 @@ function initBreathingOasis() {
 }
 
 /* ==========================================================================
-   9. PROCEDURAL SOUNDSCAPES
+   10. PROCEDURAL SOUNDSCAPES
    ========================================================================== */
 function initAudioEngine() {
   window.addEventListener('click', () => {
@@ -1418,7 +1650,7 @@ function initSoundscapes() {
 }
 
 /* ==========================================================================
-   10. MEMORY JAR & COMFORT NOTES
+   11. MEMORY JAR & COMFORT NOTES
    ========================================================================== */
 const DEFAULT_NOTES = [
   "You carry immense strength within you, even on days when you feel soft or quiet.",
@@ -1488,7 +1720,7 @@ function initMemoryJar() {
 }
 
 /* ==========================================================================
-   11. HEART CHECK-IN & SAFE JOURNAL
+   12. HEART CHECK-IN & SAFE JOURNAL
    ========================================================================== */
 const VALIDATIONS = {
   'missing': "It is completely natural to miss family or feel that empty space. Your longing comes from a place of deep love. Allow yourself to feel it without judgment.",
