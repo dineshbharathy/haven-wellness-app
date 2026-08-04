@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — CLINICAL SUITE 5.0 (JS ENGINE)
+   HAVEN WELLNESS SANCTUARY — 100% PURE THREE.JS 3D WEBGL ENGINE (NO RASTER IMAGES)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initSanctuaryCircleCommunity();
   initAppleCallEngine();
 
-  // Three.js 3D Engines
+  // 100% Pure Three.js 3D Procedural Engines Across All 9 Tabs
+  initThreeJSHub();
   initThreeJSAIVoice();
   initThreeJSCommunityNodes();
   initThreeJSOrbStudio();
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initThreeJSMemoryJar();
   initThreeJSHeartPrism();
 
-  // Calm & Micro-Subtle 3D Card Physics
+  // Calm Micro-Subtle 3D Physics
   initSubtle3DCardPhysics();
 
   initSoundscapes();
@@ -36,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================================================== */
 function initSubtle3DCardPhysics() {
   const subtleCards = document.querySelectorAll('.subtle-3d-card');
-  const reactiveElements = document.querySelectorAll('.reactive-3d-element');
 
   subtleCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -47,9 +47,9 @@ function initSubtle3DCardPhysics() {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      // Micro-subtle, non-distracting 3D tilt (max 2.2 degrees)
-      const rotateX = ((y - centerY) / centerY) * -2.2;
-      const rotateY = ((x - centerX) / centerX) * 2.2;
+      // Micro-subtle, elegant tilt (max 2.0 degrees)
+      const rotateX = ((y - centerY) / centerY) * -2.0;
+      const rotateY = ((x - centerX) / centerX) * 2.0;
 
       card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
     });
@@ -62,23 +62,10 @@ function initSubtle3DCardPhysics() {
       spawnSoftStarlightBurst(e.clientX, e.clientY);
     });
   });
-
-  reactiveElements.forEach(el => {
-    el.addEventListener('mousemove', (e) => {
-      const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) * 0.04;
-      const y = (e.clientY - rect.top - rect.height / 2) * 0.04;
-      el.style.transform = `translate(${x}px, ${y}px) scale(1.03)`;
-    });
-
-    el.addEventListener('mouseleave', () => {
-      el.style.transform = 'translate(0px, 0px) scale(1)';
-    });
-  });
 }
 
 function spawnSoftStarlightBurst(x, y) {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 8; i++) {
     const particle = document.createElement('div');
     particle.textContent = ['✨', '🌸', '🤍'][Math.floor(Math.random() * 3)];
     particle.style.position = 'fixed';
@@ -92,9 +79,9 @@ function spawnSoftStarlightBurst(x, y) {
     document.body.appendChild(particle);
 
     const angle = Math.random() * Math.PI * 2;
-    const dist = Math.random() * 80 + 30;
+    const dist = Math.random() * 70 + 20;
     const tx = Math.cos(angle) * dist;
-    const ty = Math.sin(angle) * dist - 30;
+    const ty = Math.sin(angle) * dist - 25;
 
     requestAnimationFrame(() => {
       particle.style.transform = `translate(${tx}px, ${ty}px) scale(1.2)`;
@@ -391,6 +378,80 @@ function initAmbientCanvas() {
   render();
 }
 
+/* ==========================================================================
+   TAB 1: PURE THREE.JS 3D SANCTUARY HUB (#hub-3d-canvas)
+   ========================================================================== */
+function initThreeJSHub() {
+  const canvas = document.getElementById('hub-3d-canvas');
+  if (!canvas || !window.THREE) return;
+
+  const card = canvas.parentElement;
+  const width = card.clientWidth || 800;
+  const height = card.clientHeight || 280;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+  camera.position.z = 5;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+  scene.add(ambientLight);
+
+  const light1 = new THREE.PointLight(0xffcf56, 2, 10);
+  light1.position.set(3, 3, 3);
+  scene.add(light1);
+
+  const light2 = new THREE.PointLight(0xd946ef, 1.8, 10);
+  light2.position.set(-3, -3, 2);
+  scene.add(light2);
+
+  // Pure Procedural 3D Glass Torus Knot
+  const geom = new THREE.TorusKnotGeometry(1.2, 0.35, 128, 32);
+  const mat = new THREE.MeshStandardMaterial({
+    color: 0xff8052,
+    roughness: 0.2,
+    metalness: 0.1,
+    transparent: true,
+    opacity: 0.65
+  });
+  const mesh = new THREE.Mesh(geom, mat);
+  scene.add(mesh);
+
+  // Floating Starlight Particles
+  const pGeo = new THREE.BufferGeometry();
+  const pCount = 100;
+  const pPos = new Float32Array(pCount * 3);
+  for (let i = 0; i < pCount * 3; i += 3) {
+    pPos[i] = (Math.random() - 0.5) * 8;
+    pPos[i + 1] = (Math.random() - 0.5) * 6;
+    pPos[i + 2] = (Math.random() - 0.5) * 4;
+  }
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+  const pMat = new THREE.PointsMaterial({ color: 0xffcf56, size: 0.06, transparent: true, opacity: 0.7 });
+  const particles = new THREE.Points(pGeo, pMat);
+  scene.add(particles);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    mesh.rotation.x += 0.005;
+    mesh.rotation.y += 0.007;
+    particles.rotation.y -= 0.002;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    if (card.clientWidth > 0) {
+      camera.aspect = card.clientWidth / card.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(card.clientWidth, card.clientHeight);
+    }
+  });
+}
+
 function initSanctuaryHub() {
   const timeGreetingEl = document.getElementById('time-greeting');
   const hour = new Date().getHours();
@@ -447,7 +508,7 @@ function initSanctuaryHub() {
 }
 
 /* ==========================================================================
-   TAB 2: THREE.JS 3D AI VOICE SPHERE ENGINE (#ai-3d-canvas)
+   TAB 2: PURE THREE.JS 3D AI VOICE SPHERE ENGINE (#ai-3d-canvas)
    ========================================================================== */
 let ai3DState = { isListening: false, distortion: 0.12, speed: 0.004 };
 
@@ -456,8 +517,8 @@ function initThreeJSAIVoice() {
   const container = canvas?.parentElement;
   if (!canvas || !container || !window.THREE) return;
 
-  const width = container.clientWidth || 200;
-  const height = container.clientHeight || 200;
+  const width = container.clientWidth || 320;
+  const height = container.clientHeight || 220;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
@@ -473,15 +534,19 @@ function initThreeJSAIVoice() {
   pointLight1.position.set(2, 2, 3);
   scene.add(pointLight1);
 
-  const geometry = new THREE.IcosahedronGeometry(1.3, 48);
+  const pointLight2 = new THREE.PointLight(0xffcf56, 2, 10);
+  pointLight2.position.set(-2, -2, 2);
+  scene.add(pointLight2);
+
+  const geometry = new THREE.IcosahedronGeometry(1.35, 48);
   const originalPositions = geometry.attributes.position.clone();
 
   const material = new THREE.MeshStandardMaterial({
     color: 0xd946ef,
-    roughness: 0.2,
+    roughness: 0.15,
     metalness: 0.1,
     transparent: true,
-    opacity: 0.55
+    opacity: 0.85
   });
 
   const voiceMesh = new THREE.Mesh(geometry, material);
@@ -564,7 +629,7 @@ function initAutonomousAITherapistAura() {
 }
 
 /* ==========================================================================
-   TAB 3: THREE.JS 3D COMMUNITY CONSTELLATION NODES (#community-3d-canvas)
+   TAB 3: PURE THREE.JS 3D COMMUNITY CONSTELLATION NODES (#community-3d-canvas)
    ========================================================================== */
 function initThreeJSCommunityNodes() {
   const canvas = document.getElementById('community-3d-canvas');
@@ -617,7 +682,7 @@ function initSanctuaryCircleCommunity() {
 function initAppleCallEngine() {}
 
 /* ==========================================================================
-   TAB 4: THREE.JS 3D REACTIVE MEMORY ORBS (#orb-3d-canvas)
+   TAB 4: PURE THREE.JS 3D REACTIVE MEMORY ORBS (#orb-3d-canvas)
    ========================================================================== */
 function initThreeJSOrbStudio() {
   const canvas = document.getElementById('orb-3d-canvas');
@@ -687,7 +752,7 @@ function initThreeJSOrbStudio() {
 }
 
 /* ==========================================================================
-   TAB 5: THREE.JS 3D FLOATING SKY LANTERNS (#sky-3d-canvas)
+   TAB 5: PURE THREE.JS 3D FLOATING SKY LANTERNS (#sky-3d-canvas)
    ========================================================================== */
 function initThreeJSSkyLanterns() {
   const canvas = document.getElementById('sky-3d-canvas');
@@ -738,7 +803,7 @@ function initThreeJSSkyLanterns() {
 function initSkyLanterns() {}
 
 /* ==========================================================================
-   TAB 6: THREE.JS 3D BREATHING OASIS SPHERE (#breathing-3d-canvas)
+   TAB 6: PURE THREE.JS 3D BREATHING OASIS SPHERE (#breathing-3d-canvas)
    ========================================================================== */
 let breath3DScale = { val: 1.0 };
 
@@ -811,7 +876,7 @@ function initBreathingOasis() {
 }
 
 /* ==========================================================================
-   TAB 7: THREE.JS 3D AUDIO SPECTRUM VISUALIZER (#audio-3d-canvas)
+   TAB 7: PURE THREE.JS 3D AUDIO SPECTRUM VISUALIZER (#audio-3d-canvas)
    ========================================================================== */
 function initThreeJSAudioSpectrum() {
   const canvas = document.getElementById('audio-3d-canvas');
@@ -856,14 +921,14 @@ function initThreeJSAudioSpectrum() {
 function initSoundscapes() {}
 
 /* ==========================================================================
-   TAB 8: THREE.JS 3D MEMORY JAR CONTAINER (#jar-3d-canvas)
+   TAB 8: PURE THREE.JS 3D PROCEDURAL GLASS MEMORY JAR (#jar-3d-canvas)
    ========================================================================== */
 function initThreeJSMemoryJar() {
   const canvas = document.getElementById('jar-3d-canvas');
   if (!canvas || !window.THREE) return;
   const parent = canvas.parentElement;
 
-  const width = parent.clientWidth || 260;
+  const width = parent.clientWidth || 360;
   const height = parent.clientHeight || 260;
 
   const scene = new THREE.Scene();
@@ -877,6 +942,13 @@ function initThreeJSMemoryJar() {
   light.position.set(2, 2, 3);
   scene.add(light);
 
+  // Pure Procedural 3D Glass Cylinder Jar
+  const jarGeom = new THREE.CylinderGeometry(1.1, 1.0, 2.0, 32);
+  const jarMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1, transparent: true, opacity: 0.45 });
+  const jarMesh = new THREE.Mesh(jarGeom, jarMat);
+  scene.add(jarMesh);
+
+  // Floating Notes inside Jar
   const noteGroup = new THREE.Group();
   scene.add(noteGroup);
   for (let i = 0; i < 14; i++) {
@@ -889,6 +961,7 @@ function initThreeJSMemoryJar() {
 
   function animate() {
     requestAnimationFrame(animate);
+    jarMesh.rotation.y += 0.005;
     noteGroup.rotation.y += 0.008;
     renderer.render(scene, camera);
   }
@@ -898,7 +971,7 @@ function initThreeJSMemoryJar() {
 function initMemoryJar() {}
 
 /* ==========================================================================
-   TAB 9: THREE.JS 3D EMOTIONAL HEART PRISM (#journal-3d-canvas)
+   TAB 9: PURE THREE.JS 3D EMOTIONAL HEART PRISM (#journal-3d-canvas)
    ========================================================================== */
 function initThreeJSHeartPrism() {
   const canvas = document.getElementById('journal-3d-canvas');

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — CLINICAL LUXURY TYPOGRAPHY & SUBTLE 3D GLASS UI
+   HAVEN WELLNESS SANCTUARY — PURE THREE.JS 3D WEBGL & LUXURY GLASS UI
    ========================================================================== */
 
 :root {
@@ -184,42 +184,10 @@ body.warm-tab-shift {
 
 .relative-z { position: relative; z-index: 5; }
 
-/* HIGH QUALITY 3D ASSETS & SUBTLE FLOATING CONTAINERS */
-.hero-3d-asset-wrapper {
-  position: absolute; right: -10px; top: -10px; width: 320px; height: 320px;
-  pointer-events: none; opacity: 0.85; z-index: 1; filter: drop-shadow(0 15px 30px rgba(217, 70, 239, 0.25));
-}
-.high-quality-3d-img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
-
-.high-quality-3d-orb-wrapper {
-  width: 200px; height: 200px; margin: 0 auto; position: relative;
-  display: flex; align-items: center; justify-content: center;
-  filter: drop-shadow(0 15px 35px rgba(217, 70, 239, 0.35));
-}
-.high-quality-3d-orb-img {
-  width: 100%; height: 100%; object-fit: contain; border-radius: 50%;
-  animation: orbFloatSubtle 5s ease-in-out infinite alternate;
-}
-@keyframes orbFloatSubtle {
-  0% { transform: translateY(0px); }
-  100% { transform: translateY(-6px); }
-}
-
-.orb-overlay-canvas {
+/* Three.js Background Canvases inside cards */
+.card-3d-canvas {
   position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important;
-  pointer-events: none; border-radius: 50%;
-}
-
-.high-quality-3d-jar-wrapper {
-  width: 260px; height: 260px; margin: 0 auto; position: relative;
-  display: flex; align-items: center; justify-content: center;
-  filter: drop-shadow(0 15px 35px rgba(255, 128, 82, 0.3));
-}
-.high-quality-3d-jar-img { width: 100%; height: 100%; object-fit: contain; border-radius: 24px; }
-
-.jar-overlay-canvas {
-  position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important;
-  pointer-events: none; border-radius: 24px;
+  pointer-events: none; opacity: 0.85; z-index: 1; border-radius: var(--ios-card-radius);
 }
 
 .grid-span-2 { grid-column: span 2; }
@@ -250,7 +218,6 @@ body.warm-tab-shift {
   .adaptive-grid-4col { grid-template-columns: repeat(2, 1fr); }
   .grid-span-2 { grid-column: span 1; }
   .desktop-nav-tabs .nav-tab-btn span { font-size: 0.8rem; }
-  .hero-3d-asset-wrapper { display: none; }
 }
 
 @media (max-width: 768px) {
@@ -262,14 +229,24 @@ body.warm-tab-shift {
 }
 
 /* ==========================================================================
-   THREE.JS 3D CANVASES & VIEWPORTS ACROSS ALL TABS
+   PURE THREE.JS 3D WEBGL VIEWPORTS ACROSS ALL TABS
    ========================================================================== */
+
+/* TAB 2: Three.js 3D Voice Sphere Viewport */
+.threejs-ai-container {
+  width: 100%; max-width: 320px; height: 220px; margin: 0 auto; position: relative;
+  border-radius: 24px; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,0.4), rgba(42,8,59,0.1));
+}
+#ai-3d-canvas { width: 100% !important; height: 100% !important; display: block; }
+
+/* TAB 3: Three.js 3D Community Constellation Mini Box */
 .community-3d-mini-box {
   width: 100%; height: 160px; position: relative; overflow: hidden;
   border-top: 1px solid var(--glass-border-subtle); background: rgba(0,0,0,0.05);
 }
 #community-3d-canvas { width: 100% !important; height: 100% !important; display: block; }
 
+/* TAB 4: Three.js 3D Memory Orb Studio Viewport */
 .orb-preview-header-3d {
   display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%;
 }
@@ -289,12 +266,14 @@ body.warm-tab-shift {
   color: var(--ios-text); border: 1px solid var(--glass-border); pointer-events: none; text-align: center;
 }
 
+/* TAB 5: Three.js 3D Sky Lantern Viewport */
 .sky-viewport {
   position: relative; width: 100%; height: 380px; border-radius: 20px; overflow: hidden;
   background: radial-gradient(ellipse at bottom, #1f0738 0%, #080918 100%); border: 1px solid var(--glass-border);
 }
 #sky-3d-canvas { width: 100% !important; height: 100% !important; display: block; cursor: grab; }
 
+/* TAB 6: Three.js 3D Breathing Oasis Viewport */
 .breathing-3d-viewport {
   position: relative; width: 100%; max-width: 380px; height: 260px; margin: 0 auto;
   border-radius: 24px; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,0.5), rgba(52,211,153,0.1));
@@ -308,12 +287,21 @@ body.warm-tab-shift {
 #breath-phase { font-family: var(--font-serif); font-size: 1.35rem; font-weight: 600; color: var(--ios-text); }
 #breath-timer { font-size: 2.2rem; font-weight: 800; color: #d946ef; }
 
+/* TAB 7: Three.js 3D Audio Spectrum Visualizer */
 .audio-3d-viewport {
   width: 100%; height: 180px; position: relative; border-radius: 18px; overflow: hidden;
   background: rgba(15, 8, 25, 0.6); border: 1px solid var(--glass-border-subtle);
 }
 #audio-3d-canvas { width: 100% !important; height: 100% !important; display: block; }
 
+/* TAB 8: Three.js 3D Memory Jar Viewport */
+.jar-3d-viewport {
+  width: 100%; max-width: 360px; height: 260px; margin: 0 auto; position: relative;
+  border-radius: 24px; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,0.6), rgba(255,128,82,0.15));
+}
+#jar-3d-canvas { width: 100% !important; height: 100% !important; display: block; cursor: grab; }
+
+/* TAB 9: Three.js 3D Emotional Heart Prism Viewport */
 .journal-3d-viewport {
   width: 100%; max-width: 320px; height: 220px; margin: 0 auto; position: relative;
   border-radius: 24px; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,0.5), rgba(217,70,239,0.15));

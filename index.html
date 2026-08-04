@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Haven — Professional Clinical Wellness & Therapeutic Sanctuary</title>
-  <meta name="description" content="A clinical-grade, professional mental health sanctuary featuring an autonomous Rogerian AI Therapist Agent, HIPAA-compliant design principles, Sanctuary Circle peer support, & evidence-based wellness modalities.">
+  <title>Haven — Pure WebGL 3D Clinical Sanctuary</title>
+  <meta name="description" content="A clinical-grade, professional mental health sanctuary featuring 100% pure procedural Three.js 3D WebGL visuals, Rogerian AI therapy, & Sanctuary Circle peer network.">
   
   <!-- Premium Clinical & Luxury Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,14 +81,12 @@
         <p class="desktop-page-subtitle" id="page-subtitle">Evidence-based emotional regulation, autonomous Rogerian therapy, and peer support network.</p>
       </div>
 
-      <!-- ================= TAB 1: HUB / HOME (CLINICAL SANCTUARY HERO) ================= -->
+      <!-- ================= TAB 1: HUB / HOME (PURE THREE.JS 3D HERO CANVAS) ================= -->
       <section id="tab-hub" class="tab-pane active">
         
-        <!-- Hero Welcome Card -->
+        <!-- Hero Welcome Card with Pure Procedural Three.js 3D WebGL Canvas -->
         <div class="pro-card welcome-card hub-3d-card subtle-3d-card">
-          <div class="hero-3d-asset-wrapper">
-            <img src="./assets/3d_sanctuary_hero.png" alt="3D Glass Sanctuary Hero" class="high-quality-3d-img reactive-3d-element">
-          </div>
+          <canvas id="hub-3d-canvas" class="card-3d-canvas"></canvas>
 
           <div class="welcome-header relative-z">
             <div class="clinical-meta-row">
@@ -96,7 +94,7 @@
               <span class="clinical-cert-tag">✓ Peer-Reviewed Modalities</span>
             </div>
             <h2>Welcome to your clinical wellness sanctuary.</h2>
-            <p>Designed under Rogerian person-centered principles, cognitive-behavioral grounding, and state-of-the-art WebGL interactive architecture.</p>
+            <p>Designed under Rogerian person-centered principles, cognitive-behavioral grounding, and state-of-the-art WebGL 3D procedural graphics.</p>
           </div>
           
           <div class="ios-inset-group daily-quote-box relative-z">
@@ -184,14 +182,13 @@
         </div>
       </section>
 
-      <!-- ================= TAB 2: AI THERAPIST (CLINICAL AI AGENT) ================= -->
+      <!-- ================= TAB 2: AI THERAPIST (PURE THREE.JS 3D SPHERE) ================= -->
       <section id="tab-ai-listener" class="tab-pane">
         <div class="pro-card ai-main-card subtle-3d-card">
           
           <div class="ai-listener-hero">
-            <div class="high-quality-3d-orb-wrapper">
-              <img src="./assets/3d_ai_therapist_orb.png" alt="High Quality 3D AI Voice Orb" class="high-quality-3d-orb-img reactive-3d-element">
-              <canvas id="ai-3d-canvas" class="orb-overlay-canvas"></canvas>
+            <div class="threejs-ai-container" id="threejs-ai-container">
+              <canvas id="ai-3d-canvas"></canvas>
             </div>
             <h3 id="ai-status-text">Dr. Aura is listening in active reflection mode...</h3>
             <p class="ai-subtitle">Autonomous Clinical AI Therapist Agent. Rogerian person-centered reflection & speech synthesis.</p>
@@ -335,7 +332,7 @@
             <div class="orb-preview-header-3d">
               <div class="threejs-orb-container" id="threejs-orb-container">
                 <canvas id="orb-3d-canvas"></canvas>
-                <div class="orb-3d-hint">✨ Interactive 3D Affective Sphere Rendering</div>
+                <div class="orb-3d-hint">✨ Pure WebGL 3D Procedural Affective Sphere</div>
               </div>
               <span class="orb-blend-title" id="orb-blend-label">Three.js Reactive 3D Liquid Orb</span>
             </div>
@@ -617,13 +614,12 @@
         </div>
       </section>
 
-      <!-- ================= TAB 8: MEMORY JAR ================= -->
+      <!-- ================= TAB 8: MEMORY JAR (PURE THREE.JS 3D GLASS JAR) ================= -->
       <section id="tab-memory-jar" class="tab-pane">
         <div class="pro-card memory-jar-card subtle-3d-card">
           
-          <div class="high-quality-3d-jar-wrapper">
-            <img src="./assets/3d_memory_jar.png" alt="High Quality 3D Memory Jar" class="high-quality-3d-jar-img reactive-3d-element">
-            <canvas id="jar-3d-canvas" class="jar-overlay-canvas"></canvas>
+          <div class="jar-3d-viewport">
+            <canvas id="jar-3d-canvas"></canvas>
           </div>
 
           <div class="jar-actions">
