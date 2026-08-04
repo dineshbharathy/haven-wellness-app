@@ -3,16 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Haven — Pure WebGL 3D Clinical Sanctuary</title>
-  <meta name="description" content="A clinical-grade, professional mental health sanctuary featuring 100% pure procedural Three.js 3D WebGL visuals, Rogerian AI therapy, & Sanctuary Circle peer network.">
+  <title>Haven — Clinical Wellness Sanctuary</title>
+  <meta name="description" content="A clinical-grade, professional mental health sanctuary featuring animated 2D visuals, Rogerian AI therapy, & Sanctuary Circle peer network.">
   
   <!-- Premium Clinical & Luxury Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Three.js 3D Engine -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <link rel="stylesheet" href="./styles.css">
 </head>
@@ -81,12 +78,18 @@
         <p class="desktop-page-subtitle" id="page-subtitle">Evidence-based emotional regulation, autonomous Rogerian therapy, and peer support network.</p>
       </div>
 
-      <!-- ================= TAB 1: HUB / HOME (PURE THREE.JS 3D HERO CANVAS) ================= -->
+      <!-- ================= TAB 1: HUB / HOME ================= -->
       <section id="tab-hub" class="tab-pane active">
         
-        <!-- Hero Welcome Card with Pure Procedural Three.js 3D WebGL Canvas -->
-        <div class="pro-card welcome-card hub-3d-card subtle-3d-card">
-          <canvas id="hub-3d-canvas" class="card-3d-canvas"></canvas>
+        <!-- Hero Welcome Card with Animated 2D Background -->
+        <div class="pro-card welcome-card subtle-3d-card">
+          <div class="hero-anim-bg">
+            <div class="floating-orb orb-1"></div>
+            <div class="floating-orb orb-2"></div>
+            <div class="floating-orb orb-3"></div>
+            <div class="floating-orb orb-4"></div>
+            <div class="floating-orb orb-5"></div>
+          </div>
 
           <div class="welcome-header relative-z">
             <div class="clinical-meta-row">
@@ -94,7 +97,7 @@
               <span class="clinical-cert-tag">✓ Peer-Reviewed Modalities</span>
             </div>
             <h2>Welcome to your clinical wellness sanctuary.</h2>
-            <p>Designed under Rogerian person-centered principles, cognitive-behavioral grounding, and state-of-the-art WebGL 3D procedural graphics.</p>
+            <p>Designed under Rogerian person-centered principles, cognitive-behavioral grounding, and beautiful animated visuals.</p>
           </div>
           
           <div class="ios-inset-group daily-quote-box relative-z">
@@ -182,13 +185,18 @@
         </div>
       </section>
 
-      <!-- ================= TAB 2: AI THERAPIST (PURE THREE.JS 3D SPHERE) ================= -->
+      <!-- ================= TAB 2: AI THERAPIST ================= -->
       <section id="tab-ai-listener" class="tab-pane">
         <div class="pro-card ai-main-card subtle-3d-card">
           
           <div class="ai-listener-hero">
-            <div class="threejs-ai-container" id="threejs-ai-container">
-              <canvas id="ai-3d-canvas"></canvas>
+            <div class="aura-orb-container" id="aura-orb-container">
+              <div class="aura-orb" id="aura-orb">
+                <div class="aura-ring ring-a"></div>
+                <div class="aura-ring ring-b"></div>
+                <div class="aura-ring ring-c"></div>
+                <div class="aura-core"></div>
+              </div>
             </div>
             <h3 id="ai-status-text">Dr. Aura is listening in active reflection mode...</h3>
             <p class="ai-subtitle">Autonomous Clinical AI Therapist Agent. Rogerian person-centered reflection & speech synthesis.</p>
@@ -310,15 +318,19 @@
               <!-- Dynamically Populated -->
             </div>
 
-            <div class="community-3d-mini-box">
-              <canvas id="community-3d-canvas"></canvas>
+            <div class="community-anim-box">
+              <div class="constellation-dots">
+                <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+                <span class="dot d4"></span><span class="dot d5"></span><span class="dot d6"></span>
+                <span class="dot d7"></span><span class="dot d8"></span><span class="dot d9"></span>
+              </div>
             </div>
           </div>
 
         </div>
       </section>
 
-      <!-- ================= TAB 4: THREE.JS 3D REACTIVE MEMORY ORBS ================= -->
+      <!-- ================= TAB 4: MEMORY ORBS ================= -->
       <section id="tab-memory-orbs" class="tab-pane">
         
         <div class="ios-segmented-control">
@@ -329,16 +341,18 @@
         <div id="orb-view-create" class="orb-subview active">
           <div class="pro-card orb-studio-card subtle-3d-card">
             
-            <div class="orb-preview-header-3d">
-              <div class="threejs-orb-container" id="threejs-orb-container">
-                <canvas id="orb-3d-canvas"></canvas>
-                <div class="orb-3d-hint">✨ Pure WebGL 3D Procedural Affective Sphere</div>
+            <div class="orb-preview-header">
+              <div class="orb-preview-viewport" id="orb-preview-viewport">
+                <div class="css-orb" id="css-orb">
+                  <div class="orb-highlight-reflection"></div>
+                </div>
+                <div class="orb-3d-hint">✨ Animated Affective Emotion Sphere</div>
               </div>
-              <span class="orb-blend-title" id="orb-blend-label">Three.js Reactive 3D Liquid Orb</span>
+              <span class="orb-blend-title" id="orb-blend-label">Animated Liquid Orb</span>
             </div>
 
             <div class="ios-inset-group custom-color-studio-box">
-              <span class="ios-group-label">🎨 THREE.JS 3D COLORING STUDIO & LIGHTING</span>
+              <span class="ios-group-label">🎨 COLORING STUDIO & LIGHTING</span>
               
               <div class="color-picker-row">
                 <div class="color-picker-item">
@@ -442,7 +456,7 @@
             </div>
 
             <button id="save-memory-orb-btn" class="ios-btn primary-btn pulse-glow">
-              🔮 Archive 3D Emotion Orb
+              🔮 Archive Emotion Orb
             </button>
 
           </div>
@@ -505,9 +519,9 @@
           </div>
 
           <div class="sky-viewport" id="sky-viewport">
-            <canvas id="sky-3d-canvas"></canvas>
+            <canvas id="sky-2d-canvas"></canvas>
             <div class="sky-instructions">
-              <p>✨ Three.js 3D Sky Vault active • Interactive 3D camera & intention release</p>
+              <p>✨ Sky Vault active • Release your intentions into the stars</p>
             </div>
           </div>
 
@@ -527,8 +541,10 @@
             <button class="mode-btn" data-mode="calm">4-6 Vagal Resonator</button>
           </div>
 
-          <div class="breathing-3d-viewport">
-            <canvas id="breathing-3d-canvas"></canvas>
+          <div class="breathing-viewport">
+            <div class="breath-circle" id="breath-circle">
+              <div class="breath-circle-inner"></div>
+            </div>
             <div class="breath-text-overlay">
               <span id="breath-phase">Ready</span>
               <span id="breath-timer">--</span>
@@ -536,7 +552,7 @@
           </div>
 
           <div class="breathing-guidance">
-            <p id="breath-instruction">Tap start when you are ready to begin autonomic breathing regulation with the 3D visualizer.</p>
+            <p id="breath-instruction">Tap start when you are ready to begin autonomic breathing regulation.</p>
             <button id="start-breath-btn" class="ios-btn primary-btn pulse-glow">▶ Begin Autonomic Regulation</button>
           </div>
         </div>
@@ -550,8 +566,13 @@
             <p>Real-time procedural ambient sound generator & 3D spectrum</p>
           </div>
           
-          <div class="audio-3d-viewport">
-            <canvas id="audio-3d-canvas"></canvas>
+          <div class="audio-viewport">
+            <div class="spectrum-bars" id="spectrum-bars">
+              <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+              <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+              <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+              <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
           </div>
 
           <button id="master-toggle-btn" class="ios-btn primary-btn margin-top">▶ Enable Audio Generator</button>
@@ -614,12 +635,23 @@
         </div>
       </section>
 
-      <!-- ================= TAB 8: MEMORY JAR (PURE THREE.JS 3D GLASS JAR) ================= -->
+      <!-- ================= TAB 8: MEMORY JAR ================= -->
       <section id="tab-memory-jar" class="tab-pane">
         <div class="pro-card memory-jar-card subtle-3d-card">
           
-          <div class="jar-3d-viewport">
-            <canvas id="jar-3d-canvas"></canvas>
+          <div class="jar-2d-viewport">
+            <div class="glass-jar-container">
+              <div class="jar-lid"></div>
+              <div class="jar-body">
+                <div class="jar-particles" id="jar-particles">
+                  <span class="jar-note-particle p1">✨</span>
+                  <span class="jar-note-particle p2">🌸</span>
+                  <span class="jar-note-particle p3">💛</span>
+                  <span class="jar-note-particle p4">⭐</span>
+                  <span class="jar-note-particle p5">📜</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="jar-actions">
@@ -638,8 +670,12 @@
         <div class="pro-card subtle-3d-card">
           <h3>Affective Heart State Check-In</h3>
           
-          <div class="journal-3d-viewport">
-            <canvas id="journal-3d-canvas"></canvas>
+          <div class="journal-2d-viewport">
+            <div class="heart-prism-2d" id="heart-prism-2d">
+              <div class="heart-pulse-ring ring-1"></div>
+              <div class="heart-pulse-ring ring-2"></div>
+              <div class="heart-icon-center">💖</div>
+            </div>
           </div>
 
           <div class="ios-emotion-picker margin-top">
