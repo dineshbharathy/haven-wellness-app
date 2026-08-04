@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabNavigation();
   initAmbientCanvas();
   initSanctuaryHub();
+  initMemoryOrbsAndStorybook();
   initSkyLanterns();
   initBreathingOasis();
   initSoundscapes();
@@ -243,6 +244,12 @@ function initSanctuaryHub() {
     createHeartBurst(e.clientX, e.clientY);
   });
 
+  // Storybook Shortcut
+  const openStorybookBtn = document.getElementById('open-storybook-tab-btn');
+  openStorybookBtn?.addEventListener('click', () => {
+    document.querySelector('.nav-btn[data-tab="memory-orbs"]')?.click();
+  });
+
   const brewTeaBtn = document.getElementById('brew-tea-btn');
   let teaInterval = null;
 
@@ -318,7 +325,253 @@ function createHeartBurst(x, y) {
 }
 
 /* ==========================================================================
-   5. SKY LANTERNS OF RELEASE & DATE-BASED VAULT
+   5. INSIDE OUT MEMORY ORBS & STORYBOOK READER
+   ========================================================================== */
+const EMOTION_META = {
+  joy: { name: 'Joy', color: '#ffd700', icon: '💛' },
+  sadness: { name: 'Sadness / Longing', color: '#4169e1', icon: '💙' },
+  nostalgia: { name: 'Nostalgia', color: '#ff69b4', icon: '🩷' },
+  fear: { name: 'Fear / Uncertainty', color: '#9370db', icon: '💜' },
+  anger: { name: 'Anger', color: '#ff4500', icon: '❤️' },
+  anxiety: { name: 'Anxiety', color: '#00ced1', icon: '🩵' },
+  disgust: { name: 'Disgust', color: '#3cb371', icon: '💚' },
+  vulnerability: { name: 'Vulnerability', color: '#ff7f50', icon: '🧡' },
+  solitude: { name: 'Quiet Solitude', color: '#708090', icon: '🩶' }
+};
+
+function initMemoryOrbsAndStorybook() {
+  const emoRanges = document.querySelectorAll('.emo-range');
+  const previewOrb = document.getElementById('preview-memory-orb');
+  const particlesContainer = document.getElementById('orb-inner-particles');
+  const blendLabel = document.getElementById('orb-blend-label');
+
+  const titleInput = document.getElementById('orb-title-input');
+  const noteInput = document.getElementById('orb-note-input');
+  const photoInput = document.getElementById('orb-photo-input');
+  const photoPreviewBox = document.getElementById('photo-preview-container');
+  const photoPreviewImg = document.getElementById('photo-preview-img');
+  const removePhotoBtn = document.getElementById('remove-photo-btn');
+  const saveBtn = document.getElementById('save-memory-orb-btn');
+
+  let currentPhotoDataUrl = '';
+
+  // Photo Upload FileReader
+  photoInput?.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      currentPhotoDataUrl = event.target.result;
+      photoPreviewImg.src = currentPhotoDataUrl;
+      photoPreviewBox.classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  removePhotoBtn?.addEventListener('click', () => {
+    currentPhotoDataUrl = '';
+    photoInput.value = '';
+    photoPreviewBox.classList.add('hidden');
+  });
+
+  // Calculate Blended Orb Gradient & Particles
+  function updatePreviewOrb() {
+    const activeEmotions = [];
+    let totalVal = 0;
+
+    emoRanges.forEach(range => {
+      const emoKey = range.getAttribute('data-emo');
+      const val = parseInt(range.value);
+      if (val > 0) {
+        activeEmotions.push({ key: emoKey, val, meta: EMOTION_META[emoKey] });
+        totalVal += val;
+      }
+    });
+
+    if (activeEmotions.length === 0) {
+      previewOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #f9a826 40%, #161733 100%)';
+      blendLabel.textContent = 'Neutral Quiet Orb';
+      particlesContainer.innerHTML = '';
+      return;
+    }
+
+    // Sort by intensity
+    activeEmotions.sort((a, b) => b.val - a.val);
+
+    // Build gradient stops
+    const stops = activeEmotions.map((e, index) => {
+      const pct = Math.round(((index + 1) / activeEmotions.length) * 100);
+      return `${e.meta.color} ${pct}%`;
+    }).join(', ');
+
+    const gradient = `radial-gradient(circle at 35% 35%, #ffffff, ${stops})`;
+    previewOrb.style.background = gradient;
+    previewOrb.style.boxShadow = `0 0 40px ${activeEmotions[0].meta.color}`;
+
+    blendLabel.textContent = activeEmotions.map(e => `${e.meta.icon} ${e.meta.name}`).join(' • ');
+
+    // Mini floating inner spheres
+    particlesContainer.innerHTML = '';
+    activeEmotions.slice(0, 5).forEach((e, idx) => {
+      const particle = document.createElement('div');
+      particle.className = 'orb-mini-particle';
+      const size = Math.max(12, Math.min(26, e.val / 3));
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.background = e.meta.color;
+      particle.style.color = e.meta.color;
+      particle.style.left = `${20 + (idx * 16) % 60}%`;
+      particle.style.top = `${25 + (idx * 22) % 50}%`;
+      particle.style.animationDelay = `${idx * 0.4}s`;
+      particlesContainer.appendChild(particle);
+    });
+  }
+
+  emoRanges.forEach(range => {
+    range.addEventListener('input', updatePreviewOrb);
+  });
+
+  updatePreviewOrb();
+
+  // Load Storybook Memory Entries
+  let memories = JSON.parse(localStorage.getItem('haven_memories') || '[]');
+  let currentPageIndex = 0;
+
+  const prevPageBtn = document.getElementById('book-prev-btn');
+  const nextPageBtn = document.getElementById('book-next-btn');
+  const pageIndicator = document.getElementById('book-page-indicator');
+
+  const pageOrb = document.getElementById('book-page-orb');
+  const pageOrbGlow = document.getElementById('book-page-orb-glow');
+  const pageDate = document.getElementById('book-page-date');
+  const pageEmotions = document.getElementById('book-page-emotions');
+  const pagePhotoBox = document.getElementById('book-page-photo-container');
+  const pagePhotoImg = document.getElementById('book-page-photo');
+
+  const pageTitle = document.getElementById('book-page-title');
+  const pageText = document.getElementById('book-page-text');
+
+  function renderStorybookPage(index) {
+    if (memories.length === 0) {
+      pageIndicator.textContent = 'Page 0 of 0';
+      pageTitle.textContent = 'My Emotional Storybook';
+      pageText.textContent = 'No memories logged yet. Mix your emotions on the left and save your first Memory Orb to turn the pages of your storybook.';
+      pageDate.textContent = new Date().toLocaleDateString();
+      pageOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #f9a826 40%, #161733 100%)';
+      pageEmotions.innerHTML = '<span class="emo-pill-badge" style="background:#f9a826;">💛 Warmth</span>';
+      pagePhotoBox.classList.add('hidden');
+      return;
+    }
+
+    // Clamp index
+    currentPageIndex = Math.max(0, Math.min(index, memories.length - 1));
+    const item = memories[currentPageIndex];
+
+    pageIndicator.textContent = `Page ${currentPageIndex + 1} of ${memories.length}`;
+
+    // Left Page
+    pageDate.textContent = `${item.date} • ${item.time || ''}`;
+    pageOrb.style.background = item.gradient || 'radial-gradient(circle at 35% 35%, #ffffff, #ffd700 40%, #4169e1 100%)';
+    pageOrb.style.boxShadow = `0 0 25px ${item.primaryColor || '#ffd700'}`;
+
+    // Emotion Badges
+    pageEmotions.innerHTML = Object.keys(item.emotions || {})
+      .filter(k => item.emotions[k] > 0)
+      .map(k => {
+        const meta = EMOTION_META[k];
+        return `<span class="emo-pill-badge" style="background:${meta.color};">${meta.icon} ${meta.name} (${item.emotions[k]}%)</span>`;
+      }).join('');
+
+    if (item.photoUrl) {
+      pagePhotoImg.src = item.photoUrl;
+      pagePhotoBox.classList.remove('hidden');
+    } else {
+      pagePhotoBox.classList.add('hidden');
+    }
+
+    // Right Page
+    pageTitle.textContent = item.title || 'Emotional Memory';
+    pageText.textContent = item.note || 'No text written.';
+  }
+
+  renderStorybookPage(0);
+
+  // Storybook Controls
+  prevPageBtn?.addEventListener('click', () => {
+    if (currentPageIndex > 0) {
+      getAudioContext();
+      playHarmonicChime([523.25, 659.25]);
+      renderStorybookPage(currentPageIndex - 1);
+    }
+  });
+
+  nextPageBtn?.addEventListener('click', () => {
+    if (currentPageIndex < memories.length - 1) {
+      getAudioContext();
+      playHarmonicChime([659.25, 783.99]);
+      renderStorybookPage(currentPageIndex + 1);
+    }
+  });
+
+  // Save Memory Orb
+  saveBtn?.addEventListener('click', () => {
+    const title = titleInput.value.trim() || 'Today\'s Emotional Memory';
+    const note = noteInput.value.trim();
+
+    if (!note && !currentPhotoDataUrl) return;
+
+    getAudioContext();
+    playHarmonicChime([440, 554.37, 659.25, 880]);
+
+    const activeEmotionsMap = {};
+    const activeList = [];
+    emoRanges.forEach(range => {
+      const k = range.getAttribute('data-emo');
+      const val = parseInt(range.value);
+      if (val > 0) {
+        activeEmotionsMap[k] = val;
+        activeList.push({ k, val, meta: EMOTION_META[k] });
+      }
+    });
+
+    activeList.sort((a, b) => b.val - a.val);
+
+    const stops = activeList.length > 0
+      ? activeList.map((e, i) => `${e.meta.color} ${Math.round(((i + 1) / activeList.length) * 100)}%`).join(', ')
+      : '#ffd700 50%, #4169e1 100%';
+
+    const gradient = `radial-gradient(circle at 35% 35%, #ffffff, ${stops})`;
+
+    const now = new Date();
+    const newMemory = {
+      id: `memory_${Date.now()}`,
+      title,
+      note,
+      emotions: activeEmotionsMap,
+      gradient,
+      primaryColor: activeList[0]?.meta.color || '#ffd700',
+      photoUrl: currentPhotoDataUrl,
+      date: now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+    };
+
+    memories.unshift(newMemory);
+    localStorage.setItem('haven_memories', JSON.stringify(memories));
+
+    // Reset Form
+    titleInput.value = '';
+    noteInput.value = '';
+    currentPhotoDataUrl = '';
+    photoInput.value = '';
+    photoPreviewBox.classList.add('hidden');
+
+    renderStorybookPage(0);
+  });
+}
+
+/* ==========================================================================
+   6. SKY LANTERNS OF RELEASE & DATE-BASED VAULT
    ========================================================================== */
 function initSkyLanterns() {
   const skyCanvas = document.getElementById('sky-canvas');
@@ -337,8 +590,6 @@ function initSkyLanterns() {
   });
 
   let lanterns = JSON.parse(localStorage.getItem('haven_lanterns') || '[]');
-
-  // Migrate legacy data if missing rawDate/id
   const todayStr = new Date().toISOString().split('T')[0];
   lanterns = lanterns.map((l, index) => ({
     id: l.id || `lantern_${Date.now()}_${index}`,
@@ -353,7 +604,7 @@ function initSkyLanterns() {
   const releasedCountEl = document.getElementById('released-count');
   releasedCountEl.textContent = `${lanterns.length} lanterns floating softly`;
 
-  let activeFilter = 'all'; // 'all', 'today', 'week', 'custom'
+  let activeFilter = 'all';
   let customDateVal = '';
 
   const activeLanternObjects = lanterns.map(l => ({
@@ -365,7 +616,6 @@ function initSkyLanterns() {
     size: 24
   }));
 
-  // Filtering Logic
   function getFilteredLanterns() {
     const now = new Date();
     const todayISO = now.toISOString().split('T')[0];
@@ -381,11 +631,9 @@ function initSkyLanterns() {
     return activeLanternObjects;
   }
 
-  // Render Sky Canvas
   function renderSky() {
     ctx.clearRect(0, 0, width, height);
 
-    // Stars
     for (let i = 0; i < 45; i++) {
       const sx = (Math.sin(i * 99 + Date.now() * 0.001) * 0.5 + 0.5) * width;
       const sy = (Math.cos(i * 33 + Date.now() * 0.001) * 0.5 + 0.5) * height;
@@ -395,7 +643,6 @@ function initSkyLanterns() {
       ctx.fill();
     }
 
-    // Render Filtered Lanterns
     const visibleLanterns = getFilteredLanterns();
 
     visibleLanterns.forEach(l => {
@@ -430,7 +677,6 @@ function initSkyLanterns() {
 
   renderSky();
 
-  // Canvas Click Detection (Tap Floating Lantern)
   skyCanvas.addEventListener('click', (e) => {
     const rect = skyCanvas.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
@@ -447,7 +693,6 @@ function initSkyLanterns() {
     }
   });
 
-  // Date Filter UI Controls
   const datePills = document.querySelectorAll('.date-pill');
   const datePicker = document.getElementById('lantern-date-picker');
   const vaultIndicator = document.getElementById('vault-filter-indicator');
@@ -517,7 +762,6 @@ function initSkyLanterns() {
 
   updateVaultGallery();
 
-  // Modal Handlers
   const openModalBtn = document.getElementById('open-lantern-modal-btn');
   const lanternModal = document.getElementById('lantern-modal');
   const releaseConfirmBtn = document.getElementById('release-lantern-confirm-btn');
@@ -597,7 +841,7 @@ function getColorName(color) {
 }
 
 /* ==========================================================================
-   6. BREATHING OASIS
+   7. BREATHING OASIS
    ========================================================================== */
 function initBreathingOasis() {
   const startBtn = document.getElementById('start-breath-btn');
@@ -708,7 +952,7 @@ function initBreathingOasis() {
 }
 
 /* ==========================================================================
-   7. PROCEDURAL SOUNDSCAPES (WEB AUDIO API)
+   8. PROCEDURAL SOUNDSCAPES (WEB AUDIO API)
    ========================================================================== */
 function initAudioEngine() {
   window.addEventListener('click', () => {
@@ -942,7 +1186,7 @@ function initSoundscapes() {
 }
 
 /* ==========================================================================
-   8. MEMORY JAR & COMFORT NOTES
+   9. MEMORY JAR & COMFORT NOTES
    ========================================================================== */
 const DEFAULT_NOTES = [
   "You carry immense strength within you, even on days when you feel soft or quiet.",
@@ -1012,7 +1256,7 @@ function initMemoryJar() {
 }
 
 /* ==========================================================================
-   9. HEART CHECK-IN & SAFE JOURNAL
+   10. HEART CHECK-IN & SAFE JOURNAL
    ========================================================================== */
 const VALIDATIONS = {
   'missing': "It is completely natural to miss family or feel that empty space. Your longing comes from a place of deep love. Allow yourself to feel it without judgment.",

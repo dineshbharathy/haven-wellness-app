@@ -34,6 +34,9 @@
         <button class="nav-btn active" data-tab="hub">
           <span class="icon">🏡</span> Home
         </button>
+        <button class="nav-btn" data-tab="memory-orbs">
+          <span class="icon">🔮</span> Memory Orbs
+        </button>
         <button class="nav-btn" data-tab="lanterns">
           <span class="icon">🏮</span> Sky Lanterns
         </button>
@@ -80,6 +83,16 @@
         <!-- Quick Interactive Cards Grid -->
         <div class="hub-grid">
           
+          <!-- Memory Storybook Dashboard Card -->
+          <div class="hub-card glass-card storybook-hub-card">
+            <div class="card-icon">📖</div>
+            <h3>Storybook of Memories</h3>
+            <p>Blend your daily emotions into glowing Memory Orbs and flip through your personal storybook.</p>
+            <button id="open-storybook-tab-btn" class="btn primary-btn pulse-glow">
+              ✨ Open Emotion Storybook
+            </button>
+          </div>
+
           <!-- Virtual Hug Card -->
           <div class="hub-card glass-card hug-card">
             <div class="card-icon">🫂</div>
@@ -88,7 +101,7 @@
             <div class="hug-counter-container">
               <span id="hug-count">0</span> hugs received today
             </div>
-            <button id="hug-btn" class="btn primary-btn pulse-glow">
+            <button id="hug-btn" class="btn primary-btn">
               ❤️ Warm Hug For You
             </button>
           </div>
@@ -124,7 +137,167 @@
         </div>
       </section>
 
-      <!-- ================= TAB 2: SKY LANTERNS ================= -->
+      <!-- ================= TAB 2: INSIDE OUT MEMORY ORBS & STORYBOOK ================= -->
+      <section id="tab-memory-orbs" class="tab-pane">
+        <div class="section-header center">
+          <h2>🔮 Memory Orbs & Emotion Storybook</h2>
+          <p>Mix your daily emotions into glowing memory spheres, attach notes & photos, and flip through your storybook of feelings.</p>
+        </div>
+
+        <div class="orbs-layout">
+          
+          <!-- Left: Memory Orb Creator Form -->
+          <div class="orb-creator-card glass-card">
+            <h3>✨ Create Today's Memory Orb</h3>
+            
+            <!-- Interactive Glowing Mixed Orb Visualizer -->
+            <div class="orb-visualizer-container">
+              <div class="memory-orb-sphere" id="preview-memory-orb">
+                <div class="orb-core-glow" id="orb-core-glow"></div>
+                <div class="orb-inner-particles" id="orb-inner-particles">
+                  <!-- Dynamic floating emotion spheres inside core -->
+                </div>
+              </div>
+              <span class="orb-label" id="orb-blend-label">Blended Memory Sphere</span>
+            </div>
+
+            <!-- Emotion Mix Controllers (Inside Out Refined Palette) -->
+            <div class="emotions-mix-panel">
+              <h4>Mix Your Emotions for Today</h4>
+              <div class="emotion-sliders-grid">
+                
+                <div class="emotion-slider-item" data-color="#ffd700">
+                  <span class="emo-icon">💛</span>
+                  <label>Joy</label>
+                  <input type="range" class="emo-range" data-emo="joy" min="0" max="100" value="50">
+                </div>
+
+                <div class="emotion-slider-item" data-color="#4169e1">
+                  <span class="emo-icon">💙</span>
+                  <label>Sadness / Longing</label>
+                  <input type="range" class="emo-range" data-emo="sadness" min="0" max="100" value="30">
+                </div>
+
+                <div class="emotion-slider-item" data-color="#ff69b4">
+                  <span class="emo-icon">🩷</span>
+                  <label>Nostalgia</label>
+                  <input type="range" class="emo-range" data-emo="nostalgia" min="0" max="100" value="40">
+                </div>
+
+                <div class="emotion-slider-item" data-color="#9370db">
+                  <span class="emo-icon">💜</span>
+                  <label>Fear / Uncertainty</label>
+                  <input type="range" class="emo-range" data-emo="fear" min="0" max="100" value="0">
+                </div>
+
+                <div class="emotion-slider-item" data-color="#ff4500">
+                  <span class="emo-icon">❤️</span>
+                  <label>Anger / Frustration</label>
+                  <input type="range" class="emo-range" data-emo="anger" min="0" max="100" value="0">
+                </div>
+
+                <div class="emotion-slider-item" data-color="#00ced1">
+                  <span class="emo-icon">🩵</span>
+                  <label>Anxiety / Overwhelm</label>
+                  <input type="range" class="emo-range" data-emo="anxiety" min="0" max="100" value="0">
+                </div>
+
+                <div class="emotion-slider-item" data-color="#3cb371">
+                  <span class="emo-icon">💚</span>
+                  <label>Disgust</label>
+                  <input type="range" class="emo-range" data-emo="disgust" min="0" max="100" value="0">
+                </div>
+
+                <div class="emotion-slider-item" data-color="#ff7f50">
+                  <span class="emo-icon">🧡</span>
+                  <label>Vulnerability</label>
+                  <input type="range" class="emo-range" data-emo="vulnerability" min="0" max="100" value="20">
+                </div>
+
+                <div class="emotion-slider-item" data-color="#708090">
+                  <span class="emo-icon">🩶</span>
+                  <label>Quiet Solitude</label>
+                  <input type="range" class="emo-range" data-emo="solitude" min="0" max="100" value="10">
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Memory Form Inputs -->
+            <div class="form-group">
+              <label for="orb-title-input">Memory Title / Headline</label>
+              <input type="text" id="orb-title-input" class="input-field" placeholder="e.g., Thinking of dad & cutting cake softly...">
+            </div>
+
+            <div class="form-group">
+              <label for="orb-note-input">Today's Story & Thoughts</label>
+              <textarea id="orb-note-input" class="input-field" rows="4" placeholder="Write about what happened and how your heart felt today..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="orb-photo-input">📷 Attach Photo / Picture (Optional)</label>
+              <input type="file" id="orb-photo-input" accept="image/*" class="input-field file-input">
+              <div id="photo-preview-container" class="photo-preview-box hidden">
+                <img id="photo-preview-img" src="" alt="Memory Photo Preview">
+                <button id="remove-photo-btn" class="icon-btn small-btn">✕</button>
+              </div>
+            </div>
+
+            <button id="save-memory-orb-btn" class="btn primary-btn pulse-glow">
+              🔮 Save Memory Orb to Storybook
+            </button>
+          </div>
+
+          <!-- Right: Interactive Storybook Reader -->
+          <div class="storybook-reader-card glass-card">
+            <div class="storybook-reader-header">
+              <h3>📖 Storybook of Memories</h3>
+              <div class="storybook-nav-controls">
+                <button id="book-prev-btn" class="btn secondary-btn small-btn">◀ Previous</button>
+                <span id="book-page-indicator" class="page-indicator">Page 1 of 1</span>
+                <button id="book-next-btn" class="btn secondary-btn small-btn">Next ▶</button>
+              </div>
+            </div>
+
+            <!-- Storybook 2-Page Spread Component -->
+            <div class="storybook-spread" id="storybook-spread">
+              
+              <!-- Left Page: Visual Orb & Photo -->
+              <div class="book-page book-left-page">
+                <div class="page-corner-badge">Left Page</div>
+                <div id="page-orb-display" class="page-orb-container">
+                  <div class="memory-orb-sphere small-orb" id="book-page-orb">
+                    <div class="orb-core-glow" id="book-page-orb-glow"></div>
+                  </div>
+                  <span id="book-page-date" class="book-date-tag">Aug 4, 2026</span>
+                </div>
+
+                <div id="book-page-emotions" class="page-emotions-breakdown">
+                  <!-- Emotion breakdown badges -->
+                </div>
+
+                <div id="book-page-photo-container" class="book-photo-frame hidden">
+                  <img id="book-page-photo" src="" alt="Memory Photo">
+                </div>
+              </div>
+
+              <!-- Right Page: Storybook Diary Text -->
+              <div class="book-page book-right-page">
+                <div class="page-corner-badge">Right Page</div>
+                <h4 id="book-page-title" class="book-story-title">My Emotional Journey</h4>
+                <div class="book-story-content">
+                  <p id="book-page-text">No memories logged yet. Blend your emotions on the left and save your first Memory Orb to turn the pages of your storybook.</p>
+                </div>
+                <div class="book-footer-signature">~ Haven Sanctuary ~</div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: SKY LANTERNS ================= -->
       <section id="tab-lanterns" class="tab-pane">
         <div class="section-header center">
           <h2>🏮 Sky Lanterns of Release</h2>
@@ -133,7 +306,6 @@
 
         <div class="lanterns-container glass-card">
           
-          <!-- Sky Controls & Date Filter Toolbar -->
           <div class="lantern-toolbar">
             <div class="toolbar-left">
               <button id="open-lantern-modal-btn" class="btn primary-btn pulse-glow">
@@ -142,7 +314,6 @@
               <span class="released-count" id="released-count">0 lanterns floating</span>
             </div>
 
-            <!-- Date Filter Selector -->
             <div class="date-filter-group">
               <span class="filter-label">📅 View by Date:</span>
               <button class="date-pill active" data-date-filter="all">All Time</button>
@@ -152,7 +323,6 @@
             </div>
           </div>
 
-          <!-- Interactive Sky Canvas Viewport -->
           <div class="sky-viewport" id="sky-viewport">
             <canvas id="sky-canvas"></canvas>
             <div class="sky-instructions">
@@ -160,7 +330,6 @@
             </div>
           </div>
 
-          <!-- Date-Based Lantern Memory Vault / Gallery -->
           <div class="lantern-vault-section">
             <div class="vault-header">
               <h3>📜 Released Lanterns Archive</h3>
@@ -175,7 +344,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 3: BREATHING OASIS ================= -->
+      <!-- ================= TAB 4: BREATHING OASIS ================= -->
       <section id="tab-breathing" class="tab-pane">
         <div class="section-header center">
           <h2>🌬️ Grounding Breathing Oasis</h2>
@@ -205,7 +374,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 4: SOUNDSCAPES ================= -->
+      <!-- ================= TAB 5: SOUNDSCAPES ================= -->
       <section id="tab-soundscapes" class="tab-pane">
         <div class="section-header center">
           <h2>🎶 Ambient Soundscapes</h2>
@@ -213,7 +382,6 @@
         </div>
 
         <div class="soundscapes-grid">
-          <!-- Master Control Card -->
           <div class="master-sound-card glass-card">
             <div class="master-header">
               <h3>🎵 Master Sanctuary Audio</h3>
@@ -228,7 +396,6 @@
             </div>
           </div>
 
-          <!-- Sound Tiles -->
           <div class="sound-card glass-card" data-sound="rain">
             <div class="sound-icon">🌧️</div>
             <div class="sound-info">
@@ -292,7 +459,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 5: MEMORY JAR ================= -->
+      <!-- ================= TAB 6: MEMORY JAR ================= -->
       <section id="tab-memory-jar" class="tab-pane">
         <div class="section-header center">
           <h2>🏺 The Memory & Comfort Jar</h2>
@@ -323,7 +490,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 6: HEART LOG & JOURNAL ================= -->
+      <!-- ================= TAB 7: HEART LOG & JOURNAL ================= -->
       <section id="tab-journal" class="tab-pane">
         <div class="section-header center">
           <h2>🤍 Heart Log & Safe Journal</h2>
@@ -331,7 +498,6 @@
         </div>
 
         <div class="journal-layout">
-          <!-- Feeling Check-in Card -->
           <div class="heart-checkin-card glass-card">
             <h3>How is your heart feeling today?</h3>
             <div class="emotion-selector">
@@ -362,7 +528,6 @@
             </div>
           </div>
 
-          <!-- Safe Journal Form -->
           <div class="journal-entry-card glass-card">
             <h3>Safe Space Journal</h3>
             <div class="form-group">
