@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — PERMANENT COMPUTER DESKTOP APP ENGINE (JS)
+   HAVEN WELLNESS SANCTUARY — ULTRA-PREMIUM GLASS UI ENGINE (JS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   FLUID RESOLUTION DETECTOR & INDICATOR
+   RESOLUTION DETECTOR
    ========================================================================== */
 function initDesktopResolutionDetector() {
   const resIndicator = document.getElementById('resolution-indicator');
@@ -27,11 +27,10 @@ function initDesktopResolutionDetector() {
   function updateResolution() {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    let modeText = 'Desktop Mode';
+    let modeText = 'Full Desktop Glass Layout';
 
     if (width < 768) modeText = 'Compact Resolution';
     else if (width < 1100) modeText = 'Medium Resolution';
-    else modeText = 'Full Desktop Layout';
 
     if (resIndicator) {
       resIndicator.textContent = `${width}x${height} • ${modeText}`;
@@ -166,7 +165,7 @@ function initDesktopTabNavigation() {
 }
 
 /* ==========================================================================
-   3. AMBIENT BACKGROUND CANVAS
+   3. AMBIENT BACKGROUND CANVAS WITH SUBTLE NOISE & GRAIN
    ========================================================================== */
 function initAmbientCanvas() {
   const canvas = document.getElementById('ambient-canvas');
@@ -182,23 +181,25 @@ function initAmbientCanvas() {
   });
 
   const particles = [];
-  const count = 45;
+  const count = 50;
 
   for (let i = 0; i < count; i++) {
     particles.push({
       x: Math.random() * width,
       y: Math.random() * height,
-      radius: Math.random() * 2 + 0.5,
-      alpha: Math.random() * 0.8 + 0.2,
+      radius: Math.random() * 2.5 + 0.5,
+      alpha: Math.random() * 0.7 + 0.3,
       vx: (Math.random() - 0.5) * 0.3,
       vy: -Math.random() * 0.4 - 0.1,
-      pulse: Math.random() * 0.02 + 0.005
+      pulse: Math.random() * 0.02 + 0.005,
+      color: ['#ffcf56', '#ff8052', '#d946ef', '#ffffff'][Math.floor(Math.random() * 4)]
     });
   }
 
   function render() {
     ctx.clearRect(0, 0, width, height);
 
+    // Floating Starlight Particles
     particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
@@ -210,11 +211,22 @@ function initAmbientCanvas() {
 
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(212, 175, 55, ${Math.max(0.1, Math.min(0.6, p.alpha))})`;
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = '#d4af37';
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = Math.max(0.1, Math.min(0.8, p.alpha));
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = p.color;
       ctx.fill();
     });
+
+    // Subtle Noise Grain Overlay Simulation
+    ctx.globalAlpha = 0.035;
+    for (let n = 0; n < 200; n++) {
+      const rx = Math.random() * width;
+      const ry = Math.random() * height;
+      ctx.fillStyle = Math.random() > 0.5 ? '#ffffff' : '#000000';
+      ctx.fillRect(rx, ry, 1.5, 1.5);
+    }
+    ctx.globalAlpha = 1.0;
 
     requestAnimationFrame(render);
   }
@@ -668,7 +680,7 @@ function initMemoryOrbsAndStorybook() {
     });
 
     if (activeEmotions.length === 0) {
-      previewOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #d4af37 40%, #0f172a 100%)';
+      previewOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #ffcf56 35%, #ff8052 70%, #d946ef 100%)';
       blendLabel.textContent = 'Blended Memory Sphere';
       particlesContainer.innerHTML = '';
       return;
@@ -683,7 +695,7 @@ function initMemoryOrbsAndStorybook() {
 
     const gradient = `radial-gradient(circle at 35% 35%, #ffffff, ${stops})`;
     previewOrb.style.background = gradient;
-    previewOrb.style.boxShadow = `0 0 35px ${activeEmotions[0].meta.color}`;
+    previewOrb.style.boxShadow = `0 0 40px ${activeEmotions[0].meta.color}`;
 
     blendLabel.textContent = activeEmotions.map(e => `${e.meta.icon} ${e.meta.name}`).join(' • ');
 
@@ -731,8 +743,8 @@ function initMemoryOrbsAndStorybook() {
       pageTitle.textContent = 'My Emotional Storybook';
       pageText.textContent = 'No memories logged yet. Create your first Memory Orb on the left to turn the pages.';
       pageDate.textContent = new Date().toLocaleDateString();
-      pageOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #d4af37 40%, #0f172a 100%)';
-      pageEmotions.innerHTML = '<span class="emo-pill-badge" style="background:#d4af37;">💛 Warmth</span>';
+      pageOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #ffcf56 35%, #ff8052 70%, #d946ef 100%)';
+      pageEmotions.innerHTML = '<span class="emo-pill-badge" style="background:#ffcf56; color:#2a083b;">💛 Warmth</span>';
       pagePhotoBox.classList.add('hidden');
       return;
     }
@@ -861,7 +873,7 @@ function initSkyLanterns() {
   lanterns = lanterns.map((l, index) => ({
     id: l.id || `lantern_${Date.now()}_${index}`,
     message: l.message,
-    color: l.color || '#d4af37',
+    color: l.color || '#ffcf56',
     date: l.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     rawDate: l.rawDate || todayStr,
     time: l.time || 'Evening'
@@ -917,7 +929,7 @@ function initSkyLanterns() {
       if (l.y < -40) l.y = height + 20;
 
       const glow = ctx.createRadialGradient(l.x, l.y, 2, l.x, l.y, l.size * 1.6);
-      glow.addColorStop(0, l.color || '#d4af37');
+      glow.addColorStop(0, l.color || '#ffcf56');
       glow.addColorStop(1, 'transparent');
 
       ctx.fillStyle = glow;
@@ -925,7 +937,7 @@ function initSkyLanterns() {
       ctx.arc(l.x, l.y, l.size * 1.6, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = l.color || '#d4af37';
+      ctx.fillStyle = l.color || '#ffcf56';
       ctx.beginPath();
       ctx.roundRect(l.x - 8, l.y - 12, 16, 22, 3);
       ctx.fill();
@@ -1014,7 +1026,7 @@ function initSkyLanterns() {
     getAudioContext();
     playHarmonicChime([440, 554.37, 659.25, 880]);
 
-    const selectedColor = document.querySelector('input[name="lantern-color"]:checked')?.value || '#d4af37';
+    const selectedColor = document.querySelector('input[name="lantern-color"]:checked')?.value || '#ffcf56';
     const now = new Date();
     const todayISO = now.toISOString().split('T')[0];
     const dateFormatted = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -1055,7 +1067,7 @@ function openViewLanternModal(lantern) {
   const msgEl = document.getElementById('view-lantern-message');
 
   if (badgeEl) {
-    badgeEl.style.background = lantern.color || '#d4af37';
+    badgeEl.style.background = lantern.color || '#ffcf56';
     badgeEl.textContent = `🏮 ${getColorName(lantern.color)}`;
   }
   if (dateEl) dateEl.textContent = `${lantern.date} • ${lantern.time || ''}`;
@@ -1066,9 +1078,9 @@ function openViewLanternModal(lantern) {
 
 function getColorName(color) {
   switch (color) {
-    case '#d4af37': return 'Gold';
-    case '#ff80bf': return 'Rose';
-    case '#b388ff': return 'Lavender';
+    case '#ffcf56': return 'Golden Dawn';
+    case '#ff8052': return 'Coral Sunset';
+    case '#d946ef': return 'Orchid Magenta';
     case '#34d399': return 'Emerald';
     default: return 'Glow';
   }
