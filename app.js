@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — 100% AUTONOMOUS REAL-TIME NETWORK & COMMUNITY (JS)
+   HAVEN WELLNESS SANCTUARY — APPLE CALL ENGINE & AUTONOMOUS REAL-TIME (JS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAutonomousAITherapistAura();
   initAuthSurveyFlow();
   initSanctuaryCircleCommunity();
-  initPeerCallingEngine();
+  initAppleCallEngine();
   initMemoryOrbsAndStorybook();
   initSkyLanterns();
   initBreathingOasis();
@@ -92,6 +92,53 @@ function playHarmonicChime(freqs = [523.25, 659.25, 783.99, 1046.50]) {
       playBellSound(f, 'sine', 2.0, 0.12);
     }, index * 120);
   });
+}
+
+/* Procedural Apple Marimba Ringtone Synthesizer */
+let appleRingtoneTimer = null;
+
+function playAppleRingtone() {
+  stopAppleRingtone();
+  const ctx = getAudioContext();
+
+  function triggerMarimbaStrum() {
+    const notes = [
+      { f: 1046.50, delay: 0 },
+      { f: 1318.51, delay: 120 },
+      { f: 1567.98, delay: 240 },
+      { f: 2093.00, delay: 360 },
+      { f: 1567.98, delay: 600 },
+      { f: 1318.51, delay: 720 },
+      { f: 1046.50, delay: 840 }
+    ];
+
+    notes.forEach(n => {
+      setTimeout(() => {
+        if (!appleRingtoneTimer) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(n.f, ctx.currentTime);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+
+        osc.connect(gain);
+        gain.connect(masterGainNode);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.36);
+      }, n.delay);
+    });
+  }
+
+  triggerMarimbaStrum();
+  appleRingtoneTimer = setInterval(triggerMarimbaStrum, 2400);
+}
+
+function stopAppleRingtone() {
+  if (appleRingtoneTimer) {
+    clearInterval(appleRingtoneTimer);
+    appleRingtoneTimer = null;
+  }
 }
 
 /* Real-Time Cross-Window & Device Network Broadcast Channel */
@@ -265,7 +312,6 @@ function initAuthSurveyFlow() {
     currentUserProfile = JSON.parse(savedProfile);
     updateUserDisplay();
   } else {
-    // Show Survey Modal automatically on first visit
     setTimeout(() => authModal?.classList.remove('hidden'), 500);
   }
 
@@ -744,7 +790,6 @@ function initSanctuaryCircleCommunity() {
   let isVoiceConnected = false;
   let friends = [...ONLINE_FRIENDS];
 
-  // Listen to real-time network messages from other browser tabs / users
   if (sanctuaryBroadcast) {
     sanctuaryBroadcast.onmessage = (event) => {
       const data = event.data;
@@ -754,11 +799,21 @@ function initSanctuaryCircleCommunity() {
           renderChannelMessages(currentChannelKey);
         }
         playHarmonicChime([659.25, 783.99]);
-      } else if (data.type === 'INCOMING_PEER_CALL') {
-        triggerIncomingPeerCall(data.callerName, data.callerAvatar);
+      } else if (data.type === 'INCOMING_APPLE_CALL') {
+        window.triggerAppleIncomingCall(data.callerName, data.callerAvatar);
       }
     };
   }
+
+  // Cross-Tab / Cross-Browser Event Signal Listener
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'haven_active_call_signal' && e.newValue) {
+      const data = JSON.parse(e.newValue);
+      if (data.type === 'INCOMING_APPLE_CALL') {
+        window.triggerAppleIncomingCall(data.callerName, data.callerAvatar);
+      }
+    }
+  });
 
   function renderFriendsSidebar() {
     friendsListContainer.innerHTML = friends.map(f => `
@@ -773,7 +828,7 @@ function initSanctuaryCircleCommunity() {
             <span class="friend-activity">${escapeHtml(f.status)}</span>
           </div>
         </div>
-        <button class="call-friend-btn" title="Call ${escapeHtml(f.name)}" onclick="startDirectPeerCall('${escapeHtml(f.name)}', '${f.avatar}')">
+        <button class="call-friend-btn" title="Call ${escapeHtml(f.name)}" onclick="startAppleCallWithFriend('${escapeHtml(f.name)}', '${f.avatar}')">
           📞
         </button>
       </div>
@@ -859,7 +914,6 @@ function initSanctuaryCircleCommunity() {
     renderChannelMessages(currentChannelKey);
     chatInput.value = '';
 
-    // Broadcast message to all connected network tabs/users
     if (sanctuaryBroadcast) {
       sanctuaryBroadcast.postMessage({
         type: 'NEW_CHAT_MESSAGE',
@@ -868,7 +922,6 @@ function initSanctuaryCircleCommunity() {
       });
     }
 
-    // Simulated Peer Response after 2.5 seconds
     setTimeout(() => {
       const peerResponses = [
         { author: 'Sophia 🌸', avatar: '🌸', tag: 'Gold Member', text: 'Thank you for sharing that with us! Sending so much love. ❤️' },
@@ -945,87 +998,120 @@ function initSanctuaryCircleCommunity() {
 }
 
 /* ==========================================================================
-   8. REAL-TIME 1-ON-1 DIRECT PEER VOICE CALLING ENGINE
+   8. FULL-SCREEN APPLE CALL ANIMATION & RINGTONE ENGINE
    ========================================================================== */
-function initPeerCallingEngine() {
-  const callModal = document.getElementById('peer-call-modal');
-  const friendNameEl = document.getElementById('call-friend-name');
-  const friendAvatarEl = document.getElementById('call-friend-avatar');
-  const statusLabelEl = document.getElementById('call-status-label');
+function initAppleCallEngine() {
+  const appleOverlay = document.getElementById('apple-call-overlay');
+  const callerAvatarEl = document.getElementById('apple-caller-avatar');
+  const callerNameEl = document.getElementById('apple-caller-name');
+  const callStatusEl = document.getElementById('apple-call-status');
 
-  const acceptBtn = document.getElementById('accept-peer-call-btn');
-  const declineBtn = document.getElementById('decline-peer-call-btn');
+  const incomingActions = document.getElementById('apple-incoming-actions');
+  const activeActions = document.getElementById('apple-active-actions');
+
+  const acceptBtn = document.getElementById('apple-accept-btn');
+  const declineBtn = document.getElementById('apple-decline-btn');
+
+  const muteBtn = document.getElementById('apple-mute-btn');
+  const speakerBtn = document.getElementById('apple-speaker-btn');
+  const endBtn = document.getElementById('apple-end-btn');
 
   let activeCallTimer = null;
   let callSeconds = 0;
 
-  window.startDirectPeerCall = function(friendName, friendAvatar) {
+  window.startAppleCallWithFriend = function(friendName, friendAvatar) {
     getAudioContext();
-    playHarmonicChime([523.25, 659.25, 783.99]);
+    callerNameEl.textContent = friendName;
+    callerAvatarEl.textContent = friendAvatar;
+    callStatusEl.textContent = 'Calling Haven Sanctuary Voice...';
 
-    friendNameEl.textContent = friendName;
-    friendAvatarEl.textContent = friendAvatar;
-    statusLabelEl.textContent = `Calling ${friendName}... Rringing...`;
-    acceptBtn.textContent = '📞 Accept Call';
-    acceptBtn.style.display = 'inline-flex';
+    incomingActions.classList.remove('hidden');
+    activeActions.classList.add('hidden');
+    appleOverlay.classList.remove('hidden');
 
-    callModal?.classList.remove('hidden');
+    playAppleRingtone();
 
-    if (sanctuaryBroadcast) {
-      sanctuaryBroadcast.postMessage({
-        type: 'INCOMING_PEER_CALL',
-        callerName: currentUserProfile?.username || 'Sanctuary Member',
-        callerAvatar: '🤍'
-      });
-    }
+    // Broadcast calling signal
+    const callSignal = {
+      type: 'INCOMING_APPLE_CALL',
+      callerName: currentUserProfile?.username || 'Sanctuary Member',
+      callerAvatar: '🤍',
+      timestamp: Date.now()
+    };
 
-    // Auto-connect call after 2 seconds simulation if alone
+    if (sanctuaryBroadcast) sanctuaryBroadcast.postMessage(callSignal);
+    localStorage.setItem('haven_active_call_signal', JSON.stringify(callSignal));
+
+    // Auto-connect call simulation if standalone
     setTimeout(() => {
-      if (!callModal.classList.contains('hidden') && statusLabelEl.textContent.includes('Calling')) {
-        acceptPeerCall();
+      if (!appleOverlay.classList.contains('hidden') && callStatusEl.textContent.includes('Calling')) {
+        acceptAppleCall();
       }
-    }, 2500);
+    }, 2800);
   };
 
-  window.triggerIncomingPeerCall = function(callerName, callerAvatar) {
+  window.triggerAppleIncomingCall = function(callerName, callerAvatar) {
     getAudioContext();
-    playHarmonicChime([880, 1046.50, 1318.51]);
+    callerNameEl.textContent = callerName;
+    callerAvatarEl.textContent = callerAvatar;
+    callStatusEl.textContent = 'Incoming Haven Sanctuary Voice Call...';
 
-    friendNameEl.textContent = callerName;
-    friendAvatarEl.textContent = callerAvatar;
-    statusLabelEl.textContent = `Incoming Voice Call from ${callerName}...`;
-    acceptBtn.textContent = '📞 Accept Call';
-    acceptBtn.style.display = 'inline-flex';
+    incomingActions.classList.remove('hidden');
+    activeActions.classList.add('hidden');
+    appleOverlay.classList.remove('hidden');
 
-    callModal?.classList.remove('hidden');
+    playAppleRingtone();
+
+    if (navigator.vibrate) {
+      navigator.vibrate([400, 200, 400, 200, 400]);
+    }
   };
 
-  acceptBtn?.addEventListener('click', acceptPeerCall);
-  declineBtn?.addEventListener('click', endPeerCall);
+  acceptBtn?.addEventListener('click', acceptAppleCall);
+  declineBtn?.addEventListener('click', endAppleCall);
+  endBtn?.addEventListener('click', endAppleCall);
 
-  function acceptPeerCall() {
+  function acceptAppleCall() {
+    stopAppleRingtone();
     getAudioContext();
     playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
 
-    acceptBtn.style.display = 'none';
-    statusLabelEl.textContent = '🟢 Call Connected • Live Voice Stream (00:00)';
+    incomingActions.classList.add('hidden');
+    activeActions.classList.remove('hidden');
+
     callSeconds = 0;
+    callStatusEl.textContent = '🟢 Call Connected (00:00)';
 
     clearInterval(activeCallTimer);
     activeCallTimer = setInterval(() => {
       callSeconds++;
       const mins = String(Math.floor(callSeconds / 60)).padStart(2, '0');
       const secs = String(callSeconds % 60).padStart(2, '0');
-      statusLabelEl.textContent = `🟢 Call Connected • Live Voice Stream (${mins}:${secs})`;
+      callStatusEl.textContent = `🟢 Call Connected (${mins}:${secs})`;
     }, 1000);
   }
 
-  function endPeerCall() {
+  function endAppleCall() {
+    stopAppleRingtone();
     getAudioContext();
     playBellSound(330, 'sine', 0.6, 0.08);
+
     clearInterval(activeCallTimer);
-    callModal?.classList.add('hidden');
+    appleOverlay.classList.add('hidden');
+    callStatusEl.textContent = 'Call Ended';
   }
+
+  muteBtn?.addEventListener('click', () => {
+    getAudioContext();
+    muteBtn.classList.toggle('active');
+    playBellSound(440, 'sine', 0.3, 0.05);
+  });
+
+  speakerBtn?.addEventListener('click', () => {
+    getAudioContext();
+    speakerBtn.classList.toggle('active');
+    playBellSound(550, 'sine', 0.3, 0.05);
+  });
 }
 
 /* ==========================================================================

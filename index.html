@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Haven — Sanctuary Circle & Autonomous AI Sanctuary</title>
-  <meta name="description" content="A premium wellness application featuring an autonomous AI Therapist, real-time Sanctuary Circle peer messaging & 1-on-1 voice calling.">
+  <title>Haven — Sanctuary Circle & Apple Call Sanctuary</title>
+  <meta name="description" content="A premium wellness application featuring an autonomous AI Therapist, real-time Sanctuary Circle peer messaging & Apple iOS voice calling.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -639,8 +639,47 @@
     </main>
   </div>
 
-  <!-- 3-Question Auth & Survey Modal (Sign In / Log In) -->
-  <div id="auth-survey-modal" class="modal-overlay">
+  <!-- FULL-SCREEN APPLE CALL ANIMATION OVERLAY -->
+  <div id="apple-call-overlay" class="apple-call-overlay hidden">
+    <div class="apple-call-content">
+      <div class="apple-call-avatar-container">
+        <div class="apple-call-ring ring-1"></div>
+        <div class="apple-call-ring ring-2"></div>
+        <div class="apple-call-avatar" id="apple-caller-avatar">🌸</div>
+      </div>
+
+      <h2 id="apple-caller-name" class="apple-caller-name">Sophia 🌸</h2>
+      <p id="apple-call-status" class="apple-call-status">Haven Sanctuary Voice...</p>
+
+      <!-- Incoming Call Buttons (Accept / Decline) -->
+      <div id="apple-incoming-actions" class="apple-call-buttons-row">
+        <button id="apple-decline-btn" class="apple-call-btn decline-btn" title="Decline Call">
+          <span>✕</span>
+        </button>
+        <button id="apple-accept-btn" class="apple-call-btn accept-btn pulse-glow" title="Accept Call">
+          <span>📞</span>
+        </button>
+      </div>
+
+      <!-- Active Call Controls (Mute / Speaker / End) -->
+      <div id="apple-active-actions" class="apple-active-controls-row hidden">
+        <button id="apple-mute-btn" class="apple-control-btn">
+          <span class="btn-icon">🎙️</span>
+          <span class="btn-label">Mute</span>
+        </button>
+        <button id="apple-speaker-btn" class="apple-control-btn active">
+          <span class="btn-icon">🔊</span>
+          <span class="btn-label">Speaker</span>
+        </button>
+        <button id="apple-end-btn" class="apple-call-btn decline-btn" title="End Call">
+          <span>🔴</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3-Question Auth Survey Modal -->
+  <div id="auth-survey-modal" class="modal-overlay hidden">
     <div class="ios-sheet-modal auth-modal-card">
       <div class="sheet-grabber"></div>
       <button class="modal-close-btn" data-modal="auth-survey-modal">✕</button>
@@ -652,7 +691,6 @@
           <p id="auth-modal-subtitle" class="modal-subtitle">Complete your 3-question survey to enter the sanctuary.</p>
         </div>
 
-        <!-- 3-Question Sign Up Form -->
         <form id="auth-survey-form" onsubmit="return false;">
           <div class="ios-input-group">
             <label class="auth-label">1. Create Username</label>
@@ -684,30 +722,6 @@
           <span id="auth-toggle-text">Already have a Haven account?</span>
           <button id="auth-toggle-mode-btn" class="ios-link-btn">Log In</button>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Live 1-on-1 Direct Peer Voice Call Modal -->
-  <div id="peer-call-modal" class="modal-overlay hidden">
-    <div class="ios-sheet-modal peer-call-card">
-      <div class="sheet-grabber"></div>
-      
-      <div class="call-avatar-hero">
-        <div class="call-avatar-orb" id="call-avatar-orb">
-          <span id="call-friend-avatar" class="call-avatar-icon">🌸</span>
-        </div>
-        <h3 id="call-friend-name">Sophia 🌸</h3>
-        <p id="call-status-label" class="call-status">Incoming Sanctuary Voice Call...</p>
-      </div>
-
-      <div class="call-actions-row">
-        <button id="accept-peer-call-btn" class="ios-btn primary-btn">
-          📞 Accept Call
-        </button>
-        <button id="decline-peer-call-btn" class="ios-btn secondary-btn">
-          🚫 End Call
-        </button>
       </div>
     </div>
   </div>

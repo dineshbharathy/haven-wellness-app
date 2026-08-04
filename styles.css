@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — SANCTUARY CIRCLE & GLASS UI SYSTEM
+   HAVEN WELLNESS SANCTUARY — APPLE CALL ANIMATION & GLASS UI SYSTEM
    ========================================================================== */
 
 :root {
@@ -7,9 +7,7 @@
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-handwriting: 'Caveat', cursive;
 
-  /* Multi-Spectrum Sunset Gradient Tokens:
-     Yellow (#ffcf56) -> Orange (#ff8052) -> Red (#ff5252) -> Pink (#f472b6) -> Magenta (#d946ef) -> White (#ffffff)
-  */
+  /* Multi-Spectrum Sunset Gradient Tokens */
   --grad-yellow: #ffcf56;
   --grad-orange: #ff8052;
   --grad-red: #ff5252;
@@ -229,8 +227,82 @@ body {
 .ai-banner-text p { font-size: 0.86rem; color: var(--ios-text-muted); }
 
 /* ==========================================================================
-   SANCTUARY CIRCLE COMMUNITY LAYOUT (.circle-app-container)
+   FULL-SCREEN APPLE CALL ANIMATION OVERLAY (.apple-call-overlay)
    ========================================================================== */
+.apple-call-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(15, 8, 25, 0.82);
+  backdrop-filter: blur(45px) saturate(210%);
+  -webkit-backdrop-filter: blur(45px) saturate(210%);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+  animation: iosCallFadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.apple-call-overlay.hidden { display: none; }
+
+@keyframes iosCallFadeIn {
+  from { opacity: 0; transform: scale(1.05); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.apple-call-content {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  text-align: center; color: #ffffff; max-width: 420px; width: 100%;
+}
+
+.apple-call-avatar-container {
+  width: 140px; height: 140px; border-radius: 50%; position: relative;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 8px;
+}
+.apple-call-avatar {
+  width: 110px; height: 110px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff, #ffcf56 35%, #ff8052 70%, #d946ef 100%);
+  box-shadow: inset 0 0 25px rgba(255,255,255,0.9), 0 0 50px rgba(217, 70, 239, 0.6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.2rem; z-index: 3; border: 3px solid rgba(255, 255, 255, 0.9);
+}
+.apple-call-ring { position: absolute; border-radius: 50%; border: 2px solid rgba(217, 70, 239, 0.6); opacity: 0.4; }
+.apple-call-ring.ring-1 { width: 135px; height: 135px; animation: iosCallPulse 2.4s ease-out infinite; }
+.apple-call-ring.ring-2 { width: 165px; height: 165px; animation: iosCallPulse 2.4s ease-out infinite 1.2s; }
+
+@keyframes iosCallPulse {
+  0% { transform: scale(0.85); opacity: 0.8; }
+  100% { transform: scale(1.45); opacity: 0; }
+}
+
+.apple-caller-name { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 700; color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+.apple-call-status { font-size: 0.96rem; color: rgba(255, 255, 255, 0.8); font-weight: 600; letter-spacing: 0.5px; }
+
+.apple-call-buttons-row { display: flex; gap: 40px; margin-top: 24px; align-items: center; }
+
+.apple-call-btn {
+  width: 72px; height: 72px; border-radius: 50%; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #ffffff;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+.apple-call-btn:active { transform: scale(0.9); }
+
+.decline-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5);
+}
+.accept-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+}
+
+.apple-active-controls-row { display: flex; gap: 24px; margin-top: 24px; align-items: center; }
+.apple-control-btn {
+  background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4); width: 68px; height: 68px; border-radius: 50%;
+  color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; cursor: pointer; transition: all 0.2s ease;
+}
+.apple-control-btn.active { background: rgba(255, 255, 255, 0.45); color: #ffffff; border-color: #ffffff; }
+.btn-icon { font-size: 1.3rem; }
+.btn-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+
+/* Sanctuary Circle Container */
 .circle-app-container {
   padding: 0 !important; display: flex; flex-direction: row; height: 680px; overflow: hidden;
   border-radius: var(--ios-card-radius); border: 1px solid var(--glass-border);
@@ -378,22 +450,6 @@ body {
 .auth-label { font-size: 0.82rem; font-weight: 800; color: var(--ios-text); margin-top: 4px; display: block; }
 .ios-select { width: 100%; cursor: pointer; }
 .auth-toggle-footer { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.84rem; margin-top: 14px; }
-
-/* Peer Direct Voice Call Card */
-.peer-call-card { text-align: center; align-items: center; }
-.call-avatar-hero { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 10px 0; }
-.call-avatar-orb {
-  width: 100px; height: 100px; border-radius: 50%; position: relative;
-  background: linear-gradient(135deg, #ffcf56, #ff8052, #d946ef);
-  box-shadow: 0 0 35px var(--accent-glow); display: flex; align-items: center; justify-content: center;
-  font-size: 2.5rem; border: 3px solid #ffffff; animation: callOrbPulse 1.8s infinite alternate;
-}
-@keyframes callOrbPulse {
-  from { transform: scale(0.95); box-shadow: 0 0 20px var(--accent-glow); }
-  to { transform: scale(1.1); box-shadow: 0 0 50px rgba(217, 70, 239, 0.6); }
-}
-.call-status { font-size: 0.86rem; color: var(--ios-text-muted); font-weight: 600; }
-.call-actions-row { display: flex; gap: 12px; width: 100%; }
 
 /* General Buttons */
 .ios-btn {
