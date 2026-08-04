@@ -1,13 +1,12 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — AI THERAPIST ENGINE & APP LOGIC (JS)
+   HAVEN WELLNESS SANCTUARY — PERMANENT COMPUTER DESKTOP APP ENGINE (JS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initAdaptiveDeviceDetector();
-  initIOSStatusBarClock();
+  initDesktopResolutionDetector();
   initAudioEngine();
   initThemeManager();
-  initIOSTabNavigation();
+  initDesktopTabNavigation();
   initAmbientCanvas();
   initSanctuaryHub();
   initAITherapistAura();
@@ -20,87 +19,27 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   AUTOMATIC DEVICE DETECTOR & VIEWPORT ADAPTER
+   FLUID RESOLUTION DETECTOR & INDICATOR
    ========================================================================== */
-function initAdaptiveDeviceDetector() {
-  const deviceBadge = document.getElementById('device-badge');
-  const deviceModeLabel = document.getElementById('device-mode-label');
-  const detectedDeviceName = document.getElementById('detected-device-name');
-  const viewModeBtns = document.querySelectorAll('.view-mode-btn');
+function initDesktopResolutionDetector() {
+  const resIndicator = document.getElementById('resolution-indicator');
 
-  function detectDeviceType() {
+  function updateResolution() {
     const width = window.innerWidth;
-    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const height = window.innerHeight;
+    let modeText = 'Desktop Mode';
 
-    let deviceType = 'laptop';
-    let deviceLabel = '💻 Laptop';
+    if (width < 768) modeText = 'Compact Resolution';
+    else if (width < 1100) modeText = 'Medium Resolution';
+    else modeText = 'Full Desktop Layout';
 
-    if (width <= 640 || (isTouch && width < 768)) {
-      deviceType = 'phone';
-      deviceLabel = '📱 Phone';
-    } else if (width <= 1024) {
-      deviceType = 'tablet';
-      deviceLabel = '📱 Tablet';
-    } else {
-      deviceType = 'laptop';
-      deviceLabel = '💻 Laptop';
+    if (resIndicator) {
+      resIndicator.textContent = `${width}x${height} • ${modeText}`;
     }
-
-    document.body.setAttribute('data-detected-device', deviceType);
-
-    if (deviceBadge) deviceBadge.textContent = deviceLabel;
-    if (deviceModeLabel) deviceModeLabel.textContent = `PRO THEME`;
-    if (detectedDeviceName) detectedDeviceName.textContent = deviceLabel;
-
-    return deviceType;
   }
 
-  detectDeviceType();
-
-  window.addEventListener('resize', () => {
-    if (!document.body.hasAttribute('data-force-view') || document.body.getAttribute('data-force-view') === 'auto') {
-      detectDeviceType();
-    }
-  });
-
-  viewModeBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      getAudioContext();
-      playBellSound(540, 'sine', 0.4, 0.06);
-
-      const mode = btn.getAttribute('data-view-mode');
-      viewModeBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      if (mode === 'auto') {
-        document.body.removeAttribute('data-force-view');
-        detectDeviceType();
-      } else {
-        document.body.setAttribute('data-force-view', mode);
-        if (deviceBadge) deviceBadge.textContent = mode === 'phone' ? '📱 Phone' : mode === 'tablet' ? '📱 Tablet' : '💻 Laptop';
-      }
-
-      setTimeout(() => {
-        window.dispatchEvent(new Event('resize'));
-      }, 300);
-    });
-  });
-}
-
-/* ==========================================================================
-   iOS STATUS BAR CLOCK
-   ========================================================================== */
-function initIOSStatusBarClock() {
-  const clockEl = document.getElementById('status-time');
-  function updateClock() {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    hours = hours % 12 || 12;
-    if (clockEl) clockEl.textContent = `${hours}:${minutes}`;
-  }
-  updateClock();
-  setInterval(updateClock, 10000);
+  updateResolution();
+  window.addEventListener('resize', updateResolution);
 }
 
 /* ==========================================================================
@@ -196,25 +135,25 @@ function setTheme(theme) {
 }
 
 /* ==========================================================================
-   2. iOS TAB NAVIGATION & TOP TITLE
+   2. DESKTOP TAB NAVIGATION
    ========================================================================== */
-function initIOSTabNavigation() {
-  const tabItems = document.querySelectorAll('.tab-item');
+function initDesktopTabNavigation() {
+  const tabBtns = document.querySelectorAll('.nav-tab-btn');
   const tabPanes = document.querySelectorAll('.tab-pane');
-  const pageTitleEl = document.getElementById('ios-page-title');
+  const pageTitleEl = document.getElementById('page-title');
 
-  tabItems.forEach(item => {
-    item.addEventListener('click', () => {
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
       getAudioContext();
       playBellSound(520, 'sine', 0.4, 0.06);
 
-      const tabId = item.getAttribute('data-tab');
-      const title = item.getAttribute('data-title') || 'Sanctuary';
+      const tabId = btn.getAttribute('data-tab');
+      const title = btn.getAttribute('data-title') || 'Sanctuary';
 
-      tabItems.forEach(b => b.classList.remove('active'));
+      tabBtns.forEach(b => b.classList.remove('active'));
       tabPanes.forEach(p => p.classList.remove('active'));
 
-      item.classList.add('active');
+      btn.classList.add('active');
       document.getElementById(`tab-${tabId}`)?.classList.add('active');
 
       if (pageTitleEl) pageTitleEl.textContent = title;
@@ -336,12 +275,12 @@ function initSanctuaryHub() {
 
   const openAIListenerBtn = document.getElementById('open-ai-listener-btn');
   openAIListenerBtn?.addEventListener('click', () => {
-    document.querySelector('.tab-item[data-tab="ai-listener"]')?.click();
+    document.querySelector('.nav-tab-btn[data-tab="ai-listener"]')?.click();
   });
 
   const openStorybookBtn = document.getElementById('open-storybook-tab-btn');
   openStorybookBtn?.addEventListener('click', () => {
-    document.querySelector('.tab-item[data-tab="memory-orbs"]')?.click();
+    document.querySelector('.nav-tab-btn[data-tab="memory-orbs"]')?.click();
   });
 
   const brewTeaBtn = document.getElementById('brew-tea-btn');
@@ -477,7 +416,6 @@ function initAITherapistAura() {
     }
   });
 
-  // Speech Recognition
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (SpeechRecognition) {
     recognition = new SpeechRecognition();
@@ -561,7 +499,6 @@ function initAITherapistAura() {
     appendBubble('Dr. Aura (AI Therapist)', response, 'aura-bubble');
     statusText.textContent = 'Dr. Aura is here for you.';
 
-    // High-Quality Speech Synthesis
     if (isSynthEnabled && window.speechSynthesis) {
       speakTherapistResponse(response);
     }
@@ -579,7 +516,6 @@ function initAITherapistAura() {
   }
 }
 
-// Google Gemini 1.5 API Therapist Call
 async function fetchGeminiTherapistResponse(userText, apiKey) {
   try {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
@@ -613,7 +549,6 @@ async function fetchGeminiTherapistResponse(userText, apiKey) {
   }
 }
 
-// Professional Local Rogerian Therapist Fallback Engine
 function generateLocalTherapistResponse(input) {
   const text = input.toLowerCase();
 
@@ -630,17 +565,15 @@ function generateLocalTherapistResponse(input) {
   }
 }
 
-// Best Human Voice Speech Synthesis Picker
 function speakTherapistResponse(text) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.88; // Gentle therapeutic pace
-  utterance.pitch = 1.05; // Soft warm pitch
+  utterance.rate = 0.88;
+  utterance.pitch = 1.05;
 
   const voices = window.speechSynthesis.getVoices();
-  // Select best human sounding female / gentle voice
   const preferredVoice = voices.find(v => 
     v.name.includes('Google US English') ||
     v.name.includes('en-US-Neural2') ||
