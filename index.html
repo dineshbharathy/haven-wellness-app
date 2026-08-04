@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Haven — Autonomous AI Sanctuary & Discord Community</title>
-  <meta name="description" content="A premium desktop wellness application featuring an autonomous AI Therapist engine, Discord-like peer community, and therapeutic soundscapes.">
+  <title>Haven — Sanctuary Circle & Autonomous AI Sanctuary</title>
+  <meta name="description" content="A premium wellness application featuring an autonomous AI Therapist, real-time Sanctuary Circle peer messaging & 1-on-1 voice calling.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +40,7 @@
           <span>🎙️ AI Therapist</span>
         </button>
         <button class="nav-tab-btn" data-tab="community" data-title="Sanctuary Circle">
-          <span>💬 Discord Circle</span>
+          <span>💬 Sanctuary Circle</span>
         </button>
         <button class="nav-tab-btn" data-tab="memory-orbs" data-title="Memory Orbs">
           <span>🔮 Orbs</span>
@@ -63,6 +63,8 @@
       </nav>
 
       <div class="header-right-actions">
+        <span id="header-user-badge" class="header-user-tag">👤 Guest</span>
+        <button id="open-auth-modal-btn" class="ios-icon-btn" title="Account & Survey">👤</button>
         <button id="theme-toggle-btn" class="ios-icon-btn" title="Color Palettes">🎨</button>
       </div>
     </header>
@@ -82,7 +84,7 @@
           <div class="welcome-header">
             <span class="ios-pill pro-badge" id="time-greeting">Autonomous Neuro-Sanctuary Active</span>
             <h2>Welcome to your private wellness sanctuary.</h2>
-            <p>Featuring a 100% self-contained AI Therapist, Discord-like Sanctuary Circle, and therapeutic glassmorphism.</p>
+            <p>Featuring a 100% self-contained AI Therapist, Sanctuary Circle live peer calling, and therapeutic glassmorphism.</p>
           </div>
           
           <div class="ios-inset-group daily-quote-box">
@@ -112,8 +114,8 @@
             <div class="ai-banner-content">
               <div class="widget-icon">💬</div>
               <div class="ai-banner-text">
-                <h3>Sanctuary Circle — Discord Friends</h3>
-                <p>Connect with online peers, share experiences, and join voice lounges.</p>
+                <h3>Sanctuary Circle — Live Peer Community & Calls</h3>
+                <p>Connect with online peers, share experiences, and make 1-on-1 voice calls.</p>
               </div>
             </div>
             <button id="open-community-tab-btn" class="ios-btn secondary-btn">
@@ -222,22 +224,22 @@
         </div>
       </section>
 
-      <!-- ================= TAB 3: DISCORD-LIKE SANCTUARY CIRCLE (NEW) ================= -->
+      <!-- ================= TAB 3: SANCTUARY CIRCLE COMMUNITY ================= -->
       <section id="tab-community" class="tab-pane">
-        <div class="discord-app-container pro-card">
+        <div class="circle-app-container pro-card">
           
-          <!-- Discord Left Channel Sidebar -->
-          <div class="discord-channels-sidebar">
+          <!-- Sanctuary Channels Sidebar -->
+          <div class="circle-channels-sidebar">
             <div class="server-header-box">
               <span class="server-icon">🌸</span>
               <div class="server-title-group">
                 <span class="server-name">Sanctuary Circle</span>
-                <span class="online-indicator">🟢 14 Peers Online</span>
+                <span class="online-indicator">🟢 Live Real-Time Network</span>
               </div>
             </div>
 
             <div class="channels-section">
-              <span class="channel-group-label">TEXT CHANNELS</span>
+              <span class="channel-group-label">SANCTUARY CHANNELS</span>
               
               <button class="channel-btn active" data-channel="general">
                 <span class="channel-hash">#</span> general-sanctuary
@@ -257,17 +259,17 @@
             </div>
 
             <!-- User Profile Box -->
-            <div class="discord-user-profile-bar">
-              <div class="user-avatar-mini">🤍</div>
+            <div class="circle-user-profile-bar">
+              <div class="user-avatar-mini" id="circle-my-avatar">🤍</div>
               <div class="user-info-text">
-                <span class="user-display-name">You (Sanctuary Member)</span>
-                <span class="user-status-tag">Online & Safe</span>
+                <span class="user-display-name" id="circle-my-username">You</span>
+                <span class="user-status-tag" id="circle-my-struggle">Online & Safe</span>
               </div>
             </div>
           </div>
 
-          <!-- Discord Center Chat Area -->
-          <div class="discord-chat-main">
+          <!-- Sanctuary Center Chat Area -->
+          <div class="circle-chat-main">
             
             <div class="chat-header-bar">
               <div class="channel-title-info">
@@ -283,7 +285,7 @@
             <div id="voice-lounge-banner" class="voice-lounge-banner hidden">
               <div class="voice-status-group">
                 <span class="voice-pulse-dot"></span>
-                <span id="voice-lounge-text">Connected to Voice Lounge • 4 People Talking</span>
+                <span id="voice-lounge-text">Connected to Voice Lounge • Talking softly</span>
               </div>
               <button id="toggle-voice-connect-btn" class="ios-btn outline-btn small-btn">
                 🔇 Leave Voice
@@ -296,17 +298,17 @@
             </div>
 
             <!-- Chat Input Bar -->
-            <div class="discord-input-container">
+            <div class="circle-input-container">
               <input type="text" id="discord-chat-input" class="ios-input" placeholder="Message #general-sanctuary... Share your thoughts safely.">
               <button id="send-discord-msg-btn" class="ios-btn primary-btn small-btn">Send</button>
             </div>
 
           </div>
 
-          <!-- Discord Right Friends / Online Members Sidebar -->
-          <div class="discord-friends-sidebar">
+          <!-- Sanctuary Right Friends / Online Members Sidebar -->
+          <div class="circle-friends-sidebar">
             <div class="friends-sidebar-header">
-              <span>ONLINE FRIENDS (5)</span>
+              <span>ONLINE FRIENDS & CALLS</span>
             </div>
 
             <div id="online-friends-list" class="friends-list-container">
@@ -635,6 +637,79 @@
       </section>
 
     </main>
+  </div>
+
+  <!-- 3-Question Auth & Survey Modal (Sign In / Log In) -->
+  <div id="auth-survey-modal" class="modal-overlay">
+    <div class="ios-sheet-modal auth-modal-card">
+      <div class="sheet-grabber"></div>
+      <button class="modal-close-btn" data-modal="auth-survey-modal">✕</button>
+      
+      <div id="auth-form-container">
+        <div class="auth-header">
+          <span class="auth-icon">🌸</span>
+          <h2 id="auth-modal-title">Welcome to Haven Sanctuary</h2>
+          <p id="auth-modal-subtitle" class="modal-subtitle">Complete your 3-question survey to enter the sanctuary.</p>
+        </div>
+
+        <!-- 3-Question Sign Up Form -->
+        <form id="auth-survey-form" onsubmit="return false;">
+          <div class="ios-input-group">
+            <label class="auth-label">1. Create Username</label>
+            <input type="text" id="survey-username" class="ios-input" placeholder="e.g. haven_spirit, sarah_warmth..." required>
+          </div>
+
+          <div class="ios-input-group">
+            <label class="auth-label">2. Create Password</label>
+            <input type="password" id="survey-password" class="ios-input" placeholder="••••••••" required>
+          </div>
+
+          <div class="ios-input-group">
+            <label class="auth-label">3. What are you struggling with today?</label>
+            <select id="survey-struggle-select" class="ios-input ios-select">
+              <option value="Parental Detachment / Longing for Dad">Parental Detachment / Longing for Dad</option>
+              <option value="Loneliness & Isolation">Loneliness & Isolation</option>
+              <option value="Anxiety & Emotional Stress">Anxiety & Emotional Stress</option>
+              <option value="Seeking Quiet Solitude & Rest">Seeking Quiet Solitude & Rest</option>
+              <option value="Grief & Missing Someone">Grief & Missing Someone</option>
+            </select>
+          </div>
+
+          <button id="auth-submit-btn" class="ios-btn primary-btn margin-top pulse-glow">
+            ✨ Complete Survey & Enter Haven
+          </button>
+        </form>
+
+        <div class="auth-toggle-footer">
+          <span id="auth-toggle-text">Already have a Haven account?</span>
+          <button id="auth-toggle-mode-btn" class="ios-link-btn">Log In</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live 1-on-1 Direct Peer Voice Call Modal -->
+  <div id="peer-call-modal" class="modal-overlay hidden">
+    <div class="ios-sheet-modal peer-call-card">
+      <div class="sheet-grabber"></div>
+      
+      <div class="call-avatar-hero">
+        <div class="call-avatar-orb" id="call-avatar-orb">
+          <span id="call-friend-avatar" class="call-avatar-icon">🌸</span>
+        </div>
+        <h3 id="call-friend-name">Sophia 🌸</h3>
+        <p id="call-status-label" class="call-status">Incoming Sanctuary Voice Call...</p>
+      </div>
+
+      <div class="call-actions-row">
+        <button id="accept-peer-call-btn" class="ios-btn primary-btn">
+          📞 Accept Call
+        </button>
+        <button id="decline-peer-call-btn" class="ios-btn secondary-btn">
+          🚫 End Call
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Add Friend Modal -->

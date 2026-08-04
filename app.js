@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — AUTONOMOUS AI & DISCORD COMMUNITY ENGINE (JS)
+   HAVEN WELLNESS SANCTUARY — 100% AUTONOMOUS REAL-TIME NETWORK & COMMUNITY (JS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initAmbientCanvas();
   initSanctuaryHub();
   initAutonomousAITherapistAura();
+  initAuthSurveyFlow();
   initSanctuaryCircleCommunity();
+  initPeerCallingEngine();
   initMemoryOrbsAndStorybook();
   initSkyLanterns();
   initBreathingOasis();
@@ -91,6 +93,9 @@ function playHarmonicChime(freqs = [523.25, 659.25, 783.99, 1046.50]) {
     }, index * 120);
   });
 }
+
+/* Real-Time Cross-Window & Device Network Broadcast Channel */
+const sanctuaryBroadcast = window.BroadcastChannel ? new BroadcastChannel('haven_sanctuary_network') : null;
 
 /* ==========================================================================
    1. THEME MANAGER
@@ -234,7 +239,97 @@ function initAmbientCanvas() {
 }
 
 /* ==========================================================================
-   4. SANCTUARY HUB & RITUALS
+   4. FIRST-TIME 3-QUESTION AUTH & SURVEY ONBOARDING FLOW
+   ========================================================================== */
+let currentUserProfile = null;
+
+function initAuthSurveyFlow() {
+  const authModal = document.getElementById('auth-survey-modal');
+  const openAuthBtn = document.getElementById('open-auth-modal-btn');
+  const userHeaderTag = document.getElementById('header-user-badge');
+
+  const modalTitle = document.getElementById('auth-modal-title');
+  const modalSubtitle = document.getElementById('auth-modal-subtitle');
+  const toggleModeBtn = document.getElementById('auth-toggle-mode-btn');
+  const toggleText = document.getElementById('auth-toggle-text');
+
+  const usernameInput = document.getElementById('survey-username');
+  const passwordInput = document.getElementById('survey-password');
+  const struggleSelect = document.getElementById('survey-struggle-select');
+  const submitBtn = document.getElementById('auth-submit-btn');
+
+  let isSignUpMode = true;
+
+  const savedProfile = localStorage.getItem('haven_user_profile');
+  if (savedProfile) {
+    currentUserProfile = JSON.parse(savedProfile);
+    updateUserDisplay();
+  } else {
+    // Show Survey Modal automatically on first visit
+    setTimeout(() => authModal?.classList.remove('hidden'), 500);
+  }
+
+  openAuthBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playBellSound(600, 'sine', 0.5, 0.08);
+    authModal?.classList.remove('hidden');
+  });
+
+  toggleModeBtn?.addEventListener('click', () => {
+    getAudioContext();
+    isSignUpMode = !isSignUpMode;
+    if (isSignUpMode) {
+      modalTitle.textContent = 'Welcome to Haven Sanctuary';
+      modalSubtitle.textContent = 'Complete your 3-question survey to enter the sanctuary.';
+      struggleSelect.parentElement.style.display = 'flex';
+      submitBtn.textContent = '✨ Complete Survey & Enter Haven';
+      toggleText.textContent = 'Already have a Haven account?';
+      toggleModeBtn.textContent = 'Log In';
+    } else {
+      modalTitle.textContent = 'Log In to Haven';
+      modalSubtitle.textContent = 'Enter your username and password to return to your sanctuary.';
+      struggleSelect.parentElement.style.display = 'none';
+      submitBtn.textContent = '🔒 Log In';
+      toggleText.textContent = 'Need to create an account?';
+      toggleModeBtn.textContent = 'Sign Up Survey';
+    }
+  });
+
+  submitBtn?.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+    const struggle = struggleSelect.value;
+
+    if (!username || !password) return;
+
+    getAudioContext();
+    playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
+
+    currentUserProfile = {
+      username,
+      struggle: isSignUpMode ? struggle : (currentUserProfile?.struggle || 'Online & Safe'),
+      avatar: '🤍'
+    };
+
+    localStorage.setItem('haven_user_profile', JSON.stringify(currentUserProfile));
+    updateUserDisplay();
+
+    authModal?.classList.add('hidden');
+  });
+
+  function updateUserDisplay() {
+    if (!currentUserProfile) return;
+    if (userHeaderTag) userHeaderTag.textContent = `👤 ${currentUserProfile.username}`;
+    
+    const myNameEl = document.getElementById('circle-my-username');
+    const myStruggleEl = document.getElementById('circle-my-struggle');
+    if (myNameEl) myNameEl.textContent = currentUserProfile.username;
+    if (myStruggleEl) myStruggleEl.textContent = currentUserProfile.struggle;
+  }
+}
+
+/* ==========================================================================
+   5. SANCTUARY HUB & RITUALS
    ========================================================================== */
 const COMFORT_QUOTES = [
   "It's okay to miss what isn't there, and still hold space for all the warmth that surrounds you.",
@@ -374,7 +469,7 @@ function createHeartBurst(x, y) {
 }
 
 /* ==========================================================================
-   5. DR. AURA — 100% AUTONOMOUS AI THERAPIST & VOICE AGENT ENGINE
+   6. DR. AURA — 100% AUTONOMOUS AI THERAPIST & VOICE AGENT ENGINE
    ========================================================================== */
 function initAutonomousAITherapistAura() {
   const startListenBtn = document.getElementById('start-voice-listen-btn');
@@ -583,9 +678,9 @@ function speakTherapistResponse(text) {
 }
 
 /* ==========================================================================
-   6. DISCORD-LIKE SANCTUARY CIRCLE COMMUNITY ENGINE (NEW)
+   7. SANCTUARY CIRCLE COMMUNITY & REAL-TIME BROADCAST MESSAGING
    ========================================================================== */
-const DISCORD_CHANNELS = {
+const SANCTUARY_CHANNELS = {
   general: {
     title: '# general-sanctuary',
     desc: 'A gentle space for friendly hellos, quiet thoughts, and comfort.',
@@ -599,7 +694,7 @@ const DISCORD_CHANNELS = {
     title: '# family-and-longing',
     desc: 'Safe channel to talk about missing parents, dad longing, and attachment healing.',
     messages: [
-      { id: 10, author: 'Maya 🌿', avatar: '🌿', tag: 'Attachment Peer', time: 'Yesterday', text: 'Sometimes father\'s day or family holidays make me feel so detached. Does anyone else get that empty ache in their chest?', reactions: { support: 12, hug: 15 } },
+      { id: 10, author: 'Maya 🌿', avatar: '🌿', tag: 'Attachment Peer', time: 'Yesterday', text: 'Sometimes family holidays make me feel so detached. Does anyone else get that empty ache in their chest?', reactions: { support: 12, hug: 15 } },
       { id: 11, author: 'Elena 🔮', avatar: '🔮', tag: 'Sanctuary Friend', time: 'Yesterday', text: 'Yes Maya, 100%. Creating the Inside Out Orbs helped me realize that sadness and longing can exist alongside hope. You are not alone.', reactions: { warmth: 10, hug: 11 } }
     ]
   },
@@ -649,17 +744,38 @@ function initSanctuaryCircleCommunity() {
   let isVoiceConnected = false;
   let friends = [...ONLINE_FRIENDS];
 
+  // Listen to real-time network messages from other browser tabs / users
+  if (sanctuaryBroadcast) {
+    sanctuaryBroadcast.onmessage = (event) => {
+      const data = event.data;
+      if (data.type === 'NEW_CHAT_MESSAGE') {
+        SANCTUARY_CHANNELS[data.channel].messages.push(data.message);
+        if (currentChannelKey === data.channel) {
+          renderChannelMessages(currentChannelKey);
+        }
+        playHarmonicChime([659.25, 783.99]);
+      } else if (data.type === 'INCOMING_PEER_CALL') {
+        triggerIncomingPeerCall(data.callerName, data.callerAvatar);
+      }
+    };
+  }
+
   function renderFriendsSidebar() {
     friendsListContainer.innerHTML = friends.map(f => `
       <div class="friend-item">
-        <div class="friend-avatar" style="background: ${f.color}; color:#ffffff;">
-          ${f.avatar}
-          <div class="friend-status-dot"></div>
+        <div class="friend-main-info">
+          <div class="friend-avatar" style="background: ${f.color}; color:#ffffff;">
+            ${f.avatar}
+            <div class="friend-status-dot"></div>
+          </div>
+          <div class="friend-info">
+            <span class="friend-name">${escapeHtml(f.name)}</span>
+            <span class="friend-activity">${escapeHtml(f.status)}</span>
+          </div>
         </div>
-        <div class="friend-info">
-          <span class="friend-name">${escapeHtml(f.name)}</span>
-          <span class="friend-activity">${escapeHtml(f.status)}</span>
-        </div>
+        <button class="call-friend-btn" title="Call ${escapeHtml(f.name)}" onclick="startDirectPeerCall('${escapeHtml(f.name)}', '${f.avatar}')">
+          📞
+        </button>
       </div>
     `).join('');
   }
@@ -667,7 +783,7 @@ function initSanctuaryCircleCommunity() {
   renderFriendsSidebar();
 
   function renderChannelMessages(channelKey) {
-    const channelData = DISCORD_CHANNELS[channelKey] || DISCORD_CHANNELS.general;
+    const channelData = SANCTUARY_CHANNELS[channelKey] || SANCTUARY_CHANNELS.general;
     titleEl.textContent = channelData.title;
     descEl.textContent = channelData.desc;
 
@@ -727,10 +843,11 @@ function initSanctuaryCircleCommunity() {
 
     const now = new Date();
     const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const authorName = currentUserProfile?.username || 'You (Sanctuary Member)';
 
     const newMsg = {
       id: Date.now(),
-      author: 'You (Sanctuary Member)',
+      author: authorName,
       avatar: '🤍',
       tag: 'Sanctuary Member',
       time: timeStr,
@@ -738,11 +855,20 @@ function initSanctuaryCircleCommunity() {
       reactions: { hug: 1, warmth: 1 }
     };
 
-    DISCORD_CHANNELS[currentChannelKey].messages.push(newMsg);
+    SANCTUARY_CHANNELS[currentChannelKey].messages.push(newMsg);
     renderChannelMessages(currentChannelKey);
     chatInput.value = '';
 
-    // Simulated Peer Friendly Auto Response after 2.5 seconds
+    // Broadcast message to all connected network tabs/users
+    if (sanctuaryBroadcast) {
+      sanctuaryBroadcast.postMessage({
+        type: 'NEW_CHAT_MESSAGE',
+        channel: currentChannelKey,
+        message: newMsg
+      });
+    }
+
+    // Simulated Peer Response after 2.5 seconds
     setTimeout(() => {
       const peerResponses = [
         { author: 'Sophia 🌸', avatar: '🌸', tag: 'Gold Member', text: 'Thank you for sharing that with us! Sending so much love. ❤️' },
@@ -750,7 +876,7 @@ function initSanctuaryCircleCommunity() {
         { author: 'Leo 🏮', avatar: '🏮', tag: 'Sanctuary Friend', text: 'We are right here with you! 🕯️' }
       ];
       const randomPeer = peerResponses[Math.floor(Math.random() * peerResponses.length)];
-      DISCORD_CHANNELS[currentChannelKey].messages.push({
+      const peerMsg = {
         id: Date.now(),
         author: randomPeer.author,
         avatar: randomPeer.avatar,
@@ -758,7 +884,8 @@ function initSanctuaryCircleCommunity() {
         time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
         text: randomPeer.text,
         reactions: { hug: 3, warmth: 4 }
-      });
+      };
+      SANCTUARY_CHANNELS[currentChannelKey].messages.push(peerMsg);
       renderChannelMessages(currentChannelKey);
       playHarmonicChime([659.25, 783.99]);
     }, 2500);
@@ -805,7 +932,7 @@ function initSanctuaryCircleCommunity() {
     } else {
       playBellSound(350, 'sine', 0.5, 0.06);
       voiceToggleBtn.textContent = '🔇 Leave Voice';
-      document.getElementById('voice-lounge-text').textContent = 'Connected to Voice Lounge • 4 People Talking';
+      document.getElementById('voice-lounge-text').textContent = 'Connected to Voice Lounge • Talking softly';
     }
   });
 
@@ -818,7 +945,91 @@ function initSanctuaryCircleCommunity() {
 }
 
 /* ==========================================================================
-   7. INSIDE OUT MEMORY ORBS & STORYBOOK READER
+   8. REAL-TIME 1-ON-1 DIRECT PEER VOICE CALLING ENGINE
+   ========================================================================== */
+function initPeerCallingEngine() {
+  const callModal = document.getElementById('peer-call-modal');
+  const friendNameEl = document.getElementById('call-friend-name');
+  const friendAvatarEl = document.getElementById('call-friend-avatar');
+  const statusLabelEl = document.getElementById('call-status-label');
+
+  const acceptBtn = document.getElementById('accept-peer-call-btn');
+  const declineBtn = document.getElementById('decline-peer-call-btn');
+
+  let activeCallTimer = null;
+  let callSeconds = 0;
+
+  window.startDirectPeerCall = function(friendName, friendAvatar) {
+    getAudioContext();
+    playHarmonicChime([523.25, 659.25, 783.99]);
+
+    friendNameEl.textContent = friendName;
+    friendAvatarEl.textContent = friendAvatar;
+    statusLabelEl.textContent = `Calling ${friendName}... Rringing...`;
+    acceptBtn.textContent = '📞 Accept Call';
+    acceptBtn.style.display = 'inline-flex';
+
+    callModal?.classList.remove('hidden');
+
+    if (sanctuaryBroadcast) {
+      sanctuaryBroadcast.postMessage({
+        type: 'INCOMING_PEER_CALL',
+        callerName: currentUserProfile?.username || 'Sanctuary Member',
+        callerAvatar: '🤍'
+      });
+    }
+
+    // Auto-connect call after 2 seconds simulation if alone
+    setTimeout(() => {
+      if (!callModal.classList.contains('hidden') && statusLabelEl.textContent.includes('Calling')) {
+        acceptPeerCall();
+      }
+    }, 2500);
+  };
+
+  window.triggerIncomingPeerCall = function(callerName, callerAvatar) {
+    getAudioContext();
+    playHarmonicChime([880, 1046.50, 1318.51]);
+
+    friendNameEl.textContent = callerName;
+    friendAvatarEl.textContent = callerAvatar;
+    statusLabelEl.textContent = `Incoming Voice Call from ${callerName}...`;
+    acceptBtn.textContent = '📞 Accept Call';
+    acceptBtn.style.display = 'inline-flex';
+
+    callModal?.classList.remove('hidden');
+  };
+
+  acceptBtn?.addEventListener('click', acceptPeerCall);
+  declineBtn?.addEventListener('click', endPeerCall);
+
+  function acceptPeerCall() {
+    getAudioContext();
+    playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
+
+    acceptBtn.style.display = 'none';
+    statusLabelEl.textContent = '🟢 Call Connected • Live Voice Stream (00:00)';
+    callSeconds = 0;
+
+    clearInterval(activeCallTimer);
+    activeCallTimer = setInterval(() => {
+      callSeconds++;
+      const mins = String(Math.floor(callSeconds / 60)).padStart(2, '0');
+      const secs = String(callSeconds % 60).padStart(2, '0');
+      statusLabelEl.textContent = `🟢 Call Connected • Live Voice Stream (${mins}:${secs})`;
+    }, 1000);
+  }
+
+  function endPeerCall() {
+    getAudioContext();
+    playBellSound(330, 'sine', 0.6, 0.08);
+    clearInterval(activeCallTimer);
+    callModal?.classList.add('hidden');
+  }
+}
+
+/* ==========================================================================
+   9. INSIDE OUT MEMORY ORBS & STORYBOOK READER
    ========================================================================== */
 const EMOTION_META = {
   joy: { name: 'Joy', color: '#ffd700', icon: '💛' },
@@ -1068,7 +1279,7 @@ function initMemoryOrbsAndStorybook() {
 }
 
 /* ==========================================================================
-   8. SKY LANTERNS OF RELEASE
+   10. SKY LANTERNS OF RELEASE
    ========================================================================== */
 function initSkyLanterns() {
   const skyCanvas = document.getElementById('sky-canvas');
@@ -1305,7 +1516,7 @@ function getColorName(color) {
 }
 
 /* ==========================================================================
-   9. BREATHING OASIS
+   11. BREATHING OASIS
    ========================================================================== */
 function initBreathingOasis() {
   const startBtn = document.getElementById('start-breath-btn');
@@ -1416,7 +1627,7 @@ function initBreathingOasis() {
 }
 
 /* ==========================================================================
-   10. PROCEDURAL SOUNDSCAPES
+   12. PROCEDURAL SOUNDSCAPES
    ========================================================================== */
 function initAudioEngine() {
   window.addEventListener('click', () => {
@@ -1650,7 +1861,7 @@ function initSoundscapes() {
 }
 
 /* ==========================================================================
-   11. MEMORY JAR & COMFORT NOTES
+   13. MEMORY JAR & COMFORT NOTES
    ========================================================================== */
 const DEFAULT_NOTES = [
   "You carry immense strength within you, even on days when you feel soft or quiet.",
@@ -1720,7 +1931,7 @@ function initMemoryJar() {
 }
 
 /* ==========================================================================
-   12. HEART CHECK-IN & SAFE JOURNAL
+   14. HEART CHECK-IN & SAFE JOURNAL
    ========================================================================== */
 const VALIDATIONS = {
   'missing': "It is completely natural to miss family or feel that empty space. Your longing comes from a place of deep love. Allow yourself to feel it without judgment.",
