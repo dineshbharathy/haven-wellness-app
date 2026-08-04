@@ -2,11 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>Sphaera — 3D Mood Sphere Sanctuary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sphaera — 3D Mood Sanctuary</title>
   <meta name="description" content="A tactile 3D mood-journaling web application where daily emotions become sculptable glowing spheres.">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,344 +14,322 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body data-theme="twilight">
-  <!-- Ambient Particles Background -->
+  <!-- Ambient Background Canvas -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- iOS Device Wrapper -->
-  <div class="ios-device-wrapper">
-    <div class="ios-phone-shell">
-      
-      <!-- iOS Status Bar -->
-      <div class="ios-status-bar">
-        <span class="status-time" id="status-time">9:41</span>
-        <div class="dynamic-island">
-          <span class="island-sparkle">🔮 Sphaera</span>
-        </div>
-        <div class="status-icons">
-          <span class="status-icon">📶</span>
-          <span class="status-icon">📡</span>
-          <span class="status-battery">🔋</span>
+  <!-- Main Desktop Web Application Container -->
+  <div id="app" class="desktop-app-shell">
+    
+    <!-- Top Navigation Header -->
+    <header class="desktop-navbar glass-card">
+      <div class="brand">
+        <span class="brand-icon">🔮</span>
+        <div class="brand-titles">
+          <h1 class="brand-title">Sphaera</h1>
+          <span class="brand-tagline">3D Mood Sanctuary</span>
         </div>
       </div>
 
-      <!-- iOS App Shell -->
-      <div id="app" class="ios-app-container">
-        
-        <!-- iOS Translucent Navbar -->
-        <header class="ios-navbar">
-          <div class="ios-nav-top">
-            <div class="ios-brand">
-              <span class="brand-sparkle">🔮</span>
-              <span class="ios-app-name">Sphaera</span>
+      <nav class="nav-tabs">
+        <button class="nav-btn active" data-tab="today" data-title="Today's Mood Sphere">
+          <span class="icon">🔮</span> Today
+        </button>
+        <button class="nav-btn" data-tab="spiral" data-title="Chronological Mood Spiral">
+          <span class="icon">🌀</span> Spiral View
+        </button>
+        <button class="nav-btn" data-tab="calendar" data-title="Calendar Grid">
+          <span class="icon">📅</span> Calendar
+        </button>
+        <button class="nav-btn" data-tab="insights" data-title="Insights & Analytics">
+          <span class="icon">📊</span> Insights
+        </button>
+        <button class="nav-btn" data-tab="lanterns" data-title="Sky Lanterns Archive">
+          <span class="icon">🏮</span> Sky Lanterns
+        </button>
+        <button class="nav-btn" data-tab="soundscapes" data-title="Ambient Soundscapes">
+          <span class="icon">🎶</span> Soundscapes
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="icon-btn" title="Choose Atmosphere Theme">
+          🎨
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Grid Area -->
+    <main class="desktop-main-content">
+      
+      <!-- ================= SCREEN 1: TODAY / CHECK-IN ================= -->
+      <section id="tab-today" class="tab-pane active">
+        <div class="today-desktop-grid">
+          
+          <!-- Left Column: 3D Mood Sphere Canvas & Sculpting Palette -->
+          <div class="glass-card sphere-hero-card">
+            <div class="card-header-box">
+              <h2>Today's Mood Sphere</h2>
+              <p class="subtitle">Sculpt your emotional state using the palette below. Drag to rotate in 3D.</p>
             </div>
-            <button id="theme-toggle-btn" class="ios-icon-btn" title="Atmosphere Theme">
-              🎨
+
+            <div class="sphere-viewport-container">
+              <canvas id="main-sphere-canvas"></canvas>
+              <span class="sphere-hint">Drag to rotate • Tap mood presets to sculpt</span>
+            </div>
+
+            <!-- Mood Palette Presets -->
+            <div class="inset-group">
+              <span class="group-label">SCULPT EMOTIONAL PALETTE</span>
+              <div class="mood-presets-grid">
+                <button class="mood-chip active" data-preset="calm" data-color="#2a9d8f">
+                  <span class="chip-color" style="background:#2a9d8f;"></span> Calm
+                </button>
+                <button class="mood-chip" data-preset="joy" data-color="#f4a261">
+                  <span class="chip-color" style="background:#f4a261;"></span> Joyful
+                </button>
+                <button class="mood-chip" data-preset="anxious" data-color="#48cae4">
+                  <span class="chip-color" style="background:#48cae4;"></span> Anxious
+                </button>
+                <button class="mood-chip" data-preset="low" data-color="#6c757d">
+                  <span class="chip-color" style="background:#6c757d;"></span> Low
+                </button>
+                <button class="mood-chip" data-preset="angry" data-color="#e63946">
+                  <span class="chip-color" style="background:#e63946;"></span> Angry
+                </button>
+                <button class="mood-chip" data-preset="nostalgic" data-color="#ff758f">
+                  <span class="chip-color" style="background:#ff758f;"></span> Nostalgic
+                </button>
+                <button class="mood-chip" data-preset="solitude" data-color="#7209b7">
+                  <span class="chip-color" style="background:#7209b7;"></span> Solitude
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Reflection Text, Photo & Voice Memo Recorder -->
+          <div class="glass-card reflection-form-card">
+            <div class="card-header-box">
+              <h3>Reflection & Media</h3>
+              <p class="subtitle">Write a short note, attach a picture, or record a voice memo.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="today-reflection-input">Reflection Note</label>
+              <textarea id="today-reflection-input" class="input-field" rows="6" placeholder="Write whatever is on your heart today..."></textarea>
+            </div>
+
+            <!-- Media Attachments Row -->
+            <div class="media-actions-row">
+              <label for="today-photo-input" class="btn secondary-btn small-btn">
+                📷 Attach Photo
+              </label>
+              <input type="file" id="today-photo-input" accept="image/*" class="hidden-file-input">
+
+              <button id="voice-record-btn" class="btn secondary-btn small-btn">
+                🎙️ Record Voice Memo
+              </button>
+            </div>
+
+            <!-- Voice Memo Status & Controls -->
+            <div id="voice-memo-container" class="voice-memo-box hidden">
+              <div class="voice-status">
+                <span id="voice-recording-indicator" class="recording-pulse hidden">🔴 Recording...</span>
+                <span id="voice-timer">00:00</span>
+              </div>
+              <div class="voice-controls">
+                <button id="stop-voice-btn" class="btn outline-btn small-btn hidden">⏹ Stop</button>
+                <button id="play-voice-btn" class="btn primary-btn small-btn hidden">▶ Play Memo</button>
+                <button id="delete-voice-btn" class="icon-btn small-btn hidden">🗑️</button>
+              </div>
+            </div>
+
+            <!-- Photo Preview Frame -->
+            <div id="photo-preview-container" class="photo-preview-box hidden">
+              <img id="photo-preview-img" src="" alt="Photo Attachment">
+              <button id="remove-photo-btn" class="icon-btn small-btn">✕</button>
+            </div>
+
+            <button id="save-today-entry-btn" class="btn primary-btn pulse-glow large-btn">
+              🔮 Save Today's Mood Sphere
             </button>
           </div>
-          <div class="ios-large-title-box">
-            <h1 class="ios-large-title" id="ios-page-title">Today's Sphere</h1>
+
+        </div>
+      </section>
+
+      <!-- ================= SCREEN 2: SPIRAL VIEW ================= -->
+      <section id="tab-spiral" class="tab-pane">
+        <div class="glass-card spiral-card">
+          <div class="section-header center">
+            <h2>🌀 Chronological Mood Spiral</h2>
+            <p>An expanding 3D spiral timeline where each day's mood sphere floats along your history.</p>
           </div>
-        </header>
 
-        <!-- iOS Main Scrollable Viewport -->
-        <main class="ios-main-content">
+          <div class="spiral-viewport-container">
+            <canvas id="spiral-canvas"></canvas>
+            <div class="spiral-instructions">
+              <p>✨ Drag or scroll to navigate through time along the spiral path</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SCREEN 3: CALENDAR VIEW ================= -->
+      <section id="tab-calendar" class="tab-pane">
+        <div class="glass-card calendar-card">
+          <div class="calendar-header">
+            <button id="cal-prev-month" class="icon-btn">◀</button>
+            <h2 id="cal-month-title">August 2026</h2>
+            <button id="cal-next-month" class="icon-btn">▶</button>
+          </div>
+
+          <div class="calendar-days-header">
+            <span>Sunday</span><span>Monday</span><span>Tuesday</span><span>Wednesday</span><span>Thursday</span><span>Friday</span><span>Saturday</span>
+          </div>
+
+          <div id="calendar-grid" class="calendar-grid">
+            <!-- Dynamic calendar cells -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SCREEN 4: INSIGHTS & ANALYTICS ================= -->
+      <section id="tab-insights" class="tab-pane">
+        <div class="insights-desktop-grid">
           
-          <!-- ================= SCREEN 1: TODAY / CHECK-IN ================= -->
-          <section id="tab-today" class="tab-pane active">
-            <div class="ios-card sphere-card">
-              
-              <!-- 3D Interactive Mood Sphere Canvas -->
-              <div class="sphere-viewport-container">
-                <canvas id="main-sphere-canvas"></canvas>
-                <span class="sphere-hint">Drag to rotate • Tap presets to sculpt mood</span>
-              </div>
-
-              <!-- Mood Palette Presets -->
-              <div class="ios-inset-group">
-                <span class="ios-group-label">SCULPT EMOTIONAL PALETTE</span>
-                <div class="mood-presets-grid">
-                  <button class="mood-chip active" data-preset="calm" data-color="#2a9d8f">
-                    <span class="chip-color" style="background:#2a9d8f;"></span> Calm
-                  </button>
-                  <button class="mood-chip" data-preset="joy" data-color="#f4a261">
-                    <span class="chip-color" style="background:#f4a261;"></span> Joyful
-                  </button>
-                  <button class="mood-chip" data-preset="anxious" data-color="#48cae4">
-                    <span class="chip-color" style="background:#48cae4;"></span> Anxious
-                  </button>
-                  <button class="mood-chip" data-preset="low" data-color="#6c757d">
-                    <span class="chip-color" style="background:#6c757d;"></span> Low
-                  </button>
-                  <button class="mood-chip" data-preset="angry" data-color="#e63946">
-                    <span class="chip-color" style="background:#e63946;"></span> Angry
-                  </button>
-                  <button class="mood-chip" data-preset="nostalgic" data-color="#ff758f">
-                    <span class="chip-color" style="background:#ff758f;"></span> Nostalgic
-                  </button>
-                  <button class="mood-chip" data-preset="solitude" data-color="#7209b7">
-                    <span class="chip-color" style="background:#7209b7;"></span> Solitude
-                  </button>
-                </div>
-              </div>
-
-              <!-- Entry Form: Reflection, Photo, Voice Memo -->
-              <div class="ios-input-group">
-                <textarea id="today-reflection-input" class="ios-input ios-textarea" rows="3" placeholder="Write a short reflection for today..."></textarea>
-                
-                <!-- Media Action Row -->
-                <div class="media-actions-row">
-                  <label for="today-photo-input" class="ios-btn secondary-btn small-btn">
-                    📷 Photo
-                  </label>
-                  <input type="file" id="today-photo-input" accept="image/*" class="hidden-file-input">
-
-                  <!-- Voice Note Recorder Button -->
-                  <button id="voice-record-btn" class="ios-btn secondary-btn small-btn">
-                    🎙️ Record Voice Note
-                  </button>
-                </div>
-
-                <!-- Voice Note Status & Player -->
-                <div id="voice-memo-container" class="voice-memo-box hidden">
-                  <div class="voice-status">
-                    <span id="voice-recording-indicator" class="recording-pulse hidden">🔴 Recording...</span>
-                    <span id="voice-timer">00:00</span>
-                  </div>
-                  <div class="voice-controls">
-                    <button id="stop-voice-btn" class="ios-btn outline-btn small-btn hidden">⏹ Stop</button>
-                    <button id="play-voice-btn" class="ios-btn primary-btn small-btn hidden">▶ Play Memo</button>
-                    <button id="delete-voice-btn" class="ios-icon-btn small-btn hidden">🗑️</button>
-                  </div>
-                </div>
-
-                <!-- Photo Preview -->
-                <div id="photo-preview-container" class="photo-preview-box hidden">
-                  <img id="photo-preview-img" src="" alt="Photo Attachment">
-                  <button id="remove-photo-btn" class="ios-icon-btn small-btn">✕</button>
-                </div>
-              </div>
-
-              <button id="save-today-entry-btn" class="ios-btn primary-btn pulse-glow">
-                🔮 Save Today's Mood Sphere
-              </button>
-
-            </div>
-          </section>
-
-          <!-- ================= SCREEN 2: SPIRAL VIEW (SIGNATURE VISUAL) ================= -->
-          <section id="tab-spiral" class="tab-pane">
-            <div class="ios-card spiral-card">
-              <div class="spiral-header">
-                <h3>🌀 Chronological Mood Spiral</h3>
-                <p>An expanding spiral timeline of your daily mood spheres.</p>
-              </div>
-
-              <!-- 3D Spiral Canvas -->
-              <div class="spiral-viewport-container">
-                <canvas id="spiral-canvas"></canvas>
-                <div class="spiral-instructions">
-                  <p>✨ Scroll or drag to move along the spiral path</p>
-                </div>
+          <!-- Summary & Streak Card -->
+          <div class="glass-card streak-card">
+            <div class="streak-badge-container">
+              <span class="streak-fire">🔥</span>
+              <div class="streak-info">
+                <span id="streak-count" class="streak-number">0 Check-ins</span>
+                <span class="streak-label">Daily Mood Habits</span>
               </div>
             </div>
-          </section>
+          </div>
 
-          <!-- ================= SCREEN 3: CALENDAR VIEW ================= -->
-          <section id="tab-calendar" class="tab-pane">
-            <div class="ios-card calendar-card">
-              
-              <!-- Month Header Navigator -->
-              <div class="calendar-header">
-                <button id="cal-prev-month" class="ios-icon-btn small-btn">◀</button>
-                <h3 id="cal-month-title">August 2026</h3>
-                <button id="cal-next-month" class="ios-icon-btn small-btn">▶</button>
-              </div>
-
-              <!-- Day Name Headers -->
-              <div class="calendar-days-header">
-                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-              </div>
-
-              <!-- Calendar Month Grid Cells -->
-              <div id="calendar-grid" class="calendar-grid">
-                <!-- Dynamic cells with mini mood swatches / spheres -->
-              </div>
-
+          <!-- Dominant Moods Breakdown -->
+          <div class="glass-card dominant-moods-card">
+            <h3>📊 Dominant Moods This Month</h3>
+            <div id="insights-mood-bars" class="insights-bars-container">
+              <!-- Dynamic progress bars -->
             </div>
-          </section>
+          </div>
 
-          <!-- ================= SCREEN 4: INSIGHTS & ANALYTICS ================= -->
-          <section id="tab-insights" class="tab-pane">
-            
-            <!-- Streak & Summary Header -->
-            <div class="ios-card insights-summary-card">
-              <div class="streak-badge-container">
-                <span class="streak-fire">🔥</span>
-                <div class="streak-info">
-                  <span id="streak-count" class="streak-number">0 Day Streak</span>
-                  <span class="streak-label">Consistent Check-ins</span>
-                </div>
-              </div>
+          <!-- Soft Pattern Correlation -->
+          <div class="glass-card correlation-card">
+            <div class="correlation-icon">💡</div>
+            <h3>Pattern Insight</h3>
+            <p id="insight-correlation-text">Checking in daily reveals soft patterns over time. You feel most peaceful on Fridays!</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= SCREEN 5: SKY LANTERNS ================= -->
+      <section id="tab-lanterns" class="tab-pane">
+        <div class="glass-card">
+          <div class="lantern-toolbar">
+            <button id="open-lantern-modal-btn" class="btn primary-btn">
+              ✨ Release Lantern
+            </button>
+            <span class="released-count" id="released-count">0 lanterns floating</span>
+          </div>
+
+          <div class="sky-viewport" id="sky-viewport">
+            <canvas id="sky-canvas"></canvas>
+          </div>
+
+          <div class="lantern-vault-section">
+            <span id="vault-filter-indicator" class="group-label">RELEASED ARCHIVE</span>
+            <div id="lantern-gallery-grid" class="lantern-gallery-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SCREEN 6: SOUNDSCAPES ================= -->
+      <section id="tab-soundscapes" class="tab-pane">
+        <div class="glass-card master-sound-card">
+          <div class="master-header">
+            <h3>🎵 Sanctuary Audio</h3>
+            <p>Real-time procedural ambient generator</p>
+          </div>
+          <button id="master-toggle-btn" class="btn primary-btn">▶ Enable Generator</button>
+        </div>
+
+        <div class="inset-group soundscapes-list">
+          <div class="list-row sound-card" data-sound="rain">
+            <span class="row-icon">🌧️</span>
+            <div class="row-info">
+              <span class="row-title">Window Rain</span>
+              <span class="row-subtitle">Pink Noise</span>
             </div>
+            <button class="sound-toggle-btn icon-btn small-btn">▶</button>
+          </div>
 
-            <!-- Dominant Moods Breakdown -->
-            <div class="ios-card">
-              <h3>📊 Dominant Moods This Month</h3>
-              <div id="insights-mood-bars" class="insights-bars-container">
-                <!-- Dynamic progress bars for moods -->
-              </div>
+          <div class="list-row sound-card" data-sound="campfire">
+            <span class="row-icon">🔥</span>
+            <div class="row-info">
+              <span class="row-title">Cozy Campfire</span>
+              <span class="row-subtitle">Warm Crackle</span>
             </div>
+            <button class="sound-toggle-btn icon-btn small-btn">▶</button>
+          </div>
 
-            <!-- Soft Correlation Insight -->
-            <div class="ios-card insight-correlation-card">
-              <div class="correlation-icon">💡</div>
-              <h3>Pattern Insight</h3>
-              <p id="insight-correlation-text">Checking in daily helps reveal soft patterns over time. You feel most peaceful on Fridays!</p>
+          <div class="list-row sound-card" data-sound="ocean">
+            <span class="row-icon">🌊</span>
+            <div class="row-info">
+              <span class="row-title">Ocean Waves</span>
+              <span class="row-subtitle">Rolling Tides</span>
             </div>
+            <button class="sound-toggle-btn icon-btn small-btn">▶</button>
+          </div>
+        </div>
+      </section>
 
-          </section>
+    </main>
 
-          <!-- ================= SCREEN 5: SKY LANTERNS ================= -->
-          <section id="tab-lanterns" class="tab-pane">
-            <div class="ios-card">
-              <div class="lantern-toolbar">
-                <button id="open-lantern-modal-btn" class="ios-btn primary-btn">
-                  ✨ Release Lantern
-                </button>
-                <span class="released-count" id="released-count">0 lanterns floating</span>
-              </div>
-
-              <div class="sky-viewport" id="sky-viewport">
-                <canvas id="sky-canvas"></canvas>
-              </div>
-
-              <div class="lantern-vault-section">
-                <span id="vault-filter-indicator" class="ios-group-label">RELEASED ARCHIVE</span>
-                <div id="lantern-gallery-grid" class="lantern-gallery-grid"></div>
-              </div>
-            </div>
-          </section>
-
-          <!-- ================= SCREEN 6: SOUNDSCAPES ================= -->
-          <section id="tab-soundscapes" class="tab-pane">
-            <div class="ios-card master-sound-card">
-              <div class="master-header">
-                <h3>🎵 Sanctuary Audio</h3>
-                <p>Real-time procedural ambient generator</p>
-              </div>
-              <button id="master-toggle-btn" class="ios-btn primary-btn">▶ Enable Generator</button>
-            </div>
-
-            <div class="ios-inset-group soundscapes-list">
-              <div class="ios-list-row sound-card" data-sound="rain">
-                <span class="row-icon">🌧️</span>
-                <div class="row-info">
-                  <span class="row-title">Window Rain</span>
-                  <span class="row-subtitle">Pink Noise</span>
-                </div>
-                <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
-              </div>
-              <div class="ios-list-row sound-card" data-sound="campfire">
-                <span class="row-icon">🔥</span>
-                <div class="row-info">
-                  <span class="row-title">Cozy Campfire</span>
-                  <span class="row-subtitle">Warm Crackle</span>
-                </div>
-                <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
-              </div>
-              <div class="ios-list-row sound-card" data-sound="ocean">
-                <span class="row-icon">🌊</span>
-                <div class="row-info">
-                  <span class="row-title">Ocean Waves</span>
-                  <span class="row-subtitle">Rolling Tides</span>
-                </div>
-                <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
-              </div>
-            </div>
-          </section>
-
-        </main>
-
-        <!-- iOS Bottom Translucent Tab Bar -->
-        <nav class="ios-tab-bar">
-          <button class="tab-item active" data-tab="today" data-title="Today's Sphere">
-            <span class="tab-icon">🔮</span>
-            <span class="tab-label">Today</span>
-          </button>
-          <button class="tab-item" data-tab="spiral" data-title="Mood Spiral">
-            <span class="tab-icon">🌀</span>
-            <span class="tab-label">Spiral</span>
-          </button>
-          <button class="tab-item" data-tab="calendar" data-title="Calendar">
-            <span class="tab-icon">📅</span>
-            <span class="tab-label">Calendar</span>
-          </button>
-          <button class="tab-item" data-tab="insights" data-title="Insights">
-            <span class="tab-icon">📊</span>
-            <span class="tab-label">Insights</span>
-          </button>
-          <button class="tab-item" data-tab="lanterns" data-title="Sky Lanterns">
-            <span class="tab-icon">🏮</span>
-            <span class="tab-label">Sky</span>
-          </button>
-          <button class="tab-item" data-tab="soundscapes" data-title="Audio">
-            <span class="tab-icon">🎶</span>
-            <span class="tab-label">Audio</span>
-          </button>
-        </nav>
-
-        <!-- iOS Home Indicator Pill -->
-        <div class="ios-home-indicator"></div>
-
-      </div>
-    </div>
+    <!-- Desktop Footer -->
+    <footer class="footer glass-card">
+      <p>Sphaera 3D Sanctuary — Designed for peace, reflection, and quiet joy. ❤️</p>
+    </footer>
   </div>
 
-  <!-- iOS Sheet Modals -->
-  <!-- Entry Detail Sheet Modal -->
+  <!-- Modals -->
+  <!-- Entry Detail Modal -->
   <div id="entry-detail-modal" class="modal-overlay hidden">
-    <div class="ios-sheet-modal">
-      <div class="sheet-grabber"></div>
+    <div class="modal-content glass-card">
       <button class="modal-close-btn" data-modal="entry-detail-modal">✕</button>
       
       <div class="entry-detail-header">
-        <span id="detail-entry-date" class="ios-pill">Aug 4, 2026</span>
+        <span id="detail-entry-date" class="pill-badge">Aug 4, 2026</span>
         <h3 id="detail-entry-mood-title">Calm & Peaceful</h3>
       </div>
 
-      <!-- Mini 3D Sphere Preview -->
-      <div class="detail-sphere-box">
-        <canvas id="detail-sphere-canvas"></canvas>
-      </div>
-
-      <!-- Note Body -->
       <p id="detail-entry-note" class="detail-note-text">"Quiet, peaceful day."</p>
 
-      <!-- Photo Attachment -->
       <div id="detail-photo-box" class="photo-preview-box hidden">
         <img id="detail-photo-img" src="" alt="Entry Photo">
       </div>
 
-      <!-- Playable Voice Note -->
       <div id="detail-voice-box" class="voice-memo-box hidden">
         <span class="voice-label">🎙️ Audio Recording Memo</span>
-        <button id="detail-play-voice-btn" class="ios-btn primary-btn small-btn">▶ Play Voice Memo</button>
+        <button id="detail-play-voice-btn" class="btn primary-btn small-btn">▶ Play Voice Memo</button>
       </div>
 
       <div class="modal-actions">
-        <button id="delete-entry-btn" class="ios-btn outline-btn danger-btn small-btn">🗑️ Delete Entry</button>
-        <button class="ios-btn secondary-btn modal-close-btn" data-modal="entry-detail-modal">Close</button>
+        <button id="delete-entry-btn" class="btn outline-btn danger-btn small-btn">🗑️ Delete Entry</button>
+        <button class="btn secondary-btn modal-close-btn" data-modal="entry-detail-modal">Close</button>
       </div>
     </div>
   </div>
 
   <!-- Release Lantern Modal -->
   <div id="lantern-modal" class="modal-overlay hidden">
-    <div class="ios-sheet-modal">
-      <div class="sheet-grabber"></div>
+    <div class="modal-content glass-card">
       <button class="modal-close-btn" data-modal="lantern-modal">✕</button>
       <h3>🏮 Release a Lantern</h3>
-      <textarea id="lantern-message" class="ios-input ios-textarea" rows="3" placeholder="Dear Dad... / Today I wish for..."></textarea>
+      <textarea id="lantern-message" class="input-field" rows="3" placeholder="Dear Dad... / Today I wish for..."></textarea>
       
       <div class="color-picker-options">
         <label class="color-option">
@@ -374,15 +350,14 @@
         </label>
       </div>
 
-      <button id="release-lantern-confirm-btn" class="ios-btn primary-btn">
+      <button id="release-lantern-confirm-btn" class="btn primary-btn">
         ✨ Release into Sky
       </button>
     </div>
   </div>
 
   <div id="theme-modal" class="modal-overlay hidden">
-    <div class="ios-sheet-modal">
-      <div class="sheet-grabber"></div>
+    <div class="modal-content glass-card">
       <button class="modal-close-btn" data-modal="theme-modal">✕</button>
       <h3>🎨 Select Theme</h3>
       <div class="theme-options-grid">
