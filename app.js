@@ -1,8 +1,9 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — iOS & NEURO-CALIBRATED ENGINE (JS)
+   HAVEN WELLNESS SANCTUARY — CROSS-DEVICE ENGINE (JS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initAdaptiveDeviceDetector();
   initIOSStatusBarClock();
   initAudioEngine();
   initThemeManager();
@@ -17,6 +18,76 @@ document.addEventListener('DOMContentLoaded', () => {
   initMemoryJar();
   initSafeJournal();
 });
+
+/* ==========================================================================
+   AUTOMATIC DEVICE DETECTOR & VIEWPORT ADAPTER
+   ========================================================================== */
+function initAdaptiveDeviceDetector() {
+  const deviceBadge = document.getElementById('device-badge');
+  const deviceModeLabel = document.getElementById('device-mode-label');
+  const detectedDeviceName = document.getElementById('detected-device-name');
+  const viewModeBtns = document.querySelectorAll('.view-mode-btn');
+
+  function detectDeviceType() {
+    const width = window.innerWidth;
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    let deviceType = 'laptop';
+    let deviceLabel = '💻 Laptop';
+
+    if (width <= 640 || (isTouch && width < 768)) {
+      deviceType = 'phone';
+      deviceLabel = '📱 Phone';
+    } else if (width <= 1024) {
+      deviceType = 'tablet';
+      deviceLabel = '📱 Tablet';
+    } else {
+      deviceType = 'laptop';
+      deviceLabel = '💻 Laptop';
+    }
+
+    document.body.setAttribute('data-detected-device', deviceType);
+
+    if (deviceBadge) deviceBadge.textContent = deviceLabel;
+    if (deviceModeLabel) deviceModeLabel.textContent = `${deviceType.toUpperCase()} MODE`;
+    if (detectedDeviceName) detectedDeviceName.textContent = deviceLabel;
+
+    return deviceType;
+  }
+
+  detectDeviceType();
+
+  window.addEventListener('resize', () => {
+    if (!document.body.hasAttribute('data-force-view') || document.body.getAttribute('data-force-view') === 'auto') {
+      detectDeviceType();
+    }
+  });
+
+  // Adaptive View Switcher Buttons
+  viewModeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(540, 'sine', 0.4, 0.06);
+
+      const mode = btn.getAttribute('data-view-mode');
+      viewModeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (mode === 'auto') {
+        document.body.removeAttribute('data-force-view');
+        detectDeviceType();
+      } else {
+        document.body.setAttribute('data-force-view', mode);
+        if (deviceBadge) deviceBadge.textContent = mode === 'phone' ? '📱 Phone' : mode === 'tablet' ? '📱 Tablet' : '💻 Laptop';
+        if (deviceModeLabel) deviceModeLabel.textContent = `${mode.toUpperCase()} VIEW`;
+      }
+
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 300);
+    });
+  });
+}
 
 /* ==========================================================================
    iOS STATUS BAR REAL-TIME CLOCK
@@ -367,7 +438,6 @@ function initAIListenerAura() {
   let isSynthEnabled = true;
   let recognition = null;
 
-  // Speech Synth Toggle
   synthToggleBtn?.addEventListener('click', () => {
     isSynthEnabled = !isSynthEnabled;
     synthToggleBtn.classList.toggle('active', isSynthEnabled);
@@ -376,7 +446,6 @@ function initAIListenerAura() {
     }
   });
 
-  // Web Speech Recognition API
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (SpeechRecognition) {
     recognition = new SpeechRecognition();
@@ -440,7 +509,6 @@ function initAIListenerAura() {
     }
   }
 
-  // Text Message Sending
   sendTextBtn?.addEventListener('click', () => {
     const val = textInput.value.trim();
     if (!val) return;
@@ -458,17 +526,14 @@ function initAIListenerAura() {
     getAudioContext();
     playBellSound(520, 'sine', 0.4, 0.08);
 
-    // Append User Bubble
     appendBubble('You', userText, 'user-bubble');
 
-    // Generate Empathetic Response
     statusText.textContent = 'Aura is thinking warmly...';
     setTimeout(() => {
       const response = generateEmpatheticResponse(userText);
       appendBubble('Aura AI', response, 'aura-bubble');
       statusText.textContent = 'Aura is here for you.';
 
-      // Speak back using SpeechSynthesis
       if (isSynthEnabled && window.speechSynthesis) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(response);
@@ -491,7 +556,6 @@ function initAIListenerAura() {
   }
 }
 
-// NLU Empathetic Response Engine tailored for attachment, missing dad/family, and loneliness
 function generateEmpatheticResponse(input) {
   const text = input.toLowerCase();
 

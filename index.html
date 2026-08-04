@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>Haven — Neurologically Calibrated Sanctuary</title>
-  <meta name="description" content="A personal iOS emotional support sanctuary calibrated with neuro-chromatic therapy and an empathetic AI listener.">
+  <title>Haven — Adaptable Sanctuary App</title>
+  <meta name="description" content="A personal emotional support sanctuary app with adaptive layouts for Phone, Tablet, and Laptop.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
@@ -15,47 +15,59 @@
   
   <link rel="stylesheet" href="./styles.css">
 </head>
-<body data-theme="neuro-calm">
-  <!-- Neuro-Calibrated Atmospheric Background Canvas -->
+<body data-theme="neuro-calm" data-device="auto">
+  <!-- Atmospheric Background Canvas -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- iOS Device Wrapper -->
-  <div class="ios-device-wrapper">
-    <div class="ios-phone-shell">
+  <!-- Adaptive Device Wrapper (Phone Shell on mobile/desktop toggle, Expanded Full View on Laptop) -->
+  <div class="ios-device-wrapper" id="device-wrapper">
+    <div class="ios-phone-shell" id="phone-shell">
       
-      <!-- iOS Status Bar -->
-      <div class="ios-status-bar">
+      <!-- iOS Status Bar (Visible in Mobile/Tablet View) -->
+      <div class="ios-status-bar" id="ios-status-bar">
         <span class="status-time" id="status-time">9:41</span>
         <div class="dynamic-island">
-          <span class="island-sparkle">✨ Haven • AI Listening</span>
+          <span class="island-sparkle">✨ Haven • Sanctuary</span>
         </div>
         <div class="status-icons">
+          <span id="device-badge" class="device-badge-tag">💻 Laptop</span>
           <span class="status-icon">📶</span>
-          <span class="status-icon">📡</span>
           <span class="status-battery">🔋</span>
         </div>
       </div>
 
-      <!-- iOS App Inner Content Container -->
+      <!-- Main Responsive Shell Container -->
       <div id="app" class="ios-app-container">
         
-        <!-- iOS Top Translucent Navigation Bar -->
+        <!-- Top Translucent Navigation Bar -->
         <header class="ios-navbar">
           <div class="ios-nav-top">
             <div class="ios-brand">
               <span class="brand-sparkle">🧠✨</span>
-              <span class="ios-app-name">Haven Sanctuary</span>
+              <span class="ios-app-name">Haven</span>
+              <span id="device-mode-label" class="device-mode-label">Laptop Mode</span>
             </div>
-            <button id="theme-toggle-btn" class="ios-icon-btn" title="Neuro-Theme Palette">
-              🎨
-            </button>
+            
+            <div class="nav-right-actions">
+              <!-- View Mode Switcher (For Laptop users to preview Phone/Tablet/Full views) -->
+              <div class="adaptive-view-switcher" id="adaptive-view-switcher">
+                <button class="view-mode-btn active" data-view-mode="auto" title="Auto-Detect Device">⚡ Auto</button>
+                <button class="view-mode-btn" data-view-mode="phone" title="Force Phone View">📱 Phone</button>
+                <button class="view-mode-btn" data-view-mode="tablet" title="Force Tablet View">📱 Tablet</button>
+                <button class="view-mode-btn" data-view-mode="laptop" title="Force Laptop Desktop View">💻 Laptop</button>
+              </div>
+
+              <button id="theme-toggle-btn" class="ios-icon-btn" title="Neuro-Palette">
+                🎨
+              </button>
+            </div>
           </div>
           <div class="ios-large-title-box">
             <h1 class="ios-large-title" id="ios-page-title">Sanctuary</h1>
           </div>
         </header>
 
-        <!-- iOS Main Scrollable Viewport -->
+        <!-- Main Scrollable Content Viewport -->
         <main class="ios-main-content">
           
           <!-- ================= TAB 1: HUB / HOME ================= -->
@@ -63,9 +75,9 @@
             <!-- Hero Welcome Card -->
             <div class="ios-card welcome-card">
               <div class="welcome-header">
-                <span class="ios-pill neuro-badge" id="time-greeting">Parasympathetic Regulation Active</span>
-                <h2>Welcome to your neuro-calibrated sanctuary.</h2>
-                <p>Designed with therapeutic color spectrums to soothe amygdala tension and foster oxytocin warmth.</p>
+                <span class="ios-pill neuro-badge" id="time-greeting">Neuro-Regulation Active</span>
+                <h2>Welcome to your adaptable sanctuary.</h2>
+                <p>Dynamically recognized and calibrated for your <strong id="detected-device-name">Device</strong>.</p>
               </div>
               
               <div class="ios-inset-group daily-quote-box">
@@ -80,8 +92,8 @@
               <div class="ai-banner-content">
                 <div class="ai-orb-mini-pulse"></div>
                 <div class="ai-banner-text">
-                  <h3>Aura — AI Companion</h3>
-                  <p>Speak or type to someone who truly listens to your heart with zero judgment.</p>
+                  <h3>Aura — AI Voice & Text Listener</h3>
+                  <p>Speak or type to an empathetic companion who holds safe space for your heart.</p>
                 </div>
               </div>
               <button id="open-ai-listener-btn" class="ios-btn primary-btn pulse-glow">
@@ -89,7 +101,7 @@
               </button>
             </div>
 
-            <!-- iOS Widgets Grid -->
+            <!-- Adaptive Responsive Widgets Grid -->
             <div class="ios-widgets-grid">
               
               <!-- Storybook Widget -->
@@ -144,7 +156,6 @@
           <section id="tab-ai-listener" class="tab-pane">
             <div class="ios-card ai-main-card">
               
-              <!-- Interactive Voice Pulse Sphere -->
               <div class="ai-listener-hero">
                 <div class="ai-voice-orb" id="ai-voice-orb">
                   <div class="ai-pulse-ring ring-1"></div>
@@ -157,7 +168,6 @@
                 <p class="ai-subtitle">Speak your heart out. Aura will listen softly and respond with warmth.</p>
               </div>
 
-              <!-- Voice Controls Bar -->
               <div class="ai-controls-bar">
                 <button id="start-voice-listen-btn" class="ios-btn primary-btn pulse-glow">
                   🎙️ Tap to Speak to Aura
@@ -167,7 +177,6 @@
                 </button>
               </div>
 
-              <!-- Text Input & Conversation History Box -->
               <div class="ios-inset-group ai-chat-container">
                 <span class="ios-group-label">SAFE CONVERSATION SPACE</span>
                 
@@ -190,7 +199,6 @@
           <!-- ================= TAB 3: INSIDE OUT MEMORY ORBS & STORYBOOK ================= -->
           <section id="tab-memory-orbs" class="tab-pane">
             
-            <!-- Segmented Control View Switcher -->
             <div class="ios-segmented-control">
               <button class="segmented-btn active" data-orb-view="create">🔮 Create Memory Orb</button>
               <button class="segmented-btn" data-orb-view="storybook">📖 Storybook Reader</button>
@@ -208,7 +216,6 @@
                   <span class="orb-blend-title" id="orb-blend-label">Blended Memory Sphere</span>
                 </div>
 
-                <!-- Emotions Sliders Group -->
                 <div class="ios-inset-group">
                   <span class="ios-group-label">INSIDE OUT EMOTION SPECTRUM</span>
                   <div class="ios-emotion-sliders">
@@ -270,7 +277,6 @@
                   </div>
                 </div>
 
-                <!-- Form Inputs -->
                 <div class="ios-input-group">
                   <input type="text" id="orb-title-input" class="ios-input" placeholder="Memory Title...">
                   <textarea id="orb-note-input" class="ios-input ios-textarea" rows="3" placeholder="Write your thoughts of the day..."></textarea>
@@ -304,7 +310,6 @@
                   </div>
                 </div>
 
-                <!-- 2-Page Book Spread -->
                 <div class="storybook-spread" id="storybook-spread">
                   <div class="book-page book-left-page">
                     <div id="page-orb-display" class="page-orb-container">
@@ -512,7 +517,7 @@
 
         </main>
 
-        <!-- iOS Bottom Translucent Tab Bar -->
+        <!-- Bottom Translucent Tab Bar -->
         <nav class="ios-tab-bar">
           <button class="tab-item active" data-tab="hub" data-title="Sanctuary">
             <span class="tab-icon">🏡</span>
@@ -544,7 +549,6 @@
           </button>
         </nav>
 
-        <!-- iOS Home Indicator Pill -->
         <div class="ios-home-indicator"></div>
 
       </div>
