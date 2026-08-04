@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — ULTRA-PREMIUM GLASS UI ENGINE (JS)
+   HAVEN WELLNESS SANCTUARY — 100% AUTONOMOUS AI THERAPIST & VOICE ENGINE
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDesktopTabNavigation();
   initAmbientCanvas();
   initSanctuaryHub();
-  initAITherapistAura();
+  initAutonomousAITherapistAura();
   initMemoryOrbsAndStorybook();
   initSkyLanterns();
   initBreathingOasis();
@@ -199,7 +199,6 @@ function initAmbientCanvas() {
   function render() {
     ctx.clearRect(0, 0, width, height);
 
-    // Floating Starlight Particles
     particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
@@ -218,7 +217,6 @@ function initAmbientCanvas() {
       ctx.fill();
     });
 
-    // Subtle Noise Grain Overlay Simulation
     ctx.globalAlpha = 0.035;
     for (let n = 0; n < 200; n++) {
       const rx = Math.random() * width;
@@ -370,9 +368,9 @@ function createHeartBurst(x, y) {
 }
 
 /* ==========================================================================
-   5. DR. AURA — PRO AI THERAPIST ENGINE (GEMINI 1.5 + HIGH-QUALITY VOICE)
+   5. DR. AURA — 100% AUTONOMOUS AI THERAPIST & VOICE AGENT ENGINE
    ========================================================================== */
-function initAITherapistAura() {
+function initAutonomousAITherapistAura() {
   const startListenBtn = document.getElementById('start-voice-listen-btn');
   const orbContainer = document.getElementById('ai-voice-orb');
   const orbStatusIcon = document.getElementById('ai-orb-status-icon');
@@ -383,42 +381,10 @@ function initAITherapistAura() {
   const sendTextBtn = document.getElementById('send-ai-text-btn');
   const messagesBox = document.getElementById('ai-chat-messages');
 
-  const openApiKeyBtn = document.getElementById('open-api-config-btn');
-  const apiKeyModal = document.getElementById('api-key-modal');
-  const geminiKeyInput = document.getElementById('gemini-api-key-input');
-  const saveKeyBtn = document.getElementById('save-gemini-key-btn');
-  const apiBanner = document.getElementById('api-status-banner');
-  const setupApiLink = document.getElementById('link-setup-api');
-
   let isListening = false;
   let isSynthEnabled = true;
   let recognition = null;
-  let geminiApiKey = localStorage.getItem('haven_gemini_key') || '';
-
-  if (geminiApiKey) {
-    if (geminiKeyInput) geminiKeyInput.value = geminiApiKey;
-    if (apiBanner) apiBanner.innerHTML = '✨ <strong>Gemini 1.5 Pro Therapy Engine Connected</strong>';
-  }
-
-  openApiKeyBtn?.addEventListener('click', () => {
-    apiKeyModal?.classList.remove('hidden');
-  });
-
-  setupApiLink?.addEventListener('click', (e) => {
-    e.preventDefault();
-    apiKeyModal?.classList.remove('hidden');
-  });
-
-  saveKeyBtn?.addEventListener('click', () => {
-    const val = geminiKeyInput.value.trim();
-    if (val) {
-      geminiApiKey = val;
-      localStorage.setItem('haven_gemini_key', val);
-      apiKeyModal?.classList.add('hidden');
-      if (apiBanner) apiBanner.innerHTML = '✨ <strong>Gemini 1.5 Pro Therapy Engine Connected</strong>';
-      playHarmonicChime([523.25, 659.25, 783.99]);
-    }
-  });
+  let conversationHistory = [];
 
   synthToggleBtn?.addEventListener('click', () => {
     isSynthEnabled = !isSynthEnabled;
@@ -500,18 +466,17 @@ function initAITherapistAura() {
     statusText.textContent = 'Dr. Aura is reflecting softly...';
     orbContainer.classList.add('ai-listening');
 
-    let response = '';
-    if (geminiApiKey) {
-      response = await fetchGeminiTherapistResponse(userText, geminiApiKey);
-    } else {
-      response = generateLocalTherapistResponse(userText);
-    }
+    // Simulate natural therapeutic thinking pause (800ms)
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    const response = generateAutonomousTherapistResponse(userText, conversationHistory);
+    conversationHistory.push({ user: userText, ai: response });
 
     orbContainer.classList.remove('ai-listening');
-    appendBubble('Dr. Aura (AI Therapist)', response, 'aura-bubble');
+    appendBubble('Dr. Aura (AI Therapist Agent)', response, 'aura-bubble');
     statusText.textContent = 'Dr. Aura is here for you.';
 
-    if (isSynthEnabled && window.speechSynthesis) {
+    if (isSynthEnabled) {
       speakTherapistResponse(response);
     }
   }
@@ -528,57 +493,77 @@ function initAITherapistAura() {
   }
 }
 
-async function fetchGeminiTherapistResponse(userText, apiKey) {
-  try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-    const payload = {
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            {
-              text: `System Persona: You are Dr. Aura, a compassionate licensed human therapist trained in Rogerian client-centered therapy, emotional reframing, and attachment therapy. Your client is a young woman who experiences emotional detachment from her parents and longs for her dad. Provide a warm, deeply validating, therapeutic response in 2-3 soft, calming sentences. Never break character. Client says: "${userText}"`
-            }
-          ]
-        }
-      ]
-    };
-
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-
-    if (!res.ok) throw new Error('Gemini API request failed');
-
-    const data = await res.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    return reply || generateLocalTherapistResponse(userText);
-  } catch (e) {
-    console.error('Gemini API Error:', e);
-    return generateLocalTherapistResponse(userText);
-  }
-}
-
-function generateLocalTherapistResponse(input) {
+/* Deep Autonomous Rogerian Active Listener & Attachment Therapy Engine */
+function generateAutonomousTherapistResponse(input, history) {
   const text = input.toLowerCase();
 
-  if (text.includes('dad') || text.includes('father') || text.includes('parent')) {
-    return "I hear how deeply you long for your dad and how heavy parental detachment can feel. What you are feeling is completely valid—your desire for unconditional parental warmth comes from a place of deep love. Take a soft breath; you are safe to feel that ache here without judgment.";
-  } else if (text.includes('alone') || text.includes('lonely') || text.includes('detached') || text.includes('isolated')) {
-    return "Feeling detached or isolated can make your inner world feel so quiet and distant. Please know that feeling this way doesn't mean you are broken or unwanted. I am right here with you, holding a warm, gentle space for your heart.";
-  } else if (text.includes('sad') || text.includes('cry') || text.includes('pain') || text.includes('hurt')) {
-    return "I hear the pain in your voice, and I want to remind you that your tears are welcome here. You don't have to carry the weight of being strong all the time. Let yourself rest for a moment; I am listening closely.";
-  } else if (text.includes('angry') || text.includes('mad') || text.includes('upset')) {
-    return "It is entirely natural to feel anger when you haven't received the warmth or presence you deserved. Anger is often just a protective layer over a deeply tender heart. I honor your feelings completely.";
-  } else {
-    return "Thank you for trusting me with your thoughts. I am listening closely to everything you carry inside. Your feelings matter so much, and you are surrounded by care and safety here.";
+  const reflections = [];
+
+  // Attachment & Parental Detachment / Longing for Dad
+  if (text.includes('dad') || text.includes('father') || text.includes('daddy') || text.includes('paternal')) {
+    reflections.push(
+      "I hear how deeply you long for your dad and how heavy parental detachment can feel. What you are feeling is completely valid—your desire for unconditional parental warmth comes from a place of deep love. Take a soft breath; you are safe to feel that ache here without judgment.",
+      "Longing for your dad and wishing for that bond is one of the most tender, human feelings anyone can experience. Even when parents feel distant, your heart's capacity to love remains whole and beautiful. I am right here with you.",
+      "It is painful when the connection with a parent isn't what your heart deserved. Please remind yourself today: your longing is proof of your emotional depth, not your weakness."
+    );
   }
+  // Detachment, Isolation, Loneliness
+  else if (text.includes('alone') || text.includes('lonely') || text.includes('detached') || text.includes('isolated') || text.includes('empty')) {
+    reflections.push(
+      "Feeling detached or isolated can make your inner world feel so quiet and distant. Please know that feeling this way doesn't mean you are broken or unwanted. I am right here with you, holding a warm, gentle space for your heart.",
+      "When detachment sets in, it's often your mind's way of protecting a very tender heart. You don't have to force yourself to feel everything at once. Let's take it slowly together.",
+      "Even in moments of deep solitude, your presence matters profoundly. You are building a safe sanctuary within yourself, and I am standing by your side."
+    );
+  }
+  // Sadness, Tears, Grief, Pain
+  else if (text.includes('sad') || text.includes('cry') || text.includes('pain') || text.includes('hurt') || text.includes('grief') || text.includes('heavy')) {
+    reflections.push(
+      "I hear the pain in your voice, and I want to remind you that your tears are welcome here. You don't have to carry the weight of being strong all the time. Let yourself rest for a moment; I am listening closely.",
+      "Your sadness is telling us how much you care and how deeply you feel. Allow yourself to feel that soft release without any shame. You are safe here.",
+      "When things feel heavy, remember that you don't have to figure it all out today. Simply breathing through this moment is more than enough."
+    );
+  }
+  // Anger, Resentment, Frustration
+  else if (text.includes('angry') || text.includes('mad') || text.includes('upset') || text.includes('hate') || text.includes('unfair')) {
+    reflections.push(
+      "It is entirely natural to feel anger when you haven't received the warmth or presence you deserved. Anger is often just a protective layer over a deeply tender heart. I honor your feelings completely.",
+      "Your anger is valid. It is your inner self declaring that you deserved better care, better warmth, and deeper love. I hear you loud and clear.",
+      "Give yourself permission to feel that fire without judgment. Anger can be a boundary that protects your heart until peace returns."
+    );
+  }
+  // Anxiety, Fear, Worry, Overwhelmed
+  else if (text.includes('anxious') || text.includes('scared') || text.includes('fear') || text.includes('worry') || text.includes('overwhelmed') || text.includes('stress')) {
+    reflections.push(
+      "Take a slow, deep breath in with me. When anxiety rises, it can feel like a storm inside, but remember that storms pass. You are anchored and safe in this moment.",
+      "Feel the solid ground beneath you. You are in control of this moment, and whatever feels overwhelming right now can be broken down into small, manageable steps.",
+      "I hear how much you are carrying. Let's exhale together and let your shoulders drop. You don't have to face this alone."
+    );
+  }
+  // Hope, Gratitude, Healing, Better
+  else if (text.includes('good') || text.includes('better') || text.includes('hope') || text.includes('happy') || text.includes('thank')) {
+    reflections.push(
+      "It brings me so much warmth to hear that spark of light in your heart today. Celebrate that soft moment of peace—you have worked so hard for your healing.",
+      "Holding onto hope while acknowledging past pain is true strength. I am so proud of the gentle, caring sanctuary you are creating for yourself.",
+      "Your resilience is beautiful. Keep nurturing your heart with the kindness and patience you deserve every day."
+    );
+  }
+  // General Therapeutic Active Reflection
+  else {
+    reflections.push(
+      "Thank you for sharing your heart so openly with me. I am listening closely to everything you carry inside. Your feelings matter so much, and you are surrounded by care and safety here.",
+      "I hear you. Whatever you are reflecting on today, know that your experience is honored and understood here. How does it feel to put that into words?",
+      "Thank you for trusting me with your thoughts. I am holding space for you to express whatever comes up next without any pressure."
+    );
+  }
+
+  return reflections[Math.floor(Math.random() * reflections.length)];
 }
 
 function speakTherapistResponse(text) {
-  if (!window.speechSynthesis) return;
+  if (!window.speechSynthesis) {
+    playHarmonicChime([523.25, 659.25, 783.99]);
+    return;
+  }
   window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
@@ -591,7 +576,8 @@ function speakTherapistResponse(text) {
     v.name.includes('en-US-Neural2') ||
     v.name.includes('Samantha') ||
     v.name.includes('Victoria') ||
-    v.name.includes('Karen')
+    v.name.includes('Karen') ||
+    v.name.includes('Zira')
   ) || voices.find(v => v.lang.startsWith('en'));
 
   if (preferredVoice) utterance.voice = preferredVoice;

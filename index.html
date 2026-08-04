@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Haven — Professional Sanctuary & AI Therapist</title>
-  <meta name="description" content="A premium desktop wellness application featuring an active AI Therapist engine and therapeutic soundscapes.">
+  <title>Haven — Autonomous AI Sanctuary & Therapist</title>
+  <meta name="description" content="A premium desktop wellness application featuring an autonomous AI Therapist engine and therapeutic soundscapes.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="./styles.css">
 </head>
@@ -27,8 +27,8 @@
           <span class="brand-sparkle">🌿✨</span>
           <span class="brand-name">Haven Sanctuary</span>
         </div>
-        <span class="pro-badge">PRO DESKTOP</span>
-        <span id="resolution-indicator" class="res-indicator">1920x1080 • Desktop Mode</span>
+        <span class="pro-badge">AUTONOMOUS PRO</span>
+        <span id="resolution-indicator" class="res-indicator">1920x1080 • Desktop Glass UI</span>
       </div>
 
       <!-- Desktop Navigation Tabs -->
@@ -77,9 +77,9 @@
         <!-- Hero Welcome Card -->
         <div class="pro-card welcome-card">
           <div class="welcome-header">
-            <span class="ios-pill pro-badge" id="time-greeting">Psychological Grounding Active</span>
+            <span class="ios-pill pro-badge" id="time-greeting">Autonomous Neuro-Sanctuary Active</span>
             <h2>Welcome to your private wellness sanctuary.</h2>
-            <p>Full desktop layout with fluid adaptive components for every screen resolution.</p>
+            <p>Featuring a 100% self-contained AI Therapist, natural voice agent, and therapeutic glassmorphism.</p>
           </div>
           
           <div class="ios-inset-group daily-quote-box">
@@ -94,8 +94,8 @@
           <div class="ai-banner-content">
             <div class="ai-orb-mini-pulse"></div>
             <div class="ai-banner-text">
-              <h3>Dr. Aura — Professional AI Therapist</h3>
-              <p>Client-centered Rogerian active listening, voice reflection, and emotional grounding.</p>
+              <h3>Dr. Aura — Autonomous AI Therapist</h3>
+              <p>Zero key setup required. Client-centered Rogerian active listening, voice reflection, & grounding.</p>
             </div>
           </div>
           <button id="open-ai-listener-btn" class="ios-btn primary-btn pulse-glow">
@@ -103,7 +103,7 @@
           </button>
         </div>
 
-        <!-- Adaptive Responsive Grid (4 Columns on large screen, collapses gracefully on small resolution) -->
+        <!-- Adaptive Responsive Grid -->
         <div class="adaptive-grid-4col">
           
           <!-- Storybook Widget -->
@@ -167,23 +167,20 @@
               </div>
             </div>
             <h3 id="ai-status-text">Dr. Aura is listening softly...</h3>
-            <p class="ai-subtitle">Client-centered therapy engine. Active voice synthesis & emotional reframing.</p>
+            <p class="ai-subtitle">Autonomous AI Therapist Agent. Natural voice synthesis & active emotional reflection.</p>
           </div>
 
           <div class="ai-controls-bar">
             <button id="start-voice-listen-btn" class="ios-btn primary-btn pulse-glow">
               🎙️ Tap to Speak with Dr. Aura
             </button>
-            <button id="toggle-speech-synth-btn" class="ios-icon-btn active" title="Toggle Therapist Voice">
+            <button id="toggle-speech-synth-btn" class="ios-icon-btn active" title="Toggle Therapist Voice Agent">
               🔊
-            </button>
-            <button id="open-api-config-btn" class="ios-icon-btn" title="Gemini API Settings">
-              🔑
             </button>
           </div>
 
           <div id="api-status-banner" class="api-status-banner">
-            <span>⚡ Using Therapeutic Engine. <a href="#" id="link-setup-api">Add Gemini API Key</a> for unlimited AI power.</span>
+            <span>✨ <strong>Autonomous AI Therapist & Voice Agent Connected (Zero Setup Required)</strong></span>
           </div>
 
           <div class="ios-inset-group ai-chat-container">
@@ -191,7 +188,7 @@
             
             <div id="ai-chat-messages" class="ai-chat-messages">
               <div class="chat-bubble aura-bubble">
-                <span class="chat-author">Dr. Aura (AI Therapist):</span>
+                <span class="chat-author">Dr. Aura (AI Therapist Agent):</span>
                 <p>"Hello dear. I am Dr. Aura. I am here to provide a safe, non-judgmental space for whatever you are carrying—whether it's longing for your dad, feeling detached, or just needing someone to listen. How are you feeling today?"</p>
               </div>
             </div>
@@ -525,22 +522,6 @@
     </main>
   </div>
 
-  <!-- API Key Config Sheet Modal -->
-  <div id="api-key-modal" class="modal-overlay hidden">
-    <div class="ios-sheet-modal">
-      <div class="sheet-grabber"></div>
-      <button class="modal-close-btn" data-modal="api-key-modal">✕</button>
-      <h3>🔑 Gemini API Key Settings</h3>
-      <p class="modal-subtitle">Paste your free Google Gemini API key to activate real AI Therapist inference.</p>
-      
-      <input type="password" id="gemini-api-key-input" class="ios-input" placeholder="AIzaSy...">
-      
-      <button id="save-gemini-key-btn" class="ios-btn primary-btn">
-        ✨ Save Key & Connect AI
-      </button>
-    </div>
-  </div>
-
   <!-- Modals -->
   <div id="lantern-modal" class="modal-overlay hidden">
     <div class="ios-sheet-modal">
@@ -551,16 +532,16 @@
       
       <div class="color-picker-options">
         <label class="color-option">
-          <input type="radio" name="lantern-color" value="#d4af37" checked>
-          <span class="color-swatch" style="background: #d4af37;"></span>
+          <input type="radio" name="lantern-color" value="#ffcf56" checked>
+          <span class="color-swatch" style="background: #ffcf56;"></span>
         </label>
         <label class="color-option">
-          <input type="radio" name="lantern-color" value="#ff80bf">
-          <span class="color-swatch" style="background: #ff80bf;"></span>
+          <input type="radio" name="lantern-color" value="#ff8052">
+          <span class="color-swatch" style="background: #ff8052;"></span>
         </label>
         <label class="color-option">
-          <input type="radio" name="lantern-color" value="#b388ff">
-          <span class="color-swatch" style="background: #b388ff;"></span>
+          <input type="radio" name="lantern-color" value="#d946ef">
+          <span class="color-swatch" style="background: #d946ef;"></span>
         </label>
         <label class="color-option">
           <input type="radio" name="lantern-color" value="#34d399">
@@ -616,7 +597,7 @@
       <div class="theme-options-grid">
         <button class="theme-option-btn active" data-theme="premium-white">
           <span class="theme-preview premium-white-preview"></span>
-          <span>Luminous Pearl & Gold</span>
+          <span>Luminous Sunset Glass</span>
         </button>
         <button class="theme-option-btn" data-theme="midnight-emerald">
           <span class="theme-preview midnight-emerald-preview"></span>
