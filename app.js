@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — HIGH QUALITY REACTIVE 3D ENGINE ACROSS ALL TABS
+   HAVEN WELLNESS SANCTUARY — CLINICAL SUITE 5.0 (JS ENGINE)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -24,21 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
   initThreeJSMemoryJar();
   initThreeJSHeartPrism();
 
-  // High Quality 3D Mouse & Touch Tilt Reactivity Engine
-  init3DTiltReactivity();
+  // Calm & Micro-Subtle 3D Card Physics
+  initSubtle3DCardPhysics();
 
   initSoundscapes();
   initSafeJournal();
 });
 
 /* ==========================================================================
-   1. HIGH QUALITY 3D MOUSE & TOUCH TILT PARALLAX REACTIVITY ENGINE
+   1. CALM & MICRO-SUBTLE 3D CARD PHYSICS ENGINE
    ========================================================================== */
-function init3DTiltReactivity() {
-  const tiltCards = document.querySelectorAll('.tilt-3d-card');
+function initSubtle3DCardPhysics() {
+  const subtleCards = document.querySelectorAll('.subtle-3d-card');
   const reactiveElements = document.querySelectorAll('.reactive-3d-element');
 
-  tiltCards.forEach(card => {
+  subtleCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -47,60 +47,61 @@ function init3DTiltReactivity() {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateX = ((y - centerY) / centerY) * -8;
-      const rotateY = ((x - centerX) / centerX) * 8;
+      // Micro-subtle, non-distracting 3D tilt (max 2.2 degrees)
+      const rotateX = ((y - centerY) / centerY) * -2.2;
+      const rotateY = ((x - centerX) / centerX) * 2.2;
 
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px) scale(1.02)`;
+      card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
     });
 
     card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale(1)';
+      card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0px)';
     });
 
     card.addEventListener('click', (e) => {
-      spawn3DParticleHalo(e.clientX, e.clientY);
+      spawnSoftStarlightBurst(e.clientX, e.clientY);
     });
   });
 
   reactiveElements.forEach(el => {
     el.addEventListener('mousemove', (e) => {
       const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) * 0.08;
-      const y = (e.clientY - rect.top - rect.height / 2) * 0.08;
-      el.style.transform = `translate(${x}px, ${y}px) scale(1.08) rotate(${x * 0.5}deg)`;
+      const x = (e.clientX - rect.left - rect.width / 2) * 0.04;
+      const y = (e.clientY - rect.top - rect.height / 2) * 0.04;
+      el.style.transform = `translate(${x}px, ${y}px) scale(1.03)`;
     });
 
     el.addEventListener('mouseleave', () => {
-      el.style.transform = 'translate(0px, 0px) scale(1) rotate(0deg)';
+      el.style.transform = 'translate(0px, 0px) scale(1)';
     });
   });
 }
 
-function spawn3DParticleHalo(x, y) {
-  for (let i = 0; i < 16; i++) {
+function spawnSoftStarlightBurst(x, y) {
+  for (let i = 0; i < 10; i++) {
     const particle = document.createElement('div');
-    particle.textContent = ['✨', '💎', '🌸', '💖', '💛'][Math.floor(Math.random() * 5)];
+    particle.textContent = ['✨', '🌸', '🤍'][Math.floor(Math.random() * 3)];
     particle.style.position = 'fixed';
     particle.style.left = `${x}px`;
     particle.style.top = `${y}px`;
     particle.style.pointerEvents = 'none';
-    particle.style.fontSize = `${Math.random() * 16 + 12}px`;
+    particle.style.fontSize = `${Math.random() * 12 + 10}px`;
     particle.style.zIndex = '9999';
-    particle.style.transition = 'all 0.9s cubic-bezier(0.1, 0.8, 0.3, 1)';
+    particle.style.transition = 'all 1.0s cubic-bezier(0.1, 0.8, 0.3, 1)';
 
     document.body.appendChild(particle);
 
     const angle = Math.random() * Math.PI * 2;
-    const dist = Math.random() * 120 + 40;
+    const dist = Math.random() * 80 + 30;
     const tx = Math.cos(angle) * dist;
-    const ty = Math.sin(angle) * dist - 40;
+    const ty = Math.sin(angle) * dist - 30;
 
     requestAnimationFrame(() => {
-      particle.style.transform = `translate(${tx}px, ${ty}px) scale(1.4) rotate(${(Math.random() - 0.5) * 60}deg)`;
+      particle.style.transform = `translate(${tx}px, ${ty}px) scale(1.2)`;
       particle.style.opacity = '0';
     });
 
-    setTimeout(() => particle.remove(), 900);
+    setTimeout(() => particle.remove(), 1000);
   }
 }
 
@@ -113,7 +114,7 @@ function initDesktopResolutionDetector() {
   function updateResolution() {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    let modeText = 'Full Desktop Glass Layout';
+    let modeText = 'Clinical Desktop Workspace';
 
     if (width < 768) modeText = 'Compact Resolution';
     else if (width < 1100) modeText = 'Medium Resolution';
@@ -348,16 +349,16 @@ function initAmbientCanvas() {
   });
 
   const particles = [];
-  const count = 50;
+  const count = 40;
 
   for (let i = 0; i < count; i++) {
     particles.push({
       x: Math.random() * width,
       y: Math.random() * height,
-      radius: Math.random() * 2.5 + 0.5,
-      alpha: Math.random() * 0.7 + 0.3,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: -Math.random() * 0.4 - 0.1,
+      radius: Math.random() * 2 + 0.5,
+      alpha: Math.random() * 0.6 + 0.2,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: -Math.random() * 0.3 - 0.1,
       pulse: Math.random() * 0.02 + 0.005,
       color: ['#ffcf56', '#ff8052', '#d946ef', '#ffffff'][Math.floor(Math.random() * 4)]
     });
@@ -378,8 +379,8 @@ function initAmbientCanvas() {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
       ctx.fillStyle = p.color;
-      ctx.globalAlpha = Math.max(0.1, Math.min(0.8, p.alpha));
-      ctx.shadowBlur = 10;
+      ctx.globalAlpha = Math.max(0.1, Math.min(0.7, p.alpha));
+      ctx.shadowBlur = 8;
       ctx.shadowColor = p.color;
       ctx.fill();
     });
@@ -455,8 +456,8 @@ function initThreeJSAIVoice() {
   const container = canvas?.parentElement;
   if (!canvas || !container || !window.THREE) return;
 
-  const width = container.clientWidth || 220;
-  const height = container.clientHeight || 220;
+  const width = container.clientWidth || 200;
+  const height = container.clientHeight || 200;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
@@ -464,7 +465,6 @@ function initThreeJSAIVoice() {
 
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
   scene.add(ambientLight);
@@ -481,7 +481,7 @@ function initThreeJSAIVoice() {
     roughness: 0.2,
     metalness: 0.1,
     transparent: true,
-    opacity: 0.65
+    opacity: 0.55
   });
 
   const voiceMesh = new THREE.Mesh(geometry, material);
@@ -527,7 +527,7 @@ function initAutonomousAITherapistAura() {
     if (ai3DState.isListening) {
       ai3DState.distortion = 0.28;
       ai3DState.speed = 0.015;
-      statusText.textContent = 'Dr. Aura is listening to your voice...';
+      statusText.textContent = 'Dr. Aura is listening in active reflection mode...';
       startListenBtn.textContent = '⏹ Listening... Speak Now';
     } else {
       ai3DState.distortion = 0.12;
@@ -549,7 +549,7 @@ function initAutonomousAITherapistAura() {
     setTimeout(() => {
       ai3DState.isListening = false;
       ai3DState.distortion = 0.12;
-      const resp = "I hear you deeply. How are you feeling in your heart right now?";
+      const resp = "I hear you deeply. What you are experiencing is completely valid. How does it feel to put that into words right now?";
       appendBubble('Dr. Aura (AI Therapist Agent)', resp, 'aura-bubble');
     }, 1200);
   });
@@ -633,7 +633,6 @@ function initThreeJSOrbStudio() {
 
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
   scene.add(ambientLight);
@@ -792,10 +791,10 @@ function initBreathingOasis() {
     getAudioContext();
     isBreathing = !isBreathing;
     if (isBreathing) {
-      startBtn.textContent = '⏹ Stop Breathing';
+      startBtn.textContent = '⏹ Stop Regulation';
       animateBreathLoop();
     } else {
-      startBtn.textContent = '▶ Start Breathing';
+      startBtn.textContent = '▶ Begin Autonomic Regulation';
       breath3DScale.val = 1.0;
     }
   });
@@ -864,8 +863,8 @@ function initThreeJSMemoryJar() {
   if (!canvas || !window.THREE) return;
   const parent = canvas.parentElement;
 
-  const width = parent.clientWidth || 280;
-  const height = parent.clientHeight || 280;
+  const width = parent.clientWidth || 260;
+  const height = parent.clientHeight || 260;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);

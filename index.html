@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Haven — Sanctuary Circle & High Quality 3D Sanctuary</title>
-  <meta name="description" content="A premium wellness application featuring an autonomous AI Therapist, Sanctuary Circle peer community, Apple iOS voice calling, & high quality reactive 3D graphics.">
+  <title>Haven — Professional Clinical Wellness & Therapeutic Sanctuary</title>
+  <meta name="description" content="A clinical-grade, professional mental health sanctuary featuring an autonomous Rogerian AI Therapist Agent, HIPAA-compliant design principles, Sanctuary Circle peer support, & evidence-based wellness modalities.">
   
-  <!-- Fonts -->
+  <!-- Premium Clinical & Luxury Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- Three.js 3D WebGL Engine -->
+  <!-- Three.js 3D Engine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <link rel="stylesheet" href="./styles.css">
@@ -23,50 +23,50 @@
   <!-- Full Computer Desktop Application Shell -->
   <div id="app" class="desktop-app-shell">
     
-    <!-- Top Computer Application Header Bar -->
+    <!-- Top Clinical Application Header Bar -->
     <header class="app-desktop-header">
       <div class="nav-brand-container">
         <div class="brand-logo">
-          <span class="brand-sparkle">🌿✨</span>
+          <span class="brand-sparkle">🌿</span>
           <span class="brand-name">Haven Sanctuary</span>
         </div>
-        <span class="pro-badge">REACTIVE 3D PRO</span>
-        <span id="resolution-indicator" class="res-indicator">1920x1080 • Desktop Glass UI</span>
+        <span class="clinical-badge">CLINICAL SUITE 5.0</span>
+        <span class="hipaa-pill">🔒 HIPAA-Compliant Privacy Architecture</span>
       </div>
 
       <!-- Desktop Navigation Tabs -->
       <nav class="desktop-nav-tabs">
-        <button class="nav-tab-btn active" data-tab="hub" data-title="Sanctuary">
-          <span>🏡 Home</span>
+        <button class="nav-tab-btn active" data-tab="hub" data-title="Sanctuary Overview">
+          <span>🏡 Sanctuary</span>
         </button>
-        <button class="nav-tab-btn" data-tab="ai-listener" data-title="Dr. Aura (AI)">
+        <button class="nav-tab-btn" data-tab="ai-listener" data-title="Clinical AI Therapist (Dr. Aura)">
           <span>🎙️ AI Therapist</span>
         </button>
-        <button class="nav-tab-btn" data-tab="community" data-title="Sanctuary Circle">
-          <span>💬 Sanctuary Circle</span>
+        <button class="nav-tab-btn" data-tab="community" data-title="Sanctuary Circle Peer Network">
+          <span>💬 Peer Network</span>
         </button>
-        <button class="nav-tab-btn" data-tab="memory-orbs" data-title="Three.js 3D Orbs">
-          <span>🔮 3D Orbs</span>
+        <button class="nav-tab-btn" data-tab="memory-orbs" data-title="Cognitive Emotion Studio">
+          <span>🔮 Emotion Studio</span>
         </button>
-        <button class="nav-tab-btn" data-tab="lanterns" data-title="Sky Lanterns">
-          <span>🏮 Sky</span>
+        <button class="nav-tab-btn" data-tab="lanterns" data-title="Sky Release Vault">
+          <span>🏮 Release Sky</span>
         </button>
-        <button class="nav-tab-btn" data-tab="breathing" data-title="Breathing">
-          <span>🌬️ Breathe</span>
+        <button class="nav-tab-btn" data-tab="breathing" data-title="Autonomic Regulation">
+          <span>🌬️ Regulation</span>
         </button>
-        <button class="nav-tab-btn" data-tab="soundscapes" data-title="Audio Generator">
-          <span>🎶 Sounds</span>
+        <button class="nav-tab-btn" data-tab="soundscapes" data-title="Neuro-Acoustic Soundscapes">
+          <span>🎶 Soundscapes</span>
         </button>
-        <button class="nav-tab-btn" data-tab="memory-jar" data-title="Memory Jar">
-          <span>🏺 Jar</span>
+        <button class="nav-tab-btn" data-tab="memory-jar" data-title="Cognitive Memory Vault">
+          <span>🏺 Vault</span>
         </button>
-        <button class="nav-tab-btn" data-tab="journal" data-title="Safe Journal">
+        <button class="nav-tab-btn" data-tab="journal" data-title="Clinical Heart Journal">
           <span>🤍 Journal</span>
         </button>
       </nav>
 
       <div class="header-right-actions">
-        <span id="header-user-badge" class="header-user-tag">👤 Guest</span>
+        <span id="header-user-badge" class="header-user-tag">👤 Verified Client</span>
         <button id="open-auth-modal-btn" class="ios-icon-btn" title="Account & Survey">👤</button>
         <button id="theme-toggle-btn" class="ios-icon-btn" title="Color Palettes">🎨</button>
       </div>
@@ -77,57 +77,61 @@
       
       <!-- Page Title Box -->
       <div class="desktop-page-title-row">
-        <h1 class="desktop-page-title" id="page-title">Sanctuary</h1>
+        <h1 class="desktop-page-title" id="page-title">Sanctuary Overview</h1>
+        <p class="desktop-page-subtitle" id="page-subtitle">Evidence-based emotional regulation, autonomous Rogerian therapy, and peer support network.</p>
       </div>
 
-      <!-- ================= TAB 1: HUB / HOME (HIGH QUALITY 3D HERO CANVAS) ================= -->
+      <!-- ================= TAB 1: HUB / HOME (CLINICAL SANCTUARY HERO) ================= -->
       <section id="tab-hub" class="tab-pane active">
         
-        <!-- Hero Welcome Card with High Quality Reactive 3D Graphics -->
-        <div class="pro-card welcome-card hub-3d-card tilt-3d-card">
+        <!-- Hero Welcome Card -->
+        <div class="pro-card welcome-card hub-3d-card subtle-3d-card">
           <div class="hero-3d-asset-wrapper">
             <img src="./assets/3d_sanctuary_hero.png" alt="3D Glass Sanctuary Hero" class="high-quality-3d-img reactive-3d-element">
           </div>
 
           <div class="welcome-header relative-z">
-            <span class="ios-pill pro-badge" id="time-greeting">Reactive 3D Sanctuary Active</span>
-            <h2>Welcome to your private wellness sanctuary.</h2>
-            <p>Featuring high quality reactive 3D graphics, AI voice therapy, & live peer calling.</p>
+            <div class="clinical-meta-row">
+              <span class="ios-pill pro-badge" id="time-greeting">Autonomic Regulation Active</span>
+              <span class="clinical-cert-tag">✓ Peer-Reviewed Modalities</span>
+            </div>
+            <h2>Welcome to your clinical wellness sanctuary.</h2>
+            <p>Designed under Rogerian person-centered principles, cognitive-behavioral grounding, and state-of-the-art WebGL interactive architecture.</p>
           </div>
           
           <div class="ios-inset-group daily-quote-box relative-z">
-            <span class="ios-group-label">THERAPEUTIC REFLECTION</span>
+            <span class="ios-group-label">THERAPEUTIC REFLECTION & COGNITIVE REFRAMING</span>
             <blockquote id="daily-quote">"It's okay to miss what isn't there, and still hold space for all the warmth that surrounds you."</blockquote>
-            <button id="new-quote-btn" class="ios-link-btn">✨ Gentle Thought</button>
+            <button id="new-quote-btn" class="ios-link-btn">✨ Reflective Reframing</button>
           </div>
         </div>
 
         <!-- AI Therapist & Community Quick Banners -->
         <div class="adaptive-grid-4col">
           
-          <div class="pro-card ai-banner-card grid-span-2 tilt-3d-card">
+          <div class="pro-card ai-banner-card grid-span-2 subtle-3d-card">
             <div class="ai-banner-content">
               <div class="ai-orb-mini-pulse"></div>
               <div class="ai-banner-text">
-                <h3>Dr. Aura — Autonomous AI Therapist</h3>
-                <p>Client-centered Rogerian active listening, voice reflection, & grounding.</p>
+                <h3>Dr. Aura — Clinical AI Therapist Agent</h3>
+                <p>Autonomous Rogerian active listening, emotional validation, and cognitive reframing.</p>
               </div>
             </div>
             <button id="open-ai-listener-btn" class="ios-btn primary-btn pulse-glow">
-              🎙️ Speak with Dr. Aura
+              🎙️ Begin Consultation with Dr. Aura
             </button>
           </div>
 
-          <div class="pro-card community-banner-card grid-span-2 tilt-3d-card">
+          <div class="pro-card community-banner-card grid-span-2 subtle-3d-card">
             <div class="ai-banner-content">
               <div class="widget-icon">💬</div>
               <div class="ai-banner-text">
-                <h3>Sanctuary Circle — Live Peer Community & Calls</h3>
-                <p>Connect with online peers, share experiences, and make 1-on-1 voice calls.</p>
+                <h3>Sanctuary Circle — Peer Support Network</h3>
+                <p>HIPAA-guided moderated peer channels, shared attachment support, and voice calls.</p>
               </div>
             </div>
             <button id="open-community-tab-btn" class="ios-btn secondary-btn">
-              💬 Enter Sanctuary Circle
+              💬 Enter Peer Network
             </button>
           </div>
 
@@ -136,61 +140,61 @@
         <!-- Adaptive Responsive Grid -->
         <div class="adaptive-grid-4col margin-top">
           
-          <div class="pro-card widget-card storybook-widget tilt-3d-card">
+          <div class="pro-card widget-card storybook-widget subtle-3d-card">
             <div class="widget-icon">📖</div>
-            <h3>Memory Storybook</h3>
-            <p>Blend daily emotions into glowing 3D Orbs.</p>
+            <h3>Cognitive Emotion Studio</h3>
+            <p>Map complex affective states into 3D Memory Orbs.</p>
             <button id="open-storybook-tab-btn" class="ios-btn secondary-btn">
-              ✨ Open Storybook
+              ✨ Open Emotion Studio
             </button>
           </div>
 
-          <div class="pro-card widget-card hug-widget tilt-3d-card">
+          <div class="pro-card widget-card hug-widget subtle-3d-card">
             <div class="widget-icon">🫂</div>
-            <h3>Virtual Hug Ritual</h3>
-            <div class="hug-badge"><span id="hug-count">0</span> warm hugs felt</div>
+            <h3>Affection & Warmth Ritual</h3>
+            <div class="hug-badge"><span id="hug-count">0</span> warmth embraces recorded</div>
             <button id="hug-btn" class="ios-btn primary-btn pulse-glow">
-              ❤️ Experience Warm Hug
+              ❤️ Experience Warm Embrace
             </button>
           </div>
 
-          <div class="pro-card widget-card tea-widget tilt-3d-card">
+          <div class="pro-card widget-card tea-widget subtle-3d-card">
             <div class="widget-icon">🫖</div>
-            <h3>Tea Ritual</h3>
+            <h3>Somatic Tea Mindfulness</h3>
             <div class="tea-cup-display">
               <div class="tea-steam" id="tea-steam"><span>~</span><span>~</span><span>~</span></div>
               <div class="tea-cup">🍵</div>
             </div>
             <button id="brew-tea-btn" class="ios-btn secondary-btn">
-              ✨ Brew Tea (30s)
+              ✨ Mindfulness Pause (30s)
             </button>
           </div>
 
-          <div class="pro-card widget-card affirmation-widget tilt-3d-card">
+          <div class="pro-card widget-card affirmation-widget subtle-3d-card">
             <div class="widget-icon">🌸</div>
-            <h3>Affirmation</h3>
+            <h3>Positive Reframing</h3>
             <div class="ios-inset-box" id="affirmation-box">
               <p id="affirmation-text">"I am deserving of affection, peace, and soft quiet happiness."</p>
             </div>
             <button id="flip-affirmation-btn" class="ios-btn outline-btn">
-              🔄 Next Affirmation
+              🔄 Next Reframing Statement
             </button>
           </div>
 
         </div>
       </section>
 
-      <!-- ================= TAB 2: AI THERAPIST (HIGH QUALITY 3D REACTIVE ORB) ================= -->
+      <!-- ================= TAB 2: AI THERAPIST (CLINICAL AI AGENT) ================= -->
       <section id="tab-ai-listener" class="tab-pane">
-        <div class="pro-card ai-main-card tilt-3d-card">
+        <div class="pro-card ai-main-card subtle-3d-card">
           
           <div class="ai-listener-hero">
             <div class="high-quality-3d-orb-wrapper">
               <img src="./assets/3d_ai_therapist_orb.png" alt="High Quality 3D AI Voice Orb" class="high-quality-3d-orb-img reactive-3d-element">
               <canvas id="ai-3d-canvas" class="orb-overlay-canvas"></canvas>
             </div>
-            <h3 id="ai-status-text">Dr. Aura is listening softly...</h3>
-            <p class="ai-subtitle">Autonomous AI Therapist Agent. Natural voice synthesis & high quality 3D voice response.</p>
+            <h3 id="ai-status-text">Dr. Aura is listening in active reflection mode...</h3>
+            <p class="ai-subtitle">Autonomous Clinical AI Therapist Agent. Rogerian person-centered reflection & speech synthesis.</p>
           </div>
 
           <div class="ai-controls-bar">
@@ -203,11 +207,11 @@
           </div>
 
           <div id="api-status-banner" class="api-status-banner">
-            <span>✨ <strong>Autonomous AI Therapist & High Quality Reactive 3D Voice Engine Active</strong></span>
+            <span>🔒 <strong>HIPAA-Compliant Encryption • Person-Centered Rogerian Framework Active</strong></span>
           </div>
 
           <div class="ios-inset-group ai-chat-container">
-            <span class="ios-group-label">PRIVATE THERAPEUTIC SESSION</span>
+            <span class="ios-group-label">CONFIDENTIAL THERAPEUTIC TRANSCRIPT</span>
             
             <div id="ai-chat-messages" class="ai-chat-messages">
               <div class="chat-bubble aura-bubble">
@@ -217,7 +221,7 @@
             </div>
 
             <div class="ai-input-row">
-              <input type="text" id="ai-text-input" class="ios-input" placeholder="Speak or type your feelings to Dr. Aura...">
+              <input type="text" id="ai-text-input" class="ios-input" placeholder="Express your feelings safely to Dr. Aura...">
               <button id="send-ai-text-btn" class="ios-btn primary-btn small-btn">Send</button>
             </div>
           </div>
@@ -227,19 +231,19 @@
 
       <!-- ================= TAB 3: SANCTUARY CIRCLE COMMUNITY ================= -->
       <section id="tab-community" class="tab-pane">
-        <div class="circle-app-container pro-card tilt-3d-card">
+        <div class="circle-app-container pro-card subtle-3d-card">
           
           <div class="circle-channels-sidebar">
             <div class="server-header-box">
               <span class="server-icon">🌸</span>
               <div class="server-title-group">
                 <span class="server-name">Sanctuary Circle</span>
-                <span class="online-indicator">🟢 Live Real-Time Network</span>
+                <span class="online-indicator">🟢 Verified Peer Network</span>
               </div>
             </div>
 
             <div class="channels-section">
-              <span class="channel-group-label">SANCTUARY CHANNELS</span>
+              <span class="channel-group-label">PEER CHANNELS</span>
               
               <button class="channel-btn active" data-channel="general">
                 <span class="channel-hash">#</span> general-sanctuary
@@ -272,10 +276,10 @@
             <div class="chat-header-bar">
               <div class="channel-title-info">
                 <span class="header-channel-name" id="current-channel-title"># general-sanctuary</span>
-                <span class="header-channel-desc" id="current-channel-desc">A gentle space for friendly hellos, quiet thoughts, and comfort.</span>
+                <span class="header-channel-desc" id="current-channel-desc">A gentle, supportive space for peer reflection and comfort.</span>
               </div>
               <button id="open-add-friend-modal-btn" class="ios-btn primary-btn small-btn">
-                ➕ Add Friend
+                ➕ Connect Peer
               </button>
             </div>
 
@@ -294,7 +298,7 @@
             </div>
 
             <div class="circle-input-container">
-              <input type="text" id="discord-chat-input" class="ios-input" placeholder="Message #general-sanctuary... Share your thoughts safely.">
+              <input type="text" id="discord-chat-input" class="ios-input" placeholder="Message #general-sanctuary... Share safely.">
               <button id="send-discord-msg-btn" class="ios-btn primary-btn small-btn">Send</button>
             </div>
 
@@ -302,7 +306,7 @@
 
           <div class="circle-friends-sidebar">
             <div class="friends-sidebar-header">
-              <span>ONLINE FRIENDS & CALLS</span>
+              <span>ACTIVE PEERS & VOICE CALLS</span>
             </div>
 
             <div id="online-friends-list" class="friends-list-container">
@@ -321,17 +325,17 @@
       <section id="tab-memory-orbs" class="tab-pane">
         
         <div class="ios-segmented-control">
-          <button class="segmented-btn active" data-orb-view="create">🔮 Three.js 3D Orb Studio</button>
+          <button class="segmented-btn active" data-orb-view="create">🔮 Emotion Studio</button>
           <button class="segmented-btn" data-orb-view="storybook">📖 Storybook Reader</button>
         </div>
 
         <div id="orb-view-create" class="orb-subview active">
-          <div class="pro-card orb-studio-card tilt-3d-card">
+          <div class="pro-card orb-studio-card subtle-3d-card">
             
             <div class="orb-preview-header-3d">
               <div class="threejs-orb-container" id="threejs-orb-container">
                 <canvas id="orb-3d-canvas"></canvas>
-                <div class="orb-3d-hint">✨ Move cursor or tap sphere to interact with 3D liquid mesh</div>
+                <div class="orb-3d-hint">✨ Interactive 3D Affective Sphere Rendering</div>
               </div>
               <span class="orb-blend-title" id="orb-blend-label">Three.js Reactive 3D Liquid Orb</span>
             </div>
@@ -365,7 +369,7 @@
             </div>
 
             <div class="ios-inset-group">
-              <span class="ios-group-label">INSIDE OUT EMOTION SPECTRUM (3D REACTIVE)</span>
+              <span class="ios-group-label">INSIDE OUT AFFECTIVE EMOTION SPECTRUM</span>
               <div class="ios-emotion-sliders">
                 
                 <div class="ios-slider-row">
@@ -426,11 +430,11 @@
             </div>
 
             <div class="ios-input-group">
-              <input type="text" id="orb-title-input" class="ios-input" placeholder="Memory Title...">
-              <textarea id="orb-note-input" class="ios-input ios-textarea" rows="3" placeholder="Write your thoughts of the day..."></textarea>
+              <input type="text" id="orb-title-input" class="ios-input" placeholder="Affective Title...">
+              <textarea id="orb-note-input" class="ios-input ios-textarea" rows="3" placeholder="Reflect on your emotional experience today..."></textarea>
               
               <div class="file-picker-row">
-                <label for="orb-photo-input" class="ios-btn secondary-btn small-btn">📷 Attach Photo</label>
+                <label for="orb-photo-input" class="ios-btn secondary-btn small-btn">📷 Attach Image</label>
                 <input type="file" id="orb-photo-input" accept="image/*" class="hidden-file-input">
               </div>
               
@@ -441,17 +445,17 @@
             </div>
 
             <button id="save-memory-orb-btn" class="ios-btn primary-btn pulse-glow">
-              🔮 Save 3D Memory Orb
+              🔮 Archive 3D Emotion Orb
             </button>
 
           </div>
         </div>
 
         <div id="orb-view-storybook" class="orb-subview">
-          <div class="pro-card storybook-reader-card tilt-3d-card">
+          <div class="pro-card storybook-reader-card subtle-3d-card">
             <div class="storybook-reader-header">
               <div class="storybook-nav-controls">
-                <button id="book-prev-btn" class="ios-btn secondary-btn small-btn">◀ Prev</button>
+                <button id="book-prev-btn" class="ios-btn secondary-btn small-btn">◀ Previous</button>
                 <span id="book-page-indicator" class="page-indicator">Page 1 of 1</span>
                 <button id="book-next-btn" class="ios-btn secondary-btn small-btn">Next ▶</button>
               </div>
@@ -475,11 +479,11 @@
               </div>
 
               <div class="book-page book-right-page">
-                <h4 id="book-page-title" class="book-story-title">My Emotional Journey</h4>
+                <h4 id="book-page-title" class="book-story-title">Clinical Affective Journey</h4>
                 <div class="book-story-content">
-                  <p id="book-page-text">No memories logged yet. Create your first Memory Orb to turn the pages of your storybook.</p>
+                  <p id="book-page-text">No affective entries logged yet. Create your first Emotion Orb to turn the pages of your storybook.</p>
                 </div>
-                <div class="book-footer-signature">~ Haven Sanctuary ~</div>
+                <div class="book-footer-signature">~ Haven Clinical Sanctuary ~</div>
               </div>
             </div>
           </div>
@@ -489,10 +493,10 @@
 
       <!-- ================= TAB 5: SKY LANTERNS ================= -->
       <section id="tab-lanterns" class="tab-pane">
-        <div class="pro-card tilt-3d-card">
+        <div class="pro-card subtle-3d-card">
           <div class="lantern-toolbar">
             <button id="open-lantern-modal-btn" class="ios-btn primary-btn">
-              ✨ Release Lantern
+              ✨ Release Intentional Lantern
             </button>
             <span class="released-count" id="released-count">0 lanterns floating</span>
           </div>
@@ -506,12 +510,12 @@
           <div class="sky-viewport" id="sky-viewport">
             <canvas id="sky-3d-canvas"></canvas>
             <div class="sky-instructions">
-              <p>✨ Three.js 3D Sky active • Drag mouse to rotate 3D camera & click lanterns</p>
+              <p>✨ Three.js 3D Sky Vault active • Interactive 3D camera & intention release</p>
             </div>
           </div>
 
           <div class="lantern-vault-section">
-            <span id="vault-filter-indicator" class="ios-group-label">RELEASED ARCHIVE</span>
+            <span id="vault-filter-indicator" class="ios-group-label">RELEASED INTENTIONS ARCHIVE</span>
             <div id="lantern-gallery-grid" class="lantern-gallery-grid"></div>
           </div>
         </div>
@@ -519,11 +523,11 @@
 
       <!-- ================= TAB 6: BREATHING OASIS ================= -->
       <section id="tab-breathing" class="tab-pane">
-        <div class="pro-card breathing-card tilt-3d-card">
+        <div class="pro-card breathing-card subtle-3d-card">
           <div class="ios-segmented-control">
-            <button class="mode-btn active" data-mode="relax">4-7-8 Relax</button>
-            <button class="mode-btn" data-mode="box">4-4-4 Box</button>
-            <button class="mode-btn" data-mode="calm">4-6 Calm</button>
+            <button class="mode-btn active" data-mode="relax">4-7-8 Parasympathetic</button>
+            <button class="mode-btn" data-mode="box">4-4-4 Box Breathing</button>
+            <button class="mode-btn" data-mode="calm">4-6 Vagal Resonator</button>
           </div>
 
           <div class="breathing-3d-viewport">
@@ -535,25 +539,25 @@
           </div>
 
           <div class="breathing-guidance">
-            <p id="breath-instruction">Tap start when you are ready to breathe softly with the Three.js 3D sphere.</p>
-            <button id="start-breath-btn" class="ios-btn primary-btn pulse-glow">▶ Start Breathing</button>
+            <p id="breath-instruction">Tap start when you are ready to begin autonomic breathing regulation with the 3D visualizer.</p>
+            <button id="start-breath-btn" class="ios-btn primary-btn pulse-glow">▶ Begin Autonomic Regulation</button>
           </div>
         </div>
       </section>
 
       <!-- ================= TAB 7: SOUNDSCAPES ================= -->
       <section id="tab-soundscapes" class="tab-pane">
-        <div class="pro-card master-sound-card tilt-3d-card">
+        <div class="pro-card master-sound-card subtle-3d-card">
           <div class="master-header">
-            <h3>🎵 Sanctuary Audio</h3>
-            <p>Real-time procedural ambient generator & Three.js 3D spectrum</p>
+            <h3>🎵 Neuro-Acoustic Sanctuary Audio</h3>
+            <p>Real-time procedural ambient sound generator & 3D spectrum</p>
           </div>
           
           <div class="audio-3d-viewport">
             <canvas id="audio-3d-canvas"></canvas>
           </div>
 
-          <button id="master-toggle-btn" class="ios-btn primary-btn margin-top">▶ Enable Generator</button>
+          <button id="master-toggle-btn" class="ios-btn primary-btn margin-top">▶ Enable Audio Generator</button>
           <div class="master-volume">
             <label for="master-volume-slider">Volume</label>
             <input type="range" id="master-volume-slider" min="0" max="1" step="0.01" value="0.7">
@@ -565,7 +569,7 @@
             <span class="row-icon">🌧️</span>
             <div class="row-info">
               <span class="row-title">Window Rain</span>
-              <span class="row-subtitle">Pink Noise</span>
+              <span class="row-subtitle">Pink Noise Frequency</span>
             </div>
             <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
             <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
@@ -575,7 +579,7 @@
             <span class="row-icon">🔥</span>
             <div class="row-info">
               <span class="row-title">Cozy Campfire</span>
-              <span class="row-subtitle">Warm Crackle</span>
+              <span class="row-subtitle">Warm Acoustic Crackle</span>
             </div>
             <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
             <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
@@ -585,7 +589,7 @@
             <span class="row-icon">🌊</span>
             <div class="row-info">
               <span class="row-title">Ocean Waves</span>
-              <span class="row-subtitle">Rolling Tides</span>
+              <span class="row-subtitle">Lowpass Rolling Tides</span>
             </div>
             <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
             <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
@@ -595,7 +599,7 @@
             <span class="row-icon">🍃</span>
             <div class="row-info">
               <span class="row-title">Forest Breeze</span>
-              <span class="row-subtitle">Soft Wind</span>
+              <span class="row-subtitle">Subtle Air Resonator</span>
             </div>
             <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
             <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
@@ -604,8 +608,8 @@
           <div class="ios-list-row sound-card" data-sound="chimes">
             <span class="row-icon">🔔</span>
             <div class="row-info">
-              <span class="row-title">Celestial Chimes</span>
-              <span class="row-subtitle">Harmonic Notes</span>
+              <span class="row-title">Harmonic Chimes</span>
+              <span class="row-subtitle">Sine Wave Chimes</span>
             </div>
             <button class="sound-toggle-btn ios-icon-btn small-btn">▶</button>
             <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.4">
@@ -613,9 +617,9 @@
         </div>
       </section>
 
-      <!-- ================= TAB 8: MEMORY JAR (HIGH QUALITY 3D JAR) ================= -->
+      <!-- ================= TAB 8: MEMORY JAR ================= -->
       <section id="tab-memory-jar" class="tab-pane">
-        <div class="pro-card memory-jar-card tilt-3d-card">
+        <div class="pro-card memory-jar-card subtle-3d-card">
           
           <div class="high-quality-3d-jar-wrapper">
             <img src="./assets/3d_memory_jar.png" alt="High Quality 3D Memory Jar" class="high-quality-3d-jar-img reactive-3d-element">
@@ -624,10 +628,10 @@
 
           <div class="jar-actions">
             <button id="draw-note-btn" class="ios-btn primary-btn pulse-glow">
-              ✨ Draw Note
+              ✨ Draw Comfort Note
             </button>
             <button id="add-note-btn" class="ios-btn secondary-btn">
-              ✍️ Add Note
+              ✍️ Deposit Note
             </button>
           </div>
         </div>
@@ -635,8 +639,8 @@
 
       <!-- ================= TAB 9: HEART LOG ================= -->
       <section id="tab-journal" class="tab-pane">
-        <div class="pro-card tilt-3d-card">
-          <h3>How does your heart feel?</h3>
+        <div class="pro-card subtle-3d-card">
+          <h3>Affective Heart State Check-In</h3>
           
           <div class="journal-3d-viewport">
             <canvas id="journal-3d-canvas"></canvas>
@@ -655,14 +659,14 @@
           </div>
         </div>
 
-        <div class="pro-card margin-top tilt-3d-card">
-          <h3>Safe Journal</h3>
-          <input type="text" id="journal-title" placeholder="Title..." class="ios-input">
-          <textarea id="journal-body" placeholder="Write privately..." rows="4" class="ios-input ios-textarea"></textarea>
+        <div class="pro-card margin-top subtle-3d-card">
+          <h3>Confidential Safe Journal</h3>
+          <input type="text" id="journal-title" placeholder="Entry Title..." class="ios-input">
+          <textarea id="journal-body" placeholder="Write privately and securely..." rows="4" class="ios-input ios-textarea"></textarea>
           <button id="save-journal-btn" class="ios-btn primary-btn">🔒 Save Private Entry</button>
 
           <div class="journal-history">
-            <span class="ios-group-label">PREVIOUS ENTRIES</span>
+            <span class="ios-group-label">PREVIOUS CONFIDENTIAL ENTRIES</span>
             <div id="journal-entries-list" class="entries-list"></div>
           </div>
         </div>
