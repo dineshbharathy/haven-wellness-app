@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — APPLE CALL ANIMATION & GLASS UI SYSTEM
+   HAVEN WELLNESS SANCTUARY — VIRTUAL HUG, COLORING STUDIO & SOUNDSCAPES
    ========================================================================== */
 
 :root {
@@ -73,6 +73,11 @@ body {
   color: var(--ios-text);
   min-height: 100vh; width: 100vw;
   overflow-x: hidden;
+  transition: filter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+body.warm-tab-shift {
+  filter: saturate(125%) contrast(102%);
 }
 
 #ambient-canvas {
@@ -203,32 +208,66 @@ body {
   .nav-tab-btn { padding: 8px 12px; font-size: 0.78rem; flex-shrink: 0; }
   .adaptive-grid-4col { grid-template-columns: 1fr; }
   .desktop-main-content { padding: 18px; }
-  .circle-app-container { flex-direction: column !important; height: auto !important; }
-  .circle-channels-sidebar, .circle-friends-sidebar { width: 100% !important; border: none !important; }
 }
-
-/* AI & Community Banner Cards */
-.ai-banner-card, .community-banner-card {
-  background: linear-gradient(135deg, rgba(255, 207, 86, 0.35), rgba(217, 70, 239, 0.25));
-  border-color: rgba(255, 255, 255, 0.75);
-}
-.ai-banner-content { display: flex; align-items: center; gap: 14px; }
-.ai-orb-mini-pulse {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: linear-gradient(135deg, #ffcf56, #d946ef);
-  box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px #ffffff;
-  animation: miniPulse 2s infinite alternate;
-}
-@keyframes miniPulse {
-  from { transform: scale(0.9); opacity: 0.7; }
-  to { transform: scale(1.2); opacity: 1; }
-}
-.ai-banner-text h3 { font-size: 1.15rem; font-weight: 800; color: var(--ios-text); }
-.ai-banner-text p { font-size: 0.86rem; color: var(--ios-text-muted); }
 
 /* ==========================================================================
-   FULL-SCREEN APPLE CALL ANIMATION OVERLAY (.apple-call-overlay)
+   VIRTUAL HUG EMBRACE RITUAL MODAL (.hug-embrace-card)
    ========================================================================== */
+.hug-embrace-card { text-align: center; align-items: center; position: relative; overflow: hidden; }
+.hug-heartbeat-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 128, 82, 0.4) 0%, rgba(217, 70, 239, 0.2) 60%, transparent 100%);
+  animation: heartbeatPulse 1.6s ease-in-out infinite alternate; pointer-events: none;
+}
+@keyframes heartbeatPulse {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.25); opacity: 0.95; }
+  100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.7; }
+}
+.hug-icon-hero { font-size: 3.5rem; filter: drop-shadow(0 4px 15px rgba(255, 128, 82, 0.5)); margin-bottom: 4px; }
+.hug-note-text { font-family: var(--font-serif); font-size: 1.15rem; font-style: italic; color: var(--ios-text); line-height: 1.6; margin: 8px 0; }
+.hug-stats-row { display: flex; gap: 8px; justify-content: center; }
+.hug-stat-pill { font-size: 0.76rem; font-weight: 800; background: rgba(255, 255, 255, 0.65); padding: 4px 12px; border-radius: 12px; border: 1px solid var(--glass-border); color: #d946ef; }
+
+/* ==========================================================================
+   MEMORY ORBS CUSTOM COLORING STUDIO & 3D CRYSTAL RENDERING
+   ========================================================================== */
+.memory-orb-sphere-enhanced {
+  width: 140px; height: 140px; border-radius: 50%; position: relative; overflow: hidden;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #ffcf56 35%, #ff8052 70%, #d946ef 100%);
+  box-shadow: inset 0 0 30px rgba(255,255,255,0.95), 0 0 50px var(--accent-glow);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  transition: background 0.5s ease, box-shadow 0.5s ease, transform 0.4s ease;
+  animation: orbLiquidFloat 6s ease-in-out infinite alternate;
+}
+@keyframes orbLiquidFloat {
+  0% { transform: translateY(0) rotate(0deg) scale(1); }
+  50% { transform: translateY(-6px) rotate(4deg) scale(1.03); }
+  100% { transform: translateY(3px) rotate(-3deg) scale(0.98); }
+}
+
+.orb-highlight-reflection {
+  position: absolute; top: 12%; left: 16%; width: 40%; height: 25%; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
+  pointer-events: none; transform: rotate(-30deg);
+}
+
+.custom-color-studio-box { margin-bottom: 6px; }
+.color-picker-row { display: flex; gap: 14px; align-items: center; }
+.color-picker-item { display: flex; flex-direction: column; gap: 4px; font-size: 0.78rem; font-weight: 700; color: var(--ios-text); }
+.ios-color-input { width: 44px; height: 40px; border: 1.5px solid var(--glass-border); border-radius: 12px; cursor: pointer; background: transparent; padding: 2px; }
+.flex-1 { flex: 1; }
+
+.preset-palettes-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.palette-swatch-btn {
+  background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(15px); border: 1px solid var(--glass-border-subtle);
+  border-radius: 12px; padding: 6px 12px; font-size: 0.76rem; font-weight: 700; color: var(--ios-text);
+  cursor: pointer; transition: all 0.2s ease;
+}
+.palette-swatch-btn:hover { transform: scale(1.05); background: #ffffff; color: #d946ef; }
+
+/* Full Screen Apple Call Overlay */
 .apple-call-overlay {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   background: rgba(15, 8, 25, 0.82);
@@ -239,16 +278,10 @@ body {
 }
 .apple-call-overlay.hidden { display: none; }
 
-@keyframes iosCallFadeIn {
-  from { opacity: 0; transform: scale(1.05); }
-  to { opacity: 1; transform: scale(1); }
-}
-
 .apple-call-content {
   display: flex; flex-direction: column; align-items: center; gap: 16px;
   text-align: center; color: #ffffff; max-width: 420px; width: 100%;
 }
-
 .apple-call-avatar-container {
   width: 140px; height: 140px; border-radius: 50%; position: relative;
   display: flex; align-items: center; justify-content: center; margin-bottom: 8px;
@@ -263,52 +296,37 @@ body {
 .apple-call-ring { position: absolute; border-radius: 50%; border: 2px solid rgba(217, 70, 239, 0.6); opacity: 0.4; }
 .apple-call-ring.ring-1 { width: 135px; height: 135px; animation: iosCallPulse 2.4s ease-out infinite; }
 .apple-call-ring.ring-2 { width: 165px; height: 165px; animation: iosCallPulse 2.4s ease-out infinite 1.2s; }
-
 @keyframes iosCallPulse {
   0% { transform: scale(0.85); opacity: 0.8; }
   100% { transform: scale(1.45); opacity: 0; }
 }
-
-.apple-caller-name { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 700; color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-.apple-call-status { font-size: 0.96rem; color: rgba(255, 255, 255, 0.8); font-weight: 600; letter-spacing: 0.5px; }
-
+.apple-caller-name { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 700; color: #ffffff; }
+.apple-call-status { font-size: 0.96rem; color: rgba(255, 255, 255, 0.8); font-weight: 600; }
 .apple-call-buttons-row { display: flex; gap: 40px; margin-top: 24px; align-items: center; }
-
 .apple-call-btn {
   width: 72px; height: 72px; border-radius: 50%; border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #ffffff;
-  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: transform 0.2s ease;
 }
-.apple-call-btn:active { transform: scale(0.9); }
-
-.decline-btn {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5);
-}
-.accept-btn {
-  background: linear-gradient(135deg, #10b981, #059669);
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
-}
-
+.decline-btn { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.accept-btn { background: linear-gradient(135deg, #10b981, #059669); }
 .apple-active-controls-row { display: flex; gap: 24px; margin-top: 24px; align-items: center; }
 .apple-control-btn {
   background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.4); width: 68px; height: 68px; border-radius: 50%;
   color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 2px; cursor: pointer; transition: all 0.2s ease;
+  gap: 2px; cursor: pointer;
 }
-.apple-control-btn.active { background: rgba(255, 255, 255, 0.45); color: #ffffff; border-color: #ffffff; }
+.apple-control-btn.active { background: rgba(255, 255, 255, 0.45); border-color: #ffffff; }
 .btn-icon { font-size: 1.3rem; }
 .btn-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
 
-/* Sanctuary Circle Container */
+/* Sanctuary Circle Community Layout */
 .circle-app-container {
   padding: 0 !important; display: flex; flex-direction: row; height: 680px; overflow: hidden;
   border-radius: var(--ios-card-radius); border: 1px solid var(--glass-border);
   box-shadow: 0 25px 60px rgba(45, 10, 50, 0.15);
 }
-
 .circle-channels-sidebar {
   width: 240px; background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(25px); border-right: 1px solid var(--glass-border-subtle);
@@ -322,14 +340,12 @@ body {
 .server-title-group { display: flex; flex-direction: column; }
 .server-name { font-weight: 800; font-size: 0.96rem; color: var(--ios-text); }
 .online-indicator { font-size: 0.72rem; color: #059669; font-weight: 600; }
-
 .channels-section { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; }
 .channel-group-label { font-size: 0.7rem; font-weight: 800; color: var(--ios-text-muted); letter-spacing: 1px; padding: 4px 8px; }
 .channel-btn {
   background: transparent; border: none; padding: 9px 12px; border-radius: 12px;
   font-family: var(--font-ios); font-size: 0.88rem; font-weight: 600; color: var(--ios-text-muted);
-  display: flex; align-items: center; gap: 8px; cursor: pointer; text-align: left;
-  transition: all 0.2s ease;
+  display: flex; align-items: center; gap: 8px; cursor: pointer; text-align: left; transition: all 0.2s ease;
 }
 .channel-btn:hover { background: rgba(255, 255, 255, 0.5); color: var(--ios-text); }
 .channel-btn.active {
@@ -338,7 +354,6 @@ body {
 }
 .channel-hash { font-weight: 800; color: var(--ios-text-subtle); }
 .channel-btn.active .channel-hash { color: #d946ef; }
-
 .circle-user-profile-bar {
   padding: 12px 14px; background: rgba(255, 255, 255, 0.6);
   border-top: 1px solid var(--glass-border-subtle); display: flex; align-items: center; gap: 10px;
@@ -346,7 +361,6 @@ body {
 .user-avatar-mini {
   width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #ffcf56, #d946ef);
   display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #ffffff;
-  box-shadow: 0 2px 8px rgba(45,10,50,0.1);
 }
 .user-info-text { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
 .user-display-name { font-size: 0.82rem; font-weight: 800; color: var(--ios-text); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
@@ -361,7 +375,6 @@ body {
 .channel-title-info { display: flex; flex-direction: column; }
 .header-channel-name { font-weight: 800; font-size: 1.05rem; color: var(--ios-text); }
 .header-channel-desc { font-size: 0.78rem; color: var(--ios-text-muted); }
-
 .voice-lounge-banner {
   background: linear-gradient(135deg, rgba(5, 150, 105, 0.2), rgba(52, 211, 153, 0.2));
   border-bottom: 1px solid rgba(5, 150, 105, 0.3); padding: 10px 20px;
@@ -371,7 +384,6 @@ body {
 .voice-pulse-dot { width: 10px; height: 10px; border-radius: 50%; background: #059669; animation: miniPulse 1.5s infinite alternate; }
 
 .discord-messages-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
-
 .peer-msg-item { display: flex; gap: 14px; align-items: flex-start; }
 .peer-avatar {
   width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
@@ -383,14 +395,12 @@ body {
 .peer-name { font-size: 0.88rem; font-weight: 800; color: var(--ios-text); }
 .peer-time { font-size: 0.72rem; color: var(--ios-text-muted); }
 .peer-tag { font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 8px; color: #ffffff; }
-
 .peer-bubble {
   background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border); padding: 12px 16px; border-radius: 16px;
   font-size: 0.92rem; color: var(--ios-text); line-height: 1.5;
   box-shadow: 0 4px 15px rgba(45, 10, 50, 0.04), inset 0 1px 1px #ffffff;
 }
-
 .peer-reactions-row { display: flex; gap: 6px; margin-top: 4px; }
 .reaction-btn {
   background: rgba(255, 255, 255, 0.6); border: 1px solid var(--glass-border-subtle);
@@ -404,7 +414,6 @@ body {
   backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border-subtle);
   display: flex; gap: 10px;
 }
-
 .circle-friends-sidebar {
   width: 230px; background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(25px); border-left: 1px solid var(--glass-border-subtle);
@@ -415,7 +424,6 @@ body {
   font-size: 0.72rem; font-weight: 800; letter-spacing: 1px; color: var(--ios-text-muted);
 }
 .friends-list-container { padding: 12px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
-
 .friend-item {
   display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px;
   border-radius: 14px; background: rgba(255, 255, 255, 0.4); border: 1px solid var(--glass-border-subtle);
@@ -434,7 +442,6 @@ body {
 .friend-info { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
 .friend-name { font-size: 0.82rem; font-weight: 800; color: var(--ios-text); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 .friend-activity { font-size: 0.68rem; color: var(--ios-text-muted); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
-
 .call-friend-btn {
   background: rgba(217, 70, 239, 0.15); border: 1px solid rgba(217, 70, 239, 0.3);
   color: #d946ef; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
@@ -451,7 +458,7 @@ body {
 .ios-select { width: 100%; cursor: pointer; }
 .auth-toggle-footer { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.84rem; margin-top: 14px; }
 
-/* General Buttons */
+/* Buttons */
 .ios-btn {
   width: 100%; padding: 14px 22px; border-radius: 16px;
   font-family: var(--font-ios); font-size: 0.94rem; font-weight: 700;
@@ -459,7 +466,6 @@ body {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
 }
 .ios-btn:active { transform: scale(0.97); }
-
 .small-btn { padding: 8px 14px; font-size: 0.82rem; border-radius: 12px; width: auto; }
 
 .primary-btn {
@@ -475,29 +481,20 @@ body {
 }
 
 .secondary-btn {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  color: var(--ios-text);
-  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(20px);
+  color: var(--ios-text); border: 1px solid var(--glass-border);
   box-shadow: 0 4px 15px rgba(45, 10, 50, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.9);
 }
-.secondary-btn:hover {
-  background: rgba(255, 255, 255, 0.85); transform: translateY(-1px);
-}
+.secondary-btn:hover { background: rgba(255, 255, 255, 0.85); transform: translateY(-1px); }
 
-.outline-btn {
-  background: transparent; color: #d946ef;
-  border: 1.5px solid #d946ef; font-weight: 700;
-}
+.outline-btn { background: transparent; color: #d946ef; border: 1.5px solid #d946ef; font-weight: 700; }
 .outline-btn:hover { background: rgba(217, 70, 239, 0.1); }
 
 .ios-icon-btn {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border); color: var(--ios-text);
   width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.1rem;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex; align-items: center; justify-content: center; transition: all 0.25s ease;
   box-shadow: 0 4px 12px rgba(45, 10, 50, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.9);
 }
 .ios-icon-btn:hover { transform: translateY(-2px); background: #ffffff; }
@@ -513,18 +510,15 @@ body {
 
 .ios-segmented-control {
   display: flex; background: rgba(255, 255, 255, 0.35); padding: 4px;
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border-radius: 16px; border: 1px solid var(--glass-border); gap: 4px;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px); border-radius: 16px; border: 1px solid var(--glass-border); gap: 4px;
 }
 .segmented-btn, .date-pill, .mode-btn {
   flex: 1; background: transparent; border: none; color: var(--ios-text-muted);
   padding: 10px 16px; border-radius: 12px; font-size: 0.86rem; font-weight: 700; cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.25s ease;
 }
 .segmented-btn.active, .date-pill.active, .mode-btn.active {
-  background: rgba(255, 255, 255, 0.9); color: var(--ios-text);
-  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.9); color: var(--ios-text); border: 1px solid var(--glass-border);
   box-shadow: 0 4px 15px rgba(45, 10, 50, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.95);
 }
 
@@ -552,13 +546,6 @@ body {
 .photo-preview-box .small-btn { position: absolute; top: 8px; right: 8px; }
 
 .orb-preview-header { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.memory-orb-sphere {
-  width: 120px; height: 120px; border-radius: 50%; position: relative; overflow: hidden;
-  background: radial-gradient(circle at 35% 35%, #ffffff, #ffcf56 35%, #ff8052 70%, #d946ef 100%);
-  box-shadow: inset 0 0 25px rgba(255,255,255,0.9), 0 0 40px var(--accent-glow);
-  border: 2px solid rgba(255, 255, 255, 0.85);
-}
-.orb-core-glow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; }
 .orb-inner-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
 .orb-mini-particle { position: absolute; border-radius: 50%; box-shadow: 0 0 8px currentColor; animation: floatOrbParticle 4s ease-in-out infinite alternate; }
 @keyframes floatOrbParticle {
@@ -603,6 +590,7 @@ body {
 .row-info { flex: 1; display: flex; flex-direction: column; }
 .row-title { font-size: 0.94rem; font-weight: 700; color: var(--ios-text); }
 .row-subtitle { font-size: 0.78rem; color: var(--ios-text-muted); }
+.sound-card.playing { border-color: #d946ef; background: rgba(255, 255, 255, 0.85); box-shadow: 0 0 20px rgba(217, 70, 239, 0.2); }
 
 .memory-jar-card { align-items: center; text-align: center; }
 .glass-jar { width: 160px; height: 200px; position: relative; margin: 0 auto; }

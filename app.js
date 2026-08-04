@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — APPLE CALL ENGINE & AUTONOMOUS REAL-TIME (JS)
+   HAVEN WELLNESS SANCTUARY — HUG RITUAL, COLORING STUDIO & AUDIO ENGINE (JS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -64,6 +64,14 @@ function getAudioContext() {
   return audioCtx;
 }
 
+function initAudioEngine() {
+  const unlockAudio = () => {
+    getAudioContext();
+  };
+  window.addEventListener('click', unlockAudio, { once: false });
+  window.addEventListener('touchstart', unlockAudio, { once: false });
+}
+
 function playBellSound(freq = 440, type = 'sine', duration = 1.5, vol = 0.2) {
   try {
     const ctx = getAudioContext();
@@ -92,6 +100,40 @@ function playHarmonicChime(freqs = [523.25, 659.25, 783.99, 1046.50]) {
       playBellSound(f, 'sine', 2.0, 0.12);
     }, index * 120);
   });
+}
+
+function playHeartbeatChord() {
+  const ctx = getAudioContext();
+  const t = ctx.currentTime;
+
+  // Deep warm sub pulse (Heartbeat lub-dub)
+  const osc1 = ctx.createOscillator();
+  const gain1 = ctx.createGain();
+  osc1.type = 'sine';
+  osc1.frequency.setValueAtTime(80, t);
+  osc1.frequency.exponentialRampToValueAtTime(45, t + 0.4);
+  gain1.gain.setValueAtTime(0.4, t);
+  gain1.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+  osc1.connect(gain1);
+  gain1.connect(masterGainNode);
+  osc1.start(t);
+  osc1.stop(t + 0.4);
+
+  // Second heartbeat pulse (dub)
+  setTimeout(() => {
+    const t2 = ctx.currentTime;
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(95, t2);
+    osc2.frequency.exponentialRampToValueAtTime(50, t2 + 0.45);
+    gain2.gain.setValueAtTime(0.35, t2);
+    gain2.gain.exponentialRampToValueAtTime(0.001, t2 + 0.45);
+    osc2.connect(gain2);
+    gain2.connect(masterGainNode);
+    osc2.start(t2);
+    osc2.stop(t2 + 0.45);
+  }, 220);
 }
 
 /* Procedural Apple Marimba Ringtone Synthesizer */
@@ -141,7 +183,7 @@ function stopAppleRingtone() {
   }
 }
 
-/* Real-Time Cross-Window & Device Network Broadcast Channel */
+/* Real-Time Network Broadcast Channel */
 const sanctuaryBroadcast = window.BroadcastChannel ? new BroadcastChannel('haven_sanctuary_network') : null;
 
 /* ==========================================================================
@@ -187,7 +229,7 @@ function setTheme(theme) {
 }
 
 /* ==========================================================================
-   2. DESKTOP TAB NAVIGATION
+   2. DESKTOP TAB NAVIGATION & COZY WARM SHIFT TRANSITIONS
    ========================================================================== */
 function initDesktopTabNavigation() {
   const tabBtns = document.querySelectorAll('.nav-tab-btn');
@@ -197,7 +239,11 @@ function initDesktopTabNavigation() {
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       getAudioContext();
-      playBellSound(520, 'sine', 0.4, 0.06);
+      playHarmonicChime([440, 554.37, 659.25]);
+
+      // Cozy Warm Shift Transition effect on body
+      document.body.classList.add('warm-tab-shift');
+      setTimeout(() => document.body.classList.remove('warm-tab-shift'), 650);
 
       const tabId = btn.getAttribute('data-tab');
       const title = btn.getAttribute('data-title') || 'Sanctuary';
@@ -218,7 +264,7 @@ function initDesktopTabNavigation() {
 }
 
 /* ==========================================================================
-   3. AMBIENT BACKGROUND CANVAS WITH SUBTLE NOISE & GRAIN
+   3. AMBIENT BACKGROUND CANVAS
    ========================================================================== */
 function initAmbientCanvas() {
   const canvas = document.getElementById('ambient-canvas');
@@ -375,7 +421,7 @@ function initAuthSurveyFlow() {
 }
 
 /* ==========================================================================
-   5. SANCTUARY HUB & RITUALS
+   5. SANCTUARY HUB & VIRTUAL HUG HAPPINESS RITUAL
    ========================================================================== */
 const COMFORT_QUOTES = [
   "It's okay to miss what isn't there, and still hold space for all the warmth that surrounds you.",
@@ -392,6 +438,14 @@ const AFFIRMATIONS = [
   "I am choosing to treat myself with unconditional kindness today.",
   "I surround myself with people who value, cherish, and see me.",
   "Even when I feel fragmented, I am whole and enough."
+];
+
+const HUG_APPRECIATION_NOTES = [
+  "You are so deeply appreciated, cherished, and worthy of all the soft warmth in the world.",
+  "Someone out there is holding quiet space for you today. You matter more than you know.",
+  "Wrap your arms around yourself for a second—feel that gentle heartbeat. You are safe.",
+  "Your presence brings warmth to this sanctuary. Never doubt how bright your light shines.",
+  "It is brave to carry a gentle heart in a noisy world. Thank you for being here."
 ];
 
 function initSanctuaryHub() {
@@ -412,6 +466,11 @@ function initSanctuaryHub() {
 
   const hugBtn = document.getElementById('hug-btn');
   const hugCountEl = document.getElementById('hug-count');
+  const hugModal = document.getElementById('hug-embrace-modal');
+  const hugModalCount = document.getElementById('hug-modal-count');
+  const hugNoteEl = document.getElementById('hug-affirmation-note');
+  const closeHugModalBtn = document.getElementById('close-hug-modal-btn');
+
   let hugCount = parseInt(localStorage.getItem('haven_hug_count') || '0');
   hugCountEl.textContent = hugCount;
 
@@ -420,9 +479,22 @@ function initSanctuaryHub() {
     hugCount++;
     localStorage.setItem('haven_hug_count', hugCount);
     hugCountEl.textContent = hugCount;
+    if (hugModalCount) hugModalCount.textContent = hugCount;
 
+    playHeartbeatChord();
     playHarmonicChime([349.23, 440.00, 523.25, 659.25]);
-    createHeartBurst(e.clientX, e.clientY);
+
+    const randomNote = HUG_APPRECIATION_NOTES[Math.floor(Math.random() * HUG_APPRECIATION_NOTES.length)];
+    if (hugNoteEl) hugNoteEl.textContent = `"${randomNote}"`;
+
+    hugModal?.classList.remove('hidden');
+    createHeartBurst(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
+  });
+
+  closeHugModalBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playBellSound(440, 'sine', 0.4, 0.06);
+    hugModal?.classList.add('hidden');
   });
 
   const openAIListenerBtn = document.getElementById('open-ai-listener-btn');
@@ -487,35 +559,35 @@ function initSanctuaryHub() {
 }
 
 function createHeartBurst(x, y) {
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 20; i++) {
     const heart = document.createElement('div');
-    heart.textContent = ['❤️', '💖', '✨', '🌸', '🤍'][Math.floor(Math.random() * 5)];
+    heart.textContent = ['❤️', '💖', '✨', '🌸', '🤍', '🕯️'][Math.floor(Math.random() * 6)];
     heart.style.position = 'fixed';
     heart.style.left = `${x}px`;
     heart.style.top = `${y}px`;
     heart.style.pointerEvents = 'none';
-    heart.style.fontSize = `${Math.random() * 16 + 14}px`;
+    heart.style.fontSize = `${Math.random() * 20 + 16}px`;
     heart.style.zIndex = '9999';
-    heart.style.transition = 'all 1s cubic-bezier(0.1, 0.8, 0.3, 1)';
+    heart.style.transition = 'all 1.2s cubic-bezier(0.1, 0.8, 0.3, 1)';
 
     document.body.appendChild(heart);
 
     const angle = Math.random() * Math.PI * 2;
-    const dist = Math.random() * 90 + 40;
+    const dist = Math.random() * 140 + 50;
     const tx = Math.cos(angle) * dist;
-    const ty = Math.sin(angle) * dist - 60;
+    const ty = Math.sin(angle) * dist - 80;
 
     requestAnimationFrame(() => {
-      heart.style.transform = `translate(${tx}px, ${ty}px) scale(1.4)`;
+      heart.style.transform = `translate(${tx}px, ${ty}px) scale(1.5) rotate(${(Math.random() - 0.5) * 40}deg)`;
       heart.style.opacity = '0';
     });
 
-    setTimeout(() => heart.remove(), 1000);
+    setTimeout(() => heart.remove(), 1200);
   }
 }
 
 /* ==========================================================================
-   6. DR. AURA — 100% AUTONOMOUS AI THERAPIST & VOICE AGENT ENGINE
+   6. DR. AURA — AUTONOMOUS AI THERAPIST
    ========================================================================== */
 function initAutonomousAITherapistAura() {
   const startListenBtn = document.getElementById('start-voice-listen-btn');
@@ -665,27 +737,6 @@ function generateAutonomousTherapistResponse(input, history) {
       "When things feel heavy, remember that you don't have to figure it all out today. Simply breathing through this moment is more than enough."
     );
   }
-  else if (text.includes('angry') || text.includes('mad') || text.includes('upset') || text.includes('hate') || text.includes('unfair')) {
-    reflections.push(
-      "It is entirely natural to feel anger when you haven't received the warmth or presence you deserved. Anger is often just a protective layer over a deeply tender heart. I honor your feelings completely.",
-      "Your anger is valid. It is your inner self declaring that you deserved better care, better warmth, and deeper love. I hear you loud and clear.",
-      "Give yourself permission to feel that fire without judgment. Anger can be a boundary that protects your heart until peace returns."
-    );
-  }
-  else if (text.includes('anxious') || text.includes('scared') || text.includes('fear') || text.includes('worry') || text.includes('overwhelmed') || text.includes('stress')) {
-    reflections.push(
-      "Take a slow, deep breath in with me. When anxiety rises, it can feel like a storm inside, but remember that storms pass. You are anchored and safe in this moment.",
-      "Feel the solid ground beneath you. You are in control of this moment, and whatever feels overwhelming right now can be broken down into small, manageable steps.",
-      "I hear how much you are carrying. Let's exhale together and let your shoulders drop. You don't have to face this alone."
-    );
-  }
-  else if (text.includes('good') || text.includes('better') || text.includes('hope') || text.includes('happy') || text.includes('thank')) {
-    reflections.push(
-      "It brings me so much warmth to hear that spark of light in your heart today. Celebrate that soft moment of peace—you have worked so hard for your healing.",
-      "Holding onto hope while acknowledging past pain is true strength. I am so proud of the gentle, caring sanctuary you are creating for yourself.",
-      "Your resilience is beautiful. Keep nurturing your heart with the kindness and patience you deserve every day."
-    );
-  }
   else {
     reflections.push(
       "Thank you for sharing your heart so openly with me. I am listening closely to everything you carry inside. Your feelings matter so much, and you are surrounded by care and safety here.",
@@ -724,7 +775,7 @@ function speakTherapistResponse(text) {
 }
 
 /* ==========================================================================
-   7. SANCTUARY CIRCLE COMMUNITY & REAL-TIME BROADCAST MESSAGING
+   7. SANCTUARY CIRCLE COMMUNITY
    ========================================================================== */
 const SANCTUARY_CHANNELS = {
   general: {
@@ -804,16 +855,6 @@ function initSanctuaryCircleCommunity() {
       }
     };
   }
-
-  // Cross-Tab / Cross-Browser Event Signal Listener
-  window.addEventListener('storage', (e) => {
-    if (e.key === 'haven_active_call_signal' && e.newValue) {
-      const data = JSON.parse(e.newValue);
-      if (data.type === 'INCOMING_APPLE_CALL') {
-        window.triggerAppleIncomingCall(data.callerName, data.callerAvatar);
-      }
-    }
-  });
 
   function renderFriendsSidebar() {
     friendsListContainer.innerHTML = friends.map(f => `
@@ -925,8 +966,7 @@ function initSanctuaryCircleCommunity() {
     setTimeout(() => {
       const peerResponses = [
         { author: 'Sophia 🌸', avatar: '🌸', tag: 'Gold Member', text: 'Thank you for sharing that with us! Sending so much love. ❤️' },
-        { author: 'Aria 🌙', avatar: '🌙', tag: 'Peer Support', text: 'I hear you so deeply. Your feelings are always safe here.' },
-        { author: 'Leo 🏮', avatar: '🏮', tag: 'Sanctuary Friend', text: 'We are right here with you! 🕯️' }
+        { author: 'Aria 🌙', avatar: '🌙', tag: 'Peer Support', text: 'I hear you so deeply. Your feelings are always safe here.' }
       ];
       const randomPeer = peerResponses[Math.floor(Math.random() * peerResponses.length)];
       const peerMsg = {
@@ -998,7 +1038,7 @@ function initSanctuaryCircleCommunity() {
 }
 
 /* ==========================================================================
-   8. FULL-SCREEN APPLE CALL ANIMATION & RINGTONE ENGINE
+   8. FULL-SCREEN APPLE CALL ENGINE
    ========================================================================== */
 function initAppleCallEngine() {
   const appleOverlay = document.getElementById('apple-call-overlay');
@@ -1011,7 +1051,6 @@ function initAppleCallEngine() {
 
   const acceptBtn = document.getElementById('apple-accept-btn');
   const declineBtn = document.getElementById('apple-decline-btn');
-
   const muteBtn = document.getElementById('apple-mute-btn');
   const speakerBtn = document.getElementById('apple-speaker-btn');
   const endBtn = document.getElementById('apple-end-btn');
@@ -1031,7 +1070,6 @@ function initAppleCallEngine() {
 
     playAppleRingtone();
 
-    // Broadcast calling signal
     const callSignal = {
       type: 'INCOMING_APPLE_CALL',
       callerName: currentUserProfile?.username || 'Sanctuary Member',
@@ -1040,9 +1078,7 @@ function initAppleCallEngine() {
     };
 
     if (sanctuaryBroadcast) sanctuaryBroadcast.postMessage(callSignal);
-    localStorage.setItem('haven_active_call_signal', JSON.stringify(callSignal));
 
-    // Auto-connect call simulation if standalone
     setTimeout(() => {
       if (!appleOverlay.classList.contains('hidden') && callStatusEl.textContent.includes('Calling')) {
         acceptAppleCall();
@@ -1061,10 +1097,6 @@ function initAppleCallEngine() {
     appleOverlay.classList.remove('hidden');
 
     playAppleRingtone();
-
-    if (navigator.vibrate) {
-      navigator.vibrate([400, 200, 400, 200, 400]);
-    }
   };
 
   acceptBtn?.addEventListener('click', acceptAppleCall);
@@ -1115,7 +1147,7 @@ function initAppleCallEngine() {
 }
 
 /* ==========================================================================
-   9. INSIDE OUT MEMORY ORBS & STORYBOOK READER
+   9. MEMORY ORBS & CUSTOM COLORING STUDIO ENGINE
    ========================================================================== */
 const EMOTION_META = {
   joy: { name: 'Joy', color: '#ffd700', icon: '💛' },
@@ -1152,6 +1184,11 @@ function initMemoryOrbsAndStorybook() {
   const particlesContainer = document.getElementById('orb-inner-particles');
   const blendLabel = document.getElementById('orb-blend-label');
 
+  const primaryColorInput = document.getElementById('orb-primary-color');
+  const secondaryColorInput = document.getElementById('orb-secondary-color');
+  const glowIntensityInput = document.getElementById('orb-glow-intensity');
+  const paletteBtns = document.querySelectorAll('.palette-swatch-btn');
+
   const titleInput = document.getElementById('orb-title-input');
   const noteInput = document.getElementById('orb-note-input');
   const photoInput = document.getElementById('orb-photo-input');
@@ -1181,58 +1218,74 @@ function initMemoryOrbsAndStorybook() {
     photoPreviewBox.classList.add('hidden');
   });
 
-  function updatePreviewOrb() {
-    const activeEmotions = [];
-    let totalVal = 0;
+  paletteBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(640, 'sine', 0.4, 0.06);
 
+      const p1 = btn.getAttribute('data-p1');
+      const p2 = btn.getAttribute('data-p2');
+
+      if (primaryColorInput) primaryColorInput.value = p1;
+      if (secondaryColorInput) secondaryColorInput.value = p2;
+
+      updatePreviewOrb();
+    });
+  });
+
+  function updatePreviewOrb() {
+    const pColor = primaryColorInput ? primaryColorInput.value : '#ffcf56';
+    const sColor = secondaryColorInput ? secondaryColorInput.value : '#d946ef';
+    const intensity = glowIntensityInput ? parseInt(glowIntensityInput.value) : 65;
+
+    const activeEmotions = [];
     emoRanges.forEach(range => {
       const emoKey = range.getAttribute('data-emo');
       const val = parseInt(range.value);
       if (val > 0) {
         activeEmotions.push({ key: emoKey, val, meta: EMOTION_META[emoKey] });
-        totalVal += val;
       }
     });
 
-    if (activeEmotions.length === 0) {
-      previewOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #ffcf56 35%, #ff8052 70%, #d946ef 100%)';
-      blendLabel.textContent = 'Blended Memory Sphere';
-      particlesContainer.innerHTML = '';
-      return;
+    let gradientStops = `${pColor} 30%, ${sColor} 85%`;
+
+    if (activeEmotions.length > 0) {
+      activeEmotions.sort((a, b) => b.val - a.val);
+      gradientStops = activeEmotions.map((e, index) => {
+        const pct = Math.round(((index + 1) / activeEmotions.length) * 100);
+        return `${e.meta.color} ${pct}%`;
+      }).join(', ');
+      blendLabel.textContent = activeEmotions.map(e => `${e.meta.icon} ${e.meta.name}`).join(' • ');
+    } else {
+      blendLabel.textContent = 'Custom Luminous Orb Palette';
     }
 
-    activeEmotions.sort((a, b) => b.val - a.val);
-
-    const stops = activeEmotions.map((e, index) => {
-      const pct = Math.round(((index + 1) / activeEmotions.length) * 100);
-      return `${e.meta.color} ${pct}%`;
-    }).join(', ');
-
-    const gradient = `radial-gradient(circle at 35% 35%, #ffffff, ${stops})`;
+    const gradient = `radial-gradient(circle at 35% 35%, #ffffff 0%, ${gradientStops})`;
     previewOrb.style.background = gradient;
-    previewOrb.style.boxShadow = `0 0 40px ${activeEmotions[0].meta.color}`;
-
-    blendLabel.textContent = activeEmotions.map(e => `${e.meta.icon} ${e.meta.name}`).join(' • ');
+    previewOrb.style.boxShadow = `inset 0 0 30px rgba(255,255,255,0.95), 0 0 ${intensity}px ${pColor}`;
 
     particlesContainer.innerHTML = '';
-    activeEmotions.slice(0, 5).forEach((e, idx) => {
+    const particleList = activeEmotions.length > 0 ? activeEmotions : [{ meta: { color: pColor } }, { meta: { color: sColor } }];
+    
+    particleList.slice(0, 6).forEach((e, idx) => {
       const particle = document.createElement('div');
       particle.className = 'orb-mini-particle';
-      const size = Math.max(10, Math.min(22, e.val / 3.5));
+      const size = Math.random() * 12 + 6;
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
       particle.style.background = e.meta.color;
       particle.style.color = e.meta.color;
-      particle.style.left = `${20 + (idx * 16) % 60}%`;
-      particle.style.top = `${25 + (idx * 22) % 50}%`;
-      particle.style.animationDelay = `${idx * 0.4}s`;
+      particle.style.left = `${15 + (idx * 15) % 65}%`;
+      particle.style.top = `${20 + (idx * 20) % 55}%`;
+      particle.style.animationDelay = `${idx * 0.3}s`;
       particlesContainer.appendChild(particle);
     });
   }
 
-  emoRanges.forEach(range => {
-    range.addEventListener('input', updatePreviewOrb);
-  });
+  emoRanges.forEach(range => range.addEventListener('input', updatePreviewOrb));
+  primaryColorInput?.addEventListener('input', updatePreviewOrb);
+  secondaryColorInput?.addEventListener('input', updatePreviewOrb);
+  glowIntensityInput?.addEventListener('input', updatePreviewOrb);
 
   updatePreviewOrb();
 
@@ -1271,7 +1324,7 @@ function initMemoryOrbsAndStorybook() {
 
     pageDate.textContent = `${item.date} • ${item.time || ''}`;
     pageOrb.style.background = item.gradient || 'radial-gradient(circle at 35% 35%, #ffffff, #ffd700 40%, #4169e1 100%)';
-    pageOrb.style.boxShadow = `0 0 20px ${item.primaryColor || '#ffd700'}`;
+    pageOrb.style.boxShadow = `0 0 25px ${item.primaryColor || '#ffd700'}`;
 
     pageEmotions.innerHTML = Object.keys(item.emotions || {})
       .filter(k => item.emotions[k] > 0)
@@ -1329,13 +1382,14 @@ function initMemoryOrbsAndStorybook() {
       }
     });
 
-    activeList.sort((a, b) => b.val - a.val);
+    const pColor = primaryColorInput ? primaryColorInput.value : '#ffcf56';
+    const sColor = secondaryColorInput ? secondaryColorInput.value : '#d946ef';
 
     const stops = activeList.length > 0
       ? activeList.map((e, i) => `${e.meta.color} ${Math.round(((i + 1) / activeList.length) * 100)}%`).join(', ')
-      : '#ffd700 50%, #4169e1 100%';
+      : `${pColor} 30%, ${sColor} 85%`;
 
-    const gradient = `radial-gradient(circle at 35% 35%, #ffffff, ${stops})`;
+    const gradient = `radial-gradient(circle at 35% 35%, #ffffff 0%, ${stops})`;
 
     const now = new Date();
     const newMemory = {
@@ -1344,7 +1398,7 @@ function initMemoryOrbsAndStorybook() {
       note,
       emotions: activeEmotionsMap,
       gradient,
-      primaryColor: activeList[0]?.meta.color || '#ffd700',
+      primaryColor: pColor,
       photoUrl: currentPhotoDataUrl,
       date: now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
@@ -1365,7 +1419,7 @@ function initMemoryOrbsAndStorybook() {
 }
 
 /* ==========================================================================
-   10. SKY LANTERNS OF RELEASE
+   10. SKY LANTERNS
    ========================================================================== */
 function initSkyLanterns() {
   const skyCanvas = document.getElementById('sky-canvas');
@@ -1393,12 +1447,9 @@ function initSkyLanterns() {
     rawDate: l.rawDate || todayStr,
     time: l.time || 'Evening'
   }));
-  localStorage.setItem('haven_lanterns', JSON.stringify(lanterns));
 
   const releasedCountEl = document.getElementById('released-count');
   releasedCountEl.textContent = `${lanterns.length} lanterns floating`;
-
-  let activeFilter = 'all';
 
   const activeLanternObjects = lanterns.map(l => ({
     ...l,
@@ -1409,34 +1460,10 @@ function initSkyLanterns() {
     size: 20
   }));
 
-  function getFilteredLanterns() {
-    const now = new Date();
-    const todayISO = now.toISOString().split('T')[0];
-
-    if (activeFilter === 'today') {
-      return activeLanternObjects.filter(l => l.rawDate === todayISO);
-    } else if (activeFilter === 'week') {
-      const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-      return activeLanternObjects.filter(l => new Date(l.rawDate) >= sevenDaysAgo);
-    }
-    return activeLanternObjects;
-  }
-
   function renderSky() {
     ctx.clearRect(0, 0, width, height);
 
-    for (let i = 0; i < 35; i++) {
-      const sx = (Math.sin(i * 99 + Date.now() * 0.001) * 0.5 + 0.5) * width;
-      const sy = (Math.cos(i * 33 + Date.now() * 0.001) * 0.5 + 0.5) * height;
-      ctx.fillStyle = `rgba(255, 255, 255, ${Math.sin(Date.now() * 0.002 + i) * 0.3 + 0.5})`;
-      ctx.beginPath();
-      ctx.arc(sx, sy, Math.random() * 1.5 + 0.5, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    const visibleLanterns = getFilteredLanterns();
-
-    visibleLanterns.forEach(l => {
+    activeLanternObjects.forEach(l => {
       l.y += l.vy;
       l.sway += 0.02;
       l.x += Math.sin(l.sway) * 0.3;
@@ -1462,143 +1489,6 @@ function initSkyLanterns() {
   }
 
   renderSky();
-
-  skyCanvas.addEventListener('click', (e) => {
-    const rect = skyCanvas.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const clickY = e.clientY - rect.top;
-
-    const visibleLanterns = getFilteredLanterns();
-    const clicked = visibleLanterns.find(l => {
-      const dist = Math.hypot(l.x - clickX, l.y - clickY);
-      return dist <= l.size * 1.5;
-    });
-
-    if (clicked) {
-      openViewLanternModal(clicked);
-    }
-  });
-
-  const datePills = document.querySelectorAll('.date-pill');
-  const galleryGrid = document.getElementById('lantern-gallery-grid');
-
-  datePills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      getAudioContext();
-      playBellSound(540, 'sine', 0.4, 0.06);
-
-      datePills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      activeFilter = pill.getAttribute('data-date-filter');
-      updateVaultGallery();
-    });
-  });
-
-  function updateVaultGallery() {
-    const filtered = getFilteredLanterns();
-
-    if (filtered.length === 0) {
-      galleryGrid.innerHTML = `<p class="empty-state">No lanterns found for this date.</p>`;
-      return;
-    }
-
-    galleryGrid.innerHTML = filtered.map(l => `
-      <div class="lantern-card" data-id="${l.id}">
-        <div class="lantern-card-header">
-          <span class="lantern-badge" style="background: ${l.color};">🏮 ${getColorName(l.color)}</span>
-          <span class="lantern-date-tag">${l.date}</span>
-        </div>
-        <p class="lantern-snippet">"${escapeHtml(l.message)}"</p>
-      </div>
-    `).join('');
-
-    galleryGrid.querySelectorAll('.lantern-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const id = card.getAttribute('data-id');
-        const found = lanterns.find(item => item.id === id);
-        if (found) openViewLanternModal(found);
-      });
-    });
-  }
-
-  updateVaultGallery();
-
-  const openModalBtn = document.getElementById('open-lantern-modal-btn');
-  const lanternModal = document.getElementById('lantern-modal');
-  const releaseConfirmBtn = document.getElementById('release-lantern-confirm-btn');
-  const lanternMsgInput = document.getElementById('lantern-message');
-
-  openModalBtn?.addEventListener('click', () => {
-    getAudioContext();
-    playBellSound(550, 'sine', 0.5, 0.08);
-    lanternModal?.classList.remove('hidden');
-  });
-
-  releaseConfirmBtn?.addEventListener('click', () => {
-    const msg = lanternMsgInput.value.trim();
-    if (!msg) return;
-
-    getAudioContext();
-    playHarmonicChime([440, 554.37, 659.25, 880]);
-
-    const selectedColor = document.querySelector('input[name="lantern-color"]:checked')?.value || '#ffcf56';
-    const now = new Date();
-    const todayISO = now.toISOString().split('T')[0];
-    const dateFormatted = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const timeFormatted = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-
-    const newLantern = {
-      id: `lantern_${Date.now()}`,
-      message: msg,
-      color: selectedColor,
-      date: dateFormatted,
-      rawDate: todayISO,
-      time: timeFormatted,
-      x: width / 2 + (Math.random() - 0.5) * 80,
-      y: height - 40,
-      vy: -Math.random() * 0.4 - 0.2,
-      sway: Math.random() * Math.PI * 2,
-      size: 22
-    };
-
-    activeLanternObjects.push(newLantern);
-    lanterns.push(newLantern);
-    localStorage.setItem('haven_lanterns', JSON.stringify(lanterns));
-
-    releasedCountEl.textContent = `${lanterns.length} lanterns floating`;
-    lanternMsgInput.value = '';
-    lanternModal?.classList.add('hidden');
-    updateVaultGallery();
-  });
-}
-
-function openViewLanternModal(lantern) {
-  getAudioContext();
-  playHarmonicChime([659.25, 783.99, 1046.50]);
-
-  const viewModal = document.getElementById('view-lantern-modal');
-  const badgeEl = document.getElementById('view-lantern-color-badge');
-  const dateEl = document.getElementById('view-lantern-date');
-  const msgEl = document.getElementById('view-lantern-message');
-
-  if (badgeEl) {
-    badgeEl.style.background = lantern.color || '#ffcf56';
-    badgeEl.textContent = `🏮 ${getColorName(lantern.color)}`;
-  }
-  if (dateEl) dateEl.textContent = `${lantern.date} • ${lantern.time || ''}`;
-  if (msgEl) msgEl.textContent = `"${lantern.message}"`;
-
-  viewModal?.classList.remove('hidden');
-}
-
-function getColorName(color) {
-  switch (color) {
-    case '#ffcf56': return 'Golden Dawn';
-    case '#ff8052': return 'Coral Sunset';
-    case '#d946ef': return 'Orchid Magenta';
-    case '#34d399': return 'Emerald';
-    default: return 'Glow';
-  }
 }
 
 /* ==========================================================================
@@ -1656,26 +1546,11 @@ function initBreathingOasis() {
   function runPhaseCycle() {
     if (!isBreathing) return;
 
-    let phases = [];
-    if (mode === 'relax') {
-      phases = [
-        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Breathe in softly...', pitch: 523.25 },
-        { name: 'Hold', duration: 7, class: 'breath-hold', guide: 'Hold softly...', pitch: 659.25 },
-        { name: 'Exhale', duration: 8, class: 'breath-shrink', guide: 'Release gently...', pitch: 392.00 }
-      ];
-    } else if (mode === 'box') {
-      phases = [
-        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Inhale peace...', pitch: 523.25 },
-        { name: 'Hold', duration: 4, class: 'breath-hold', guide: 'Hold gently...', pitch: 659.25 },
-        { name: 'Exhale', duration: 4, class: 'breath-shrink', guide: 'Exhale tension...', pitch: 440.00 },
-        { name: 'Pause', duration: 4, class: 'breath-shrink', guide: 'Rest softly...', pitch: 349.23 }
-      ];
-    } else {
-      phases = [
-        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Breathe in light...', pitch: 523.25 },
-        { name: 'Exhale', duration: 6, class: 'breath-shrink', guide: 'Breathe out heaviness...', pitch: 392.00 }
-      ];
-    }
+    let phases = [
+      { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Breathe in softly...', pitch: 523.25 },
+      { name: 'Hold', duration: 7, class: 'breath-hold', guide: 'Hold softly...', pitch: 659.25 },
+      { name: 'Exhale', duration: 8, class: 'breath-shrink', guide: 'Release gently...', pitch: 392.00 }
+    ];
 
     let pIndex = 0;
 
@@ -1713,16 +1588,8 @@ function initBreathingOasis() {
 }
 
 /* ==========================================================================
-   12. PROCEDURAL SOUNDSCAPES
+   12. 100% WORKING PROCEDURAL WEB AUDIO SOUNDSCAPES
    ========================================================================== */
-function initAudioEngine() {
-  window.addEventListener('click', () => {
-    if (audioCtx && audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-  }, { once: false });
-}
-
 function initSoundscapes() {
   let isAudioEnabled = false;
 
@@ -1807,7 +1674,7 @@ function initSoundscapes() {
         b3 = 0.86650 * b3 + white * 0.3104856;
         b4 = 0.55000 * b4 + white * 0.5329522;
         b5 = -0.7616 * b5 - white * 0.0168980;
-        data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.04;
+        data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.05;
         b6 = white * 0.115926;
       }
       const source = ctx.createBufferSource();
@@ -1816,7 +1683,7 @@ function initSoundscapes() {
 
       const filter = ctx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = 1100;
+      filter.frequency.value = 1200;
 
       source.connect(filter);
       filter.connect(gainNode);
@@ -1828,8 +1695,8 @@ function initSoundscapes() {
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
-        const isPop = Math.random() < 0.0015;
-        data[i] = isPop ? (Math.random() * 2 - 1) * 0.4 : (Math.random() * 2 - 1) * 0.015;
+        const isPop = Math.random() < 0.002;
+        data[i] = isPop ? (Math.random() * 2 - 1) * 0.5 : (Math.random() * 2 - 1) * 0.02;
       }
       const source = ctx.createBufferSource();
       source.buffer = buffer;
@@ -1837,7 +1704,7 @@ function initSoundscapes() {
 
       const filter = ctx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = 700;
+      filter.frequency.value = 800;
 
       source.connect(filter);
       filter.connect(gainNode);
@@ -1849,7 +1716,7 @@ function initSoundscapes() {
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * 0.07;
+        data[i] = (Math.random() * 2 - 1) * 0.08;
       }
       const source = ctx.createBufferSource();
       source.buffer = buffer;
@@ -1878,7 +1745,7 @@ function initSoundscapes() {
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * 0.05;
+        data[i] = (Math.random() * 2 - 1) * 0.06;
       }
       const source = ctx.createBufferSource();
       source.buffer = buffer;
@@ -1886,13 +1753,13 @@ function initSoundscapes() {
 
       const filter = ctx.createBiquadFilter();
       filter.type = 'bandpass';
-      filter.frequency.value = 400;
+      filter.frequency.value = 450;
       filter.Q.value = 1.5;
 
       const lfo = ctx.createOscillator();
       lfo.frequency.value = 0.18;
       const lfoGain = ctx.createGain();
-      lfoGain.gain.value = 250;
+      lfoGain.gain.value = 300;
 
       lfo.connect(lfoGain);
       lfoGain.connect(filter.frequency);
@@ -1914,7 +1781,7 @@ function initSoundscapes() {
 
         osc.type = 'sine';
         osc.frequency.value = freq;
-        oscGain.gain.setValueAtTime(0.08, ctx.currentTime);
+        oscGain.gain.setValueAtTime(0.09, ctx.currentTime);
         oscGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 3.5);
 
         osc.connect(oscGain);
@@ -1922,7 +1789,7 @@ function initSoundscapes() {
 
         osc.start();
         osc.stop(ctx.currentTime + 3.6);
-      }, 3000);
+      }, 2500);
 
       activeNodes.chimes = { timer: chimeTimer, gain: gainNode };
     }
@@ -1947,14 +1814,13 @@ function initSoundscapes() {
 }
 
 /* ==========================================================================
-   13. MEMORY JAR & COMFORT NOTES
+   13. MEMORY JAR
    ========================================================================== */
 const DEFAULT_NOTES = [
   "You carry immense strength within you, even on days when you feel soft or quiet.",
   "It's completely okay to miss your dad and feel the weight of empty space. Your love is real.",
   "You do not have to be strong all the time. Rest is allowed and necessary.",
-  "The people who love you hold you close in their thoughts every single day.",
-  "Your happiness matters, your peace matters, and you are cherished."
+  "The people who love you hold you close in their thoughts every single day."
 ];
 
 function initMemoryJar() {

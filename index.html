@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Haven — Sanctuary Circle & Apple Call Sanctuary</title>
-  <meta name="description" content="A premium wellness application featuring an autonomous AI Therapist, real-time Sanctuary Circle peer messaging & Apple iOS voice calling.">
+  <meta name="description" content="A premium wellness application featuring an autonomous AI Therapist, real-time Sanctuary Circle peer messaging, Apple iOS voice calling, & procedural audio soundscapes.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -141,10 +141,10 @@
           <!-- Virtual Hug Widget -->
           <div class="pro-card widget-card hug-widget">
             <div class="widget-icon">🫂</div>
-            <h3>Virtual Hug</h3>
-            <div class="hug-badge"><span id="hug-count">0</span> hugs today</div>
-            <button id="hug-btn" class="ios-btn primary-btn">
-              ❤️ Send Hug
+            <h3>Virtual Hug Ritual</h3>
+            <div class="hug-badge"><span id="hug-count">0</span> warm hugs felt</div>
+            <button id="hug-btn" class="ios-btn primary-btn pulse-glow">
+              ❤️ Experience Warm Hug
             </button>
           </div>
 
@@ -328,14 +328,44 @@
         </div>
 
         <div id="orb-view-create" class="orb-subview active">
-          <div class="pro-card">
+          <div class="pro-card orb-studio-card">
             
             <div class="orb-preview-header">
-              <div class="memory-orb-sphere" id="preview-memory-orb">
+              <div class="memory-orb-sphere-enhanced" id="preview-memory-orb">
+                <div class="orb-highlight-reflection"></div>
                 <div class="orb-core-glow" id="orb-core-glow"></div>
                 <div class="orb-inner-particles" id="orb-inner-particles"></div>
               </div>
-              <span class="orb-blend-title" id="orb-blend-label">Blended Memory Sphere</span>
+              <span class="orb-blend-title" id="orb-blend-label">Luminous Memory Sphere</span>
+            </div>
+
+            <!-- Custom Orb Color & Palette Picker Section -->
+            <div class="ios-inset-group custom-color-studio-box">
+              <span class="ios-group-label">🎨 CUSTOM COLORING STUDIO & PALETTE</span>
+              
+              <div class="color-picker-row">
+                <div class="color-picker-item">
+                  <label for="orb-primary-color">Primary Glow</label>
+                  <input type="color" id="orb-primary-color" value="#ffcf56" class="ios-color-input">
+                </div>
+
+                <div class="color-picker-item">
+                  <label for="orb-secondary-color">Secondary Accent</label>
+                  <input type="color" id="orb-secondary-color" value="#d946ef" class="ios-color-input">
+                </div>
+
+                <div class="color-picker-item flex-1">
+                  <label for="orb-glow-intensity">Glow Intensity</label>
+                  <input type="range" id="orb-glow-intensity" min="10" max="100" value="65" class="emo-range">
+                </div>
+              </div>
+
+              <div class="preset-palettes-row">
+                <button class="palette-swatch-btn" data-p1="#ffcf56" data-p2="#d946ef">🌅 Sunset Gold</button>
+                <button class="palette-swatch-btn" data-p1="#f472b6" data-p2="#ff8052">🌸 Rose Quartz</button>
+                <button class="palette-swatch-btn" data-p1="#34d399" data-p2="#60a5fa">🌿 Emerald Breeze</button>
+                <button class="palette-swatch-btn" data-p1="#a78bfa" data-p2="#38bdf8">🔮 Celestial Violet</button>
+              </div>
             </div>
 
             <div class="ios-inset-group">
@@ -414,8 +444,8 @@
               </div>
             </div>
 
-            <button id="save-memory-orb-btn" class="ios-btn primary-btn">
-              🔮 Save Memory Orb
+            <button id="save-memory-orb-btn" class="ios-btn primary-btn pulse-glow">
+              🔮 Save Custom Memory Orb
             </button>
 
           </div>
@@ -434,7 +464,8 @@
             <div class="storybook-spread" id="storybook-spread">
               <div class="book-page book-left-page">
                 <div id="page-orb-display" class="page-orb-container">
-                  <div class="memory-orb-sphere small-orb" id="book-page-orb">
+                  <div class="memory-orb-sphere-enhanced small-orb" id="book-page-orb">
+                    <div class="orb-highlight-reflection"></div>
                     <div class="orb-core-glow" id="book-page-orb-glow"></div>
                   </div>
                   <span id="book-page-date" class="book-date-tag">Aug 4, 2026</span>
@@ -639,6 +670,25 @@
     </main>
   </div>
 
+  <!-- FULL-SCREEN VIRTUAL HUG WARM EMBRACE RITUAL MODAL -->
+  <div id="hug-embrace-modal" class="modal-overlay hidden">
+    <div class="ios-sheet-modal hug-embrace-card">
+      <div class="hug-heartbeat-glow"></div>
+      <div class="hug-icon-hero">🫂❤️</div>
+      <h2>Sending You a Gentle Warm Embrace</h2>
+      <p id="hug-affirmation-note" class="hug-note-text">"You are deeply appreciated, cherished, and worthy of all the soft warmth in the world."</p>
+      
+      <div class="hug-stats-row">
+        <span class="hug-stat-pill">✨ Heartbeat Warmth Active</span>
+        <span class="hug-stat-pill">🌸 Hug #<span id="hug-modal-count">1</span> Felt Today</span>
+      </div>
+
+      <button id="close-hug-modal-btn" class="ios-btn primary-btn margin-top pulse-glow">
+        ❤️ Receive Warmth & Close
+      </button>
+    </div>
+  </div>
+
   <!-- FULL-SCREEN APPLE CALL ANIMATION OVERLAY -->
   <div id="apple-call-overlay" class="apple-call-overlay hidden">
     <div class="apple-call-content">
@@ -651,7 +701,6 @@
       <h2 id="apple-caller-name" class="apple-caller-name">Sophia 🌸</h2>
       <p id="apple-call-status" class="apple-call-status">Haven Sanctuary Voice...</p>
 
-      <!-- Incoming Call Buttons (Accept / Decline) -->
       <div id="apple-incoming-actions" class="apple-call-buttons-row">
         <button id="apple-decline-btn" class="apple-call-btn decline-btn" title="Decline Call">
           <span>✕</span>
@@ -661,7 +710,6 @@
         </button>
       </div>
 
-      <!-- Active Call Controls (Mute / Speaker / End) -->
       <div id="apple-active-actions" class="apple-active-controls-row hidden">
         <button id="apple-mute-btn" class="apple-control-btn">
           <span class="btn-icon">🎙️</span>
