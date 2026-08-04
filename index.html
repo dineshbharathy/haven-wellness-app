@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Haven — Sanctuary Circle & Three.js 3D Orbs</title>
-  <meta name="description" content="A premium wellness application featuring an autonomous AI Therapist, real-time Sanctuary Circle peer messaging, Apple iOS voice calling, & Three.js 3D reactive Memory Orbs.">
+  <title>Haven — Sanctuary Circle & Three.js 3D Sanctuary</title>
+  <meta name="description" content="A premium wellness application featuring an autonomous AI Therapist, Sanctuary Circle peer community, Apple iOS voice calling, & Three.js 3D components across all tabs.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- Three.js 3D WebGL Library -->
+  <!-- Three.js 3D WebGL Engine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <link rel="stylesheet" href="./styles.css">
@@ -30,7 +30,7 @@
           <span class="brand-sparkle">🌿✨</span>
           <span class="brand-name">Haven Sanctuary</span>
         </div>
-        <span class="pro-badge">AUTONOMOUS PRO</span>
+        <span class="pro-badge">THREE.JS 3D PRO</span>
         <span id="resolution-indicator" class="res-indicator">1920x1080 • Desktop Glass UI</span>
       </div>
 
@@ -80,17 +80,19 @@
         <h1 class="desktop-page-title" id="page-title">Sanctuary</h1>
       </div>
 
-      <!-- ================= TAB 1: HUB / HOME ================= -->
+      <!-- ================= TAB 1: HUB / HOME (THREE.JS 3D HERO CANVAS) ================= -->
       <section id="tab-hub" class="tab-pane active">
-        <!-- Hero Welcome Card -->
-        <div class="pro-card welcome-card">
-          <div class="welcome-header">
-            <span class="ios-pill pro-badge" id="time-greeting">Autonomous Neuro-Sanctuary Active</span>
+        
+        <!-- Hero Welcome Card with Three.js 3D Background Canvas -->
+        <div class="pro-card welcome-card hub-3d-card">
+          <canvas id="hub-3d-canvas" class="card-3d-canvas"></canvas>
+          <div class="welcome-header relative-z">
+            <span class="ios-pill pro-badge" id="time-greeting">Three.js 3D Neuro-Sanctuary Active</span>
             <h2>Welcome to your private wellness sanctuary.</h2>
-            <p>Featuring a 100% self-contained AI Therapist, Sanctuary Circle live peer calling, and therapeutic glassmorphism.</p>
+            <p>Featuring Three.js WebGL 3D components across all tabs, AI therapy, & live peer calls.</p>
           </div>
           
-          <div class="ios-inset-group daily-quote-box">
+          <div class="ios-inset-group daily-quote-box relative-z">
             <span class="ios-group-label">THERAPEUTIC REFLECTION</span>
             <blockquote id="daily-quote">"It's okay to miss what isn't there, and still hold space for all the warmth that surrounds you."</blockquote>
             <button id="new-quote-btn" class="ios-link-btn">✨ Gentle Thought</button>
@@ -131,17 +133,15 @@
         <!-- Adaptive Responsive Grid -->
         <div class="adaptive-grid-4col margin-top">
           
-          <!-- Storybook Widget -->
           <div class="pro-card widget-card storybook-widget">
             <div class="widget-icon">📖</div>
             <h3>Memory Storybook</h3>
-            <p>Blend daily emotions into glowing Orbs.</p>
+            <p>Blend daily emotions into glowing 3D Orbs.</p>
             <button id="open-storybook-tab-btn" class="ios-btn secondary-btn">
               ✨ Open Storybook
             </button>
           </div>
 
-          <!-- Virtual Hug Widget -->
           <div class="pro-card widget-card hug-widget">
             <div class="widget-icon">🫂</div>
             <h3>Virtual Hug Ritual</h3>
@@ -151,7 +151,6 @@
             </button>
           </div>
 
-          <!-- Tea Ritual Widget -->
           <div class="pro-card widget-card tea-widget">
             <div class="widget-icon">🫖</div>
             <h3>Tea Ritual</h3>
@@ -164,7 +163,6 @@
             </button>
           </div>
 
-          <!-- Affirmation Widget -->
           <div class="pro-card widget-card affirmation-widget">
             <div class="widget-icon">🌸</div>
             <h3>Affirmation</h3>
@@ -179,20 +177,17 @@
         </div>
       </section>
 
-      <!-- ================= TAB 2: AI THERAPIST (DR. AURA) ================= -->
+      <!-- ================= TAB 2: AI THERAPIST (THREE.JS 3D REACTIVE VOICE SPHERE) ================= -->
       <section id="tab-ai-listener" class="tab-pane">
         <div class="pro-card ai-main-card">
           
           <div class="ai-listener-hero">
-            <div class="ai-voice-orb" id="ai-voice-orb">
-              <div class="ai-pulse-ring ring-1"></div>
-              <div class="ai-pulse-ring ring-2"></div>
-              <div class="ai-core-sphere">
-                <span id="ai-orb-status-icon">🎙️</span>
-              </div>
+            <!-- Three.js 3D Voice Sphere Viewport -->
+            <div class="threejs-ai-container" id="threejs-ai-container">
+              <canvas id="ai-3d-canvas"></canvas>
             </div>
             <h3 id="ai-status-text">Dr. Aura is listening softly...</h3>
-            <p class="ai-subtitle">Autonomous AI Therapist Agent. Natural voice synthesis & active emotional reflection.</p>
+            <p class="ai-subtitle">Autonomous AI Therapist Agent. Natural voice synthesis & 3D reactive active listening.</p>
           </div>
 
           <div class="ai-controls-bar">
@@ -205,7 +200,7 @@
           </div>
 
           <div id="api-status-banner" class="api-status-banner">
-            <span>✨ <strong>Autonomous AI Therapist & Voice Agent Connected (Zero Setup Required)</strong></span>
+            <span>✨ <strong>Autonomous AI Therapist & Three.js 3D Voice Engine Active</strong></span>
           </div>
 
           <div class="ios-inset-group ai-chat-container">
@@ -284,7 +279,6 @@
               </button>
             </div>
 
-            <!-- Voice Lounge Banner (Hidden unless in voice channel) -->
             <div id="voice-lounge-banner" class="voice-lounge-banner hidden">
               <div class="voice-status-group">
                 <span class="voice-pulse-dot"></span>
@@ -295,12 +289,10 @@
               </button>
             </div>
 
-            <!-- Chat Messages Container -->
             <div id="discord-messages-box" class="discord-messages-box">
               <!-- Dynamically Populated -->
             </div>
 
-            <!-- Chat Input Bar -->
             <div class="circle-input-container">
               <input type="text" id="discord-chat-input" class="ios-input" placeholder="Message #general-sanctuary... Share your thoughts safely.">
               <button id="send-discord-msg-btn" class="ios-btn primary-btn small-btn">Send</button>
@@ -308,7 +300,7 @@
 
           </div>
 
-          <!-- Sanctuary Right Friends / Online Members Sidebar -->
+          <!-- Sanctuary Right Friends Sidebar with Three.js 3D Constellation Nodes -->
           <div class="circle-friends-sidebar">
             <div class="friends-sidebar-header">
               <span>ONLINE FRIENDS & CALLS</span>
@@ -316,6 +308,10 @@
 
             <div id="online-friends-list" class="friends-list-container">
               <!-- Dynamically Populated -->
+            </div>
+
+            <div class="community-3d-mini-box">
+              <canvas id="community-3d-canvas"></canvas>
             </div>
           </div>
 
@@ -333,7 +329,6 @@
         <div id="orb-view-create" class="orb-subview active">
           <div class="pro-card orb-studio-card">
             
-            <!-- Three.js 3D Reactive Orb Viewport -->
             <div class="orb-preview-header-3d">
               <div class="threejs-orb-container" id="threejs-orb-container">
                 <canvas id="orb-3d-canvas"></canvas>
@@ -342,7 +337,6 @@
               <span class="orb-blend-title" id="orb-blend-label">Three.js Reactive 3D Liquid Orb</span>
             </div>
 
-            <!-- Custom Orb Color & Palette Picker Section -->
             <div class="ios-inset-group custom-color-studio-box">
               <span class="ios-group-label">🎨 THREE.JS 3D COLORING STUDIO & LIGHTING</span>
               
@@ -372,7 +366,7 @@
             </div>
 
             <div class="ios-inset-group">
-              <span class="ios-group-label">INSIDE OUT EMOTION SPECTRUM (3D SURFACE REACTIVE)</span>
+              <span class="ios-group-label">INSIDE OUT EMOTION SPECTRUM (3D REACTIVE)</span>
               <div class="ios-emotion-sliders">
                 
                 <div class="ios-slider-row">
@@ -494,7 +488,7 @@
 
       </section>
 
-      <!-- ================= TAB 5: SKY LANTERNS ================= -->
+      <!-- ================= TAB 5: SKY LANTERNS (THREE.JS 3D FLOATING LANTERNS) ================= -->
       <section id="tab-lanterns" class="tab-pane">
         <div class="pro-card">
           <div class="lantern-toolbar">
@@ -510,10 +504,11 @@
             <button class="date-pill" data-date-filter="week">Past 7 Days</button>
           </div>
 
+          <!-- Three.js 3D Floating Sky Lanterns Engine -->
           <div class="sky-viewport" id="sky-viewport">
-            <canvas id="sky-canvas"></canvas>
+            <canvas id="sky-3d-canvas"></canvas>
             <div class="sky-instructions">
-              <p>✨ Tap floating lanterns in the sky to read their messages.</p>
+              <p>✨ Three.js 3D Sky active • Drag mouse to rotate 3D camera & click lanterns</p>
             </div>
           </div>
 
@@ -524,7 +519,7 @@
         </div>
       </section>
 
-      <!-- ================= TAB 6: BREATHING OASIS ================= -->
+      <!-- ================= TAB 6: BREATHING OASIS (THREE.JS 3D BREATH SPHERE) ================= -->
       <section id="tab-breathing" class="tab-pane">
         <div class="pro-card breathing-card">
           <div class="ios-segmented-control">
@@ -533,30 +528,36 @@
             <button class="mode-btn" data-mode="calm">4-6 Calm</button>
           </div>
 
-          <div class="breathing-visualizer">
-            <div class="breath-ring-outer"></div>
-            <div class="breath-ring-middle"></div>
-            <div class="breath-circle" id="breath-circle">
+          <!-- Three.js 3D Breath Visualizer -->
+          <div class="breathing-3d-viewport">
+            <canvas id="breathing-3d-canvas"></canvas>
+            <div class="breath-text-overlay">
               <span id="breath-phase">Ready</span>
               <span id="breath-timer">--</span>
             </div>
           </div>
 
           <div class="breathing-guidance">
-            <p id="breath-instruction">Tap start when you are ready to breathe softly.</p>
+            <p id="breath-instruction">Tap start when you are ready to breathe softly with the Three.js 3D sphere.</p>
             <button id="start-breath-btn" class="ios-btn primary-btn pulse-glow">▶ Start Breathing</button>
           </div>
         </div>
       </section>
 
-      <!-- ================= TAB 7: SOUNDSCAPES ================= -->
+      <!-- ================= TAB 7: SOUNDSCAPES (THREE.JS 3D SPECTRUM VISUALIZER) ================= -->
       <section id="tab-soundscapes" class="tab-pane">
         <div class="pro-card master-sound-card">
           <div class="master-header">
             <h3>🎵 Sanctuary Audio</h3>
-            <p>Real-time procedural ambient generator</p>
+            <p>Real-time procedural ambient generator & Three.js 3D spectrum</p>
           </div>
-          <button id="master-toggle-btn" class="ios-btn primary-btn">▶ Enable Generator</button>
+          
+          <!-- Three.js 3D Audio Spectrum Canvas -->
+          <div class="audio-3d-viewport">
+            <canvas id="audio-3d-canvas"></canvas>
+          </div>
+
+          <button id="master-toggle-btn" class="ios-btn primary-btn margin-top">▶ Enable Generator</button>
           <div class="master-volume">
             <label for="master-volume-slider">Volume</label>
             <input type="range" id="master-volume-slider" min="0" max="1" step="0.01" value="0.7">
@@ -616,17 +617,13 @@
         </div>
       </section>
 
-      <!-- ================= TAB 8: MEMORY JAR ================= -->
+      <!-- ================= TAB 8: MEMORY JAR (THREE.JS 3D GLASS JAR CONTAINER) ================= -->
       <section id="tab-memory-jar" class="tab-pane">
         <div class="pro-card memory-jar-card">
-          <div class="jar-display-area">
-            <div class="glass-jar" id="glass-jar">
-              <div class="jar-lid"></div>
-              <div class="jar-body">
-                <div class="jar-glow"></div>
-                <div class="notes-inside-container" id="notes-inside-container"></div>
-              </div>
-            </div>
+          
+          <!-- Three.js 3D Memory Jar Viewport -->
+          <div class="jar-3d-viewport">
+            <canvas id="jar-3d-canvas"></canvas>
           </div>
 
           <div class="jar-actions">
@@ -640,11 +637,17 @@
         </div>
       </section>
 
-      <!-- ================= TAB 9: HEART LOG ================= -->
+      <!-- ================= TAB 9: HEART LOG (THREE.JS 3D EMOTIONAL PRISM) ================= -->
       <section id="tab-journal" class="tab-pane">
         <div class="pro-card">
           <h3>How does your heart feel?</h3>
-          <div class="ios-emotion-picker">
+          
+          <!-- Three.js 3D Emotional Heart Prism Viewport -->
+          <div class="journal-3d-viewport">
+            <canvas id="journal-3d-canvas"></canvas>
+          </div>
+
+          <div class="ios-emotion-picker margin-top">
             <button class="emotion-btn" data-emotion="missing">💔 Missing Someone</button>
             <button class="emotion-btn" data-emotion="seeking-warmth">🕯️ Seeking Warmth</button>
             <button class="emotion-btn" data-emotion="overwhelmed">🌊 Overwhelmed</button>
