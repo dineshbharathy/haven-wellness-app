@@ -4,6 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // Init Modules
+  initAudioEngine();
   initThemeManager();
   initTabNavigation();
   initAmbientCanvas();
@@ -14,6 +15,58 @@ document.addEventListener('DOMContentLoaded', () => {
   initMemoryJar();
   initSafeJournal();
 });
+
+/* ==========================================================================
+   CENTRAL AUDIO ENGINE (WEB AUDIO API)
+   ========================================================================== */
+let audioCtx = null;
+let masterGainNode = null;
+
+function getAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGainNode = audioCtx.createGain();
+    const masterSlider = document.getElementById('master-volume-slider');
+    masterGainNode.gain.value = masterSlider ? parseFloat(masterSlider.value) : 0.7;
+    masterGainNode.connect(audioCtx.destination);
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+// Play a soft bell / chime / tone UI sound
+function playBellSound(freq = 440, type = 'sine', duration = 1.5, vol = 0.2) {
+  try {
+    const ctx = getAudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+    gain.gain.setValueAtTime(vol, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+    osc.connect(gain);
+    gain.connect(masterGainNode);
+
+    osc.start();
+    osc.stop(ctx.currentTime + duration + 0.1);
+  } catch (e) {
+    console.log('Audio playback prevented or unsupported', e);
+  }
+}
+
+// Play a warm harmonic chime (multiple notes)
+function playHarmonicChime(freqs = [523.25, 659.25, 783.99, 1046.50]) {
+  freqs.forEach((f, index) => {
+    setTimeout(() => {
+      playBellSound(f, 'sine', 2.0, 0.12);
+    }, index * 120);
+  });
+}
 
 /* ==========================================================================
    1. THEME MANAGER
@@ -27,6 +80,8 @@ function initThemeManager() {
   setTheme(savedTheme);
 
   themeToggleBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playBellSound(600, 'sine', 0.5, 0.08);
     themeModal?.classList.remove('hidden');
   });
 
@@ -34,6 +89,7 @@ function initThemeManager() {
     btn.addEventListener('click', () => {
       const theme = btn.getAttribute('data-theme');
       setTheme(theme);
+      playBellSound(750, 'sine', 0.6, 0.1);
       themeOptionBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       themeModal?.classList.add('hidden');
@@ -43,6 +99,7 @@ function initThemeManager() {
   // Modal Close Handlers
   document.querySelectorAll('.modal-close-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      playBellSound(350, 'sine', 0.3, 0.05);
       const modalId = btn.getAttribute('data-modal');
       document.getElementById(modalId)?.classList.add('hidden');
     });
@@ -63,6 +120,9 @@ function initTabNavigation() {
 
   navBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(520, 'sine', 0.4, 0.06);
+
       const tabId = btn.getAttribute('data-tab');
 
       navBtns.forEach(b => b.classList.remove('active'));
@@ -71,7 +131,6 @@ function initTabNavigation() {
       btn.classList.add('active');
       document.getElementById(`tab-${tabId}`)?.classList.add('active');
 
-      // Trigger resize for canvas when tab opens
       if (tabId === 'lanterns') {
         window.dispatchEvent(new Event('resize'));
       }
@@ -157,33 +216,35 @@ const AFFIRMATIONS = [
 ];
 
 function initSanctuaryHub() {
-  // Dynamic Greeting
   const timeGreetingEl = document.getElementById('time-greeting');
   const hour = new Date().getHours();
   if (hour < 12) timeGreetingEl.textContent = 'Good Morning';
   else if (hour < 18) timeGreetingEl.textContent = 'Good Afternoon';
   else timeGreetingEl.textContent = 'Good Evening';
 
-  // Quotes
   const quoteEl = document.getElementById('daily-quote');
   const newQuoteBtn = document.getElementById('new-quote-btn');
   newQuoteBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playBellSound(680, 'sine', 0.8, 0.08);
     const randomQuote = COMFORT_QUOTES[Math.floor(Math.random() * COMFORT_QUOTES.length)];
     quoteEl.textContent = `"${randomQuote}"`;
   });
 
-  // Hug Counter & Particles
+  // Hug Counter & Warm Chime
   const hugBtn = document.getElementById('hug-btn');
   const hugCountEl = document.getElementById('hug-count');
   let hugCount = parseInt(localStorage.getItem('haven_hug_count') || '0');
   hugCountEl.textContent = hugCount;
 
   hugBtn?.addEventListener('click', (e) => {
+    getAudioContext();
     hugCount++;
     localStorage.setItem('haven_hug_count', hugCount);
     hugCountEl.textContent = hugCount;
 
-    // Burst Heart Particles
+    // Soft warm chord sound
+    playHarmonicChime([349.23, 440.00, 523.25, 659.25]);
     createHeartBurst(e.clientX, e.clientY);
   });
 
@@ -192,20 +253,26 @@ function initSanctuaryHub() {
   let teaInterval = null;
 
   brewTeaBtn?.addEventListener('click', () => {
+    getAudioContext();
     if (brewTeaBtn.disabled) return;
     brewTeaBtn.disabled = true;
     let secondsLeft = 30;
 
+    playBellSound(440, 'sine', 1.0, 0.1);
     brewTeaBtn.textContent = `🍵 Steeping Comfort... (${secondsLeft}s)`;
     document.getElementById('tea-steam').style.opacity = '1';
 
     teaInterval = setInterval(() => {
       secondsLeft--;
+      if (secondsLeft % 5 === 0 && secondsLeft > 0) {
+        playBellSound(587.33, 'sine', 0.5, 0.04);
+      }
       if (secondsLeft > 0) {
         brewTeaBtn.textContent = `🍵 Steeping Comfort... (${secondsLeft}s)`;
       } else {
         clearInterval(teaInterval);
         brewTeaBtn.disabled = false;
+        playHarmonicChime([523.25, 659.25, 783.99]);
         brewTeaBtn.textContent = '✨ Cup Ready! Take a Mindful Sip';
         setTimeout(() => {
           brewTeaBtn.textContent = '✨ Start 30s Tea Ritual';
@@ -218,6 +285,8 @@ function initSanctuaryHub() {
   const affirmationText = document.getElementById('affirmation-text');
   const flipAffirmationBtn = document.getElementById('flip-affirmation-btn');
   flipAffirmationBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playBellSound(620, 'sine', 0.6, 0.08);
     const next = AFFIRMATIONS[Math.floor(Math.random() * AFFIRMATIONS.length)];
     affirmationText.style.opacity = '0';
     setTimeout(() => {
@@ -228,9 +297,9 @@ function initSanctuaryHub() {
 }
 
 function createHeartBurst(x, y) {
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 14; i++) {
     const heart = document.createElement('div');
-    heart.textContent = ['❤️', '💖', '✨', '🌸'][Math.floor(Math.random() * 4)];
+    heart.textContent = ['❤️', '💖', '✨', '🌸', '🤍'][Math.floor(Math.random() * 5)];
     heart.style.position = 'fixed';
     heart.style.left = `${x}px`;
     heart.style.top = `${y}px`;
@@ -242,9 +311,9 @@ function createHeartBurst(x, y) {
     document.body.appendChild(heart);
 
     const angle = Math.random() * Math.PI * 2;
-    const dist = Math.random() * 80 + 40;
+    const dist = Math.random() * 90 + 40;
     const tx = Math.cos(angle) * dist;
-    const ty = Math.sin(angle) * dist - 50;
+    const ty = Math.sin(angle) * dist - 60;
 
     requestAnimationFrame(() => {
       heart.style.transform = `translate(${tx}px, ${ty}px) scale(1.4)`;
@@ -278,7 +347,6 @@ function initSkyLanterns() {
   const releasedCountEl = document.getElementById('released-count');
   releasedCountEl.textContent = `${lanterns.length} lanterns floating softly`;
 
-  // Instantiate visual objects
   const activeLanterns = lanterns.map(l => ({
     ...l,
     x: l.x || Math.random() * (width - 60) + 30,
@@ -291,7 +359,7 @@ function initSkyLanterns() {
   function renderSky() {
     ctx.clearRect(0, 0, width, height);
 
-    // Draw twinkling background stars
+    // Stars
     for (let i = 0; i < 40; i++) {
       const sx = (Math.sin(i * 99 + Date.now() * 0.001) * 0.5 + 0.5) * width;
       const sy = (Math.cos(i * 33 + Date.now() * 0.001) * 0.5 + 0.5) * height;
@@ -301,7 +369,7 @@ function initSkyLanterns() {
       ctx.fill();
     }
 
-    // Draw floating lanterns
+    // Lanterns
     activeLanterns.forEach(l => {
       l.y += l.vy;
       l.sway += 0.02;
@@ -309,7 +377,6 @@ function initSkyLanterns() {
 
       if (l.y < -50) l.y = height + 30;
 
-      // Glow Aura
       const glow = ctx.createRadialGradient(l.x, l.y, 2, l.x, l.y, l.size * 1.8);
       glow.addColorStop(0, l.color || '#ffb347');
       glow.addColorStop(1, 'transparent');
@@ -319,13 +386,11 @@ function initSkyLanterns() {
       ctx.arc(l.x, l.y, l.size * 1.8, 0, Math.PI * 2);
       ctx.fill();
 
-      // Lantern Body
       ctx.fillStyle = l.color || '#ffb347';
       ctx.beginPath();
       ctx.roundRect(l.x - 10, l.y - 14, 20, 26, 4);
       ctx.fill();
 
-      // Inner Flame
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
       ctx.arc(l.x, l.y + 2, 4, 0, Math.PI * 2);
@@ -337,19 +402,24 @@ function initSkyLanterns() {
 
   renderSky();
 
-  // Release Modal Handlers
   const openModalBtn = document.getElementById('open-lantern-modal-btn');
   const lanternModal = document.getElementById('lantern-modal');
   const releaseConfirmBtn = document.getElementById('release-lantern-confirm-btn');
   const lanternMsgInput = document.getElementById('lantern-message');
 
   openModalBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playBellSound(550, 'sine', 0.5, 0.08);
     lanternModal?.classList.remove('hidden');
   });
 
   releaseConfirmBtn?.addEventListener('click', () => {
     const msg = lanternMsgInput.value.trim();
     if (!msg) return;
+
+    getAudioContext();
+    // Ascending flight chime sound
+    playHarmonicChime([440, 554.37, 659.25, 880]);
 
     const selectedColor = document.querySelector('input[name="lantern-color"]:checked')?.value || '#ffb347';
 
@@ -385,12 +455,14 @@ function initBreathingOasis() {
   const breathInstruction = document.getElementById('breath-instruction');
   const modeBtns = document.querySelectorAll('.mode-btn');
 
-  let mode = 'relax'; // relax (4-7-8), box (4-4-4-4), calm (4-6)
+  let mode = 'relax';
   let isBreathing = false;
   let cycleTimeout = null;
 
   modeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(480, 'sine', 0.4, 0.06);
       modeBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       mode = btn.getAttribute('data-mode');
@@ -399,6 +471,7 @@ function initBreathingOasis() {
   });
 
   startBtn?.addEventListener('click', () => {
+    getAudioContext();
     if (isBreathing) {
       stopBreathing();
     } else {
@@ -415,6 +488,7 @@ function initBreathingOasis() {
   function stopBreathing() {
     isBreathing = false;
     clearTimeout(cycleTimeout);
+    playBellSound(330, 'sine', 0.6, 0.06);
     startBtn.textContent = '▶ Start Breathing';
     breathPhase.textContent = 'Ready';
     breathTimer.textContent = '--';
@@ -427,25 +501,22 @@ function initBreathingOasis() {
 
     let phases = [];
     if (mode === 'relax') {
-      // 4-7-8
       phases = [
-        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Breathe in softly through your nose...' },
-        { name: 'Hold', duration: 7, class: 'breath-hold', guide: 'Hold softly and let peace settle...' },
-        { name: 'Exhale', duration: 8, class: 'breath-shrink', guide: 'Release gently through your mouth...' }
+        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Breathe in softly through your nose...', pitch: 523.25 },
+        { name: 'Hold', duration: 7, class: 'breath-hold', guide: 'Hold softly and let peace settle...', pitch: 659.25 },
+        { name: 'Exhale', duration: 8, class: 'breath-shrink', guide: 'Release gently through your mouth...', pitch: 392.00 }
       ];
     } else if (mode === 'box') {
-      // 4-4-4-4
       phases = [
-        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Inhale peace...' },
-        { name: 'Hold', duration: 4, class: 'breath-hold', guide: 'Hold gently...' },
-        { name: 'Exhale', duration: 4, class: 'breath-shrink', guide: 'Exhale tension...' },
-        { name: 'Pause', duration: 4, class: 'breath-shrink', guide: 'Rest softly...' }
+        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Inhale peace...', pitch: 523.25 },
+        { name: 'Hold', duration: 4, class: 'breath-hold', guide: 'Hold gently...', pitch: 659.25 },
+        { name: 'Exhale', duration: 4, class: 'breath-shrink', guide: 'Exhale tension...', pitch: 440.00 },
+        { name: 'Pause', duration: 4, class: 'breath-shrink', guide: 'Rest softly...', pitch: 349.23 }
       ];
     } else {
-      // 4-6 Calm
       phases = [
-        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Breathe in light...' },
-        { name: 'Exhale', duration: 6, class: 'breath-shrink', guide: 'Breathe out heaviness...' }
+        { name: 'Inhale', duration: 4, class: 'breath-expand', guide: 'Breathe in light...', pitch: 523.25 },
+        { name: 'Exhale', duration: 6, class: 'breath-shrink', guide: 'Breathe out heaviness...', pitch: 392.00 }
       ];
     }
 
@@ -454,6 +525,9 @@ function initBreathingOasis() {
     function executePhase() {
       if (!isBreathing) return;
       const current = phases[pIndex];
+
+      // Soft singing bowl chime on phase change
+      playBellSound(current.pitch, 'sine', 2.5, 0.12);
 
       breathPhase.textContent = current.name;
       breathInstruction.textContent = current.guide;
@@ -485,9 +559,16 @@ function initBreathingOasis() {
 /* ==========================================================================
    7. PROCEDURAL SOUNDSCAPES (WEB AUDIO API)
    ========================================================================== */
+function initAudioEngine() {
+  // Global click listener to resume AudioContext if suspended
+  window.addEventListener('click', () => {
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }, { once: false });
+}
+
 function initSoundscapes() {
-  let audioCtx = null;
-  let masterGain = null;
   let isAudioEnabled = false;
 
   const masterToggleBtn = document.getElementById('master-toggle-btn');
@@ -502,29 +583,22 @@ function initSoundscapes() {
   };
 
   masterToggleBtn?.addEventListener('click', () => {
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      masterGain = audioCtx.createGain();
-      masterGain.gain.value = parseFloat(masterSlider.value);
-      masterGain.connect(audioCtx.destination);
-    }
-
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
+    const ctx = getAudioContext();
 
     isAudioEnabled = !isAudioEnabled;
     masterToggleBtn.textContent = isAudioEnabled ? '⏸ Pause Sanctuary Audio' : '▶ Enable Sound Generator';
     masterToggleBtn.classList.toggle('secondary-btn', isAudioEnabled);
 
-    if (!isAudioEnabled) {
+    if (isAudioEnabled) {
+      playBellSound(600, 'sine', 0.8, 0.1);
+    } else {
       stopAllSounds();
     }
   });
 
   masterSlider?.addEventListener('input', (e) => {
-    if (masterGain) {
-      masterGain.gain.value = parseFloat(e.target.value);
+    if (masterGainNode) {
+      masterGainNode.gain.value = parseFloat(e.target.value);
     }
   });
 
@@ -535,6 +609,7 @@ function initSoundscapes() {
     const volSlider = card.querySelector('.sound-volume');
 
     toggleBtn.addEventListener('click', () => {
+      getAudioContext();
       if (!isAudioEnabled) {
         masterToggleBtn.click();
       }
@@ -558,16 +633,17 @@ function initSoundscapes() {
   });
 
   function playSound(type, volume) {
-    if (!audioCtx || !isAudioEnabled) return;
+    const ctx = getAudioContext();
+    if (!ctx || !isAudioEnabled) return;
 
-    const gainNode = audioCtx.createGain();
+    const gainNode = ctx.createGain();
     gainNode.gain.value = volume;
-    gainNode.connect(masterGain);
+    gainNode.connect(masterGainNode);
 
     if (type === 'rain') {
-      // Pink noise filtered for soft rain
-      const bufferSize = audioCtx.sampleRate * 2;
-      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      // Soft Pink Rain Noise
+      const bufferSize = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
       for (let i = 0; i < bufferSize; i++) {
@@ -578,44 +654,64 @@ function initSoundscapes() {
         b3 = 0.86650 * b3 + white * 0.3104856;
         b4 = 0.55000 * b4 + white * 0.5329522;
         b5 = -0.7616 * b5 - white * 0.0168980;
-        data[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-        data[i] *= 0.05;
+        data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.04;
         b6 = white * 0.115926;
       }
-      const source = audioCtx.createBufferSource();
+      const source = ctx.createBufferSource();
       source.buffer = buffer;
       source.loop = true;
 
-      const filter = audioCtx.createBiquadFilter();
+      const filter = ctx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = 1000;
+      filter.frequency.value = 1100;
 
       source.connect(filter);
       filter.connect(gainNode);
       source.start();
 
       activeNodes.rain = { source, gain: gainNode };
-    } else if (type === 'ocean') {
-      // Modulated pink noise sweeping filter
-      const bufferSize = audioCtx.sampleRate * 2;
-      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    } else if (type === 'campfire') {
+      // Cozy Low Crackle Fire
+      const bufferSize = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * 0.08;
+        const isPop = Math.random() < 0.0015;
+        data[i] = isPop ? (Math.random() * 2 - 1) * 0.4 : (Math.random() * 2 - 1) * 0.015;
       }
-      const source = audioCtx.createBufferSource();
+      const source = ctx.createBufferSource();
       source.buffer = buffer;
       source.loop = true;
 
-      const filter = audioCtx.createBiquadFilter();
+      const filter = ctx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = 300;
+      filter.frequency.value = 700;
 
-      // LFO for wave sweep
-      const lfo = audioCtx.createOscillator();
-      lfo.frequency.value = 0.1; // 10s wave cycle
-      const lfoGain = audioCtx.createGain();
-      lfoGain.gain.value = 400;
+      source.connect(filter);
+      filter.connect(gainNode);
+      source.start();
+
+      activeNodes.campfire = { source, gain: gainNode };
+    } else if (type === 'ocean') {
+      // Gentle Ocean Waves LFO
+      const bufferSize = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.07;
+      }
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 350;
+
+      const lfo = ctx.createOscillator();
+      lfo.frequency.value = 0.12; // 8s wave cycle
+      const lfoGain = ctx.createGain();
+      lfoGain.gain.value = 450;
 
       lfo.connect(lfoGain);
       lfoGain.connect(filter.frequency);
@@ -626,27 +722,58 @@ function initSoundscapes() {
       source.start();
 
       activeNodes.ocean = { source, lfo, gain: gainNode };
+    } else if (type === 'breeze') {
+      // Night Forest Breeze
+      const bufferSize = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.05;
+      }
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 400;
+      filter.Q.value = 1.5;
+
+      const lfo = ctx.createOscillator();
+      lfo.frequency.value = 0.18;
+      const lfoGain = ctx.createGain();
+      lfoGain.gain.value = 250;
+
+      lfo.connect(lfoGain);
+      lfoGain.connect(filter.frequency);
+      lfo.start();
+
+      source.connect(filter);
+      filter.connect(gainNode);
+      source.start();
+
+      activeNodes.breeze = { source, lfo, gain: gainNode };
     } else if (type === 'chimes') {
-      // Periodic sine chimes
+      // Celestial Chimes
       const chimeTimer = setInterval(() => {
         if (!activeNodes.chimes) return;
-        const freqs = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+        const freqs = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98];
         const freq = freqs[Math.floor(Math.random() * freqs.length)];
 
-        const osc = audioCtx.createOscillator();
-        const oscGain = audioCtx.createGain();
+        const osc = ctx.createOscillator();
+        const oscGain = ctx.createGain();
 
         osc.type = 'sine';
         osc.frequency.value = freq;
-        oscGain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        oscGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 3);
+        oscGain.gain.setValueAtTime(0.08, ctx.currentTime);
+        oscGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 3.5);
 
         osc.connect(oscGain);
         oscGain.connect(gainNode);
 
         osc.start();
-        osc.stop(audioCtx.currentTime + 3.1);
-      }, 3500);
+        osc.stop(ctx.currentTime + 3.6);
+      }, 3000);
 
       activeNodes.chimes = { timer: chimeTimer, gain: gainNode };
     }
@@ -699,7 +826,6 @@ function initMemoryJar() {
     localStorage.setItem('haven_notes', JSON.stringify(notes));
   }
 
-  // Populate visual note badges inside jar
   function renderJarContents() {
     container.innerHTML = '';
     const displayCount = Math.min(notes.length, 14);
@@ -715,6 +841,8 @@ function initMemoryJar() {
 
   // Draw note
   drawBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playHarmonicChime([659.25, 783.99, 1046.50]);
     const note = notes[Math.floor(Math.random() * notes.length)];
     noteTextEl.textContent = `"${note}"`;
     noteModal?.classList.remove('hidden');
@@ -722,6 +850,8 @@ function initMemoryJar() {
 
   // Add custom note
   addBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playBellSound(520, 'sine', 0.5, 0.08);
     addNoteModal?.classList.remove('hidden');
   });
 
@@ -729,6 +859,8 @@ function initMemoryJar() {
     const val = customInput.value.trim();
     if (!val) return;
 
+    getAudioContext();
+    playHarmonicChime([523.25, 659.25, 783.99]);
     notes.push(val);
     localStorage.setItem('haven_notes', JSON.stringify(notes));
     renderJarContents();
@@ -760,6 +892,9 @@ function initSafeJournal() {
 
   emotionBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(580, 'sine', 0.6, 0.08);
+
       emotionBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
@@ -795,6 +930,9 @@ function initSafeJournal() {
     const body = bodyInput.value.trim();
 
     if (!body) return;
+
+    getAudioContext();
+    playHarmonicChime([440, 554.37, 659.25]);
 
     const newEntry = {
       title,
