@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — HUG RITUAL, COLORING STUDIO & AUDIO ENGINE (JS)
+   HAVEN WELLNESS SANCTUARY — THREE.JS 3D REACTIVE ORB ENGINE & APP (JS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAuthSurveyFlow();
   initSanctuaryCircleCommunity();
   initAppleCallEngine();
-  initMemoryOrbsAndStorybook();
+  initThreeJSOrbStudio();
   initSkyLanterns();
   initBreathingOasis();
   initSoundscapes();
@@ -106,7 +106,6 @@ function playHeartbeatChord() {
   const ctx = getAudioContext();
   const t = ctx.currentTime;
 
-  // Deep warm sub pulse (Heartbeat lub-dub)
   const osc1 = ctx.createOscillator();
   const gain1 = ctx.createGain();
   osc1.type = 'sine';
@@ -119,7 +118,6 @@ function playHeartbeatChord() {
   osc1.start(t);
   osc1.stop(t + 0.4);
 
-  // Second heartbeat pulse (dub)
   setTimeout(() => {
     const t2 = ctx.currentTime;
     const osc2 = ctx.createOscillator();
@@ -241,7 +239,6 @@ function initDesktopTabNavigation() {
       getAudioContext();
       playHarmonicChime([440, 554.37, 659.25]);
 
-      // Cozy Warm Shift Transition effect on body
       document.body.classList.add('warm-tab-shift');
       setTimeout(() => document.body.classList.remove('warm-tab-shift'), 650);
 
@@ -256,7 +253,7 @@ function initDesktopTabNavigation() {
 
       if (pageTitleEl) pageTitleEl.textContent = title;
 
-      if (tabId === 'lanterns') {
+      if (tabId === 'memory-orbs') {
         window.dispatchEvent(new Event('resize'));
       }
     });
@@ -730,13 +727,6 @@ function generateAutonomousTherapistResponse(input, history) {
       "Even in moments of deep solitude, your presence matters profoundly. You are building a safe sanctuary within yourself, and I am standing by your side."
     );
   }
-  else if (text.includes('sad') || text.includes('cry') || text.includes('pain') || text.includes('hurt') || text.includes('grief') || text.includes('heavy')) {
-    reflections.push(
-      "I hear the pain in your voice, and I want to remind you that your tears are welcome here. You don't have to carry the weight of being strong all the time. Let yourself rest for a moment; I am listening closely.",
-      "Your sadness is telling us how much you care and how deeply you feel. Allow yourself to feel that soft release without any shame. You are safe here.",
-      "When things feel heavy, remember that you don't have to figure it all out today. Simply breathing through this moment is more than enough."
-    );
-  }
   else {
     reflections.push(
       "Thank you for sharing your heart so openly with me. I am listening closely to everything you carry inside. Your feelings matter so much, and you are surrounded by care and safety here.",
@@ -1147,7 +1137,7 @@ function initAppleCallEngine() {
 }
 
 /* ==========================================================================
-   9. MEMORY ORBS & CUSTOM COLORING STUDIO ENGINE
+   9. THREE.JS 3D REACTIVE MEMORY ORB STUDIO ENGINE
    ========================================================================== */
 const EMOTION_META = {
   joy: { name: 'Joy', color: '#ffd700', icon: '💛' },
@@ -1161,7 +1151,207 @@ const EMOTION_META = {
   solitude: { name: 'Quiet Solitude', color: '#708090', icon: '🩶' }
 };
 
-function initMemoryOrbsAndStorybook() {
+function initThreeJSOrbStudio() {
+  const canvas = document.getElementById('orb-3d-canvas');
+  const container = document.getElementById('threejs-orb-container');
+  if (!canvas || !container || !window.THREE) return;
+
+  const width = container.clientWidth || 440;
+  const height = container.clientHeight || 260;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+  camera.position.z = 4.5;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Ambient & Dynamic Point Lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+  scene.add(ambientLight);
+
+  const primaryPointLight = new THREE.PointLight(0xffcf56, 2.5, 10);
+  primaryPointLight.position.set(2, 2, 3);
+  scene.add(primaryPointLight);
+
+  const secondaryPointLight = new THREE.PointLight(0xd946ef, 2.0, 10);
+  secondaryPointLight.position.set(-2, -2, 2);
+  scene.add(secondaryPointLight);
+
+  // 3D Sphere Geometry & Material
+  const geometry = new THREE.IcosahedronGeometry(1.4, 64);
+  const originalPositions = geometry.attributes.position.clone();
+
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    roughness: 0.15,
+    metalness: 0.1,
+    transparent: true,
+    opacity: 0.92
+  });
+
+  const orbMesh = new THREE.Mesh(geometry, material);
+  scene.add(orbMesh);
+
+  // Orbiting Particle Cloud
+  const particleCount = 120;
+  const particleGeo = new THREE.BufferGeometry();
+  const particlePos = new Float32Array(particleCount * 3);
+
+  for (let i = 0; i < particleCount * 3; i += 3) {
+    const u = Math.random();
+    const v = Math.random();
+    const theta = u * 2.0 * Math.PI;
+    const phi = Math.acos(2.0 * v - 1.0);
+    const r = 1.9 + Math.random() * 0.8;
+
+    particlePos[i] = r * Math.sin(phi) * Math.cos(theta);
+    particlePos[i + 1] = r * Math.sin(phi) * Math.sin(theta);
+    particlePos[i + 2] = r * Math.cos(phi);
+  }
+
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+  const particleMat = new THREE.PointsMaterial({
+    color: 0xffcf56,
+    size: 0.05,
+    transparent: true,
+    opacity: 0.8
+  });
+  const particles = new THREE.Points(particleGeo, particleMat);
+  scene.add(particles);
+
+  // Interaction State
+  let mouseX = 0, mouseY = 0;
+  let targetRotationX = 0, targetRotationY = 0;
+  let distortionSpeed = 0.003;
+  let waveAmplitude = 0.18;
+
+  container.addEventListener('mousemove', (e) => {
+    const rect = container.getBoundingClientRect();
+    mouseX = (e.clientX - rect.left - rect.width / 2) * 0.001;
+    mouseY = (e.clientY - rect.top - rect.height / 2) * 0.001;
+    distortionSpeed = 0.008;
+  });
+
+  container.addEventListener('mouseleave', () => {
+    mouseX = 0; mouseY = 0;
+    distortionSpeed = 0.003;
+  });
+
+  // Dynamic 3D Vertex Distortion Animation Loop
+  let clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    const elapsedTime = clock.getElapsedTime();
+
+    // Rotate Orb mesh smoothly
+    targetRotationY += (mouseX - targetRotationY) * 0.05;
+    targetRotationX += (mouseY - targetRotationX) * 0.05;
+
+    orbMesh.rotation.y += 0.004 + targetRotationY;
+    orbMesh.rotation.x += 0.002 + targetRotationX;
+    particles.rotation.y -= 0.002;
+
+    // Liquid Vertex Wave Displacement
+    const positionAttribute = geometry.attributes.position;
+    const vertex = new THREE.Vector3();
+
+    for (let i = 0; i < positionAttribute.count; i++) {
+      vertex.fromBufferAttribute(originalPositions, i);
+      const wave = Math.sin(vertex.x * 2.5 + elapsedTime * 2.5) *
+                   Math.cos(vertex.y * 2.5 + elapsedTime * 2.5) *
+                   Math.sin(vertex.z * 2.5 + elapsedTime * 2.5);
+
+      vertex.multiplyScalar(1 + wave * waveAmplitude);
+      positionAttribute.setXYZ(i, vertex.x, vertex.y, vertex.z);
+    }
+    geometry.computeVertexNormals();
+    positionAttribute.needsUpdate = true;
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  // Responsive Resizing
+  window.addEventListener('resize', () => {
+    if (container.clientWidth > 0) {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+  });
+
+  // Slider & Color Input Event Bindings
+  const emoRanges = document.querySelectorAll('.emo-range');
+  const primaryColorInput = document.getElementById('orb-primary-color');
+  const secondaryColorInput = document.getElementById('orb-secondary-color');
+  const glowIntensityInput = document.getElementById('orb-glow-intensity');
+  const paletteBtns = document.querySelectorAll('.palette-swatch-btn');
+  const blendLabel = document.getElementById('orb-blend-label');
+
+  function updateThreeJSColors() {
+    const pHex = primaryColorInput ? primaryColorInput.value : '#ffcf56';
+    const sHex = secondaryColorInput ? secondaryColorInput.value : '#d946ef';
+    const intensityVal = glowIntensityInput ? parseInt(glowIntensityInput.value) : 65;
+
+    primaryPointLight.color.set(pHex);
+    secondaryPointLight.color.set(sHex);
+    particleMat.color.set(pHex);
+
+    waveAmplitude = (intensityVal / 100) * 0.28;
+
+    const activeEmotions = [];
+    emoRanges.forEach(range => {
+      const emoKey = range.getAttribute('data-emo');
+      const val = parseInt(range.value);
+      if (val > 0) {
+        activeEmotions.push({ key: emoKey, val, meta: EMOTION_META[emoKey] });
+      }
+    });
+
+    if (activeEmotions.length > 0) {
+      activeEmotions.sort((a, b) => b.val - a.val);
+      material.color.set(activeEmotions[0].meta.color);
+      if (blendLabel) blendLabel.textContent = activeEmotions.map(e => `${e.meta.icon} ${e.meta.name}`).join(' • ');
+    } else {
+      material.color.set(pHex);
+      if (blendLabel) blendLabel.textContent = 'Three.js 3D Liquid Orb Studio';
+    }
+  }
+
+  emoRanges.forEach(r => r.addEventListener('input', updateThreeJSColors));
+  primaryColorInput?.addEventListener('input', updateThreeJSColors);
+  secondaryColorInput?.addEventListener('input', updateThreeJSColors);
+  glowIntensityInput?.addEventListener('input', updateThreeJSColors);
+
+  paletteBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(640, 'sine', 0.4, 0.06);
+
+      const p1 = btn.getAttribute('data-p1');
+      const p2 = btn.getAttribute('data-p2');
+
+      if (primaryColorInput) primaryColorInput.value = p1;
+      if (secondaryColorInput) secondaryColorInput.value = p2;
+
+      updateThreeJSColors();
+    });
+  });
+
+  updateThreeJSColors();
+
+  // Storybook Integration
+  initStorybookReader();
+}
+
+function initStorybookReader() {
   const orbSegmentBtns = document.querySelectorAll('.segmented-btn[data-orb-view]');
   const orbSubviews = document.querySelectorAll('.orb-subview');
 
@@ -1179,116 +1369,6 @@ function initMemoryOrbsAndStorybook() {
     });
   });
 
-  const emoRanges = document.querySelectorAll('.emo-range');
-  const previewOrb = document.getElementById('preview-memory-orb');
-  const particlesContainer = document.getElementById('orb-inner-particles');
-  const blendLabel = document.getElementById('orb-blend-label');
-
-  const primaryColorInput = document.getElementById('orb-primary-color');
-  const secondaryColorInput = document.getElementById('orb-secondary-color');
-  const glowIntensityInput = document.getElementById('orb-glow-intensity');
-  const paletteBtns = document.querySelectorAll('.palette-swatch-btn');
-
-  const titleInput = document.getElementById('orb-title-input');
-  const noteInput = document.getElementById('orb-note-input');
-  const photoInput = document.getElementById('orb-photo-input');
-  const photoPreviewBox = document.getElementById('photo-preview-container');
-  const photoPreviewImg = document.getElementById('photo-preview-img');
-  const removePhotoBtn = document.getElementById('remove-photo-btn');
-  const saveBtn = document.getElementById('save-memory-orb-btn');
-
-  let currentPhotoDataUrl = '';
-
-  photoInput?.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      currentPhotoDataUrl = event.target.result;
-      photoPreviewImg.src = currentPhotoDataUrl;
-      photoPreviewBox.classList.remove('hidden');
-    };
-    reader.readAsDataURL(file);
-  });
-
-  removePhotoBtn?.addEventListener('click', () => {
-    currentPhotoDataUrl = '';
-    photoInput.value = '';
-    photoPreviewBox.classList.add('hidden');
-  });
-
-  paletteBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      getAudioContext();
-      playBellSound(640, 'sine', 0.4, 0.06);
-
-      const p1 = btn.getAttribute('data-p1');
-      const p2 = btn.getAttribute('data-p2');
-
-      if (primaryColorInput) primaryColorInput.value = p1;
-      if (secondaryColorInput) secondaryColorInput.value = p2;
-
-      updatePreviewOrb();
-    });
-  });
-
-  function updatePreviewOrb() {
-    const pColor = primaryColorInput ? primaryColorInput.value : '#ffcf56';
-    const sColor = secondaryColorInput ? secondaryColorInput.value : '#d946ef';
-    const intensity = glowIntensityInput ? parseInt(glowIntensityInput.value) : 65;
-
-    const activeEmotions = [];
-    emoRanges.forEach(range => {
-      const emoKey = range.getAttribute('data-emo');
-      const val = parseInt(range.value);
-      if (val > 0) {
-        activeEmotions.push({ key: emoKey, val, meta: EMOTION_META[emoKey] });
-      }
-    });
-
-    let gradientStops = `${pColor} 30%, ${sColor} 85%`;
-
-    if (activeEmotions.length > 0) {
-      activeEmotions.sort((a, b) => b.val - a.val);
-      gradientStops = activeEmotions.map((e, index) => {
-        const pct = Math.round(((index + 1) / activeEmotions.length) * 100);
-        return `${e.meta.color} ${pct}%`;
-      }).join(', ');
-      blendLabel.textContent = activeEmotions.map(e => `${e.meta.icon} ${e.meta.name}`).join(' • ');
-    } else {
-      blendLabel.textContent = 'Custom Luminous Orb Palette';
-    }
-
-    const gradient = `radial-gradient(circle at 35% 35%, #ffffff 0%, ${gradientStops})`;
-    previewOrb.style.background = gradient;
-    previewOrb.style.boxShadow = `inset 0 0 30px rgba(255,255,255,0.95), 0 0 ${intensity}px ${pColor}`;
-
-    particlesContainer.innerHTML = '';
-    const particleList = activeEmotions.length > 0 ? activeEmotions : [{ meta: { color: pColor } }, { meta: { color: sColor } }];
-    
-    particleList.slice(0, 6).forEach((e, idx) => {
-      const particle = document.createElement('div');
-      particle.className = 'orb-mini-particle';
-      const size = Math.random() * 12 + 6;
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
-      particle.style.background = e.meta.color;
-      particle.style.color = e.meta.color;
-      particle.style.left = `${15 + (idx * 15) % 65}%`;
-      particle.style.top = `${20 + (idx * 20) % 55}%`;
-      particle.style.animationDelay = `${idx * 0.3}s`;
-      particlesContainer.appendChild(particle);
-    });
-  }
-
-  emoRanges.forEach(range => range.addEventListener('input', updatePreviewOrb));
-  primaryColorInput?.addEventListener('input', updatePreviewOrb);
-  secondaryColorInput?.addEventListener('input', updatePreviewOrb);
-  glowIntensityInput?.addEventListener('input', updatePreviewOrb);
-
-  updatePreviewOrb();
-
   let memories = JSON.parse(localStorage.getItem('haven_memories') || '[]');
   let currentPageIndex = 0;
 
@@ -1305,43 +1385,52 @@ function initMemoryOrbsAndStorybook() {
   const pageTitle = document.getElementById('book-page-title');
   const pageText = document.getElementById('book-page-text');
 
+  const saveBtn = document.getElementById('save-memory-orb-btn');
+  const titleInput = document.getElementById('orb-title-input');
+  const noteInput = document.getElementById('orb-note-input');
+  const photoInput = document.getElementById('orb-photo-input');
+  const photoPreviewBox = document.getElementById('photo-preview-container');
+
   function renderStorybookPage(index) {
     if (memories.length === 0) {
-      pageIndicator.textContent = 'Page 0 of 0';
-      pageTitle.textContent = 'My Emotional Storybook';
-      pageText.textContent = 'No memories logged yet. Create your first Memory Orb on the left to turn the pages.';
-      pageDate.textContent = new Date().toLocaleDateString();
-      pageOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #ffcf56 35%, #ff8052 70%, #d946ef 100%)';
-      pageEmotions.innerHTML = '<span class="emo-pill-badge" style="background:#ffcf56; color:#2a083b;">💛 Warmth</span>';
-      pagePhotoBox.classList.add('hidden');
+      if (pageIndicator) pageIndicator.textContent = 'Page 0 of 0';
+      if (pageTitle) pageTitle.textContent = 'My Emotional Storybook';
+      if (pageText) pageText.textContent = 'No memories logged yet. Create your first Memory Orb on the left to turn the pages.';
+      if (pageDate) pageDate.textContent = new Date().toLocaleDateString();
+      if (pageOrb) pageOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #ffcf56 35%, #ff8052 70%, #d946ef 100%)';
+      if (pageEmotions) pageEmotions.innerHTML = '<span class="emo-pill-badge" style="background:#ffcf56; color:#2a083b;">💛 Warmth</span>';
+      if (pagePhotoBox) pagePhotoBox.classList.add('hidden');
       return;
     }
 
     currentPageIndex = Math.max(0, Math.min(index, memories.length - 1));
     const item = memories[currentPageIndex];
 
-    pageIndicator.textContent = `Page ${currentPageIndex + 1} of ${memories.length}`;
+    if (pageIndicator) pageIndicator.textContent = `Page ${currentPageIndex + 1} of ${memories.length}`;
+    if (pageDate) pageDate.textContent = `${item.date} • ${item.time || ''}`;
+    if (pageOrb) {
+      pageOrb.style.background = item.gradient || 'radial-gradient(circle at 35% 35%, #ffffff, #ffd700 40%, #4169e1 100%)';
+      pageOrb.style.boxShadow = `0 0 25px ${item.primaryColor || '#ffd700'}`;
+    }
 
-    pageDate.textContent = `${item.date} • ${item.time || ''}`;
-    pageOrb.style.background = item.gradient || 'radial-gradient(circle at 35% 35%, #ffffff, #ffd700 40%, #4169e1 100%)';
-    pageOrb.style.boxShadow = `0 0 25px ${item.primaryColor || '#ffd700'}`;
+    if (pageEmotions) {
+      pageEmotions.innerHTML = Object.keys(item.emotions || {})
+        .filter(k => item.emotions[k] > 0)
+        .map(k => {
+          const meta = EMOTION_META[k];
+          return `<span class="emo-pill-badge" style="background:${meta.color};">${meta.icon} ${meta.name} (${item.emotions[k]}%)</span>`;
+        }).join('');
+    }
 
-    pageEmotions.innerHTML = Object.keys(item.emotions || {})
-      .filter(k => item.emotions[k] > 0)
-      .map(k => {
-        const meta = EMOTION_META[k];
-        return `<span class="emo-pill-badge" style="background:${meta.color};">${meta.icon} ${meta.name} (${item.emotions[k]}%)</span>`;
-      }).join('');
-
-    if (item.photoUrl) {
+    if (item.photoUrl && pagePhotoBox) {
       pagePhotoImg.src = item.photoUrl;
       pagePhotoBox.classList.remove('hidden');
-    } else {
+    } else if (pagePhotoBox) {
       pagePhotoBox.classList.add('hidden');
     }
 
-    pageTitle.textContent = item.title || 'Emotional Memory';
-    pageText.textContent = item.note || 'No text written.';
+    if (pageTitle) pageTitle.textContent = item.title || 'Emotional Memory';
+    if (pageText) pageText.textContent = item.note || 'No text written.';
   }
 
   renderStorybookPage(0);
@@ -1363,33 +1452,22 @@ function initMemoryOrbsAndStorybook() {
   });
 
   saveBtn?.addEventListener('click', () => {
-    const title = titleInput.value.trim() || 'Today\'s Emotional Memory';
+    const title = titleInput.value.trim() || 'Today\'s 3D Emotional Memory';
     const note = noteInput.value.trim();
-
-    if (!note && !currentPhotoDataUrl) return;
 
     getAudioContext();
     playHarmonicChime([440, 554.37, 659.25, 880]);
 
     const activeEmotionsMap = {};
-    const activeList = [];
+    const emoRanges = document.querySelectorAll('.emo-range');
     emoRanges.forEach(range => {
       const k = range.getAttribute('data-emo');
       const val = parseInt(range.value);
-      if (val > 0) {
-        activeEmotionsMap[k] = val;
-        activeList.push({ k, val, meta: EMOTION_META[k] });
-      }
+      if (val > 0) activeEmotionsMap[k] = val;
     });
 
-    const pColor = primaryColorInput ? primaryColorInput.value : '#ffcf56';
-    const sColor = secondaryColorInput ? secondaryColorInput.value : '#d946ef';
-
-    const stops = activeList.length > 0
-      ? activeList.map((e, i) => `${e.meta.color} ${Math.round(((i + 1) / activeList.length) * 100)}%`).join(', ')
-      : `${pColor} 30%, ${sColor} 85%`;
-
-    const gradient = `radial-gradient(circle at 35% 35%, #ffffff 0%, ${stops})`;
+    const pColor = document.getElementById('orb-primary-color')?.value || '#ffcf56';
+    const sColor = document.getElementById('orb-secondary-color')?.value || '#d946ef';
 
     const now = new Date();
     const newMemory = {
@@ -1397,9 +1475,8 @@ function initMemoryOrbsAndStorybook() {
       title,
       note,
       emotions: activeEmotionsMap,
-      gradient,
+      gradient: `radial-gradient(circle at 35% 35%, #ffffff 0%, ${pColor} 40%, ${sColor} 100%)`,
       primaryColor: pColor,
-      photoUrl: currentPhotoDataUrl,
       date: now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     };
@@ -1407,11 +1484,8 @@ function initMemoryOrbsAndStorybook() {
     memories.unshift(newMemory);
     localStorage.setItem('haven_memories', JSON.stringify(memories));
 
-    titleInput.value = '';
-    noteInput.value = '';
-    currentPhotoDataUrl = '';
-    photoInput.value = '';
-    photoPreviewBox.classList.add('hidden');
+    if (titleInput) titleInput.value = '';
+    if (noteInput) noteInput.value = '';
 
     document.querySelector('.segmented-btn[data-orb-view="storybook"]')?.click();
     renderStorybookPage(0);
@@ -1588,7 +1662,7 @@ function initBreathingOasis() {
 }
 
 /* ==========================================================================
-   12. 100% WORKING PROCEDURAL WEB AUDIO SOUNDSCAPES
+   12. PROCEDURAL WEB AUDIO SOUNDSCAPES
    ========================================================================== */
 function initSoundscapes() {
   let isAudioEnabled = false;

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — VIRTUAL HUG, COLORING STUDIO & SOUNDSCAPES
+   HAVEN WELLNESS SANCTUARY — THREE.JS 3D REACTIVE ORBS & GLASS UI
    ========================================================================== */
 
 :root {
@@ -211,8 +211,30 @@ body.warm-tab-shift {
 }
 
 /* ==========================================================================
-   VIRTUAL HUG EMBRACE RITUAL MODAL (.hug-embrace-card)
+   THREE.JS 3D REACTIVE ORB VIEWPORT (.threejs-orb-container)
    ========================================================================== */
+.orb-preview-header-3d {
+  display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%;
+}
+.threejs-orb-container {
+  width: 100%; max-width: 480px; height: 260px; position: relative; border-radius: 24px;
+  overflow: hidden; background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5), rgba(42, 8, 59, 0.15));
+  border: 1px solid var(--glass-border); box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.8), 0 10px 30px rgba(45, 10, 50, 0.1);
+  display: flex; align-items: center; justify-content: center;
+}
+#orb-3d-canvas {
+  width: 100% !important; height: 100% !important; display: block; cursor: grab;
+}
+#orb-3d-canvas:active { cursor: grabbing; }
+
+.orb-3d-hint {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(15px);
+  padding: 4px 14px; border-radius: 16px; font-size: 0.76rem; font-weight: 700;
+  color: var(--ios-text); border: 1px solid var(--glass-border); pointer-events: none; text-align: center;
+}
+
+/* Virtual Hug Embrace Card */
 .hug-embrace-card { text-align: center; align-items: center; position: relative; overflow: hidden; }
 .hug-heartbeat-glow {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -230,21 +252,13 @@ body.warm-tab-shift {
 .hug-stats-row { display: flex; gap: 8px; justify-content: center; }
 .hug-stat-pill { font-size: 0.76rem; font-weight: 800; background: rgba(255, 255, 255, 0.65); padding: 4px 12px; border-radius: 12px; border: 1px solid var(--glass-border); color: #d946ef; }
 
-/* ==========================================================================
-   MEMORY ORBS CUSTOM COLORING STUDIO & 3D CRYSTAL RENDERING
-   ========================================================================== */
+/* Custom Coloring Studio */
 .memory-orb-sphere-enhanced {
   width: 140px; height: 140px; border-radius: 50%; position: relative; overflow: hidden;
   background: radial-gradient(circle at 35% 35%, #ffffff 0%, #ffcf56 35%, #ff8052 70%, #d946ef 100%);
   box-shadow: inset 0 0 30px rgba(255,255,255,0.95), 0 0 50px var(--accent-glow);
   border: 2px solid rgba(255, 255, 255, 0.9);
   transition: background 0.5s ease, box-shadow 0.5s ease, transform 0.4s ease;
-  animation: orbLiquidFloat 6s ease-in-out infinite alternate;
-}
-@keyframes orbLiquidFloat {
-  0% { transform: translateY(0) rotate(0deg) scale(1); }
-  50% { transform: translateY(-6px) rotate(4deg) scale(1.03); }
-  100% { transform: translateY(3px) rotate(-3deg) scale(0.98); }
 }
 
 .orb-highlight-reflection {
@@ -267,7 +281,7 @@ body.warm-tab-shift {
 }
 .palette-swatch-btn:hover { transform: scale(1.05); background: #ffffff; color: #d946ef; }
 
-/* Full Screen Apple Call Overlay */
+/* Apple Call Overlay */
 .apple-call-overlay {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   background: rgba(15, 8, 25, 0.82);
@@ -544,15 +558,6 @@ body.warm-tab-shift {
 .photo-preview-box { position: relative; width: 100%; max-height: 180px; border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border); margin-top: 6px; }
 .photo-preview-box img { width: 100%; height: 180px; object-fit: cover; }
 .photo-preview-box .small-btn { position: absolute; top: 8px; right: 8px; }
-
-.orb-preview-header { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.orb-inner-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-.orb-mini-particle { position: absolute; border-radius: 50%; box-shadow: 0 0 8px currentColor; animation: floatOrbParticle 4s ease-in-out infinite alternate; }
-@keyframes floatOrbParticle {
-  from { transform: translate(0, 0) scale(1); }
-  to { transform: translate(4px, -6px) scale(1.2); }
-}
-.orb-blend-title { font-size: 0.9rem; color: #d946ef; font-weight: 700; text-align: center; }
 
 .storybook-spread {
   display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px;

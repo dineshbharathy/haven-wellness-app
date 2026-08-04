@@ -3,14 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Haven — Sanctuary Circle & Apple Call Sanctuary</title>
-  <meta name="description" content="A premium wellness application featuring an autonomous AI Therapist, real-time Sanctuary Circle peer messaging, Apple iOS voice calling, & procedural audio soundscapes.">
+  <title>Haven — Sanctuary Circle & Three.js 3D Orbs</title>
+  <meta name="description" content="A premium wellness application featuring an autonomous AI Therapist, real-time Sanctuary Circle peer messaging, Apple iOS voice calling, & Three.js 3D reactive Memory Orbs.">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
+  <!-- Three.js 3D WebGL Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body data-theme="premium-white">
@@ -42,8 +45,8 @@
         <button class="nav-tab-btn" data-tab="community" data-title="Sanctuary Circle">
           <span>💬 Sanctuary Circle</span>
         </button>
-        <button class="nav-tab-btn" data-tab="memory-orbs" data-title="Memory Orbs">
-          <span>🔮 Orbs</span>
+        <button class="nav-tab-btn" data-tab="memory-orbs" data-title="Three.js 3D Orbs">
+          <span>🔮 3D Orbs</span>
         </button>
         <button class="nav-tab-btn" data-tab="lanterns" data-title="Sky Lanterns">
           <span>🏮 Sky</span>
@@ -319,43 +322,43 @@
         </div>
       </section>
 
-      <!-- ================= TAB 4: INSIDE OUT MEMORY ORBS & STORYBOOK ================= -->
+      <!-- ================= TAB 4: THREE.JS 3D REACTIVE MEMORY ORBS ================= -->
       <section id="tab-memory-orbs" class="tab-pane">
         
         <div class="ios-segmented-control">
-          <button class="segmented-btn active" data-orb-view="create">🔮 Create Memory Orb</button>
+          <button class="segmented-btn active" data-orb-view="create">🔮 Three.js 3D Orb Studio</button>
           <button class="segmented-btn" data-orb-view="storybook">📖 Storybook Reader</button>
         </div>
 
         <div id="orb-view-create" class="orb-subview active">
           <div class="pro-card orb-studio-card">
             
-            <div class="orb-preview-header">
-              <div class="memory-orb-sphere-enhanced" id="preview-memory-orb">
-                <div class="orb-highlight-reflection"></div>
-                <div class="orb-core-glow" id="orb-core-glow"></div>
-                <div class="orb-inner-particles" id="orb-inner-particles"></div>
+            <!-- Three.js 3D Reactive Orb Viewport -->
+            <div class="orb-preview-header-3d">
+              <div class="threejs-orb-container" id="threejs-orb-container">
+                <canvas id="orb-3d-canvas"></canvas>
+                <div class="orb-3d-hint">✨ Move cursor or tap sphere to interact with 3D liquid mesh</div>
               </div>
-              <span class="orb-blend-title" id="orb-blend-label">Luminous Memory Sphere</span>
+              <span class="orb-blend-title" id="orb-blend-label">Three.js Reactive 3D Liquid Orb</span>
             </div>
 
             <!-- Custom Orb Color & Palette Picker Section -->
             <div class="ios-inset-group custom-color-studio-box">
-              <span class="ios-group-label">🎨 CUSTOM COLORING STUDIO & PALETTE</span>
+              <span class="ios-group-label">🎨 THREE.JS 3D COLORING STUDIO & LIGHTING</span>
               
               <div class="color-picker-row">
                 <div class="color-picker-item">
-                  <label for="orb-primary-color">Primary Glow</label>
+                  <label for="orb-primary-color">Primary Light</label>
                   <input type="color" id="orb-primary-color" value="#ffcf56" class="ios-color-input">
                 </div>
 
                 <div class="color-picker-item">
-                  <label for="orb-secondary-color">Secondary Accent</label>
+                  <label for="orb-secondary-color">Secondary Rim</label>
                   <input type="color" id="orb-secondary-color" value="#d946ef" class="ios-color-input">
                 </div>
 
                 <div class="color-picker-item flex-1">
-                  <label for="orb-glow-intensity">Glow Intensity</label>
+                  <label for="orb-glow-intensity">Liquid Distortion Speed</label>
                   <input type="range" id="orb-glow-intensity" min="10" max="100" value="65" class="emo-range">
                 </div>
               </div>
@@ -369,7 +372,7 @@
             </div>
 
             <div class="ios-inset-group">
-              <span class="ios-group-label">INSIDE OUT EMOTION SPECTRUM</span>
+              <span class="ios-group-label">INSIDE OUT EMOTION SPECTRUM (3D SURFACE REACTIVE)</span>
               <div class="ios-emotion-sliders">
                 
                 <div class="ios-slider-row">
@@ -445,7 +448,7 @@
             </div>
 
             <button id="save-memory-orb-btn" class="ios-btn primary-btn pulse-glow">
-              🔮 Save Custom Memory Orb
+              🔮 Save 3D Memory Orb
             </button>
 
           </div>
