@@ -3,31 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <title>Haven — Adaptable Sanctuary App</title>
-  <meta name="description" content="A personal emotional support sanctuary app with adaptive layouts for Phone, Tablet, and Laptop.">
+  <title>Haven — Professional AI Sanctuary & Therapist</title>
+  <meta name="description" content="A premium, professional emotional wellness sanctuary featuring an active AI Therapist engine and therapeutic soundscapes.">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="./styles.css">
 </head>
-<body data-theme="neuro-calm" data-device="auto">
-  <!-- Atmospheric Background Canvas -->
+<body data-theme="premium-white" data-device="auto">
+  <!-- Atmospheric Soft Glow Canvas -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Adaptive Device Wrapper (Phone Shell on mobile/desktop toggle, Expanded Full View on Laptop) -->
+  <!-- Adaptive Device Wrapper -->
   <div class="ios-device-wrapper" id="device-wrapper">
     <div class="ios-phone-shell" id="phone-shell">
       
-      <!-- iOS Status Bar (Visible in Mobile/Tablet View) -->
+      <!-- iOS Status Bar -->
       <div class="ios-status-bar" id="ios-status-bar">
         <span class="status-time" id="status-time">9:41</span>
         <div class="dynamic-island">
-          <span class="island-sparkle">✨ Haven • Sanctuary</span>
+          <span class="island-sparkle">✨ Aura • AI Therapist Active</span>
         </div>
         <div class="status-icons">
           <span id="device-badge" class="device-badge-tag">💻 Laptop</span>
@@ -36,28 +36,27 @@
         </div>
       </div>
 
-      <!-- Main Responsive Shell Container -->
+      <!-- Main Shell Container -->
       <div id="app" class="ios-app-container">
         
-        <!-- Top Translucent Navigation Bar -->
+        <!-- Top Navigation Bar -->
         <header class="ios-navbar">
           <div class="ios-nav-top">
             <div class="ios-brand">
-              <span class="brand-sparkle">🧠✨</span>
-              <span class="ios-app-name">Haven</span>
-              <span id="device-mode-label" class="device-mode-label">Laptop Mode</span>
+              <span class="brand-sparkle">🌿✨</span>
+              <span class="ios-app-name">Haven Sanctuary</span>
+              <span id="device-mode-label" class="device-mode-label">Pro Theme</span>
             </div>
             
             <div class="nav-right-actions">
-              <!-- View Mode Switcher (For Laptop users to preview Phone/Tablet/Full views) -->
               <div class="adaptive-view-switcher" id="adaptive-view-switcher">
-                <button class="view-mode-btn active" data-view-mode="auto" title="Auto-Detect Device">⚡ Auto</button>
-                <button class="view-mode-btn" data-view-mode="phone" title="Force Phone View">📱 Phone</button>
-                <button class="view-mode-btn" data-view-mode="tablet" title="Force Tablet View">📱 Tablet</button>
-                <button class="view-mode-btn" data-view-mode="laptop" title="Force Laptop Desktop View">💻 Laptop</button>
+                <button class="view-mode-btn active" data-view-mode="auto" title="Auto-Detect">⚡ Auto</button>
+                <button class="view-mode-btn" data-view-mode="phone" title="Phone View">📱 Phone</button>
+                <button class="view-mode-btn" data-view-mode="tablet" title="Tablet View">📱 Tablet</button>
+                <button class="view-mode-btn" data-view-mode="laptop" title="Laptop Desktop">💻 Laptop</button>
               </div>
 
-              <button id="theme-toggle-btn" class="ios-icon-btn" title="Neuro-Palette">
+              <button id="theme-toggle-btn" class="ios-icon-btn" title="Color Palettes">
                 🎨
               </button>
             </div>
@@ -67,7 +66,7 @@
           </div>
         </header>
 
-        <!-- Main Scrollable Content Viewport -->
+        <!-- Main Scrollable Content Area -->
         <main class="ios-main-content">
           
           <!-- ================= TAB 1: HUB / HOME ================= -->
@@ -75,33 +74,33 @@
             <!-- Hero Welcome Card -->
             <div class="ios-card welcome-card">
               <div class="welcome-header">
-                <span class="ios-pill neuro-badge" id="time-greeting">Neuro-Regulation Active</span>
-                <h2>Welcome to your adaptable sanctuary.</h2>
-                <p>Dynamically recognized and calibrated for your <strong id="detected-device-name">Device</strong>.</p>
+                <span class="ios-pill pro-badge" id="time-greeting">Psychological Grounding Active</span>
+                <h2>Welcome to your private wellness sanctuary.</h2>
+                <p>Designed with professional therapeutic color gradients for quiet peace and emotional regulation.</p>
               </div>
               
               <div class="ios-inset-group daily-quote-box">
-                <span class="ios-group-label">NEUROLOGICAL COMFORT THOUGHT</span>
+                <span class="ios-group-label">THERAPEUTIC REFLECTION</span>
                 <blockquote id="daily-quote">"It's okay to miss what isn't there, and still hold space for all the warmth that surrounds you."</blockquote>
                 <button id="new-quote-btn" class="ios-link-btn">✨ Gentle Thought</button>
               </div>
             </div>
 
-            <!-- AI Listener Quick Access Banner -->
+            <!-- AI Therapist Quick Access Banner -->
             <div class="ios-card ai-banner-card">
               <div class="ai-banner-content">
                 <div class="ai-orb-mini-pulse"></div>
                 <div class="ai-banner-text">
-                  <h3>Aura — AI Voice & Text Listener</h3>
-                  <p>Speak or type to an empathetic companion who holds safe space for your heart.</p>
+                  <h3>Dr. Aura — Professional AI Therapist</h3>
+                  <p>Client-centered Rogerian active listening, voice reflection, and emotional grounding.</p>
                 </div>
               </div>
               <button id="open-ai-listener-btn" class="ios-btn primary-btn pulse-glow">
-                🎙️ Talk to Aura AI
+                🎙️ Speak with Dr. Aura
               </button>
             </div>
 
-            <!-- Adaptive Responsive Widgets Grid -->
+            <!-- Widgets Grid -->
             <div class="ios-widgets-grid">
               
               <!-- Storybook Widget -->
@@ -152,7 +151,7 @@
             </div>
           </section>
 
-          <!-- ================= TAB 2: AI LISTENER (AURA) ================= -->
+          <!-- ================= TAB 2: AI THERAPIST (DR. AURA) ================= -->
           <section id="tab-ai-listener" class="tab-pane">
             <div class="ios-card ai-main-card">
               
@@ -164,31 +163,41 @@
                     <span id="ai-orb-status-icon">🎙️</span>
                   </div>
                 </div>
-                <h3 id="ai-status-text">Aura is listening...</h3>
-                <p class="ai-subtitle">Speak your heart out. Aura will listen softly and respond with warmth.</p>
+                <h3 id="ai-status-text">Dr. Aura is listening softly...</h3>
+                <p class="ai-subtitle">Client-centered therapy engine. Active voice synthesis & emotional reframing.</p>
               </div>
 
+              <!-- Voice Controls Bar -->
               <div class="ai-controls-bar">
                 <button id="start-voice-listen-btn" class="ios-btn primary-btn pulse-glow">
-                  🎙️ Tap to Speak to Aura
+                  🎙️ Tap to Speak with Dr. Aura
                 </button>
-                <button id="toggle-speech-synth-btn" class="ios-icon-btn active" title="Toggle Voice Response">
+                <button id="toggle-speech-synth-btn" class="ios-icon-btn active" title="Toggle Therapist Voice">
                   🔊
+                </button>
+                <button id="open-api-config-btn" class="ios-icon-btn" title="Gemini API Settings">
+                  🔑
                 </button>
               </div>
 
+              <!-- API Key Banner Alert if not set -->
+              <div id="api-status-banner" class="api-status-banner">
+                <span>⚡ Using Therapeutic Engine. <a href="#" id="link-setup-api">Add Gemini API Key</a> for unlimited AI power.</span>
+              </div>
+
+              <!-- Conversation Space -->
               <div class="ios-inset-group ai-chat-container">
-                <span class="ios-group-label">SAFE CONVERSATION SPACE</span>
+                <span class="ios-group-label">PRIVATE THERAPEUTIC SESSION</span>
                 
                 <div id="ai-chat-messages" class="ai-chat-messages">
                   <div class="chat-bubble aura-bubble">
-                    <span class="chat-author">Aura AI:</span>
-                    <p>"Hello dear. I am here for you whenever you feel lonely, miss your dad, or just need someone to hold space for your heart. How are you feeling right now?"</p>
+                    <span class="chat-author">Dr. Aura (AI Therapist):</span>
+                    <p>"Hello dear. I am Dr. Aura. I am here to provide a safe, non-judgmental space for whatever you are carrying—whether it's longing for your dad, feeling detached, or just needing someone to listen. How are you feeling today?"</p>
                   </div>
                 </div>
 
                 <div class="ai-input-row">
-                  <input type="text" id="ai-text-input" class="ios-input" placeholder="Type a message to Aura...">
+                  <input type="text" id="ai-text-input" class="ios-input" placeholder="Speak or type your feelings to Dr. Aura...">
                   <button id="send-ai-text-btn" class="ios-btn primary-btn small-btn">Send</button>
                 </div>
               </div>
@@ -523,9 +532,9 @@
             <span class="tab-icon">🏡</span>
             <span class="tab-label">Home</span>
           </button>
-          <button class="tab-item" data-tab="ai-listener" data-title="Aura Listener">
+          <button class="tab-item" data-tab="ai-listener" data-title="Dr. Aura (AI)">
             <span class="tab-icon">🎙️</span>
-            <span class="tab-label">Aura AI</span>
+            <span class="tab-label">Therapist</span>
           </button>
           <button class="tab-item" data-tab="memory-orbs" data-title="Memory Orbs">
             <span class="tab-icon">🔮</span>
@@ -555,7 +564,23 @@
     </div>
   </div>
 
-  <!-- iOS Sheet Modals -->
+  <!-- API Key Config Sheet Modal -->
+  <div id="api-key-modal" class="modal-overlay hidden">
+    <div class="ios-sheet-modal">
+      <div class="sheet-grabber"></div>
+      <button class="modal-close-btn" data-modal="api-key-modal">✕</button>
+      <h3>🔑 Gemini API Key Settings</h3>
+      <p class="modal-subtitle">Paste your free Google Gemini API key to activate real AI Therapist inference.</p>
+      
+      <input type="password" id="gemini-api-key-input" class="ios-input" placeholder="AIzaSy...">
+      
+      <button id="save-gemini-key-btn" class="ios-btn primary-btn">
+        ✨ Save Key & Connect AI
+      </button>
+    </div>
+  </div>
+
+  <!-- Sheet Modals -->
   <div id="lantern-modal" class="modal-overlay hidden">
     <div class="ios-sheet-modal">
       <div class="sheet-grabber"></div>
@@ -565,8 +590,8 @@
       
       <div class="color-picker-options">
         <label class="color-option">
-          <input type="radio" name="lantern-color" value="#ffb347" checked>
-          <span class="color-swatch" style="background: #ffb347;"></span>
+          <input type="radio" name="lantern-color" value="#d4af37" checked>
+          <span class="color-swatch" style="background: #d4af37;"></span>
         </label>
         <label class="color-option">
           <input type="radio" name="lantern-color" value="#ff80bf">
@@ -577,8 +602,8 @@
           <span class="color-swatch" style="background: #b388ff;"></span>
         </label>
         <label class="color-option">
-          <input type="radio" name="lantern-color" value="#80d8ff">
-          <span class="color-swatch" style="background: #80d8ff;"></span>
+          <input type="radio" name="lantern-color" value="#34d399">
+          <span class="color-swatch" style="background: #34d399;"></span>
         </label>
       </div>
 
@@ -625,24 +650,24 @@
     <div class="ios-sheet-modal">
       <div class="sheet-grabber"></div>
       <button class="modal-close-btn" data-modal="theme-modal">✕</button>
-      <h3>🎨 Neuro-Calibrated Color Palettes</h3>
-      <p class="modal-subtitle">Calibrated based on neuro-chromatic studies for parasympathetic calming and oxytocin activation.</p>
+      <h3>🎨 Premium Gradient Palettes</h3>
+      <p class="modal-subtitle">White base with crisp, elegant primary, secondary, and tertiary gradient accents.</p>
       <div class="theme-options-grid">
-        <button class="theme-option-btn active" data-theme="neuro-calm">
-          <span class="theme-preview neuro-calm-preview"></span>
-          <span>Midnight Velvet & Amber</span>
+        <button class="theme-option-btn active" data-theme="premium-white">
+          <span class="theme-preview premium-white-preview"></span>
+          <span>Luminous Pearl & Gold</span>
         </button>
-        <button class="theme-option-btn" data-theme="sunset">
-          <span class="theme-preview sunset-preview"></span>
+        <button class="theme-option-btn" data-theme="midnight-emerald">
+          <span class="theme-preview midnight-emerald-preview"></span>
+          <span>Midnight Emerald</span>
+        </button>
+        <button class="theme-option-btn" data-theme="twilight-sunset">
+          <span class="theme-preview twilight-sunset-preview"></span>
           <span>Twilight Sunset</span>
         </button>
-        <button class="theme-option-btn" data-theme="rose">
-          <span class="theme-preview rose-preview"></span>
+        <button class="theme-option-btn" data-theme="rose-quartz">
+          <span class="theme-preview rose-quartz-preview"></span>
           <span>Rose Quartz</span>
-        </button>
-        <button class="theme-option-btn" data-theme="emerald">
-          <span class="theme-preview emerald-preview"></span>
-          <span>Forest Sage</span>
         </button>
       </div>
     </div>

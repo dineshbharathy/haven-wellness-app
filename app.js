@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — CROSS-DEVICE ENGINE (JS)
+   HAVEN WELLNESS SANCTUARY — AI THERAPIST ENGINE & APP LOGIC (JS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initIOSTabNavigation();
   initAmbientCanvas();
   initSanctuaryHub();
-  initAIListenerAura();
+  initAITherapistAura();
   initMemoryOrbsAndStorybook();
   initSkyLanterns();
   initBreathingOasis();
@@ -49,7 +49,7 @@ function initAdaptiveDeviceDetector() {
     document.body.setAttribute('data-detected-device', deviceType);
 
     if (deviceBadge) deviceBadge.textContent = deviceLabel;
-    if (deviceModeLabel) deviceModeLabel.textContent = `${deviceType.toUpperCase()} MODE`;
+    if (deviceModeLabel) deviceModeLabel.textContent = `PRO THEME`;
     if (detectedDeviceName) detectedDeviceName.textContent = deviceLabel;
 
     return deviceType;
@@ -63,7 +63,6 @@ function initAdaptiveDeviceDetector() {
     }
   });
 
-  // Adaptive View Switcher Buttons
   viewModeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       getAudioContext();
@@ -79,7 +78,6 @@ function initAdaptiveDeviceDetector() {
       } else {
         document.body.setAttribute('data-force-view', mode);
         if (deviceBadge) deviceBadge.textContent = mode === 'phone' ? '📱 Phone' : mode === 'tablet' ? '📱 Tablet' : '💻 Laptop';
-        if (deviceModeLabel) deviceModeLabel.textContent = `${mode.toUpperCase()} VIEW`;
       }
 
       setTimeout(() => {
@@ -90,7 +88,7 @@ function initAdaptiveDeviceDetector() {
 }
 
 /* ==========================================================================
-   iOS STATUS BAR REAL-TIME CLOCK
+   iOS STATUS BAR CLOCK
    ========================================================================== */
 function initIOSStatusBarClock() {
   const clockEl = document.getElementById('status-time');
@@ -163,7 +161,7 @@ function initThemeManager() {
   const themeModal = document.getElementById('theme-modal');
   const themeOptionBtns = document.querySelectorAll('.theme-option-btn');
 
-  const savedTheme = localStorage.getItem('haven_theme') || 'neuro-calm';
+  const savedTheme = localStorage.getItem('haven_theme') || 'premium-white';
   setTheme(savedTheme);
 
   themeToggleBtn?.addEventListener('click', () => {
@@ -273,9 +271,9 @@ function initAmbientCanvas() {
 
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.1, Math.min(0.9, p.alpha))})`;
+      ctx.fillStyle = `rgba(212, 175, 55, ${Math.max(0.1, Math.min(0.6, p.alpha))})`;
       ctx.shadowBlur = 8;
-      ctx.shadowColor = '#ffffff';
+      ctx.shadowColor = '#d4af37';
       ctx.fill();
     });
 
@@ -421,9 +419,9 @@ function createHeartBurst(x, y) {
 }
 
 /* ==========================================================================
-   5. AURA AI EMPATHETIC LISTENER ENGINE
+   5. DR. AURA — PRO AI THERAPIST ENGINE (GEMINI 1.5 + HIGH-QUALITY VOICE)
    ========================================================================== */
-function initAIListenerAura() {
+function initAITherapistAura() {
   const startListenBtn = document.getElementById('start-voice-listen-btn');
   const orbContainer = document.getElementById('ai-voice-orb');
   const orbStatusIcon = document.getElementById('ai-orb-status-icon');
@@ -434,9 +432,42 @@ function initAIListenerAura() {
   const sendTextBtn = document.getElementById('send-ai-text-btn');
   const messagesBox = document.getElementById('ai-chat-messages');
 
+  const openApiKeyBtn = document.getElementById('open-api-config-btn');
+  const apiKeyModal = document.getElementById('api-key-modal');
+  const geminiKeyInput = document.getElementById('gemini-api-key-input');
+  const saveKeyBtn = document.getElementById('save-gemini-key-btn');
+  const apiBanner = document.getElementById('api-status-banner');
+  const setupApiLink = document.getElementById('link-setup-api');
+
   let isListening = false;
   let isSynthEnabled = true;
   let recognition = null;
+  let geminiApiKey = localStorage.getItem('haven_gemini_key') || '';
+
+  if (geminiApiKey) {
+    if (geminiKeyInput) geminiKeyInput.value = geminiApiKey;
+    if (apiBanner) apiBanner.innerHTML = '✨ <strong>Gemini 1.5 Pro Therapy Engine Connected</strong>';
+  }
+
+  openApiKeyBtn?.addEventListener('click', () => {
+    apiKeyModal?.classList.remove('hidden');
+  });
+
+  setupApiLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    apiKeyModal?.classList.remove('hidden');
+  });
+
+  saveKeyBtn?.addEventListener('click', () => {
+    const val = geminiKeyInput.value.trim();
+    if (val) {
+      geminiApiKey = val;
+      localStorage.setItem('haven_gemini_key', val);
+      apiKeyModal?.classList.add('hidden');
+      if (apiBanner) apiBanner.innerHTML = '✨ <strong>Gemini 1.5 Pro Therapy Engine Connected</strong>';
+      playHarmonicChime([523.25, 659.25, 783.99]);
+    }
+  });
 
   synthToggleBtn?.addEventListener('click', () => {
     isSynthEnabled = !isSynthEnabled;
@@ -446,6 +477,7 @@ function initAIListenerAura() {
     }
   });
 
+  // Speech Recognition
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (SpeechRecognition) {
     recognition = new SpeechRecognition();
@@ -457,7 +489,7 @@ function initAIListenerAura() {
       isListening = true;
       orbContainer.classList.add('ai-listening');
       orbStatusIcon.textContent = '🔊';
-      statusText.textContent = 'Aura is listening to your voice...';
+      statusText.textContent = 'Dr. Aura is listening to your voice...';
       startListenBtn.textContent = '⏹ Listening... Speak Now';
     };
 
@@ -468,17 +500,10 @@ function initAIListenerAura() {
       }
     };
 
-    recognition.onerror = () => {
-      stopVoiceListen();
-    };
-
-    recognition.onend = () => {
-      stopVoiceListen();
-    };
+    recognition.onerror = () => { stopVoiceListen(); };
+    recognition.onend = () => { stopVoiceListen(); };
   } else {
-    if (startListenBtn) {
-      startListenBtn.textContent = '💬 Type to Speak with Aura AI';
-    }
+    if (startListenBtn) startListenBtn.textContent = '💬 Type to Speak with Dr. Aura';
   }
 
   startListenBtn?.addEventListener('click', () => {
@@ -487,11 +512,7 @@ function initAIListenerAura() {
       stopVoiceListen();
     } else {
       if (recognition) {
-        try {
-          recognition.start();
-        } catch (e) {
-          stopVoiceListen();
-        }
+        try { recognition.start(); } catch (e) { stopVoiceListen(); }
       } else {
         textInput.focus();
       }
@@ -502,8 +523,8 @@ function initAIListenerAura() {
     isListening = false;
     orbContainer.classList.remove('ai-listening');
     orbStatusIcon.textContent = '🎙️';
-    statusText.textContent = 'Aura is here to listen softly.';
-    startListenBtn.textContent = '🎙️ Tap to Speak to Aura';
+    statusText.textContent = 'Dr. Aura is listening softly...';
+    startListenBtn.textContent = '🎙️ Tap to Speak with Dr. Aura';
     if (recognition) {
       try { recognition.stop(); } catch (e) {}
     }
@@ -517,31 +538,33 @@ function initAIListenerAura() {
   });
 
   textInput?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      sendTextBtn.click();
-    }
+    if (e.key === 'Enter') sendTextBtn.click();
   });
 
-  function handleUserChatMessage(userText) {
+  async function handleUserChatMessage(userText) {
     getAudioContext();
     playBellSound(520, 'sine', 0.4, 0.08);
 
     appendBubble('You', userText, 'user-bubble');
 
-    statusText.textContent = 'Aura is thinking warmly...';
-    setTimeout(() => {
-      const response = generateEmpatheticResponse(userText);
-      appendBubble('Aura AI', response, 'aura-bubble');
-      statusText.textContent = 'Aura is here for you.';
+    statusText.textContent = 'Dr. Aura is reflecting softly...';
+    orbContainer.classList.add('ai-listening');
 
-      if (isSynthEnabled && window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(response);
-        utterance.rate = 0.9;
-        utterance.pitch = 1.0;
-        window.speechSynthesis.speak(utterance);
-      }
-    }, 600);
+    let response = '';
+    if (geminiApiKey) {
+      response = await fetchGeminiTherapistResponse(userText, geminiApiKey);
+    } else {
+      response = generateLocalTherapistResponse(userText);
+    }
+
+    orbContainer.classList.remove('ai-listening');
+    appendBubble('Dr. Aura (AI Therapist)', response, 'aura-bubble');
+    statusText.textContent = 'Dr. Aura is here for you.';
+
+    // High-Quality Speech Synthesis
+    if (isSynthEnabled && window.speechSynthesis) {
+      speakTherapistResponse(response);
+    }
   }
 
   function appendBubble(author, text, bubbleClass) {
@@ -556,20 +579,79 @@ function initAIListenerAura() {
   }
 }
 
-function generateEmpatheticResponse(input) {
+// Google Gemini 1.5 API Therapist Call
+async function fetchGeminiTherapistResponse(userText, apiKey) {
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const payload = {
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            {
+              text: `System Persona: You are Dr. Aura, a compassionate licensed human therapist trained in Rogerian client-centered therapy, emotional reframing, and attachment therapy. Your client is a young woman who experiences emotional detachment from her parents and longs for her dad. Provide a warm, deeply validating, therapeutic response in 2-3 soft, calming sentences. Never break character. Client says: "${userText}"`
+            }
+          ]
+        }
+      ]
+    };
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) throw new Error('Gemini API request failed');
+
+    const data = await res.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    return reply || generateLocalTherapistResponse(userText);
+  } catch (e) {
+    console.error('Gemini API Error:', e);
+    return generateLocalTherapistResponse(userText);
+  }
+}
+
+// Professional Local Rogerian Therapist Fallback Engine
+function generateLocalTherapistResponse(input) {
   const text = input.toLowerCase();
 
   if (text.includes('dad') || text.includes('father') || text.includes('parent')) {
-    return "I hear how deeply you miss your dad. Missing a parent or longing for that bond is one of the most tender feelings we carry. Your love for him is so real, and it's completely okay to feel that ache. You are safe here to hold that memory with gentle affection.";
-  } else if (text.includes('alone') || text.includes('lonely') || text.includes('no one') || text.includes('detached')) {
-    return "Feeling lonely or detached can make the world feel so quiet and distant. But please remember: you are not broken for feeling this way. I am here listening to you, and your heart deserves warmth and gentle care tonight.";
-  } else if (text.includes('sad') || text.includes('cry') || text.includes('hurt') || text.includes('pain')) {
-    return "I hear your sadness, and I want you to know that your tears and heavy feelings are welcome here. You don't have to carry it all by yourself. Take a soft breath; I am holding space for you.";
-  } else if (text.includes('happy') || text.includes('good') || text.includes('peace') || text.includes('better')) {
-    return "I am so glad to hear that a little warmth and peace has found its way to your heart today. Hold onto this soft moment—you deserve every bit of joy.";
+    return "I hear how deeply you long for your dad and how heavy parental detachment can feel. What you are feeling is completely valid—your desire for unconditional parental warmth comes from a place of deep love. Take a soft breath; you are safe to feel that ache here without judgment.";
+  } else if (text.includes('alone') || text.includes('lonely') || text.includes('detached') || text.includes('isolated')) {
+    return "Feeling detached or isolated can make your inner world feel so quiet and distant. Please know that feeling this way doesn't mean you are broken or unwanted. I am right here with you, holding a warm, gentle space for your heart.";
+  } else if (text.includes('sad') || text.includes('cry') || text.includes('pain') || text.includes('hurt')) {
+    return "I hear the pain in your voice, and I want to remind you that your tears are welcome here. You don't have to carry the weight of being strong all the time. Let yourself rest for a moment; I am listening closely.";
+  } else if (text.includes('angry') || text.includes('mad') || text.includes('upset')) {
+    return "It is entirely natural to feel anger when you haven't received the warmth or presence you deserved. Anger is often just a protective layer over a deeply tender heart. I honor your feelings completely.";
   } else {
-    return "Thank you for sharing your thoughts with me. I am listening closely to everything you carry inside. Your feelings matter so much, and you are surrounded by care here.";
+    return "Thank you for trusting me with your thoughts. I am listening closely to everything you carry inside. Your feelings matter so much, and you are surrounded by care and safety here.";
   }
+}
+
+// Best Human Voice Speech Synthesis Picker
+function speakTherapistResponse(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 0.88; // Gentle therapeutic pace
+  utterance.pitch = 1.05; // Soft warm pitch
+
+  const voices = window.speechSynthesis.getVoices();
+  // Select best human sounding female / gentle voice
+  const preferredVoice = voices.find(v => 
+    v.name.includes('Google US English') ||
+    v.name.includes('en-US-Neural2') ||
+    v.name.includes('Samantha') ||
+    v.name.includes('Victoria') ||
+    v.name.includes('Karen')
+  ) || voices.find(v => v.lang.startsWith('en'));
+
+  if (preferredVoice) utterance.voice = preferredVoice;
+
+  window.speechSynthesis.speak(utterance);
 }
 
 /* ==========================================================================
@@ -653,7 +735,7 @@ function initMemoryOrbsAndStorybook() {
     });
 
     if (activeEmotions.length === 0) {
-      previewOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #f5b041 40%, #12152d 100%)';
+      previewOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #d4af37 40%, #0f172a 100%)';
       blendLabel.textContent = 'Blended Memory Sphere';
       particlesContainer.innerHTML = '';
       return;
@@ -716,8 +798,8 @@ function initMemoryOrbsAndStorybook() {
       pageTitle.textContent = 'My Emotional Storybook';
       pageText.textContent = 'No memories logged yet. Create your first Memory Orb on the left to turn the pages.';
       pageDate.textContent = new Date().toLocaleDateString();
-      pageOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #f5b041 40%, #12152d 100%)';
-      pageEmotions.innerHTML = '<span class="emo-pill-badge" style="background:#f5b041;">💛 Warmth</span>';
+      pageOrb.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, #d4af37 40%, #0f172a 100%)';
+      pageEmotions.innerHTML = '<span class="emo-pill-badge" style="background:#d4af37;">💛 Warmth</span>';
       pagePhotoBox.classList.add('hidden');
       return;
     }
@@ -846,7 +928,7 @@ function initSkyLanterns() {
   lanterns = lanterns.map((l, index) => ({
     id: l.id || `lantern_${Date.now()}_${index}`,
     message: l.message,
-    color: l.color || '#ffb347',
+    color: l.color || '#d4af37',
     date: l.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     rawDate: l.rawDate || todayStr,
     time: l.time || 'Evening'
@@ -902,7 +984,7 @@ function initSkyLanterns() {
       if (l.y < -40) l.y = height + 20;
 
       const glow = ctx.createRadialGradient(l.x, l.y, 2, l.x, l.y, l.size * 1.6);
-      glow.addColorStop(0, l.color || '#ffb347');
+      glow.addColorStop(0, l.color || '#d4af37');
       glow.addColorStop(1, 'transparent');
 
       ctx.fillStyle = glow;
@@ -910,7 +992,7 @@ function initSkyLanterns() {
       ctx.arc(l.x, l.y, l.size * 1.6, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = l.color || '#ffb347';
+      ctx.fillStyle = l.color || '#d4af37';
       ctx.beginPath();
       ctx.roundRect(l.x - 8, l.y - 12, 16, 22, 3);
       ctx.fill();
@@ -999,7 +1081,7 @@ function initSkyLanterns() {
     getAudioContext();
     playHarmonicChime([440, 554.37, 659.25, 880]);
 
-    const selectedColor = document.querySelector('input[name="lantern-color"]:checked')?.value || '#ffb347';
+    const selectedColor = document.querySelector('input[name="lantern-color"]:checked')?.value || '#d4af37';
     const now = new Date();
     const todayISO = now.toISOString().split('T')[0];
     const dateFormatted = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -1040,7 +1122,7 @@ function openViewLanternModal(lantern) {
   const msgEl = document.getElementById('view-lantern-message');
 
   if (badgeEl) {
-    badgeEl.style.background = lantern.color || '#ffb347';
+    badgeEl.style.background = lantern.color || '#d4af37';
     badgeEl.textContent = `🏮 ${getColorName(lantern.color)}`;
   }
   if (dateEl) dateEl.textContent = `${lantern.date} • ${lantern.time || ''}`;
@@ -1051,10 +1133,10 @@ function openViewLanternModal(lantern) {
 
 function getColorName(color) {
   switch (color) {
-    case '#ffb347': return 'Amber';
+    case '#d4af37': return 'Gold';
     case '#ff80bf': return 'Rose';
     case '#b388ff': return 'Lavender';
-    case '#80d8ff': return 'Starlight';
+    case '#34d399': return 'Emerald';
     default: return 'Glow';
   }
 }
