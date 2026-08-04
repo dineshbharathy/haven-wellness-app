@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Haven — Your Safe Sanctuary & Comfort Space</title>
+  <title>Haven — Safe Sanctuary & Comfort Space</title>
   <meta name="description" content="A warm, personal emotional support and wellness sanctuary designed to provide comfort, grounding, and quiet joy.">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="./styles.css">
 </head>
@@ -17,15 +17,17 @@
   <!-- Interactive Ambient Canvas Background -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Main Container -->
+  <!-- Main App Shell -->
   <div id="app" class="app-container">
     
-    <!-- Top Navigation Header -->
+    <!-- Header / Navbar -->
     <header class="navbar glass-card">
       <div class="brand">
         <span class="brand-icon">✨</span>
-        <h1 class="brand-title">Haven</h1>
-        <span class="brand-tagline">Safe Sanctuary</span>
+        <div class="brand-titles">
+          <h1 class="brand-title">Haven</h1>
+          <span class="brand-tagline">Sanctuary & Comfort</span>
+        </div>
       </div>
 
       <nav class="nav-tabs">
@@ -50,18 +52,18 @@
       </nav>
 
       <div class="header-actions">
-        <button id="theme-toggle-btn" class="icon-btn" title="Change Theme">
+        <button id="theme-toggle-btn" class="icon-btn" title="Choose Atmosphere Theme">
           🎨
         </button>
       </div>
     </header>
 
-    <!-- Content Sections -->
+    <!-- Main Content Area -->
     <main class="main-content">
       
-      <!-- ================= SECTION 1: SANCTUARY HUB ================= -->
+      <!-- ================= TAB 1: SANCTUARY HUB ================= -->
       <section id="tab-hub" class="tab-pane active">
-        <!-- Personalized Welcome Banner -->
+        <!-- Welcome Hero Banner -->
         <div class="welcome-banner glass-card">
           <div class="welcome-text">
             <span class="time-greeting" id="time-greeting">Good Evening</span>
@@ -75,11 +77,11 @@
           </div>
         </div>
 
-        <!-- Interactive Quick Actions Grid -->
+        <!-- Quick Interactive Cards Grid -->
         <div class="hub-grid">
           
           <!-- Virtual Hug Card -->
-          <div class="hub-card glass-card Hug-card">
+          <div class="hub-card glass-card hug-card">
             <div class="card-icon">🫂</div>
             <h3>Send a Virtual Hug</h3>
             <p>Whenever you need warmth, tap here to receive a glowing burst of love.</p>
@@ -91,7 +93,7 @@
             </button>
           </div>
 
-          <!-- Tea Brewing Ritual Card -->
+          <!-- Tea Ritual Card -->
           <div class="hub-card glass-card tea-card">
             <div class="card-icon">🫖</div>
             <h3>Brew a Cup of Comfort</h3>
@@ -107,7 +109,7 @@
             </button>
           </div>
 
-          <!-- Quick Affirmation Deck Card -->
+          <!-- Affirmation Deck Card -->
           <div class="hub-card glass-card affirmation-card">
             <div class="card-icon">🌸</div>
             <h3>Gentle Affirmation</h3>
@@ -122,32 +124,58 @@
         </div>
       </section>
 
-      <!-- ================= SECTION 2: SKY LANTERNS ================= -->
+      <!-- ================= TAB 2: SKY LANTERNS ================= -->
       <section id="tab-lanterns" class="tab-pane">
         <div class="section-header center">
           <h2>🏮 Sky Lanterns of Release</h2>
-          <p>Write an unspoken thought, a message to someone you miss, or a quiet wish, and release it safely into the starlit sky.</p>
+          <p>Write an unspoken thought, a message to someone you miss, or a quiet wish, and release it into the starlit sky.</p>
         </div>
 
         <div class="lanterns-container glass-card">
-          <!-- Interactive Sky View Canvas -->
-          <div class="sky-viewport" id="sky-viewport">
-            <canvas id="sky-canvas"></canvas>
-            <div class="sky-instructions">
-              <p>✨ Tap "Release a Lantern" to light your wish and watch it float up to the stars.</p>
+          
+          <!-- Sky Controls & Date Filter Toolbar -->
+          <div class="lantern-toolbar">
+            <div class="toolbar-left">
+              <button id="open-lantern-modal-btn" class="btn primary-btn pulse-glow">
+                ✨ Release New Lantern
+              </button>
+              <span class="released-count" id="released-count">0 lanterns floating</span>
+            </div>
+
+            <!-- Date Filter Selector -->
+            <div class="date-filter-group">
+              <span class="filter-label">📅 View by Date:</span>
+              <button class="date-pill active" data-date-filter="all">All Time</button>
+              <button class="date-pill" data-date-filter="today">Today</button>
+              <button class="date-pill" data-date-filter="week">Past 7 Days</button>
+              <input type="date" id="lantern-date-picker" class="date-picker-input" title="Filter by specific date">
             </div>
           </div>
 
-          <div class="sky-controls">
-            <button id="open-lantern-modal-btn" class="btn primary-btn pulse-glow">
-              ✨ Release a New Lantern
-            </button>
-            <span class="released-count" id="released-count">0 lanterns floating softly</span>
+          <!-- Interactive Sky Canvas Viewport -->
+          <div class="sky-viewport" id="sky-viewport">
+            <canvas id="sky-canvas"></canvas>
+            <div class="sky-instructions">
+              <p>✨ Click any floating lantern in the sky to read its message, or release a new wish above.</p>
+            </div>
           </div>
+
+          <!-- Date-Based Lantern Memory Vault / Gallery -->
+          <div class="lantern-vault-section">
+            <div class="vault-header">
+              <h3>📜 Released Lanterns Archive</h3>
+              <span id="vault-filter-indicator" class="vault-indicator">Showing All Messages</span>
+            </div>
+
+            <div id="lantern-gallery-grid" class="lantern-gallery-grid">
+              <p class="empty-state">No lanterns released yet for this date. Light a lantern above whenever you feel ready.</p>
+            </div>
+          </div>
+
         </div>
       </section>
 
-      <!-- ================= SECTION 3: BREATHING OASIS ================= -->
+      <!-- ================= TAB 3: BREATHING OASIS ================= -->
       <section id="tab-breathing" class="tab-pane">
         <div class="section-header center">
           <h2>🌬️ Grounding Breathing Oasis</h2>
@@ -177,7 +205,7 @@
         </div>
       </section>
 
-      <!-- ================= SECTION 4: SOUNDSCAPES ================= -->
+      <!-- ================= TAB 4: SOUNDSCAPES ================= -->
       <section id="tab-soundscapes" class="tab-pane">
         <div class="section-header center">
           <h2>🎶 Ambient Soundscapes</h2>
@@ -185,22 +213,28 @@
         </div>
 
         <div class="soundscapes-grid">
-          <!-- Master Control -->
+          <!-- Master Control Card -->
           <div class="master-sound-card glass-card">
             <div class="master-header">
               <h3>🎵 Master Sanctuary Audio</h3>
-              <button id="master-toggle-btn" class="btn primary-btn">▶ Enable Sound Generator</button>
+              <p class="master-subtitle">Real-time procedural ambient sound generator</p>
             </div>
-            <div class="master-volume">
-              <label for="master-volume-slider">Master Volume</label>
-              <input type="range" id="master-volume-slider" min="0" max="1" step="0.01" value="0.7">
+            <div class="master-right-controls">
+              <button id="master-toggle-btn" class="btn primary-btn">▶ Enable Sound Generator</button>
+              <div class="master-volume">
+                <label for="master-volume-slider">Volume</label>
+                <input type="range" id="master-volume-slider" min="0" max="1" step="0.01" value="0.7">
+              </div>
             </div>
           </div>
 
           <!-- Sound Tiles -->
           <div class="sound-card glass-card" data-sound="rain">
             <div class="sound-icon">🌧️</div>
-            <h4>Soft Window Rain</h4>
+            <div class="sound-info">
+              <h4>Soft Window Rain</h4>
+              <span class="sound-tag">Pink Noise & Raindrops</span>
+            </div>
             <div class="sound-controls">
               <button class="sound-toggle-btn icon-btn">▶</button>
               <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
@@ -209,7 +243,10 @@
 
           <div class="sound-card glass-card" data-sound="campfire">
             <div class="sound-icon">🔥</div>
-            <h4>Cozy Campfire</h4>
+            <div class="sound-info">
+              <h4>Cozy Campfire</h4>
+              <span class="sound-tag">Warm Crackle & Sparks</span>
+            </div>
             <div class="sound-controls">
               <button class="sound-toggle-btn icon-btn">▶</button>
               <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
@@ -218,7 +255,10 @@
 
           <div class="sound-card glass-card" data-sound="ocean">
             <div class="sound-icon">🌊</div>
-            <h4>Gentle Ocean Waves</h4>
+            <div class="sound-info">
+              <h4>Gentle Ocean Waves</h4>
+              <span class="sound-tag">Rolling Tides & Waves</span>
+            </div>
             <div class="sound-controls">
               <button class="sound-toggle-btn icon-btn">▶</button>
               <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
@@ -227,7 +267,10 @@
 
           <div class="sound-card glass-card" data-sound="breeze">
             <div class="sound-icon">🍃</div>
-            <h4>Night Forest Breeze</h4>
+            <div class="sound-info">
+              <h4>Night Forest Breeze</h4>
+              <span class="sound-tag">Soft Whispering Wind</span>
+            </div>
             <div class="sound-controls">
               <button class="sound-toggle-btn icon-btn">▶</button>
               <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.5">
@@ -236,7 +279,10 @@
 
           <div class="sound-card glass-card" data-sound="chimes">
             <div class="sound-icon">🔔</div>
-            <h4>Celestial Chimes</h4>
+            <div class="sound-info">
+              <h4>Celestial Chimes</h4>
+              <span class="sound-tag">Harmonic Chime Notes</span>
+            </div>
             <div class="sound-controls">
               <button class="sound-toggle-btn icon-btn">▶</button>
               <input type="range" class="sound-volume" min="0" max="1" step="0.01" value="0.4">
@@ -246,7 +292,7 @@
         </div>
       </section>
 
-      <!-- ================= SECTION 5: MEMORY & COMFORT JAR ================= -->
+      <!-- ================= TAB 5: MEMORY JAR ================= -->
       <section id="tab-memory-jar" class="tab-pane">
         <div class="section-header center">
           <h2>🏺 The Memory & Comfort Jar</h2>
@@ -260,7 +306,7 @@
               <div class="jar-body">
                 <div class="jar-glow"></div>
                 <div class="notes-inside-container" id="notes-inside-container">
-                  <!-- Dynamic floating note particles inside jar -->
+                  <!-- Dynamic floating note particles -->
                 </div>
               </div>
             </div>
@@ -271,13 +317,13 @@
               ✨ Pick a Comfort Note
             </button>
             <button id="add-note-btn" class="btn secondary-btn">
-              ✍️ Add a New Note to Jar
+              ✍️ Add Note to Jar
             </button>
           </div>
         </div>
       </section>
 
-      <!-- ================= SECTION 6: HEART LOG & SAFE JOURNAL ================= -->
+      <!-- ================= TAB 6: HEART LOG & JOURNAL ================= -->
       <section id="tab-journal" class="tab-pane">
         <div class="section-header center">
           <h2>🤍 Heart Log & Safe Journal</h2>
@@ -349,7 +395,7 @@
 
   <!-- ================= MODALS ================= -->
 
-  <!-- Lantern Creation Modal -->
+  <!-- Release Lantern Modal -->
   <div id="lantern-modal" class="modal-overlay hidden">
     <div class="modal-content glass-card">
       <button class="modal-close-btn" data-modal="lantern-modal">✕</button>
@@ -387,6 +433,23 @@
         <button id="release-lantern-confirm-btn" class="btn primary-btn pulse-glow">
           ✨ Release Lantern into Sky
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Read/View Floating Lantern Modal -->
+  <div id="view-lantern-modal" class="modal-overlay hidden">
+    <div class="modal-content glass-card lantern-view-paper">
+      <button class="modal-close-btn" data-modal="view-lantern-modal">✕</button>
+      <div class="lantern-modal-header">
+        <span id="view-lantern-color-badge" class="lantern-badge">🏮 Released Lantern</span>
+        <span id="view-lantern-date" class="lantern-modal-date">Aug 4, 2026</span>
+      </div>
+      <div class="lantern-modal-body">
+        <p id="view-lantern-message">"I miss you and carry your love with me."</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn secondary-btn modal-close-btn" data-modal="view-lantern-modal">Keep Floating in Sky</button>
       </div>
     </div>
   </div>

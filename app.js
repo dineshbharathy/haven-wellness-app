@@ -36,7 +36,6 @@ function getAudioContext() {
   return audioCtx;
 }
 
-// Play a soft bell / chime / tone UI sound
 function playBellSound(freq = 440, type = 'sine', duration = 1.5, vol = 0.2) {
   try {
     const ctx = getAudioContext();
@@ -59,7 +58,6 @@ function playBellSound(freq = 440, type = 'sine', duration = 1.5, vol = 0.2) {
   }
 }
 
-// Play a warm harmonic chime (multiple notes)
 function playHarmonicChime(freqs = [523.25, 659.25, 783.99, 1046.50]) {
   freqs.forEach((f, index) => {
     setTimeout(() => {
@@ -96,7 +94,6 @@ function initThemeManager() {
     });
   });
 
-  // Modal Close Handlers
   document.querySelectorAll('.modal-close-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       playBellSound(350, 'sine', 0.3, 0.05);
@@ -196,7 +193,7 @@ function initAmbientCanvas() {
 }
 
 /* ==========================================================================
-   4. SANCTUARY HUB & MINI-RITUALS
+   4. SANCTUARY HUB & RITUALS
    ========================================================================== */
 const COMFORT_QUOTES = [
   "It's okay to miss what isn't there, and still hold space for all the warmth that surrounds you.",
@@ -231,7 +228,6 @@ function initSanctuaryHub() {
     quoteEl.textContent = `"${randomQuote}"`;
   });
 
-  // Hug Counter & Warm Chime
   const hugBtn = document.getElementById('hug-btn');
   const hugCountEl = document.getElementById('hug-count');
   let hugCount = parseInt(localStorage.getItem('haven_hug_count') || '0');
@@ -243,12 +239,10 @@ function initSanctuaryHub() {
     localStorage.setItem('haven_hug_count', hugCount);
     hugCountEl.textContent = hugCount;
 
-    // Soft warm chord sound
     playHarmonicChime([349.23, 440.00, 523.25, 659.25]);
     createHeartBurst(e.clientX, e.clientY);
   });
 
-  // Tea Ritual
   const brewTeaBtn = document.getElementById('brew-tea-btn');
   let teaInterval = null;
 
@@ -281,7 +275,6 @@ function initSanctuaryHub() {
     }, 1000);
   });
 
-  // Affirmations
   const affirmationText = document.getElementById('affirmation-text');
   const flipAffirmationBtn = document.getElementById('flip-affirmation-btn');
   flipAffirmationBtn?.addEventListener('click', () => {
@@ -325,7 +318,7 @@ function createHeartBurst(x, y) {
 }
 
 /* ==========================================================================
-   5. SKY LANTERNS OF RELEASE
+   5. SKY LANTERNS OF RELEASE & DATE-BASED VAULT
    ========================================================================== */
 function initSkyLanterns() {
   const skyCanvas = document.getElementById('sky-canvas');
@@ -344,23 +337,56 @@ function initSkyLanterns() {
   });
 
   let lanterns = JSON.parse(localStorage.getItem('haven_lanterns') || '[]');
+
+  // Migrate legacy data if missing rawDate/id
+  const todayStr = new Date().toISOString().split('T')[0];
+  lanterns = lanterns.map((l, index) => ({
+    id: l.id || `lantern_${Date.now()}_${index}`,
+    message: l.message,
+    color: l.color || '#ffb347',
+    date: l.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    rawDate: l.rawDate || todayStr,
+    time: l.time || 'Evening'
+  }));
+  localStorage.setItem('haven_lanterns', JSON.stringify(lanterns));
+
   const releasedCountEl = document.getElementById('released-count');
   releasedCountEl.textContent = `${lanterns.length} lanterns floating softly`;
 
-  const activeLanterns = lanterns.map(l => ({
+  let activeFilter = 'all'; // 'all', 'today', 'week', 'custom'
+  let customDateVal = '';
+
+  const activeLanternObjects = lanterns.map(l => ({
     ...l,
-    x: l.x || Math.random() * (width - 60) + 30,
-    y: l.y || Math.random() * (height - 100) + 50,
+    x: Math.random() * (width - 60) + 30,
+    y: Math.random() * (height - 100) + 50,
     vy: -Math.random() * 0.3 - 0.1,
     sway: Math.random() * Math.PI * 2,
     size: 24
   }));
 
+  // Filtering Logic
+  function getFilteredLanterns() {
+    const now = new Date();
+    const todayISO = now.toISOString().split('T')[0];
+
+    if (activeFilter === 'today') {
+      return activeLanternObjects.filter(l => l.rawDate === todayISO);
+    } else if (activeFilter === 'week') {
+      const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      return activeLanternObjects.filter(l => new Date(l.rawDate) >= sevenDaysAgo);
+    } else if (activeFilter === 'custom' && customDateVal) {
+      return activeLanternObjects.filter(l => l.rawDate === customDateVal);
+    }
+    return activeLanternObjects;
+  }
+
+  // Render Sky Canvas
   function renderSky() {
     ctx.clearRect(0, 0, width, height);
 
     // Stars
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 45; i++) {
       const sx = (Math.sin(i * 99 + Date.now() * 0.001) * 0.5 + 0.5) * width;
       const sy = (Math.cos(i * 33 + Date.now() * 0.001) * 0.5 + 0.5) * height;
       ctx.fillStyle = `rgba(255, 255, 255, ${Math.sin(Date.now() * 0.002 + i) * 0.3 + 0.5})`;
@@ -369,8 +395,10 @@ function initSkyLanterns() {
       ctx.fill();
     }
 
-    // Lanterns
-    activeLanterns.forEach(l => {
+    // Render Filtered Lanterns
+    const visibleLanterns = getFilteredLanterns();
+
+    visibleLanterns.forEach(l => {
       l.y += l.vy;
       l.sway += 0.02;
       l.x += Math.sin(l.sway) * 0.3;
@@ -402,6 +430,94 @@ function initSkyLanterns() {
 
   renderSky();
 
+  // Canvas Click Detection (Tap Floating Lantern)
+  skyCanvas.addEventListener('click', (e) => {
+    const rect = skyCanvas.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    const visibleLanterns = getFilteredLanterns();
+    const clicked = visibleLanterns.find(l => {
+      const dist = Math.hypot(l.x - clickX, l.y - clickY);
+      return dist <= l.size * 1.5;
+    });
+
+    if (clicked) {
+      openViewLanternModal(clicked);
+    }
+  });
+
+  // Date Filter UI Controls
+  const datePills = document.querySelectorAll('.date-pill');
+  const datePicker = document.getElementById('lantern-date-picker');
+  const vaultIndicator = document.getElementById('vault-filter-indicator');
+  const galleryGrid = document.getElementById('lantern-gallery-grid');
+
+  datePills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(540, 'sine', 0.4, 0.06);
+
+      datePills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      if (datePicker) datePicker.value = '';
+
+      activeFilter = pill.getAttribute('data-date-filter');
+      updateVaultGallery();
+    });
+  });
+
+  datePicker?.addEventListener('change', (e) => {
+    if (e.target.value) {
+      getAudioContext();
+      playBellSound(580, 'sine', 0.4, 0.06);
+      datePills.forEach(p => p.classList.remove('active'));
+      activeFilter = 'custom';
+      customDateVal = e.target.value;
+      updateVaultGallery();
+    }
+  });
+
+  function updateVaultGallery() {
+    const filtered = getFilteredLanterns();
+
+    if (activeFilter === 'all') {
+      vaultIndicator.textContent = `Showing All Lanterns (${filtered.length})`;
+    } else if (activeFilter === 'today') {
+      vaultIndicator.textContent = `Released Today (${filtered.length})`;
+    } else if (activeFilter === 'week') {
+      vaultIndicator.textContent = `Past 7 Days (${filtered.length})`;
+    } else if (activeFilter === 'custom') {
+      vaultIndicator.textContent = `Date: ${customDateVal} (${filtered.length})`;
+    }
+
+    if (filtered.length === 0) {
+      galleryGrid.innerHTML = `<p class="empty-state">No lanterns found for this date. Light a new lantern above whenever you feel ready.</p>`;
+      return;
+    }
+
+    galleryGrid.innerHTML = filtered.map(l => `
+      <div class="lantern-card" data-id="${l.id}">
+        <div class="lantern-card-header">
+          <span class="lantern-badge" style="background: ${l.color};">🏮 ${getColorName(l.color)}</span>
+          <span class="lantern-date-tag">${l.date} (${l.time})</span>
+        </div>
+        <p class="lantern-snippet">"${escapeHtml(l.message)}"</p>
+      </div>
+    `).join('');
+
+    galleryGrid.querySelectorAll('.lantern-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.getAttribute('data-id');
+        const found = lanterns.find(item => item.id === id);
+        if (found) openViewLanternModal(found);
+      });
+    });
+  }
+
+  updateVaultGallery();
+
+  // Modal Handlers
   const openModalBtn = document.getElementById('open-lantern-modal-btn');
   const lanternModal = document.getElementById('lantern-modal');
   const releaseConfirmBtn = document.getElementById('release-lantern-confirm-btn');
@@ -418,15 +534,21 @@ function initSkyLanterns() {
     if (!msg) return;
 
     getAudioContext();
-    // Ascending flight chime sound
     playHarmonicChime([440, 554.37, 659.25, 880]);
 
     const selectedColor = document.querySelector('input[name="lantern-color"]:checked')?.value || '#ffb347';
+    const now = new Date();
+    const todayISO = now.toISOString().split('T')[0];
+    const dateFormatted = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const timeFormatted = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
     const newLantern = {
+      id: `lantern_${Date.now()}`,
       message: msg,
       color: selectedColor,
-      date: new Date().toLocaleDateString(),
+      date: dateFormatted,
+      rawDate: todayISO,
+      time: timeFormatted,
       x: width / 2 + (Math.random() - 0.5) * 100,
       y: height - 60,
       vy: -Math.random() * 0.4 - 0.2,
@@ -434,14 +556,44 @@ function initSkyLanterns() {
       size: 26
     };
 
-    activeLanterns.push(newLantern);
-    lanterns.push({ message: msg, color: selectedColor, date: newLantern.date });
+    activeLanternObjects.push(newLantern);
+    lanterns.push(newLantern);
     localStorage.setItem('haven_lanterns', JSON.stringify(lanterns));
 
     releasedCountEl.textContent = `${lanterns.length} lanterns floating softly`;
     lanternMsgInput.value = '';
     lanternModal?.classList.add('hidden');
+    updateVaultGallery();
   });
+}
+
+function openViewLanternModal(lantern) {
+  getAudioContext();
+  playHarmonicChime([659.25, 783.99, 1046.50]);
+
+  const viewModal = document.getElementById('view-lantern-modal');
+  const badgeEl = document.getElementById('view-lantern-color-badge');
+  const dateEl = document.getElementById('view-lantern-date');
+  const msgEl = document.getElementById('view-lantern-message');
+
+  if (badgeEl) {
+    badgeEl.style.background = lantern.color || '#ffb347';
+    badgeEl.textContent = `🏮 ${getColorName(lantern.color)}`;
+  }
+  if (dateEl) dateEl.textContent = `${lantern.date} • ${lantern.time || ''}`;
+  if (msgEl) msgEl.textContent = `"${lantern.message}"`;
+
+  viewModal?.classList.remove('hidden');
+}
+
+function getColorName(color) {
+  switch (color) {
+    case '#ffb347': return 'Warm Amber';
+    case '#ff80bf': return 'Soft Rose';
+    case '#b388ff': return 'Twilight Lavender';
+    case '#80d8ff': return 'Starlight Blue';
+    default: return 'Glow';
+  }
 }
 
 /* ==========================================================================
@@ -526,7 +678,6 @@ function initBreathingOasis() {
       if (!isBreathing) return;
       const current = phases[pIndex];
 
-      // Soft singing bowl chime on phase change
       playBellSound(current.pitch, 'sine', 2.5, 0.12);
 
       breathPhase.textContent = current.name;
@@ -560,7 +711,6 @@ function initBreathingOasis() {
    7. PROCEDURAL SOUNDSCAPES (WEB AUDIO API)
    ========================================================================== */
 function initAudioEngine() {
-  // Global click listener to resume AudioContext if suspended
   window.addEventListener('click', () => {
     if (audioCtx && audioCtx.state === 'suspended') {
       audioCtx.resume();
@@ -602,7 +752,6 @@ function initSoundscapes() {
     }
   });
 
-  // Sound Tiles Controls
   document.querySelectorAll('.sound-card').forEach(card => {
     const type = card.getAttribute('data-sound');
     const toggleBtn = card.querySelector('.sound-toggle-btn');
@@ -641,7 +790,6 @@ function initSoundscapes() {
     gainNode.connect(masterGainNode);
 
     if (type === 'rain') {
-      // Soft Pink Rain Noise
       const bufferSize = ctx.sampleRate * 2;
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
@@ -671,7 +819,6 @@ function initSoundscapes() {
 
       activeNodes.rain = { source, gain: gainNode };
     } else if (type === 'campfire') {
-      // Cozy Low Crackle Fire
       const bufferSize = ctx.sampleRate * 2;
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
@@ -693,7 +840,6 @@ function initSoundscapes() {
 
       activeNodes.campfire = { source, gain: gainNode };
     } else if (type === 'ocean') {
-      // Gentle Ocean Waves LFO
       const bufferSize = ctx.sampleRate * 2;
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
@@ -709,7 +855,7 @@ function initSoundscapes() {
       filter.frequency.value = 350;
 
       const lfo = ctx.createOscillator();
-      lfo.frequency.value = 0.12; // 8s wave cycle
+      lfo.frequency.value = 0.12;
       const lfoGain = ctx.createGain();
       lfoGain.gain.value = 450;
 
@@ -723,7 +869,6 @@ function initSoundscapes() {
 
       activeNodes.ocean = { source, lfo, gain: gainNode };
     } else if (type === 'breeze') {
-      // Night Forest Breeze
       const bufferSize = ctx.sampleRate * 2;
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
@@ -754,7 +899,6 @@ function initSoundscapes() {
 
       activeNodes.breeze = { source, lfo, gain: gainNode };
     } else if (type === 'chimes') {
-      // Celestial Chimes
       const chimeTimer = setInterval(() => {
         if (!activeNodes.chimes) return;
         const freqs = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98];
@@ -839,7 +983,6 @@ function initMemoryJar() {
 
   renderJarContents();
 
-  // Draw note
   drawBtn?.addEventListener('click', () => {
     getAudioContext();
     playHarmonicChime([659.25, 783.99, 1046.50]);
@@ -848,7 +991,6 @@ function initMemoryJar() {
     noteModal?.classList.remove('hidden');
   });
 
-  // Add custom note
   addBtn?.addEventListener('click', () => {
     getAudioContext();
     playBellSound(520, 'sine', 0.5, 0.08);
