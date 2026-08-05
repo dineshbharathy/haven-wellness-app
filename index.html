@@ -45,46 +45,6 @@
         </div>
       </div>
 
-      <!-- Desktop Navigation Tabs -->
-      <nav class="desktop-nav-tabs">
-        <button class="nav-tab-btn active" data-tab="hub" data-title="Sanctuary Overview">
-          <i data-lucide="layout"></i>
-          <span>Sanctuary</span>
-        </button>
-        <button class="nav-tab-btn" data-tab="ai-listener" data-title="Dr. Aura — Clinical AI Therapist">
-          <i data-lucide="sparkles"></i>
-          <span>Dr. Aura</span>
-        </button>
-        <button class="nav-tab-btn" data-tab="community" data-title="Sanctuary Circle Peer Network">
-          <i data-lucide="message-square"></i>
-          <span>Peer Network</span>
-        </button>
-        <button class="nav-tab-btn" data-tab="memory-orbs" data-title="Cognitive Emotion Studio">
-          <i data-lucide="palette"></i>
-          <span>Emotion Studio</span>
-        </button>
-        <button class="nav-tab-btn" data-tab="lanterns" data-title="Release Sky Vault">
-          <i data-lucide="send"></i>
-          <span>Release Sky</span>
-        </button>
-        <button class="nav-tab-btn" data-tab="breathing" data-title="Autonomic Regulation">
-          <i data-lucide="wind"></i>
-          <span>Regulation</span>
-        </button>
-        <button class="nav-tab-btn" data-tab="soundscapes" data-title="Neuro-Acoustic Soundscapes">
-          <i data-lucide="music"></i>
-          <span>Spatial Audio</span>
-        </button>
-        <button class="nav-tab-btn" data-tab="memory-jar" data-title="Cognitive Memory Vault">
-          <i data-lucide="archive"></i>
-          <span>Vault</span>
-        </button>
-        <button class="nav-tab-btn" data-tab="journal" data-title="Clinical Heart Journal">
-          <i data-lucide="book-open"></i>
-          <span>Journal</span>
-        </button>
-      </nav>
-
       <div class="header-right-actions">
         <div class="header-spotlight-wrapper">
           <button id="open-spotlight-btn" class="spotlight-trigger-btn" title="Search Spotlight (Cmd+K)">
@@ -603,36 +563,17 @@
 
       </section>
 
-      <!-- ================= TAB 5: SKY LANTERNS ================= -->
+      <!-- ================= TAB 5: SKY LANTERNS (PURE 3D WORLD) ================= -->
       <section id="tab-lanterns" class="tab-pane">
-        <div class="pro-card subtle-3d-card">
-          <div class="lantern-toolbar">
-            <button id="open-lantern-modal-btn" class="ios-btn primary-btn">
-              <i data-lucide="send"></i> Release Intentional Lantern
-            </button>
-            <button id="enter-3d-sky-world-btn" class="ios-btn secondary-btn pulse-glow">
-              <i data-lucide="sparkles"></i> Enter 3D Lantern World (WASD)
-            </button>
-            <span class="released-count" id="released-count">0 lanterns floating</span>
-          </div>
-
-          <div class="ios-segmented-control date-filter-control">
-            <button class="date-pill active" data-date-filter="all">All Time</button>
-            <button class="date-pill" data-date-filter="today">Today</button>
-            <button class="date-pill" data-date-filter="week">Past 7 Days</button>
-          </div>
-
-          <div class="sky-viewport" id="sky-viewport">
-            <canvas id="sky-2d-canvas"></canvas>
-            <div class="sky-instructions">
-              <p><i data-lucide="sparkles" class="icon-inline"></i> Sky Vault active • Release your intentions into the stars</p>
-            </div>
-          </div>
-
-          <div class="lantern-vault-section">
-            <span id="vault-filter-indicator" class="ios-group-label">RELEASED INTENTIONS ARCHIVE</span>
-            <div id="lantern-gallery-grid" class="lantern-gallery-grid"></div>
-          </div>
+        <div class="pro-card subtle-3d-card text-center" style="padding: 48px 32px;">
+          <div class="widget-icon" style="margin-bottom: 16px;"><i data-lucide="sparkles" class="tea-icon-lg"></i></div>
+          <h2 style="font-family: var(--font-serif); font-size: 2.4rem; font-weight: 400; margin-bottom: 12px;">3D Sky Vault & Lantern World</h2>
+          <p style="color: var(--text-muted); font-size: 1.05rem; max-width: 600px; margin: 0 auto 28px; line-height: 1.6;">
+            Enter an immersive full-screen 3D WebGL night sky environment. Fly through the stars using your WASD keys, spectate floating lanterns to open date carousels, and release new 3D lanterns directly into the atmosphere.
+          </p>
+          <button id="enter-3d-sky-world-btn" class="ios-btn primary-btn pulse-glow" style="padding: 14px 28px; font-size: 1.05rem;">
+            <i data-lucide="sparkles"></i> Launch Full-Screen 3D Lantern Sky World (WASD)
+          </button>
         </div>
       </section>
 
@@ -1051,14 +992,40 @@
         <div class="hud-keys-row">
           <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move Camera
           <span class="hud-divider">•</span>
-          <i data-lucide="mouse-pointer" class="icon-inline"></i> Drag to Look Around
+          <i data-lucide="mouse-pointer" class="icon-inline"></i> Drag to Look
           <span class="hud-divider">•</span>
           <i data-lucide="sparkles" class="icon-inline"></i> Click Lantern to Spectate
         </div>
       </div>
-      <button id="exit-3d-world-btn" class="ios-btn secondary-btn small-btn exit-3d-btn">
-        <i data-lucide="arrow-left"></i> Exit 3D World
-      </button>
+      <div class="hud-actions-group">
+        <button id="open-release-3d-modal-btn" class="ios-btn primary-btn small-btn release-3d-btn pulse-glow">
+          <i data-lucide="plus-circle"></i> Release New 3D Lantern
+        </button>
+        <button id="exit-3d-world-btn" class="ios-btn secondary-btn small-btn exit-3d-btn">
+          <i data-lucide="arrow-left"></i> Exit 3D World
+        </button>
+      </div>
+    </div>
+
+    <!-- Release New 3D Lantern Modal -->
+    <div id="release-3d-lantern-modal" class="modal-overlay hidden">
+      <div class="pro-card modal-card glass-modal" style="width: 440px;">
+        <div class="lantern-modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 style="font-family: var(--font-serif); font-size: 1.4rem;"><i data-lucide="send" class="icon-inline"></i> Release Floating 3D Lantern</h3>
+          <button id="close-release-3d-modal-btn" class="modal-close-btn"><i data-lucide="x"></i></button>
+        </div>
+        <div class="ios-input-group margin-top" style="display: flex; flex-direction: column; gap: 12px;">
+          <input type="text" id="release-3d-title-input" class="ios-input" placeholder="Title of Intention (e.g. Peace & Warmth)..." />
+          <textarea id="release-3d-note-input" class="ios-input ios-textarea" rows="3" placeholder="Write your intention or reflection..."></textarea>
+          <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between;">
+            <label style="font-size: 0.84rem; font-weight: 600; color: var(--text-muted);">Lantern Light Glow:</label>
+            <input type="color" id="release-3d-color-input" value="#ffcf56" class="ios-color-input" />
+          </div>
+          <button id="confirm-release-3d-btn" class="ios-btn primary-btn pulse-glow margin-top" style="width: 100%;">
+            <i data-lucide="sparkles"></i> Cast 3D Lantern Into Sky
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Spectate Glass Panel Overlay -->

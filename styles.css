@@ -25,14 +25,14 @@
   --magenta: var(--sf-indigo);
   --deep: #07070e;
 
-  /* Steve Jobs Optical Crystal Glass System */
-  --glass: rgba(255, 255, 255, 0.76);
-  --glass-hover: rgba(255, 255, 255, 0.92);
+  /* Ultra-Smooth Seamless Glass System (Zero Black Outlines, Pure Blending) */
+  --glass: rgba(255, 255, 255, 0.82);
+  --glass-hover: rgba(255, 255, 255, 0.94);
   --glass-border: rgba(255, 255, 255, 0.95);
-  --glass-border-subtle: rgba(0, 0, 0, 0.06);
-  --glass-glow: 0 24px 70px rgba(0, 0, 0, 0.07);
-  --glass-glow-hover: 0 36px 90px rgba(0, 0, 0, 0.12);
-  --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(0, 0, 0, 0.04);
+  --glass-border-subtle: rgba(255, 255, 255, 0.65);
+  --glass-glow: 0 16px 48px rgba(99, 102, 241, 0.05);
+  --glass-glow-hover: 0 24px 60px rgba(99, 102, 241, 0.09);
+  --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.98);
 
   /* Master Typographic Contrast */
   --text: #0b0f19;

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — APPLE-GRADE CLINICAL SUITE ENGINE
+   HAVEN WELLNESS SANCTUARY — STEVE JOBS MASTERPIECE ENGINE (PURE & BEAUTIFUL)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initSanctuaryCircleCommunity();
   initEmotionStudio2D();
   initHandPaintableOrbCanvas();
-  initSkyLanterns2DCanvas();
   init3DLanternSkyWorld();
   initBreathingOasis2D();
   initAudioSpectrumBars();
@@ -60,7 +59,7 @@ function initSubtle3DCardPhysics() {
 }
 
 /* ==========================================================================
-   2. DESKTOP RESOLUTION & RESPONSIVE LAYOUT ENGINE
+   2. DESKTOP RESOLUTION ENGINE
    ========================================================================== */
 function initDesktopResolutionDetector() {
   const checkRes = () => {
@@ -73,7 +72,7 @@ function initDesktopResolutionDetector() {
 }
 
 /* ==========================================================================
-   3. DESKTOP TAB NAVIGATION ENGINE (WITH DIRECTIONAL RAINBOW CURTAIN WIPE)
+   3. DESKTOP TAB NAVIGATION ENGINE
    ========================================================================== */
 const tabOrder = [
   'hub',
@@ -100,7 +99,7 @@ function initDesktopTabNavigation() {
     'ai-listener': 'Autonomous Rogerian AI therapist trained in active listening, empathy, and cognitive reframing.',
     'community': 'HIPAA-guided moderated peer support network for emotional sharing and voice relaxation.',
     'memory-orbs': 'Map complex affective states into vibrant animated liquid emotion spheres.',
-    'lanterns': 'Release grief, longing, and intentions into the glowing starry sky vault.',
+    'lanterns': 'Enter the 3D WebGL starry sky world to release floating lanterns and spectate intentions.',
     'breathing': 'Evidence-based parasympathetic vagal stimulation and box breathing regulation.',
     'soundscapes': 'Procedural neuro-acoustic ambient audio generator with interactive visualizers.',
     'memory-jar': 'Deposit notes of gratitude, warmth, and memory into your confidential glass vault.',
@@ -162,10 +161,9 @@ function initDesktopTabNavigation() {
 }
 
 /* ==========================================================================
-   4. WEB AUDIO SYNTHESIS & SOUND GENERATOR
+   4. WEB AUDIO SYNTHESIS ENGINE
    ========================================================================== */
 let audioCtx = null;
-let activeSoundGenerators = {};
 
 function getAudioContext() {
   if (!audioCtx) {
@@ -347,7 +345,7 @@ function initSanctuaryHub() {
 }
 
 /* ==========================================================================
-   8. AI THERAPIST (DR. AURA) - 100% WORKING SPEECH & THERAPY AGENT
+   8. AI THERAPIST (DR. AURA) - SIRI SPEECH & THERAPY AGENT
    ========================================================================== */
 function initAutonomousAITherapistAura() {
   const startListenBtn = document.getElementById('start-voice-listen-btn');
@@ -371,25 +369,22 @@ function initAutonomousAITherapistAura() {
     getAudioContext();
     isListening = !isListening;
     if (isListening) {
-      if (statusText) statusText.textContent = 'Dr. Aura is listening in active reflection mode...';
+      if (statusText) statusText.textContent = 'Dr. Aura • Listening softly...';
       if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="square"></i> Listening... Speak Now';
-      if (auraCore) auraCore.style.animation = 'auraPulse 0.8s ease-in-out infinite alternate';
       playHarmonicChime([523.25, 659.25]);
 
       setTimeout(() => {
         if (isListening) {
           isListening = false;
           if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
-          if (auraCore) auraCore.style.animation = 'auraPulse 3s ease-in-out infinite alternate';
           const voiceResp = "I heard your soft voice. Take a slow, deep breath with me. I am right here with you.";
           appendBubble('Dr. Aura (AI Therapist Agent)', voiceResp, 'aura-bubble');
           if (speechSynthEnabled) speakTherapistText(voiceResp);
         }
       }, 4000);
     } else {
-      if (statusText) statusText.textContent = 'Dr. Aura is listening softly...';
+      if (statusText) statusText.textContent = 'Dr. Aura • Apple Intelligence Clinical Agent';
       if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
-      if (auraCore) auraCore.style.animation = 'auraPulse 3s ease-in-out infinite alternate';
     }
     if (window.lucide) window.lucide.createIcons();
   });
@@ -405,10 +400,7 @@ function initAutonomousAITherapistAura() {
     appendBubble('You', val, 'user-bubble');
     textInput.value = '';
 
-    if (auraCore) auraCore.style.animation = 'auraPulse 0.6s ease-in-out infinite alternate';
-
     setTimeout(() => {
-      if (auraCore) auraCore.style.animation = 'auraPulse 3s ease-in-out infinite alternate';
       const lower = val.toLowerCase();
       let resp = "I hear you deeply. What you are experiencing is completely valid. How does it feel to put that into words right now?";
 
@@ -447,7 +439,7 @@ function initAutonomousAITherapistAura() {
 }
 
 /* ==========================================================================
-   9. SANCTUARY CIRCLE COMMUNITY - 100% WORKING MULTI-CHANNEL PEER NETWORK
+   9. SANCTUARY CIRCLE COMMUNITY - MULTI-CHANNEL PEER NETWORK
    ========================================================================== */
 function initSanctuaryCircleCommunity() {
   const channelBtns = document.querySelectorAll('.channel-btn[data-channel]');
@@ -573,7 +565,6 @@ function initSanctuaryCircleCommunity() {
     if (window.lucide) window.lucide.createIcons();
   });
 
-  // Add Friend Modal
   const addFriendModal = document.getElementById('add-friend-modal');
   document.getElementById('open-add-friend-modal-btn')?.addEventListener('click', () => {
     addFriendModal?.classList.remove('hidden');
@@ -593,7 +584,7 @@ function initSanctuaryCircleCommunity() {
 }
 
 /* ==========================================================================
-   10. EMOTION STUDIO - HAND-PAINTABLE ORB & STORYBOOK READER
+   10. EMOTION STUDIO - SLIDERS BINDING & HAND-PAINTABLE ORB
    ========================================================================== */
 function initEmotionStudio2D() {
   const cssOrb = document.getElementById('css-orb');
@@ -604,30 +595,41 @@ function initEmotionStudio2D() {
   const orbTitleInput = document.getElementById('orb-title-input');
   const orbNoteInput = document.getElementById('orb-note-input');
   const saveOrbBtn = document.getElementById('save-memory-orb-btn');
-  const photoInput = document.getElementById('orb-photo-input');
-  const photoPreviewBox = document.getElementById('photo-preview-container');
-  const photoPreviewImg = document.getElementById('photo-preview-img');
-  const removePhotoBtn = document.getElementById('remove-photo-btn');
 
-  let currentAttachedPhoto = null;
+  const emotionColorMap = {
+    'joy': '#ffcf56',
+    'sadness': '#60a5fa',
+    'nostalgia': '#f472b6',
+    'fear': '#a78bfa',
+    'anger': '#ff5f57',
+    'anxiety': '#38bdf8',
+    'disgust': '#34d399',
+    'vulnerability': '#ff8052',
+    'solitude': '#94a3b8'
+  };
 
-  photoInput?.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        currentAttachedPhoto = evt.target.result;
-        if (photoPreviewImg) photoPreviewImg.src = currentAttachedPhoto;
-        photoPreviewBox?.classList.remove('hidden');
-      };
-      reader.readAsDataURL(file);
-    }
-  });
+  // DIRECTIVE 2: Emotion sliders down-below update orb gradient in real time!
+  const emoSliders = document.querySelectorAll('.emo-range[data-emo]');
+  emoSliders.forEach(slider => {
+    slider.addEventListener('input', () => {
+      let activeColors = [];
+      emoSliders.forEach(s => {
+        const val = parseInt(s.value);
+        const emoName = s.getAttribute('data-emo');
+        if (val > 0 && emotionColorMap[emoName]) {
+          activeColors.push({ color: emotionColorMap[emoName], val });
+        }
+      });
 
-  removePhotoBtn?.addEventListener('click', () => {
-    currentAttachedPhoto = null;
-    photoPreviewBox?.classList.add('hidden');
-    if (photoInput) photoInput.value = '';
+      if (activeColors.length > 0) {
+        activeColors.sort((a, b) => b.val - a.val);
+        const primary = activeColors[0].color;
+        const secondary = activeColors[1] ? activeColors[1].color : activeColors[0].color;
+        if (primaryColorInput) primaryColorInput.value = primary;
+        if (secondaryColorInput) secondaryColorInput.value = secondary;
+        updateOrbGradient();
+      }
+    });
   });
 
   function updateOrbGradient() {
@@ -657,7 +659,6 @@ function initEmotionStudio2D() {
     });
   });
 
-  // Storybook Reader Storage Logic
   let savedOrbs = JSON.parse(localStorage.getItem('haven_memory_orbs') || '[]');
   let currentBookIndex = 0;
 
@@ -666,14 +667,11 @@ function initEmotionStudio2D() {
     const bookText = document.getElementById('book-page-text');
     const bookDate = document.getElementById('book-page-date');
     const pageIndicator = document.getElementById('book-page-indicator');
-    const photoFrame = document.getElementById('book-page-photo-container');
-    const photoImg = document.getElementById('book-page-photo');
 
     if (savedOrbs.length === 0) {
-      if (bookTitle) bookTitle.textContent = 'Clinical Affective Journey';
-      if (bookText) bookText.textContent = 'No affective entries logged yet. Create your first Emotion Orb to turn the pages of your storybook.';
+      if (bookTitle) bookTitle.textContent = 'Affective Storybook';
+      if (bookText) bookText.textContent = 'No affective entries logged yet. Create your first Emotion Orb to turn the pages.';
       if (pageIndicator) pageIndicator.textContent = 'Page 0 of 0';
-      if (photoFrame) photoFrame.classList.add('hidden');
       return;
     }
 
@@ -682,13 +680,6 @@ function initEmotionStudio2D() {
     if (bookText) bookText.textContent = orb.note || 'No notes logged for this entry.';
     if (bookDate) bookDate.textContent = orb.date;
     if (pageIndicator) pageIndicator.textContent = `Page ${currentBookIndex + 1} of ${savedOrbs.length}`;
-
-    if (orb.photo && photoImg && photoFrame) {
-      photoImg.src = orb.photo;
-      photoFrame.classList.remove('hidden');
-    } else if (photoFrame) {
-      photoFrame.classList.add('hidden');
-    }
   }
 
   document.getElementById('book-prev-btn')?.addEventListener('click', () => {
@@ -715,8 +706,7 @@ function initEmotionStudio2D() {
       note,
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       color1: primaryColorInput?.value || '#ffcf56',
-      color2: secondaryColorInput?.value || '#d946ef',
-      photo: currentAttachedPhoto
+      color2: secondaryColorInput?.value || '#d946ef'
     };
 
     savedOrbs.unshift(newOrb);
@@ -724,12 +714,9 @@ function initEmotionStudio2D() {
 
     if (orbTitleInput) orbTitleInput.value = '';
     if (orbNoteInput) orbNoteInput.value = '';
-    currentAttachedPhoto = null;
-    photoPreviewBox?.classList.add('hidden');
 
     playHarmonicChime([440, 523.25, 659.25]);
 
-    // Switch view to Storybook Reader
     const storybookBtn = document.querySelector('.segmented-btn[data-orb-view="storybook"]');
     storybookBtn?.click();
     currentBookIndex = 0;
@@ -740,67 +727,7 @@ function initEmotionStudio2D() {
 }
 
 /* ==========================================================================
-   11. SKY LANTERNS (2D CANVAS)
-   ========================================================================== */
-function initSkyLanterns2DCanvas() {
-  const canvas = document.getElementById('sky-2d-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  let width = canvas.width = canvas.parentElement.clientWidth || 800;
-  let height = canvas.height = canvas.parentElement.clientHeight || 360;
-
-  window.addEventListener('resize', () => {
-    if (canvas.parentElement) {
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
-    }
-  });
-
-  const lanterns = Array.from({ length: 22 }, () => ({
-    x: Math.random() * width,
-    y: Math.random() * height,
-    speed: Math.random() * 0.4 + 0.2,
-    sway: Math.random() * 0.02,
-    swayOffset: Math.random() * Math.PI * 2,
-    size: Math.random() * 12 + 10,
-    color: ['#ffcf56', '#ff8052', '#f472b6', '#d946ef'][Math.floor(Math.random() * 4)]
-  }));
-
-  function draw() {
-    ctx.clearRect(0, 0, width, height);
-
-    lanterns.forEach(l => {
-      l.y -= l.speed;
-      l.swayOffset += l.sway;
-      l.x += Math.sin(l.swayOffset) * 0.5;
-
-      if (l.y < -30) {
-        l.y = height + 20;
-        l.x = Math.random() * width;
-      }
-
-      ctx.beginPath();
-      ctx.roundRect(l.x - l.size / 2, l.y - l.size / 1.5, l.size, l.size * 1.3, 4);
-      ctx.fillStyle = l.color;
-      ctx.shadowColor = l.color;
-      ctx.shadowBlur = 15;
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      ctx.beginPath();
-      ctx.arc(l.x, l.y, l.size / 4, 0, Math.PI * 2);
-      ctx.fillStyle = '#ffffff';
-      ctx.fill();
-    });
-
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-/* ==========================================================================
-   12. BREATHING OASIS - 2D ANIMATION ENGINE
+   11. BREATHING OASIS - 2D ANIMATION ENGINE
    ========================================================================== */
 function initBreathingOasis2D() {
   const startBtn = document.getElementById('start-breath-btn');
@@ -901,7 +828,7 @@ function initBreathingOasis2D() {
 }
 
 /* ==========================================================================
-   13. AUDIO SPECTRUM BARS
+   12. AUDIO SPECTRUM BARS
    ========================================================================== */
 function initAudioSpectrumBars() {
   const masterBtn = document.getElementById('master-toggle-btn');
@@ -936,7 +863,7 @@ function initAudioSpectrumBars() {
 }
 
 /* ==========================================================================
-   14. PROCEDURAL WEB AUDIO NEURO-ACOUSTIC SOUNDSCAPES
+   13. PROCEDURAL WEB AUDIO NEURO-ACOUSTIC SOUNDSCAPES
    ========================================================================== */
 function initSoundscapes() {
   const soundCards = document.querySelectorAll('.sound-card');
@@ -1018,7 +945,7 @@ function initSoundscapes() {
 }
 
 /* ==========================================================================
-   15. MEMORY VAULT & SAFE JOURNAL
+   14. MEMORY VAULT & SAFE JOURNAL
    ========================================================================== */
 function initMemoryJar() {
   const drawNoteBtn = document.getElementById('draw-note-btn');
@@ -1059,7 +986,6 @@ function initMemoryJar() {
     if (customNoteInput) customNoteInput.value = '';
     addNoteModal?.classList.add('hidden');
 
-    // Add floating particle to glass jar
     if (jarParticles) {
       const p = document.createElement('span');
       p.className = 'jar-note-particle p1';
@@ -1119,13 +1045,11 @@ function initSafeJournal() {
 }
 
 /* ==========================================================================
-   16. SPOTLIGHT SEARCH & HEADER DROPDOWN ENGINE
+   15. SPOTLIGHT SEARCH & HEADER DROPDOWN ENGINE
    ========================================================================== */
 function initSpotlightSearchDashboard() {
   const spotlightModal = document.getElementById('spotlight-search-modal');
   const spotlightTriggerBtn = document.getElementById('open-spotlight-btn');
-  const spotlightInput = document.getElementById('spotlight-input');
-  const spotlightResults = document.getElementById('spotlight-results');
 
   const headerDropdown = document.getElementById('header-spotlight-dropdown');
   const dropdownInput = document.getElementById('dropdown-search-input');
@@ -1136,20 +1060,12 @@ function initSpotlightSearchDashboard() {
     { title: 'Clinical AI Therapist (Dr. Aura)', category: 'Navigation', type: 'nav', target: 'ai-listener', icon: 'bot', desc: 'Autonomous Rogerian therapy & consultation' },
     { title: 'Sanctuary Circle Peer Network', category: 'Navigation', type: 'nav', target: 'community', icon: 'users', desc: 'HIPAA-guided moderated peer channels & voice lounges' },
     { title: 'Cognitive Emotion Studio', category: 'Navigation', type: 'nav', target: 'memory-orbs', icon: 'sparkles', desc: 'Map complex affective states into animated Emotion Orbs' },
-    { title: 'Release Sky Vault', category: 'Navigation', type: 'nav', target: 'lanterns', icon: 'send', desc: 'Release grief & intentions into the starry sky' },
+    { title: 'Release Sky 3D World', category: 'Navigation', type: 'nav', target: 'lanterns', icon: 'send', desc: 'WASD 3D WebGL lantern sky environment' },
     { title: 'Autonomic Regulation', category: 'Navigation', type: 'nav', target: 'breathing', icon: 'wind', desc: '4-7-8 parasympathetic & box breathing exercises' },
     { title: 'Neuro-Acoustic Soundscapes', category: 'Navigation', type: 'nav', target: 'soundscapes', icon: 'music', desc: 'Procedural ambient sound generator & audio' },
     { title: 'Cognitive Memory Vault', category: 'Navigation', type: 'nav', target: 'memory-jar', icon: 'archive', desc: 'Confidential glass jar memory vault & notes' },
-    { title: 'Clinical Heart Journal', category: 'Navigation', type: 'nav', target: 'journal', icon: 'heart', desc: 'Private encrypted reflective journal' },
-    { title: 'Speak with Dr. Aura', category: 'Quick Action', type: 'action', action: 'speak-aura', icon: 'mic', desc: 'Start voice consultation with AI therapist agent' },
-    { title: 'Begin 4-7-8 Parasympathetic Breathing', category: 'Quick Action', type: 'action', action: 'start-breath', icon: 'play', desc: 'Start autonomic regulation breathing cycle' },
-    { title: 'Experience Warm Embrace Ritual', category: 'Quick Action', type: 'action', action: 'hug-embrace', icon: 'heart-handshake', desc: 'Receive a gentle warm embrace' },
-    { title: 'Somatic Tea Mindfulness Pause (30s)', category: 'Quick Action', type: 'action', action: 'brew-tea', icon: 'coffee', desc: '30-second somatic pause' },
-    { title: 'Enter 3D Lantern Sky World', category: 'Quick Action', type: 'action', action: 'enter-3d-world', icon: 'sparkles', desc: 'WASD full-screen 3D lantern world' }
+    { title: 'Clinical Heart Journal', category: 'Navigation', type: 'nav', target: 'journal', icon: 'heart', desc: 'Private encrypted reflective journal' }
   ];
-
-  let selectedIndex = 0;
-  let currentFilteredItems = [];
 
   function toggleHeaderDropdown() {
     if (!headerDropdown) return;
@@ -1216,7 +1132,6 @@ function initSpotlightSearchDashboard() {
     if (window.lucide) window.lucide.createIcons();
   }
 
-  // Global Keyboard Shortcuts (Cmd+K / Ctrl+K)
   window.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
@@ -1230,33 +1145,17 @@ function initSpotlightSearchDashboard() {
   function executeSpotlightItem(item) {
     playBellSound(750, 'sine', 0.5, 0.08);
     if (item.type === 'nav') {
-      document.querySelector(`.nav-tab-btn[data-tab="${item.target}"]`)?.click();
-    } else if (item.type === 'action') {
-      switch (item.action) {
-        case 'speak-aura':
-          document.querySelector('.nav-tab-btn[data-tab="ai-listener"]')?.click();
-          setTimeout(() => document.getElementById('start-voice-listen-btn')?.click(), 400);
-          break;
-        case 'start-breath':
-          document.querySelector('.nav-tab-btn[data-tab="breathing"]')?.click();
-          setTimeout(() => document.getElementById('start-breath-btn')?.click(), 400);
-          break;
-        case 'hug-embrace':
-          document.getElementById('hug-btn')?.click();
-          break;
-        case 'brew-tea':
-          document.getElementById('brew-tea-btn')?.click();
-          break;
-        case 'enter-3d-world':
-          document.getElementById('enter-3d-sky-world-btn')?.click();
-          break;
+      const btn = document.querySelector(`.nav-tab-btn[data-tab="${item.target}"]`);
+      if (btn) btn.click();
+      else if (item.target === 'lanterns') {
+        document.getElementById('enter-3d-sky-world-btn')?.click();
       }
     }
   }
 }
 
 /* ==========================================================================
-   17. HAND-PAINTABLE ORB CANVAS & APP-WIDE GRADIENT BINDING ENGINE
+   16. HAND-PAINTABLE ORB CANVAS ENGINE
    ========================================================================== */
 function initHandPaintableOrbCanvas() {
   const canvas = document.getElementById('paint-orb-canvas');
@@ -1392,7 +1291,7 @@ function initHandPaintableOrbCanvas() {
 }
 
 /* ==========================================================================
-   18. DEDICATED 3D LANTERN SKY WORLD (WASD + SPECTATE + CAROUSEL)
+   17. PURE 3D LANTERN SKY WORLD (WITH IN-WORLD 3D LANTERN RELEASE)
    ========================================================================== */
 function init3DLanternSkyWorld() {
   const enterBtn = document.getElementById('enter-3d-sky-world-btn');
@@ -1401,6 +1300,15 @@ function init3DLanternSkyWorld() {
   const exitBtn = document.getElementById('exit-3d-world-btn');
   const spectatePanel = document.getElementById('spectate-glass-panel');
   const closeSpectateBtn = document.getElementById('close-spectate-panel-btn');
+
+  // DIRECTIVE 3: In-world lantern release modal controls
+  const openRelease3dModalBtn = document.getElementById('open-release-3d-modal-btn');
+  const closeRelease3dModalBtn = document.getElementById('close-release-3d-modal-btn');
+  const confirmRelease3dBtn = document.getElementById('confirm-release-3d-btn');
+  const release3dModal = document.getElementById('release-3d-lantern-modal');
+  const release3dTitleInput = document.getElementById('release-3d-title-input');
+  const release3dNoteInput = document.getElementById('release-3d-note-input');
+  const release3dColorInput = document.getElementById('release-3d-color-input');
 
   if (!canvas || !window.THREE) return;
 
@@ -1436,7 +1344,6 @@ function init3DLanternSkyWorld() {
     dirLight.position.set(5, 10, 7);
     scene.add(dirLight);
 
-    // Starry Particles
     const starGeo = new THREE.BufferGeometry();
     const starCount = 350;
     const starPos = new Float32Array(starCount * 3);
@@ -1450,54 +1357,96 @@ function init3DLanternSkyWorld() {
     stars = new THREE.Points(starGeo, starMat);
     scene.add(stars);
 
-    // 3D Lanterns
     lanterns = [];
     const colors = [0xffcf56, 0xff8052, 0xd946ef, 0x34d399, 0x60a5fa];
 
     for (let i = 0; i < 28; i++) {
-      const group = new THREE.Group();
-
-      const bodyGeo = new THREE.CylinderGeometry(0.35, 0.42, 0.8, 16);
-      const bodyMat = new THREE.MeshStandardMaterial({
-        color: colors[i % colors.length],
-        roughness: 0.2,
-        metalness: 0.1,
-        transparent: true,
-        opacity: 0.9,
-        emissive: colors[i % colors.length],
-        emissiveIntensity: 0.45
-      });
-      const body = new THREE.Mesh(bodyGeo, bodyMat);
-      group.add(body);
-
-      const flameGeo = new THREE.SphereGeometry(0.15, 16, 16);
-      const flameMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-      const flame = new THREE.Mesh(flameGeo, flameMat);
-      flame.position.y = -0.1;
-      group.add(flame);
-
-      const pointLight = new THREE.PointLight(colors[i % colors.length], 1.6, 5);
-      pointLight.position.y = -0.1;
-      group.add(pointLight);
-
-      group.position.set(
+      createLanternMesh(
         (Math.random() - 0.5) * 22,
         (Math.random() - 0.5) * 12,
-        (Math.random() - 0.5) * 16 - 2
+        (Math.random() - 0.5) * 16 - 2,
+        colors[i % colors.length],
+        `Aug ${Math.floor(Math.random() * 5) + 1}, 2026`,
+        ['Light of Peace & Warmth', 'Dear Dad • Floating Intention', 'A Soft Memory for Tomorrow', 'Quiet Reflection Sky'][i % 4],
+        '"I hold space for the warmth you left behind, and I honor your memory with every quiet sunset."'
       );
-      group.userData = {
-        id: i + 1,
-        floatSpeed: 0.003 + Math.random() * 0.003,
-        swayOffset: Math.random() * Math.PI * 2,
-        date: `Aug ${Math.floor(Math.random() * 5) + 1}, 2026`,
-        title: ['Light of Peace & Warmth', 'Dear Dad • Floating Intention', 'A Soft Memory for Tomorrow', 'Quiet Reflection Sky'][i % 4],
-        note: '"I hold space for the warmth you left behind, and I honor your memory with every quiet sunset."'
-      };
-
-      scene.add(group);
-      lanterns.push(group);
     }
   }
+
+  function createLanternMesh(x, y, z, colorHex, dateStr, titleStr, noteStr) {
+    const group = new THREE.Group();
+
+    const bodyGeo = new THREE.CylinderGeometry(0.35, 0.42, 0.8, 16);
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: colorHex,
+      roughness: 0.2,
+      metalness: 0.1,
+      transparent: true,
+      opacity: 0.9,
+      emissive: colorHex,
+      emissiveIntensity: 0.45
+    });
+    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    group.add(body);
+
+    const flameGeo = new THREE.SphereGeometry(0.15, 16, 16);
+    const flameMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const flame = new THREE.Mesh(flameGeo, flameMat);
+    flame.position.y = -0.1;
+    group.add(flame);
+
+    const pointLight = new THREE.PointLight(colorHex, 1.6, 5);
+    pointLight.position.y = -0.1;
+    group.add(pointLight);
+
+    group.position.set(x, y, z);
+    group.userData = {
+      id: Date.now() + Math.random(),
+      floatSpeed: 0.003 + Math.random() * 0.003,
+      swayOffset: Math.random() * Math.PI * 2,
+      date: dateStr,
+      title: titleStr,
+      note: noteStr
+    };
+
+    scene.add(group);
+    lanterns.push(group);
+    return group;
+  }
+
+  // DIRECTIVE 3: In-world lantern release handlers
+  openRelease3dModalBtn?.addEventListener('click', () => {
+    release3dModal?.classList.remove('hidden');
+  });
+
+  closeRelease3dModalBtn?.addEventListener('click', () => {
+    release3dModal?.classList.add('hidden');
+  });
+
+  confirmRelease3dBtn?.addEventListener('click', () => {
+    const title = release3dTitleInput?.value.trim() || 'Floating Intention';
+    const note = release3dNoteInput?.value.trim() || 'Cast softly into the stars.';
+    const colorHex = parseInt((release3dColorInput?.value || '#ffcf56').replace('#', '0x'), 16);
+
+    // Create 3D lantern directly in front of camera!
+    const spawnX = camera.position.x;
+    const spawnY = camera.position.y - 1.5;
+    const spawnZ = camera.position.z - 4;
+
+    const newLantern = createLanternMesh(
+      spawnX, spawnY, spawnZ,
+      colorHex,
+      new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      title,
+      `"${note}"`
+    );
+
+    playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
+
+    if (release3dTitleInput) release3dTitleInput.value = '';
+    if (release3dNoteInput) release3dNoteInput.value = '';
+    release3dModal?.classList.add('hidden');
+  });
 
   window.addEventListener('keydown', (e) => {
     if (overlay.classList.contains('hidden')) return;
@@ -1632,7 +1581,6 @@ function init3DLanternSkyWorld() {
 
     if (!scene) initScene();
 
-    // Force canvas resize to match viewport
     if (canvas && renderer && camera) {
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -1666,7 +1614,7 @@ function init3DLanternSkyWorld() {
 }
 
 /* ==========================================================================
-   19. MACOS SEQUOIA WINDOW CONTROLS & CONTROL CENTER
+   18. MACOS SEQUOIA WINDOW CONTROLS & CONTROL CENTER
    ========================================================================== */
 function initMacOSWindowControls() {
   const closeBtn = document.getElementById('mac-close-btn');
