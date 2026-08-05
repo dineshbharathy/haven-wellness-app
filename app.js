@@ -72,90 +72,64 @@ function initDesktopResolutionDetector() {
 }
 
 /* ==========================================================================
-   3. DESKTOP TAB NAVIGATION ENGINE
+   3. DESKTOP DEDICATED PAGE NAVIGATION ROUTER
    ========================================================================== */
-const tabOrder = [
-  'hub',
-  'ai-listener',
-  'community',
-  'memory-orbs',
-  'lanterns',
-  'breathing',
-  'soundscapes',
-  'memory-jar',
-  'journal'
-];
-let currentTabIndex = 0;
+const pageMeta = {
+  'hub': { title: 'Sanctuary Overview', subtitle: 'Evidence-based emotional regulation, autonomous Rogerian therapy, and peer support network.' },
+  'ai-listener': { title: 'Clinical AI Therapist (Dr. Aura)', subtitle: 'Autonomous Rogerian AI therapist trained in active listening, empathy, and speech synthesis.' },
+  'community': { title: 'Sanctuary Circle Peer Network', subtitle: 'HIPAA-guided moderated peer support network for emotional sharing and voice relaxation.' },
+  'memory-orbs': { title: 'Cognitive Emotion Studio', subtitle: 'Map complex affective states into vibrant animated liquid emotion spheres.' },
+  'lanterns': { title: 'Release Sky 3D World', subtitle: 'Full-screen visionOS 3D WebGL starry sky environment with WASD navigation.' },
+  'breathing': { title: 'Autonomic Regulation', subtitle: 'Evidence-based parasympathetic vagal stimulation and box breathing regulation.' },
+  'soundscapes': { title: 'Neuro-Acoustic Soundscapes', subtitle: 'Procedural neuro-acoustic ambient audio generator with interactive visualizers.' },
+  'memory-jar': { title: 'Cognitive Memory Vault', subtitle: 'Deposit notes of gratitude, warmth, and memory into your confidential glass vault.' },
+  'journal': { title: 'Clinical Heart Journal', subtitle: 'Private, local-encrypted affective check-in and confidential reflective journal.' }
+};
 
-function initDesktopTabNavigation() {
-  const tabBtns = document.querySelectorAll('.nav-tab-btn');
-  const tabPanes = document.querySelectorAll('.tab-pane');
+function navigateToPage(targetPageId) {
+  const allPanes = document.querySelectorAll('.tab-pane');
   const pageTitle = document.getElementById('page-title');
   const pageSubtitle = document.getElementById('page-subtitle');
   const curtain = document.getElementById('rainbow-wipe-curtain');
 
-  const tabSubtitles = {
-    'hub': 'Evidence-based emotional regulation, autonomous Rogerian therapy, and peer support network.',
-    'ai-listener': 'Autonomous Rogerian AI therapist trained in active listening, empathy, and cognitive reframing.',
-    'community': 'HIPAA-guided moderated peer support network for emotional sharing and voice relaxation.',
-    'memory-orbs': 'Map complex affective states into vibrant animated liquid emotion spheres.',
-    'lanterns': 'Enter the 3D WebGL starry sky world to release floating lanterns and spectate intentions.',
-    'breathing': 'Evidence-based parasympathetic vagal stimulation and box breathing regulation.',
-    'soundscapes': 'Procedural neuro-acoustic ambient audio generator with interactive visualizers.',
-    'memory-jar': 'Deposit notes of gratitude, warmth, and memory into your confidential glass vault.',
-    'journal': 'Private, local-encrypted affective check-in and confidential reflective journal.'
+  getAudioContext();
+  playBellSound(720, 'sine', 0.5, 0.05);
+
+  const switchContent = () => {
+    allPanes.forEach(pane => pane.classList.remove('active'));
+    const targetPane = document.getElementById(`tab-${targetPageId}`);
+    if (targetPane) {
+      targetPane.classList.add('active');
+    }
+
+    if (pageMeta[targetPageId]) {
+      if (pageTitle) pageTitle.textContent = pageMeta[targetPageId].title;
+      if (pageSubtitle) pageSubtitle.textContent = pageMeta[targetPageId].subtitle;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.lucide) window.lucide.createIcons();
+
+    if (targetPageId === 'lanterns') {
+      setTimeout(() => {
+        document.getElementById('enter-3d-sky-world-btn')?.click();
+      }, 150);
+    }
   };
 
-  tabBtns.forEach(btn => {
+  if (curtain) {
+    curtain.className = 'rainbow-wipe-curtain wipe-from-right';
+    setTimeout(switchContent, 250);
+    setTimeout(() => { curtain.className = 'rainbow-wipe-curtain'; }, 550);
+  } else {
+    switchContent();
+  }
+}
+
+function initDesktopTabNavigation() {
+  document.querySelectorAll('.back-to-hub-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      getAudioContext();
-      playBellSound(720, 'sine', 0.5, 0.05);
-
-      const targetTab = btn.getAttribute('data-tab');
-      const targetTitle = btn.getAttribute('data-title');
-      const targetIndex = tabOrder.indexOf(targetTab);
-
-      if (targetIndex === currentTabIndex) return;
-
-      const directionClass = targetIndex > currentTabIndex ? 'wipe-from-right' : 'wipe-from-left';
-      currentTabIndex = targetIndex;
-
-      if (curtain) {
-        curtain.className = `rainbow-wipe-curtain ${directionClass}`;
-
-        setTimeout(() => {
-          tabBtns.forEach(b => b.classList.remove('active'));
-          tabPanes.forEach(p => p.classList.remove('active'));
-
-          btn.classList.add('active');
-          const activePane = document.getElementById(`tab-${targetTab}`);
-          if (activePane) activePane.classList.add('active');
-
-          if (pageTitle && targetTitle) pageTitle.textContent = targetTitle;
-          if (pageSubtitle && tabSubtitles[targetTab]) pageSubtitle.textContent = tabSubtitles[targetTab];
-
-          if (window.lucide) window.lucide.createIcons();
-        }, 250);
-
-        setTimeout(() => {
-          curtain.className = 'rainbow-wipe-curtain';
-        }, 550);
-      } else {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        tabPanes.forEach(p => p.classList.remove('active'));
-
-        btn.classList.add('active');
-        const activePane = document.getElementById(`tab-${targetTab}`);
-        if (activePane) activePane.classList.add('active');
-
-        if (pageTitle && targetTitle) pageTitle.textContent = targetTitle;
-        if (pageSubtitle && tabSubtitles[targetTab]) pageSubtitle.textContent = tabSubtitles[targetTab];
-
-        if (window.lucide) window.lucide.createIcons();
-      }
-
-      document.body.classList.add('warm-tab-shift');
-      setTimeout(() => document.body.classList.remove('warm-tab-shift'), 600);
+      navigateToPage('hub');
     });
   });
 }
@@ -1145,11 +1119,7 @@ function initSpotlightSearchDashboard() {
   function executeSpotlightItem(item) {
     playBellSound(750, 'sine', 0.5, 0.08);
     if (item.type === 'nav') {
-      const btn = document.querySelector(`.nav-tab-btn[data-tab="${item.target}"]`);
-      if (btn) btn.click();
-      else if (item.target === 'lanterns') {
-        document.getElementById('enter-3d-sky-world-btn')?.click();
-      }
+      navigateToPage(item.target);
     }
   }
 }
