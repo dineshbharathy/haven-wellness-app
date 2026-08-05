@@ -30,33 +30,41 @@
   <div id="app" class="desktop-app-shell">
     
     <!-- Top Clinical Application Header Bar -->
-    <header class="app-desktop-header">
+    <!-- Top Clinical Application Header Bar (macOS Sequoia Toolbar) -->
+    <header class="app-desktop-header mac-window-header">
+      <!-- macOS Traffic Lights (Close, Minimize, Zoom) -->
+      <div class="mac-traffic-lights" title="macOS Window Controls">
+        <span class="traffic-dot close" id="mac-close-btn" title="Close Application"></span>
+        <span class="traffic-dot minimize" id="mac-minimize-btn" title="Minimize Window"></span>
+        <span class="traffic-dot zoom" id="mac-zoom-btn" title="Full Screen Zoom"></span>
+      </div>
+
       <div class="nav-brand-container">
         <div class="brand-logo">
-          <i data-lucide="leaf" class="brand-sparkle-icon"></i>
+          <i data-lucide="command" class="brand-sparkle-icon"></i>
           <span class="brand-name">Haven Sanctuary</span>
         </div>
-        <span class="clinical-badge">CLINICAL SUITE 5.0</span>
-        <span class="hipaa-pill"><i data-lucide="shield-check" class="icon-inline"></i> HIPAA-Compliant Privacy Architecture</span>
+        <span class="clinical-badge">macOS SEQUOIA 15.0</span>
+        <span class="hipaa-pill"><i data-lucide="shield-check" class="icon-inline"></i> HIPAA Privacy Architecture</span>
       </div>
 
       <!-- Desktop Navigation Tabs -->
       <nav class="desktop-nav-tabs">
         <button class="nav-tab-btn active" data-tab="hub" data-title="Sanctuary Overview">
-          <i data-lucide="home"></i>
-          <span>Sanctuary</span>
+          <i data-lucide="layout"></i>
+          <span>Overview</span>
         </button>
         <button class="nav-tab-btn" data-tab="ai-listener" data-title="Clinical AI Therapist (Dr. Aura)">
-          <i data-lucide="bot"></i>
-          <span>AI Therapist</span>
+          <i data-lucide="sparkles"></i>
+          <span>Dr. Aura</span>
         </button>
         <button class="nav-tab-btn" data-tab="community" data-title="Sanctuary Circle Peer Network">
-          <i data-lucide="users"></i>
-          <span>Peer Network</span>
+          <i data-lucide="message-square"></i>
+          <span>Messages</span>
         </button>
         <button class="nav-tab-btn" data-tab="memory-orbs" data-title="Cognitive Emotion Studio">
-          <i data-lucide="sparkles"></i>
-          <span>Emotion Studio</span>
+          <i data-lucide="palette"></i>
+          <span>Studio</span>
         </button>
         <button class="nav-tab-btn" data-tab="lanterns" data-title="Sky Release Vault">
           <i data-lucide="send"></i>
@@ -68,14 +76,14 @@
         </button>
         <button class="nav-tab-btn" data-tab="soundscapes" data-title="Neuro-Acoustic Soundscapes">
           <i data-lucide="music"></i>
-          <span>Soundscapes</span>
+          <span>Spatial Audio</span>
         </button>
         <button class="nav-tab-btn" data-tab="memory-jar" data-title="Cognitive Memory Vault">
           <i data-lucide="archive"></i>
           <span>Vault</span>
         </button>
         <button class="nav-tab-btn" data-tab="journal" data-title="Clinical Heart Journal">
-          <i data-lucide="heart"></i>
+          <i data-lucide="book-open"></i>
           <span>Journal</span>
         </button>
       </nav>
@@ -84,7 +92,7 @@
         <div class="header-spotlight-wrapper">
           <button id="open-spotlight-btn" class="spotlight-trigger-btn" title="Search Spotlight (Cmd+K)">
             <i data-lucide="search"></i>
-            <span class="spotlight-trigger-text">Search Sanctuary...</span>
+            <span class="spotlight-trigger-text">Spotlight Search</span>
             <kbd class="spotlight-kbd">⌘K</kbd>
           </button>
           
@@ -92,7 +100,7 @@
           <div id="header-spotlight-dropdown" class="header-spotlight-dropdown hidden">
             <div class="dropdown-search-box">
               <i data-lucide="search"></i>
-              <input type="text" id="dropdown-search-input" placeholder="Type to search features, tools, sounds..." autocomplete="off" />
+              <input type="text" id="dropdown-search-input" placeholder="Search features, tools, soundscapes..." autocomplete="off" />
               <kbd class="spotlight-esc-kbd">ESC</kbd>
             </div>
             <div class="dropdown-items-list" id="dropdown-items-list">
@@ -101,9 +109,50 @@
           </div>
         </div>
 
-        <span id="header-user-badge" class="header-user-tag"><i data-lucide="user-check" class="icon-inline"></i> Verified Client</span>
-        <button id="open-auth-modal-btn" class="ios-icon-btn" title="Account & Survey"><i data-lucide="user"></i></button>
+        <span id="header-user-badge" class="header-user-tag"><i data-lucide="user-check" class="icon-inline"></i> Client Verified</span>
+        
+        <!-- Apple Control Center Toggle Button -->
+        <button id="open-control-center-btn" class="ios-icon-btn" title="macOS Control Center"><i data-lucide="sliders"></i></button>
+        <button id="open-auth-modal-btn" class="ios-icon-btn" title="Account Settings"><i data-lucide="user"></i></button>
         <button id="theme-toggle-btn" class="ios-icon-btn" title="Color Palettes"><i data-lucide="palette"></i></button>
+      </div>
+
+      <!-- macOS Control Center Popover Widget -->
+      <div id="mac-control-center-popover" class="mac-control-center-popover hidden">
+        <div class="control-center-header">
+          <span>macOS Control Center</span>
+          <i data-lucide="sliders" class="icon-inline"></i>
+        </div>
+        <div class="control-center-grid">
+          <div class="control-widget-card active">
+            <i data-lucide="wifi"></i>
+            <div>
+              <strong>HIPAA Network</strong>
+              <span>Encrypted 256-bit</span>
+            </div>
+          </div>
+          <div class="control-widget-card active">
+            <i data-lucide="bluetooth"></i>
+            <div>
+              <strong>Spatial Audio</strong>
+              <span>Connected</span>
+            </div>
+          </div>
+          <div class="control-widget-card active">
+            <i data-lucide="moon"></i>
+            <div>
+              <strong>Do Not Disturb</strong>
+              <span>Sanctuary Mode</span>
+            </div>
+          </div>
+          <div class="control-widget-card">
+            <i data-lucide="sun"></i>
+            <div>
+              <strong>Display Brightness</strong>
+              <span>Auto Luminous</span>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -229,14 +278,14 @@
           
           <div class="ai-listener-hero">
             <div class="aura-orb-container" id="aura-orb-container">
-              <div class="aura-orb" id="aura-orb">
-                <div class="aura-ring ring-a"></div>
-                <div class="aura-ring ring-b"></div>
-                <div class="aura-ring ring-c"></div>
-                <div class="aura-core"></div>
+              <div class="apple-intelligence-iris" id="aura-orb">
+                <div class="iris-glow-layer layer-1"></div>
+                <div class="iris-glow-layer layer-2"></div>
+                <div class="iris-glow-layer layer-3"></div>
+                <div class="aura-core"><i data-lucide="sparkles" class="siri-icon"></i></div>
               </div>
             </div>
-            <h3 id="ai-status-text">Dr. Aura is listening in active reflection mode...</h3>
+            <h3 id="ai-status-text">Dr. Aura • Apple Intelligence Clinical Agent</h3>
             <p class="ai-subtitle">Autonomous Clinical AI Therapist Agent. Rogerian person-centered reflection & speech synthesis.</p>
           </div>
 

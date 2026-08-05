@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.lucide.createIcons();
   }
 
+  initMacOSWindowControls();
   initDesktopResolutionDetector();
   initAudioEngine();
   initThemeManager();
@@ -1660,6 +1661,62 @@ function init3DLanternSkyWorld() {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
+    }
+  });
+}
+
+/* ==========================================================================
+   19. MACOS SEQUOIA WINDOW CONTROLS & CONTROL CENTER
+   ========================================================================== */
+function initMacOSWindowControls() {
+  const closeBtn = document.getElementById('mac-close-btn');
+  const minimizeBtn = document.getElementById('mac-minimize-btn');
+  const zoomBtn = document.getElementById('mac-zoom-btn');
+  const controlCenterBtn = document.getElementById('open-control-center-btn');
+  const controlCenterPopover = document.getElementById('mac-control-center-popover');
+  const appShell = document.getElementById('app');
+
+  closeBtn?.addEventListener('click', () => {
+    playBellSound(400, 'sine', 0.4, 0.05);
+    if (appShell) {
+      appShell.style.opacity = '0.3';
+      appShell.style.transform = 'scale(0.96)';
+      setTimeout(() => {
+        appShell.style.opacity = '1';
+        appShell.style.transform = 'none';
+      }, 1200);
+    }
+  });
+
+  minimizeBtn?.addEventListener('click', () => {
+    playBellSound(500, 'sine', 0.4, 0.05);
+    if (appShell) {
+      appShell.style.transform = 'scale(0.92) translateY(20px)';
+      setTimeout(() => {
+        appShell.style.transform = 'none';
+      }, 1000);
+    }
+  });
+
+  zoomBtn?.addEventListener('click', () => {
+    playBellSound(700, 'sine', 0.5, 0.05);
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+    }
+  });
+
+  controlCenterBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    getAudioContext();
+    playBellSound(640, 'sine', 0.4, 0.05);
+    controlCenterPopover?.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (controlCenterPopover && !controlCenterPopover.contains(e.target) && e.target !== controlCenterBtn) {
+      controlCenterPopover.classList.add('hidden');
     }
   });
 }

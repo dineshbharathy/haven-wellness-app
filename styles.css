@@ -6,41 +6,212 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap');
 
 :root {
-  --font-serif: "Cormorant Garamond", Georgia, serif;
-  --font-body: "Outfit", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: "New York", "Cormorant Garamond", Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro Rounded", sans-serif;
   --font-hand: 'Caveat', cursive;
 
-  /* Warm Sunset Palette */
-  --sun-gold: #ffcf56;
-  --coral: #ff8052;
-  --rose: #f472b6;
-  --magenta: #d946ef;
-  --deep: #1e062b;
+  /* Official Apple macOS System Colors */
+  --sf-blue: #0a84ff;
+  --sf-indigo: #5e5ce6;
+  --sf-purple: #bf5af2;
+  --sf-pink: #ff375f;
+  --sf-teal: #64d2ff;
+  --sf-green: #30d158;
+  --sf-amber: #ff9f0a;
 
-  /* Glass System */
-  --glass: rgba(255, 255, 255, 0.42);
-  --glass-hover: rgba(255, 255, 255, 0.62);
-  --glass-border: rgba(255, 255, 255, 0.65);
-  --glass-border-subtle: rgba(255, 255, 255, 0.35);
-  --glass-glow: 0 8px 32px rgba(45, 10, 50, 0.06);
-  --glass-glow-hover: 0 16px 48px rgba(45, 10, 50, 0.1);
-  --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+  --sun-gold: var(--sf-amber);
+  --coral: var(--sf-pink);
+  --rose: var(--sf-purple);
+  --magenta: var(--sf-indigo);
+  --deep: #0b0b14;
 
-  /* Text */
-  --text: #1e062b;
-  --text-muted: #5a3570;
-  --text-soft: #8a6fa0;
+  /* Apple Translucent Glass System */
+  --glass: rgba(255, 255, 255, 0.72);
+  --glass-hover: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-border-subtle: rgba(0, 0, 0, 0.08);
+  --glass-glow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  --glass-glow-hover: 0 30px 80px rgba(0, 0, 0, 0.14);
+  --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+
+  /* Apple System Text */
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-soft: #94a3b8;
   --text-white: #ffffff;
 
-  /* Radii */
-  --r-sm: 14px;
-  --r-md: 20px;
-  --r-lg: 28px;
-  --r-xl: 36px;
+  /* Apple Corner Radii */
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 26px;
+  --r-xl: 34px;
 
-  /* Timing */
-  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Apple Spring Easing */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── MACOS SEQUOIA WINDOW HEADER & TRAFFIC LIGHTS ── */
+.mac-window-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(40px) saturate(210%);
+  -webkit-backdrop-filter: blur(40px) saturate(210%);
+  border-bottom: 1px solid var(--glass-border-subtle);
+  box-shadow: var(--inner-light);
+}
+
+.mac-traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 4px;
+}
+
+.traffic-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s var(--ease), opacity 0.15s var(--ease);
+}
+.traffic-dot.close { background: #ff5f57; border: 1px solid #e0443e; }
+.traffic-dot.minimize { background: #febc2e; border: 1px solid #dba023; }
+.traffic-dot.zoom { background: #28c840; border: 1px solid #1aac2b; }
+
+.traffic-dot:hover { transform: scale(1.15); opacity: 0.9; }
+
+/* ── MACOS CONTROL CENTER POPOVER WIDGET ── */
+.mac-control-center-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 20px;
+  width: 320px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(50px) saturate(210%);
+  -webkit-backdrop-filter: blur(50px) saturate(210%);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--r-md);
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.2), var(--inner-light);
+  padding: 16px;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: sheetSlideUp 0.25s var(--ease);
+}
+
+.mac-control-center-popover.hidden { display: none; }
+
+.control-center-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.control-center-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.control-widget-card {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--glass-border-subtle);
+  border-radius: var(--r-sm);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+
+.control-widget-card.active {
+  background: rgba(10, 132, 255, 0.15);
+  border-color: rgba(10, 132, 255, 0.4);
+  color: var(--sf-blue);
+}
+
+.control-widget-card div {
+  display: flex;
+  flex-direction: column;
+}
+
+.control-widget-card strong {
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+/* ── APPLE INTELLIGENCE FLUID IRIS RING ── */
+.apple-intelligence-iris {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.iris-glow-layer {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--sf-indigo), var(--sf-teal), var(--sf-pink), var(--sf-purple), var(--sf-indigo));
+  filter: blur(16px);
+  opacity: 0.85;
+  animation: siriIrisFlow 4s linear infinite;
+}
+
+.iris-glow-layer.layer-2 {
+  inset: -6px;
+  filter: blur(10px);
+  animation-duration: 2.5s;
+  animation-direction: reverse;
+}
+
+.iris-glow-layer.layer-3 {
+  inset: 0px;
+  filter: blur(4px);
+  animation-duration: 6s;
+}
+
+@keyframes siriIrisFlow {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.aura-core {
+  position: relative;
+  z-index: 10;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(94, 92, 230, 0.4);
+}
+
+.siri-icon {
+  width: 1.8em !important;
+  height: 1.8em !important;
+  color: var(--sf-indigo);
 }
 
 /* Dark themes */
