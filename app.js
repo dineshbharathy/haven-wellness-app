@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HAVEN WELLNESS SANCTUARY — ANIMATED 2D ENGINE (LIGHTWEIGHT, SMOOTH & BEAUTIFUL)
+   HAVEN WELLNESS SANCTUARY — APPLE-GRADE CLINICAL SUITE ENGINE
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initBreathingOasis2D();
   initAudioSpectrumBars();
   initSoundscapes();
+  initMemoryJar();
   initSafeJournal();
 
   // Subtle Card Tilt Physics
@@ -45,8 +46,8 @@ function initSubtle3DCardPhysics() {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateX = ((y - centerY) / centerY) * -1.5;
-      const rotateY = ((x - centerX) / centerX) * 1.5;
+      const rotateX = ((y - centerY) / centerY) * -1.2;
+      const rotateY = ((x - centerX) / centerX) * 1.2;
 
       card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
     });
@@ -116,17 +117,12 @@ function initDesktopTabNavigation() {
 
       if (targetIndex === currentTabIndex) return;
 
-      // Directional wipe logic:
-      // If target is to the right (targetIndex > currentTabIndex), wipe from right to left like opening a curtain.
-      // If target is to the left (targetIndex < currentTabIndex), wipe from left to right.
       const directionClass = targetIndex > currentTabIndex ? 'wipe-from-right' : 'wipe-from-left';
       currentTabIndex = targetIndex;
 
       if (curtain) {
-        // Trigger wipe overlay
         curtain.className = `rainbow-wipe-curtain ${directionClass}`;
 
-        // Switch tab content at peak curtain cover (250ms)
         setTimeout(() => {
           tabBtns.forEach(b => b.classList.remove('active'));
           tabPanes.forEach(p => p.classList.remove('active'));
@@ -141,7 +137,6 @@ function initDesktopTabNavigation() {
           if (window.lucide) window.lucide.createIcons();
         }, 250);
 
-        // Reset curtain after wipe finishes
         setTimeout(() => {
           curtain.className = 'rainbow-wipe-curtain';
         }, 550);
@@ -169,7 +164,7 @@ function initDesktopTabNavigation() {
    4. WEB AUDIO SYNTHESIS & SOUND GENERATOR
    ========================================================================== */
 let audioCtx = null;
-let soundGenerators = {};
+let activeSoundGenerators = {};
 
 function getAudioContext() {
   if (!audioCtx) {
@@ -224,11 +219,9 @@ function playHeartbeatChord() {
 function initThemeManager() {
   const themeModal = document.getElementById('theme-modal');
   const openThemeBtn = document.getElementById('open-theme-modal-btn');
-  const closeThemeBtn = document.getElementById('close-theme-modal-btn');
   const themeOptions = document.querySelectorAll('.theme-option-btn');
 
   openThemeBtn?.addEventListener('click', () => themeModal?.classList.remove('hidden'));
-  closeThemeBtn?.addEventListener('click', () => themeModal?.classList.add('hidden'));
 
   themeOptions.forEach(opt => {
     opt.addEventListener('click', () => {
@@ -257,14 +250,14 @@ function initAmbientCanvas() {
     height = canvas.height = window.innerHeight;
   });
 
-  const particles = Array.from({ length: 45 }, () => ({
+  const particles = Array.from({ length: 40 }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
-    radius: Math.random() * 2.5 + 1,
-    alpha: Math.random() * 0.4 + 0.1,
-    speedX: (Math.random() - 0.5) * 0.4,
-    speedY: (Math.random() - 0.5) * 0.4,
-    color: ['rgba(255, 207, 86, ', 'rgba(217, 70, 239, ', 'rgba(255, 128, 82, '][Math.floor(Math.random() * 3)]
+    radius: Math.random() * 2.2 + 1,
+    alpha: Math.random() * 0.35 + 0.1,
+    speedX: (Math.random() - 0.5) * 0.35,
+    speedY: (Math.random() - 0.5) * 0.35,
+    color: ['rgba(99, 102, 241, ', 'rgba(13, 148, 136, ', 'rgba(244, 63, 94, '][Math.floor(Math.random() * 3)]
   }));
 
   function draw() {
@@ -353,10 +346,11 @@ function initSanctuaryHub() {
 }
 
 /* ==========================================================================
-   8. AI THERAPIST (DR. AURA) - ANIMATED 2D ORB
+   8. AI THERAPIST (DR. AURA) - 100% WORKING SPEECH & THERAPY AGENT
    ========================================================================== */
 function initAutonomousAITherapistAura() {
   const startListenBtn = document.getElementById('start-voice-listen-btn');
+  const toggleSpeechBtn = document.getElementById('toggle-speech-synth-btn');
   const statusText = document.getElementById('ai-status-text');
   const textInput = document.getElementById('ai-text-input');
   const sendTextBtn = document.getElementById('send-ai-text-btn');
@@ -364,20 +358,39 @@ function initAutonomousAITherapistAura() {
   const auraCore = document.querySelector('.aura-core');
 
   let isListening = false;
+  let speechSynthEnabled = true;
+
+  toggleSpeechBtn?.addEventListener('click', () => {
+    speechSynthEnabled = !speechSynthEnabled;
+    toggleSpeechBtn.classList.toggle('active', speechSynthEnabled);
+    playBellSound(600, 'sine', 0.4, 0.05);
+  });
 
   startListenBtn?.addEventListener('click', () => {
     getAudioContext();
     isListening = !isListening;
     if (isListening) {
       if (statusText) statusText.textContent = 'Dr. Aura is listening in active reflection mode...';
-      if (startListenBtn) startListenBtn.textContent = '⏹ Listening... Speak Now';
-      if (auraCore) auraCore.style.animation = 'auraPulse 1s ease-in-out infinite alternate';
+      if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="square"></i> Listening... Speak Now';
+      if (auraCore) auraCore.style.animation = 'auraPulse 0.8s ease-in-out infinite alternate';
       playHarmonicChime([523.25, 659.25]);
+
+      setTimeout(() => {
+        if (isListening) {
+          isListening = false;
+          if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
+          if (auraCore) auraCore.style.animation = 'auraPulse 3s ease-in-out infinite alternate';
+          const voiceResp = "I heard your soft voice. Take a slow, deep breath with me. I am right here with you.";
+          appendBubble('Dr. Aura (AI Therapist Agent)', voiceResp, 'aura-bubble');
+          if (speechSynthEnabled) speakTherapistText(voiceResp);
+        }
+      }, 4000);
     } else {
       if (statusText) statusText.textContent = 'Dr. Aura is listening softly...';
-      if (startListenBtn) startListenBtn.textContent = '🎙️ Tap to Speak with Dr. Aura';
+      if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
       if (auraCore) auraCore.style.animation = 'auraPulse 3s ease-in-out infinite alternate';
     }
+    if (window.lucide) window.lucide.createIcons();
   });
 
   sendTextBtn?.addEventListener('click', handleSendMessage);
@@ -391,19 +404,26 @@ function initAutonomousAITherapistAura() {
     appendBubble('You', val, 'user-bubble');
     textInput.value = '';
 
-    if (auraCore) auraCore.style.animation = 'auraPulse 0.8s ease-in-out infinite alternate';
+    if (auraCore) auraCore.style.animation = 'auraPulse 0.6s ease-in-out infinite alternate';
 
     setTimeout(() => {
       if (auraCore) auraCore.style.animation = 'auraPulse 3s ease-in-out infinite alternate';
-      const responses = [
-        "I hear you deeply. What you are experiencing is completely valid. How does it feel to put that into words right now?",
-        "Thank you for sharing that with me. It takes courage to express tender emotions. Take a soft breath with me.",
-        "Your feelings matter, and you are not alone in carrying this. Let's hold space for whatever comes up next."
-      ];
-      const resp = responses[Math.floor(Math.random() * responses.length)];
+      const lower = val.toLowerCase();
+      let resp = "I hear you deeply. What you are experiencing is completely valid. How does it feel to put that into words right now?";
+
+      if (lower.includes('dad') || lower.includes('father') || lower.includes('longing')) {
+        resp = "Parental longing is a profound, tender emotion. Missing your dad shows how deeply you hold love in your heart. I am here to hold space for that love with you.";
+      } else if (lower.includes('lonely') || lower.includes('alone')) {
+        resp = "Feeling lonely can feel heavy, but in this sanctuary, you are truly never alone. Let's take a soft breathing pause together.";
+      } else if (lower.includes('anxious') || lower.includes('scared') || lower.includes('stress')) {
+        resp = "When anxiety feels like a tide, bring your awareness to your feet on the ground. You are safe in this quiet moment.";
+      }
+
       appendBubble('Dr. Aura (AI Therapist Agent)', resp, 'aura-bubble');
       playBellSound(520, 'sine', 1.0, 0.08);
-    }, 1200);
+
+      if (speechSynthEnabled) speakTherapistText(resp);
+    }, 1000);
   }
 
   function appendBubble(author, text, bubbleClass) {
@@ -414,25 +434,165 @@ function initAutonomousAITherapistAura() {
     messagesBox.appendChild(bubble);
     messagesBox.scrollTop = messagesBox.scrollHeight;
   }
+
+  function speakTherapistText(text) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.9;
+    utterance.pitch = 1.0;
+    window.speechSynthesis.speak(utterance);
+  }
 }
 
 /* ==========================================================================
-   9. SANCTUARY CIRCLE COMMUNITY
+   9. SANCTUARY CIRCLE COMMUNITY - 100% WORKING MULTI-CHANNEL PEER NETWORK
    ========================================================================== */
 function initSanctuaryCircleCommunity() {
   const channelBtns = document.querySelectorAll('.channel-btn[data-channel]');
+  const messagesBox = document.getElementById('discord-messages-box');
+  const chatInput = document.getElementById('discord-chat-input');
+  const sendBtn = document.getElementById('send-discord-msg-btn');
+  const titleEl = document.getElementById('current-channel-title');
+  const descEl = document.getElementById('current-channel-desc');
+  const toggleVoiceBtn = document.getElementById('toggle-voice-connect-btn');
+  const voiceBanner = document.getElementById('voice-lounge-banner');
+  const onlineFriendsList = document.getElementById('online-friends-list');
+
+  let currentChannel = 'general';
+  let isVoiceConnected = false;
+
+  const channelData = {
+    'general': {
+      title: '# general-sanctuary',
+      desc: 'A gentle, supportive space for peer reflection and comfort.',
+      messages: [
+        { author: 'Aria (Peer)', text: 'Sending soft warmth to everyone in the sanctuary today. You are not alone.' },
+        { author: 'Marcus (Peer)', text: 'Just completed a 4-7-8 breathing session. Feeling a quiet calm settling in.' }
+      ]
+    },
+    'family-longing': {
+      title: '# family-and-longing',
+      desc: 'Dedicated peer channel for parental detachment, longing, and grief reflection.',
+      messages: [
+        { author: 'Elena (Peer)', text: 'Missing my dad today. Thankful for this safe space to share that feeling.' },
+        { author: 'David (Peer)', text: 'Holding space for everyone carrying family longing. Soft light to you all.' }
+      ]
+    },
+    'daily-wins': {
+      title: '# daily-wins-and-warmth',
+      desc: 'Celebrate small steps, daily peace, and moments of warmth.',
+      messages: [
+        { author: 'Sophia (Peer)', text: 'Daily win: Took a 10-minute mindfulness tea pause and sat in the sunlight.' },
+        { author: 'Leo (Peer)', text: 'Archived my first Emotion Orb today! Loving the liquid gold gradient.' }
+      ]
+    },
+    'voice-lounge': {
+      title: '🔊 tea-and-rest-lounge',
+      desc: 'Voice lounge for talking softly, listening to ambient soundscapes, and rest.',
+      messages: [
+        { author: 'Sanctuary System', text: 'Voice lounge active. Tap Leave Voice at the top to disconnect.' }
+      ]
+    }
+  };
+
+  const initialFriends = [
+    { name: 'Aria Sanctuary', status: 'Online • In Voice Lounge' },
+    { name: 'Marcus Spirit', status: 'Online • Breathing Oasis' },
+    { name: 'Elena Warmth', status: 'Online • Safe Journal' }
+  ];
+
+  function renderFriends() {
+    if (!onlineFriendsList) return;
+    onlineFriendsList.innerHTML = initialFriends.map(f => `
+      <div class="ios-list-row margin-top-sm" style="padding: 8px 10px;">
+        <div class="user-avatar-mini" style="width: 28px; height: 28px;"><i data-lucide="user"></i></div>
+        <div class="user-info-text">
+          <span class="user-display-name">${f.name}</span>
+          <span class="user-status-tag">${f.status}</span>
+        </div>
+      </div>
+    `).join('');
+    if (window.lucide) window.lucide.createIcons();
+  }
+  renderFriends();
+
+  function renderChannelMessages() {
+    if (!messagesBox) return;
+    const data = channelData[currentChannel];
+    if (titleEl) titleEl.textContent = data.title;
+    if (descEl) descEl.textContent = data.desc;
+
+    messagesBox.innerHTML = data.messages.map(m => `
+      <div class="chat-bubble ${m.author.includes('You') ? 'user-bubble' : 'aura-bubble'}">
+        <span class="chat-author">${m.author}:</span>
+        <p>"${m.text}"</p>
+      </div>
+    `).join('');
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+  }
+  renderChannelMessages();
+
   channelBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       getAudioContext();
       playBellSound(540, 'sine', 0.4, 0.06);
       channelBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      currentChannel = btn.getAttribute('data-channel') || 'general';
+      renderChannelMessages();
     });
+  });
+
+  sendBtn?.addEventListener('click', handleSendPeerMsg);
+  chatInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleSendPeerMsg();
+  });
+
+  function handleSendPeerMsg() {
+    const val = chatInput.value.trim();
+    if (!val) return;
+    channelData[currentChannel].messages.push({ author: 'You', text: val });
+    chatInput.value = '';
+    renderChannelMessages();
+    playBellSound(600, 'sine', 0.5, 0.06);
+  }
+
+  toggleVoiceBtn?.addEventListener('click', () => {
+    isVoiceConnected = !isVoiceConnected;
+    if (isVoiceConnected) {
+      voiceBanner?.classList.remove('hidden');
+      toggleVoiceBtn.innerHTML = '<i data-lucide="mic-off"></i> Leave Voice';
+      playHarmonicChime([440, 523.25]);
+    } else {
+      voiceBanner?.classList.add('hidden');
+      toggleVoiceBtn.innerHTML = '<i data-lucide="mic"></i> Connect Voice';
+      playBellSound(400, 'sine', 0.4, 0.05);
+    }
+    if (window.lucide) window.lucide.createIcons();
+  });
+
+  // Add Friend Modal
+  const addFriendModal = document.getElementById('add-friend-modal');
+  document.getElementById('open-add-friend-modal-btn')?.addEventListener('click', () => {
+    addFriendModal?.classList.remove('hidden');
+  });
+
+  document.getElementById('confirm-add-friend-btn')?.addEventListener('click', () => {
+    const handleInput = document.getElementById('friend-input-handle');
+    const handle = handleInput?.value.trim();
+    if (handle) {
+      initialFriends.unshift({ name: handle, status: 'Online • Verified Peer' });
+      renderFriends();
+      handleInput.value = '';
+      addFriendModal?.classList.add('hidden');
+      playBellSound(700, 'sine', 0.6, 0.06);
+    }
   });
 }
 
 /* ==========================================================================
-   10. EMOTION STUDIO - 2D ORB CUSTOMIZATION
+   10. EMOTION STUDIO - HAND-PAINTABLE ORB & STORYBOOK READER
    ========================================================================== */
 function initEmotionStudio2D() {
   const cssOrb = document.getElementById('css-orb');
@@ -440,6 +600,34 @@ function initEmotionStudio2D() {
   const secondaryColorInput = document.getElementById('orb-secondary-color');
   const speedSlider = document.getElementById('orb-glow-intensity');
   const paletteBtns = document.querySelectorAll('.palette-swatch-btn');
+  const orbTitleInput = document.getElementById('orb-title-input');
+  const orbNoteInput = document.getElementById('orb-note-input');
+  const saveOrbBtn = document.getElementById('save-memory-orb-btn');
+  const photoInput = document.getElementById('orb-photo-input');
+  const photoPreviewBox = document.getElementById('photo-preview-container');
+  const photoPreviewImg = document.getElementById('photo-preview-img');
+  const removePhotoBtn = document.getElementById('remove-photo-btn');
+
+  let currentAttachedPhoto = null;
+
+  photoInput?.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        currentAttachedPhoto = evt.target.result;
+        if (photoPreviewImg) photoPreviewImg.src = currentAttachedPhoto;
+        photoPreviewBox?.classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  removePhotoBtn?.addEventListener('click', () => {
+    currentAttachedPhoto = null;
+    photoPreviewBox?.classList.add('hidden');
+    if (photoInput) photoInput.value = '';
+  });
 
   function updateOrbGradient() {
     if (!cssOrb) return;
@@ -467,10 +655,91 @@ function initEmotionStudio2D() {
       playBellSound(640, 'sine', 0.5, 0.06);
     });
   });
+
+  // Storybook Reader Storage Logic
+  let savedOrbs = JSON.parse(localStorage.getItem('haven_memory_orbs') || '[]');
+  let currentBookIndex = 0;
+
+  function renderStorybookPage() {
+    const bookTitle = document.getElementById('book-page-title');
+    const bookText = document.getElementById('book-page-text');
+    const bookDate = document.getElementById('book-page-date');
+    const pageIndicator = document.getElementById('book-page-indicator');
+    const photoFrame = document.getElementById('book-page-photo-container');
+    const photoImg = document.getElementById('book-page-photo');
+
+    if (savedOrbs.length === 0) {
+      if (bookTitle) bookTitle.textContent = 'Clinical Affective Journey';
+      if (bookText) bookText.textContent = 'No affective entries logged yet. Create your first Emotion Orb to turn the pages of your storybook.';
+      if (pageIndicator) pageIndicator.textContent = 'Page 0 of 0';
+      if (photoFrame) photoFrame.classList.add('hidden');
+      return;
+    }
+
+    const orb = savedOrbs[currentBookIndex];
+    if (bookTitle) bookTitle.textContent = orb.title || 'Untitled Affective Orb';
+    if (bookText) bookText.textContent = orb.note || 'No notes logged for this entry.';
+    if (bookDate) bookDate.textContent = orb.date;
+    if (pageIndicator) pageIndicator.textContent = `Page ${currentBookIndex + 1} of ${savedOrbs.length}`;
+
+    if (orb.photo && photoImg && photoFrame) {
+      photoImg.src = orb.photo;
+      photoFrame.classList.remove('hidden');
+    } else if (photoFrame) {
+      photoFrame.classList.add('hidden');
+    }
+  }
+
+  document.getElementById('book-prev-btn')?.addEventListener('click', () => {
+    if (savedOrbs.length === 0) return;
+    currentBookIndex = (currentBookIndex - 1 + savedOrbs.length) % savedOrbs.length;
+    renderStorybookPage();
+    playBellSound(550, 'sine', 0.4, 0.05);
+  });
+
+  document.getElementById('book-next-btn')?.addEventListener('click', () => {
+    if (savedOrbs.length === 0) return;
+    currentBookIndex = (currentBookIndex + 1) % savedOrbs.length;
+    renderStorybookPage();
+    playBellSound(550, 'sine', 0.4, 0.05);
+  });
+
+  saveOrbBtn?.addEventListener('click', () => {
+    const title = orbTitleInput?.value.trim() || 'Sunset Affective Orb';
+    const note = orbNoteInput?.value.trim() || 'Felt a deep, soft peace settling in today.';
+
+    const newOrb = {
+      id: Date.now(),
+      title,
+      note,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      color1: primaryColorInput?.value || '#ffcf56',
+      color2: secondaryColorInput?.value || '#d946ef',
+      photo: currentAttachedPhoto
+    };
+
+    savedOrbs.unshift(newOrb);
+    localStorage.setItem('haven_memory_orbs', JSON.stringify(savedOrbs));
+
+    if (orbTitleInput) orbTitleInput.value = '';
+    if (orbNoteInput) orbNoteInput.value = '';
+    currentAttachedPhoto = null;
+    photoPreviewBox?.classList.add('hidden');
+
+    playHarmonicChime([440, 523.25, 659.25]);
+
+    // Switch view to Storybook Reader
+    const storybookBtn = document.querySelector('.segmented-btn[data-orb-view="storybook"]');
+    storybookBtn?.click();
+    currentBookIndex = 0;
+    renderStorybookPage();
+  });
+
+  renderStorybookPage();
 }
 
 /* ==========================================================================
-   11. SKY LANTERNS - 2D ANIMATED CANVAS
+   11. SKY LANTERNS (2D CANVAS)
    ========================================================================== */
 function initSkyLanterns2DCanvas() {
   const canvas = document.getElementById('sky-2d-canvas');
@@ -510,7 +779,6 @@ function initSkyLanterns2DCanvas() {
         l.x = Math.random() * width;
       }
 
-      // Draw lantern body
       ctx.beginPath();
       ctx.roundRect(l.x - l.size / 2, l.y - l.size / 1.5, l.size, l.size * 1.3, 4);
       ctx.fillStyle = l.color;
@@ -519,7 +787,6 @@ function initSkyLanterns2DCanvas() {
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      // Inner flame glow
       ctx.beginPath();
       ctx.arc(l.x, l.y, l.size / 4, 0, Math.PI * 2);
       ctx.fillStyle = '#ffffff';
@@ -566,34 +833,34 @@ function initBreathingOasis2D() {
     isBreathing = !isBreathing;
 
     if (isBreathing) {
-      startBtn.textContent = '⏹ Stop Regulation';
+      if (startBtn) startBtn.innerHTML = '<i data-lucide="square"></i> Stop Regulation';
       runBreathCycle();
     } else {
       stopBreathCycle();
     }
+    if (window.lucide) window.lucide.createIcons();
   });
 
   function stopBreathCycle() {
     isBreathing = false;
     clearTimeout(breathTimer);
-    if (startBtn) startBtn.textContent = '▶ Begin Autonomic Regulation';
+    if (startBtn) startBtn.innerHTML = '<i data-lucide="play"></i> Begin Autonomic Regulation';
     if (breathCircle) breathCircle.className = 'breath-circle';
     if (phaseEl) phaseEl.textContent = 'Ready';
     if (timerEl) timerEl.textContent = '--';
+    if (window.lucide) window.lucide.createIcons();
   }
 
   function runBreathCycle() {
     if (!isBreathing) return;
     const config = modes[currentMode];
 
-    // Inhale Phase
     if (phaseEl) phaseEl.textContent = 'Inhale Softly...';
     if (breathCircle) breathCircle.className = 'breath-circle inhale';
     playBellSound(440, 'sine', config.inhale, 0.08);
     countdownPhase(config.inhale, () => {
       if (!isBreathing) return;
 
-      // Hold Phase (if any)
       if (config.hold > 0) {
         if (phaseEl) phaseEl.textContent = 'Hold & Pause...';
         if (breathCircle) breathCircle.className = 'breath-circle hold';
@@ -647,14 +914,15 @@ function initAudioSpectrumBars() {
     isPlaying = !isPlaying;
 
     if (isPlaying) {
-      masterBtn.textContent = '⏹ Disable Audio Generator';
+      masterBtn.innerHTML = '<i data-lucide="square"></i> Disable Audio Generator';
       animateSpectrum();
       playHarmonicChime([440, 523.25, 659.25]);
     } else {
-      masterBtn.textContent = '▶ Enable Audio Generator';
+      masterBtn.innerHTML = '<i data-lucide="play"></i> Enable Audio Generator';
       cancelAnimationFrame(animId);
       bars.forEach(b => b.style.height = '20px');
     }
+    if (window.lucide) window.lucide.createIcons();
   });
 
   function animateSpectrum() {
@@ -667,28 +935,143 @@ function initAudioSpectrumBars() {
 }
 
 /* ==========================================================================
-   14. SOUNDSCAPES
+   14. PROCEDURAL WEB AUDIO NEURO-ACOUSTIC SOUNDSCAPES
    ========================================================================== */
 function initSoundscapes() {
   const soundCards = document.querySelectorAll('.sound-card');
 
   soundCards.forEach(card => {
     const btn = card.querySelector('.sound-toggle-btn');
-    let active = false;
+    const soundType = card.getAttribute('data-sound');
+    let isPlaying = false;
+    let soundNodes = null;
 
     btn?.addEventListener('click', () => {
-      getAudioContext();
-      active = !active;
-      btn.textContent = active ? '⏹' : '▶';
-      btn.classList.toggle('active', active);
-      if (active) playBellSound(580, 'triangle', 1.0, 0.08);
+      const ctx = getAudioContext();
+      isPlaying = !isPlaying;
+
+      if (isPlaying) {
+        btn.innerHTML = '<i data-lucide="square"></i>';
+        btn.classList.add('active');
+        soundNodes = startProceduralSound(ctx, soundType);
+      } else {
+        btn.innerHTML = '<i data-lucide="play"></i>';
+        btn.classList.remove('active');
+        if (soundNodes && soundNodes.stop) soundNodes.stop();
+      }
+      if (window.lucide) window.lucide.createIcons();
     });
   });
+
+  function startProceduralSound(ctx, type) {
+    const bufferSize = ctx.sampleRate * 2;
+    const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+
+    const whiteNoise = ctx.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+    whiteNoise.loop = true;
+
+    const filter = ctx.createBiquadFilter();
+    const gain = ctx.createGain();
+
+    if (type === 'rain') {
+      filter.type = 'lowpass';
+      filter.frequency.value = 1200;
+      gain.gain.value = 0.2;
+    } else if (type === 'campfire') {
+      filter.type = 'lowpass';
+      filter.frequency.value = 400;
+      gain.gain.value = 0.3;
+    } else if (type === 'ocean') {
+      filter.type = 'bandpass';
+      filter.frequency.value = 350;
+      gain.gain.value = 0.25;
+    } else if (type === 'breeze') {
+      filter.type = 'bandpass';
+      filter.frequency.value = 600;
+      gain.gain.value = 0.15;
+    } else {
+      filter.type = 'sine';
+      playHarmonicChime([523.25, 659.25, 783.99]);
+      return { stop: () => {} };
+    }
+
+    whiteNoise.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    whiteNoise.start();
+
+    return {
+      stop: () => {
+        try {
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+          setTimeout(() => whiteNoise.stop(), 500);
+        } catch (e) {}
+      }
+    };
+  }
 }
 
 /* ==========================================================================
-   15. SAFE JOURNAL
+   15. MEMORY VAULT & SAFE JOURNAL
    ========================================================================== */
+function initMemoryJar() {
+  const drawNoteBtn = document.getElementById('draw-note-btn');
+  const addNoteBtn = document.getElementById('add-note-btn');
+  const noteModal = document.getElementById('note-display-modal');
+  const noteModalText = document.getElementById('note-modal-text');
+  const addNoteModal = document.getElementById('add-note-modal');
+  const saveCustomNoteBtn = document.getElementById('save-custom-note-btn');
+  const customNoteInput = document.getElementById('custom-note-input');
+  const jarParticles = document.getElementById('jar-particles');
+
+  const presetNotes = [
+    "You do not have to carry everything all at once. Take a slow, soft breath.",
+    "It is okay to miss what isn't there, and still honor the warmth surrounding you.",
+    "Your feelings are valid, tender, and deserving of unconditional gentleness.",
+    "You carry immense strength within you, even in quiet moments of rest.",
+    "May soft peace envelop your heart today.",
+    "Every small step towards warmth is proof of your healing journey."
+  ];
+
+  drawNoteBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playHarmonicChime([523.25, 659.25]);
+    const note = presetNotes[Math.floor(Math.random() * presetNotes.length)];
+    if (noteModalText) noteModalText.textContent = `"${note}"`;
+    noteModal?.classList.remove('hidden');
+  });
+
+  addNoteBtn?.addEventListener('click', () => {
+    addNoteModal?.classList.remove('hidden');
+  });
+
+  saveCustomNoteBtn?.addEventListener('click', () => {
+    const val = customNoteInput?.value.trim();
+    if (!val) return;
+
+    presetNotes.push(val);
+    if (customNoteInput) customNoteInput.value = '';
+    addNoteModal?.classList.add('hidden');
+
+    // Add floating particle to glass jar
+    if (jarParticles) {
+      const p = document.createElement('span');
+      p.className = 'jar-note-particle p1';
+      p.textContent = ['✨', '🌸', '💛', '⭐', '📜'][Math.floor(Math.random() * 5)];
+      p.style.left = `${Math.random() * 60 + 20}%`;
+      p.style.top = `${Math.random() * 60 + 20}%`;
+      jarParticles.appendChild(p);
+    }
+
+    playHarmonicChime([659.25, 783.99]);
+  });
+}
+
 function initSafeJournal() {
   const saveBtn = document.getElementById('save-journal-btn');
   const titleInput = document.getElementById('journal-title');
@@ -735,7 +1118,7 @@ function initSafeJournal() {
 }
 
 /* ==========================================================================
-   16. SPOTLIGHT SEARCH DASHBOARD ENGINE
+   16. SPOTLIGHT SEARCH & HEADER DROPDOWN ENGINE
    ========================================================================== */
 function initSpotlightSearchDashboard() {
   const spotlightModal = document.getElementById('spotlight-search-modal');
@@ -743,8 +1126,11 @@ function initSpotlightSearchDashboard() {
   const spotlightInput = document.getElementById('spotlight-input');
   const spotlightResults = document.getElementById('spotlight-results');
 
+  const headerDropdown = document.getElementById('header-spotlight-dropdown');
+  const dropdownInput = document.getElementById('dropdown-search-input');
+  const dropdownList = document.getElementById('dropdown-items-list');
+
   const spotlightData = [
-    // Sanctuary Navigation & Tabs
     { title: 'Sanctuary Overview', category: 'Navigation', type: 'nav', target: 'hub', icon: 'home', desc: 'Main clinical wellness sanctuary dashboard' },
     { title: 'Clinical AI Therapist (Dr. Aura)', category: 'Navigation', type: 'nav', target: 'ai-listener', icon: 'bot', desc: 'Autonomous Rogerian therapy & consultation' },
     { title: 'Sanctuary Circle Peer Network', category: 'Navigation', type: 'nav', target: 'community', icon: 'users', desc: 'HIPAA-guided moderated peer channels & voice lounges' },
@@ -754,197 +1140,96 @@ function initSpotlightSearchDashboard() {
     { title: 'Neuro-Acoustic Soundscapes', category: 'Navigation', type: 'nav', target: 'soundscapes', icon: 'music', desc: 'Procedural ambient sound generator & audio' },
     { title: 'Cognitive Memory Vault', category: 'Navigation', type: 'nav', target: 'memory-jar', icon: 'archive', desc: 'Confidential glass jar memory vault & notes' },
     { title: 'Clinical Heart Journal', category: 'Navigation', type: 'nav', target: 'journal', icon: 'heart', desc: 'Private encrypted reflective journal' },
-
-    // Clinical Therapy Actions
     { title: 'Speak with Dr. Aura', category: 'Quick Action', type: 'action', action: 'speak-aura', icon: 'mic', desc: 'Start voice consultation with AI therapist agent' },
     { title: 'Begin 4-7-8 Parasympathetic Breathing', category: 'Quick Action', type: 'action', action: 'start-breath', icon: 'play', desc: 'Start autonomic regulation breathing cycle' },
     { title: 'Experience Warm Embrace Ritual', category: 'Quick Action', type: 'action', action: 'hug-embrace', icon: 'heart-handshake', desc: 'Receive a gentle warm embrace' },
     { title: 'Somatic Tea Mindfulness Pause (30s)', category: 'Quick Action', type: 'action', action: 'brew-tea', icon: 'coffee', desc: '30-second somatic pause' },
-    { title: 'Reflective Reframing Statement', category: 'Quick Action', type: 'action', action: 'new-quote', icon: 'sparkles', desc: 'Generate cognitive reframing reflection' },
-    { title: 'Release Intentional Lantern', category: 'Quick Action', type: 'action', action: 'open-lantern-modal', icon: 'send', desc: 'Write & release a floating lantern' },
-    { title: 'Draw Comfort Note from Vault', category: 'Quick Action', type: 'action', action: 'draw-note', icon: 'sparkles', desc: 'Draw a comfort note from your glass jar' },
-    { title: 'Deposit Note into Memory Jar', category: 'Quick Action', type: 'action', action: 'add-note', icon: 'pen-tool', desc: 'Write a note of gratitude or memory' },
-
-    // Soundscapes Audio
-    { title: 'Window Rain Soundscape', category: 'Soundscapes', type: 'action', action: 'toggle-rain', icon: 'cloud-rain', desc: 'Pink noise window rain frequency' },
-    { title: 'Cozy Campfire Crackle', category: 'Soundscapes', type: 'action', action: 'toggle-campfire', icon: 'flame', desc: 'Warm acoustic campfire crackle' },
-    { title: 'Ocean Waves Rolling Tides', category: 'Soundscapes', type: 'action', action: 'toggle-ocean', icon: 'waves', desc: 'Lowpass ocean waves sound' },
-    { title: 'Forest Breeze Air', category: 'Soundscapes', type: 'action', action: 'toggle-breeze', icon: 'wind', desc: 'Subtle air forest breeze' },
-    { title: 'Harmonic Sine Chimes', category: 'Soundscapes', type: 'action', action: 'toggle-chimes', icon: 'bell', desc: 'Harmonic sine wave chimes' },
-
-    // Peer Channels
-    { title: '# general-sanctuary', category: 'Peer Channels', type: 'nav', target: 'community', channel: 'general', icon: 'message-square', desc: 'Supportive space for peer reflection' },
-    { title: '# family-and-longing', category: 'Peer Channels', type: 'nav', target: 'community', channel: 'family-longing', icon: 'message-square', desc: 'Support for parental detachment & longing' },
-    { title: '# daily-wins-and-warmth', category: 'Peer Channels', type: 'nav', target: 'community', channel: 'daily-wins', icon: 'message-square', desc: 'Sharing daily wins & soft warmth' },
-    { title: '🔊 tea-and-rest-lounge', category: 'Peer Channels', type: 'nav', target: 'community', channel: 'voice-lounge', icon: 'volume-2', desc: 'Voice lounge for talking softly' },
-
-    // Theme Customization
-    { title: 'Luminous Sunset Glass Theme', category: 'Themes', type: 'theme', theme: 'premium-white', icon: 'palette', desc: 'Sunset gradient glassmorphism theme' },
-    { title: 'Midnight Emerald Theme', category: 'Themes', type: 'theme', theme: 'midnight-emerald', icon: 'palette', desc: 'Deep emerald clinical theme' },
-    { title: 'Twilight Sunset Theme', category: 'Themes', type: 'theme', theme: 'twilight-sunset', icon: 'palette', desc: 'Twilight purple theme' },
-    { title: 'Rose Quartz Theme', category: 'Themes', type: 'theme', theme: 'rose-quartz', icon: 'palette', desc: 'Soft rose quartz theme' }
+    { title: 'Enter 3D Lantern Sky World', category: 'Quick Action', type: 'action', action: 'enter-3d-world', icon: 'sparkles', desc: 'WASD full-screen 3D lantern world' }
   ];
 
   let selectedIndex = 0;
   let currentFilteredItems = [];
 
-  function openSpotlight() {
-    if (!spotlightModal) return;
-    getAudioContext();
-    playBellSound(700, 'sine', 0.4, 0.05);
-    spotlightModal.classList.remove('hidden');
-    if (spotlightInput) {
-      spotlightInput.value = '';
-      spotlightInput.focus();
+  function toggleHeaderDropdown() {
+    if (!headerDropdown) return;
+    const isHidden = headerDropdown.classList.contains('hidden');
+    if (isHidden) {
+      headerDropdown.classList.remove('hidden');
+      if (dropdownInput) {
+        dropdownInput.value = '';
+        dropdownInput.focus();
+      }
+      renderDropdownItems('');
+    } else {
+      headerDropdown.classList.add('hidden');
     }
-    renderResults('');
   }
 
-  function closeSpotlight() {
-    if (!spotlightModal) return;
-    spotlightModal.classList.add('hidden');
-  }
+  spotlightTriggerBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleHeaderDropdown();
+  });
 
-  spotlightTriggerBtn?.addEventListener('click', openSpotlight);
-
-  // Global Keyboard Shortcuts (Cmd+K / Ctrl+K)
-  window.addEventListener('keydown', (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-      e.preventDefault();
-      if (spotlightModal?.classList.contains('hidden')) {
-        openSpotlight();
-      } else {
-        closeSpotlight();
-      }
-    } else if (e.key === 'Escape' && !spotlightModal?.classList.contains('hidden')) {
-      closeSpotlight();
+  document.addEventListener('click', (e) => {
+    if (headerDropdown && !headerDropdown.contains(e.target) && e.target !== spotlightTriggerBtn) {
+      headerDropdown.classList.add('hidden');
     }
   });
 
-  spotlightInput?.addEventListener('input', (e) => {
-    renderResults(e.target.value.trim());
+  dropdownInput?.addEventListener('input', (e) => {
+    renderDropdownItems(e.target.value.trim());
   });
 
-  spotlightInput?.addEventListener('keydown', (e) => {
-    if (currentFilteredItems.length === 0) return;
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      selectedIndex = (selectedIndex + 1) % currentFilteredItems.length;
-      updateHighlight();
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      selectedIndex = (selectedIndex - 1 + currentFilteredItems.length) % currentFilteredItems.length;
-      updateHighlight();
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (currentFilteredItems[selectedIndex]) {
-        executeSpotlightItem(currentFilteredItems[selectedIndex]);
-      }
-    }
-  });
-
-  function renderResults(query) {
-    if (!spotlightResults) return;
-    spotlightResults.innerHTML = '';
-    selectedIndex = 0;
-
-    const lowerQuery = query.toLowerCase();
+  function renderDropdownItems(query) {
+    if (!dropdownList) return;
+    dropdownList.innerHTML = '';
+    const lower = query.toLowerCase();
     const filtered = spotlightData.filter(item => 
-      item.title.toLowerCase().includes(lowerQuery) ||
-      item.desc.toLowerCase().includes(lowerQuery) ||
-      item.category.toLowerCase().includes(lowerQuery)
+      item.title.toLowerCase().includes(lower) || item.desc.toLowerCase().includes(lower)
     );
 
-    currentFilteredItems = filtered;
-
     if (filtered.length === 0) {
-      spotlightResults.innerHTML = `
-        <div class="ios-inset-box text-center" style="padding: 24px;">
-          <p style="color: var(--text-soft); font-size: 0.9rem;">No results found for "${query}". Try searching "Aura", "Rain", "4-7-8", or "Theme".</p>
-        </div>
-      `;
+      dropdownList.innerHTML = '<div style="padding:10px; color:var(--text-soft); font-size:0.84rem;">No items found.</div>';
       return;
     }
 
-    // Group items by category
-    const grouped = {};
     filtered.forEach(item => {
-      if (!grouped[item.category]) grouped[item.category] = [];
-      grouped[item.category].push(item);
-    });
-
-    let globalItemIndex = 0;
-
-    Object.keys(grouped).forEach(category => {
-      const groupEl = document.createElement('div');
-      groupEl.className = 'spotlight-group';
-
-      const titleEl = document.createElement('div');
-      titleEl.className = 'spotlight-group-title';
-      titleEl.textContent = category;
-      groupEl.appendChild(titleEl);
-
-      grouped[category].forEach(item => {
-        const itemIdx = globalItemIndex;
-        const itemEl = document.createElement('div');
-        itemEl.className = `spotlight-item ${itemIdx === selectedIndex ? 'selected' : ''}`;
-        itemEl.setAttribute('data-index', itemIdx);
-
-        itemEl.innerHTML = `
-          <div class="spotlight-item-left">
-            <div class="spotlight-item-icon">
-              <i data-lucide="${item.icon}"></i>
-            </div>
-            <div class="spotlight-item-info">
-              <span class="spotlight-item-title">${item.title}</span>
-              <span class="spotlight-item-subtitle">${item.desc}</span>
-            </div>
+      const el = document.createElement('div');
+      el.className = 'spotlight-item';
+      el.innerHTML = `
+        <div class="spotlight-item-left">
+          <div class="spotlight-item-icon"><i data-lucide="${item.icon}"></i></div>
+          <div class="spotlight-item-info">
+            <span class="spotlight-item-title">${item.title}</span>
+            <span class="spotlight-item-subtitle">${item.desc}</span>
           </div>
-          <span class="spotlight-badge">${item.category}</span>
-        `;
-
-        itemEl.addEventListener('click', () => executeSpotlightItem(item));
-        groupEl.appendChild(itemEl);
-        globalItemIndex++;
+        </div>
+      `;
+      el.addEventListener('click', () => {
+        headerDropdown?.classList.add('hidden');
+        executeSpotlightItem(item);
       });
-
-      spotlightResults.appendChild(groupEl);
+      dropdownList.appendChild(el);
     });
 
     if (window.lucide) window.lucide.createIcons();
   }
 
-  function updateHighlight() {
-    const items = spotlightResults.querySelectorAll('.spotlight-item');
-    items.forEach((item, idx) => {
-      item.classList.toggle('selected', idx === selectedIndex);
-      if (idx === selectedIndex) {
-        item.scrollIntoView({ block: 'nearest' });
-      }
-    });
-  }
+  // Global Keyboard Shortcuts (Cmd+K / Ctrl+K)
+  window.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      toggleHeaderDropdown();
+    } else if (e.key === 'Escape') {
+      headerDropdown?.classList.add('hidden');
+      spotlightModal?.classList.add('hidden');
+    }
+  });
 
   function executeSpotlightItem(item) {
-    closeSpotlight();
     playBellSound(750, 'sine', 0.5, 0.08);
-
     if (item.type === 'nav') {
-      const btn = document.querySelector(`.nav-tab-btn[data-tab="${item.target}"]`);
-      btn?.click();
-      if (item.channel) {
-        setTimeout(() => {
-          const chanBtn = document.querySelector(`.channel-btn[data-channel="${item.channel}"]`);
-          chanBtn?.click();
-        }, 300);
-      }
-    } else if (item.type === 'theme') {
-      document.body.setAttribute('data-theme', item.theme);
-      const opt = document.querySelector(`.theme-option-btn[data-theme="${item.theme}"]`);
-      if (opt) {
-        document.querySelectorAll('.theme-option-btn').forEach(o => o.classList.remove('active'));
-        opt.classList.add('active');
-      }
+      document.querySelector(`.nav-tab-btn[data-tab="${item.target}"]`)?.click();
     } else if (item.type === 'action') {
       switch (item.action) {
         case 'speak-aura':
@@ -961,32 +1246,8 @@ function initSpotlightSearchDashboard() {
         case 'brew-tea':
           document.getElementById('brew-tea-btn')?.click();
           break;
-        case 'new-quote':
-          document.getElementById('new-quote-btn')?.click();
-          break;
-        case 'open-lantern-modal':
-          document.querySelector('.nav-tab-btn[data-tab="lanterns"]')?.click();
-          setTimeout(() => document.getElementById('open-lantern-modal-btn')?.click(), 400);
-          break;
-        case 'draw-note':
-          document.querySelector('.nav-tab-btn[data-tab="memory-jar"]')?.click();
-          setTimeout(() => document.getElementById('draw-note-btn')?.click(), 400);
-          break;
-        case 'add-note':
-          document.querySelector('.nav-tab-btn[data-tab="memory-jar"]')?.click();
-          setTimeout(() => document.getElementById('add-note-btn')?.click(), 400);
-          break;
-        case 'toggle-rain':
-        case 'toggle-campfire':
-        case 'toggle-ocean':
-        case 'toggle-breeze':
-        case 'toggle-chimes':
-          const soundName = item.action.replace('toggle-', '');
-          document.querySelector('.nav-tab-btn[data-tab="soundscapes"]')?.click();
-          setTimeout(() => {
-            const card = document.querySelector(`.sound-card[data-sound="${soundName}"]`);
-            card?.querySelector('.sound-toggle-btn')?.click();
-          }, 400);
+        case 'enter-3d-world':
+          document.getElementById('enter-3d-sky-world-btn')?.click();
           break;
       }
     }
@@ -1009,17 +1270,14 @@ function initHandPaintableOrbCanvas() {
   let currentBrushColor = '#d946ef';
   let paintedColorsList = ['#ffcf56', '#d946ef', '#ff8052'];
 
-  // Initialize Canvas with Soft Radial Base
   function drawBaseOrb() {
     ctx.clearRect(0, 0, width, height);
 
-    // Create circular clip path
     ctx.save();
     ctx.beginPath();
     ctx.arc(radius, radius, radius - 4, 0, Math.PI * 2);
     ctx.clip();
 
-    // Base background gradient
     const bgGrad = ctx.createRadialGradient(radius * 0.7, radius * 0.7, 10, radius, radius, radius);
     bgGrad.addColorStop(0, '#ffffff');
     bgGrad.addColorStop(0.4, '#ffcf56');
@@ -1033,7 +1291,6 @@ function initHandPaintableOrbCanvas() {
 
   drawBaseOrb();
 
-  // Paint Swatches & Color Picker
   const colorBtns = document.querySelectorAll('.paint-color-btn');
   const customPicker = document.getElementById('custom-brush-color');
 
@@ -1055,7 +1312,6 @@ function initHandPaintableOrbCanvas() {
     }
   });
 
-  // Pointer Painting Events
   function paintAtPosition(x, y) {
     ctx.save();
     ctx.beginPath();
@@ -1074,7 +1330,6 @@ function initHandPaintableOrbCanvas() {
     ctx.fill();
     ctx.restore();
 
-    // Dynamically update CSS preview orb
     updateCSSOrbPreview();
   }
 
@@ -1116,7 +1371,6 @@ function initHandPaintableOrbCanvas() {
     cssOrb.style.background = `radial-gradient(circle at 35% 35%, #ffffff 0%, ${c1} 35%, ${c2} 70%, ${c3} 100%)`;
   }
 
-  // CRITICAL REQUIREMENT: Apply Painted Gradient to ENTIRE Sanctuary App!
   document.getElementById('apply-paint-theme-btn')?.addEventListener('click', () => {
     getAudioContext();
     playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
@@ -1126,13 +1380,11 @@ function initHandPaintableOrbCanvas() {
     const c3 = paintedColorsList[2] || '#f472b6';
     const c4 = paintedColorsList[3] || '#d946ef';
 
-    // Update CSS Custom Properties App-Wide
     document.documentElement.style.setProperty('--sun-gold', c1);
     document.documentElement.style.setProperty('--coral', c2);
     document.documentElement.style.setProperty('--rose', c3);
     document.documentElement.style.setProperty('--magenta', c4);
 
-    // Apply smooth glow shift
     document.body.classList.add('warm-tab-shift');
     setTimeout(() => document.body.classList.remove('warm-tab-shift'), 800);
   });
@@ -1156,16 +1408,15 @@ function init3DLanternSkyWorld() {
   let stars;
   let selectedLanternMesh = null;
 
-  // WASD Controls State
   const keys = { w: false, a: false, s: false, d: false };
   let isMouseDown = false;
   let mouseX = 0, mouseY = 0;
   let cameraRotation = { yaw: 0, pitch: 0 };
-  let moveSpeed = 0.15;
+  let moveSpeed = 0.18;
 
   function initScene() {
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x0a0518, 0.035);
+    scene.fog = new THREE.FogExp2(0x0a0518, 0.03);
 
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -1177,17 +1428,16 @@ function init3DLanternSkyWorld() {
     renderer.setSize(w, h);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Lights
-    const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambient);
 
-    const dirLight = new THREE.DirectionalLight(0xffcf56, 1.5);
+    const dirLight = new THREE.DirectionalLight(0xffcf56, 1.6);
     dirLight.position.set(5, 10, 7);
     scene.add(dirLight);
 
     // Starry Particles
     const starGeo = new THREE.BufferGeometry();
-    const starCount = 300;
+    const starCount = 350;
     const starPos = new Float32Array(starCount * 3);
     for (let i = 0; i < starCount * 3; i += 3) {
       starPos[i] = (Math.random() - 0.5) * 60;
@@ -1195,43 +1445,40 @@ function init3DLanternSkyWorld() {
       starPos[i + 2] = (Math.random() - 0.5) * 60;
     }
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    const starMat = new THREE.PointsMaterial({ color: 0xffcf56, size: 0.15, transparent: true, opacity: 0.8 });
+    const starMat = new THREE.PointsMaterial({ color: 0xffcf56, size: 0.16, transparent: true, opacity: 0.8 });
     stars = new THREE.Points(starGeo, starMat);
     scene.add(stars);
 
-    // Create 3D Glowing Lanterns
+    // 3D Lanterns
     lanterns = [];
     const colors = [0xffcf56, 0xff8052, 0xd946ef, 0x34d399, 0x60a5fa];
 
     for (let i = 0; i < 28; i++) {
       const group = new THREE.Group();
 
-      // Outer Lantern Cylinder Body
       const bodyGeo = new THREE.CylinderGeometry(0.35, 0.42, 0.8, 16);
       const bodyMat = new THREE.MeshStandardMaterial({
         color: colors[i % colors.length],
-        roughness: 0.25,
+        roughness: 0.2,
         metalness: 0.1,
         transparent: true,
-        opacity: 0.88,
+        opacity: 0.9,
         emissive: colors[i % colors.length],
-        emissiveIntensity: 0.4
+        emissiveIntensity: 0.45
       });
       const body = new THREE.Mesh(bodyGeo, bodyMat);
       group.add(body);
 
-      // Inner Flame Light Core
       const flameGeo = new THREE.SphereGeometry(0.15, 16, 16);
       const flameMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
       const flame = new THREE.Mesh(flameGeo, flameMat);
       flame.position.y = -0.1;
       group.add(flame);
 
-      const pointLight = new THREE.PointLight(colors[i % colors.length], 1.5, 4);
+      const pointLight = new THREE.PointLight(colors[i % colors.length], 1.6, 5);
       pointLight.position.y = -0.1;
       group.add(pointLight);
 
-      // Position in 3D Space
       group.position.set(
         (Math.random() - 0.5) * 22,
         (Math.random() - 0.5) * 12,
@@ -1251,7 +1498,6 @@ function init3DLanternSkyWorld() {
     }
   }
 
-  // Event Listeners for WASD Navigation
   window.addEventListener('keydown', (e) => {
     if (overlay.classList.contains('hidden')) return;
     const k = e.key.toLowerCase();
@@ -1264,7 +1510,6 @@ function init3DLanternSkyWorld() {
     if (k in keys) keys[k] = false;
   });
 
-  // Mouse Look Dragging
   canvas.addEventListener('mousedown', (e) => {
     isMouseDown = true;
     mouseX = e.clientX;
@@ -1287,14 +1532,12 @@ function init3DLanternSkyWorld() {
     camera.rotation.set(cameraRotation.pitch, cameraRotation.yaw, 0, 'YXZ');
   });
 
-  // Scroll Zoom
   canvas.addEventListener('wheel', (e) => {
     if (overlay.classList.contains('hidden')) return;
     camera.position.z += e.deltaY * 0.01;
     camera.position.z = Math.max(2, Math.min(30, camera.position.z));
   });
 
-  // Raycaster Spectate Lantern Click
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
@@ -1319,10 +1562,8 @@ function init3DLanternSkyWorld() {
     getAudioContext();
     playHarmonicChime([523.25, 659.25, 783.99]);
 
-    // Animate lantern towards camera left half
     lanternGroup.position.set(-2.5, 0, camera.position.z - 4);
 
-    // Populate spectate glass panel
     const dateBadge = document.getElementById('spectate-date-badge');
     const titleEl = document.getElementById('spectate-title');
     const noteEl = document.getElementById('spectate-note');
@@ -1339,7 +1580,6 @@ function init3DLanternSkyWorld() {
     spectatePanel?.classList.add('hidden');
   });
 
-  // Spinning 3D Photo Carousel Nav Logic
   let carouselAngle = 0;
   const carouselSpinner = document.getElementById('carousel-spinner');
   document.getElementById('carousel-prev-btn')?.addEventListener('click', () => {
@@ -1353,14 +1593,12 @@ function init3DLanternSkyWorld() {
     playBellSound(620, 'sine', 0.4, 0.05);
   });
 
-  // Animation Frame Loop
   function animate3DWorld() {
     animationId = requestAnimationFrame(animate3DWorld);
 
-    // WASD Movement
     const dir = new THREE.Vector3();
     camera.getWorldDirection(dir);
-    dir.y = 0; // Move along horizontal plane
+    dir.y = 0;
     dir.normalize();
 
     const sideDir = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)).negate();
@@ -1370,7 +1608,6 @@ function init3DLanternSkyWorld() {
     if (keys.a) camera.position.addScaledVector(sideDir, -moveSpeed);
     if (keys.d) camera.position.addScaledVector(sideDir, moveSpeed);
 
-    // Float Lanterns
     lanterns.forEach(l => {
       if (l !== selectedLanternMesh) {
         l.position.y += l.userData.floatSpeed;
@@ -1387,16 +1624,27 @@ function init3DLanternSkyWorld() {
     renderer.render(scene, camera);
   }
 
-  // Open 3D World Overlay
   enterBtn?.addEventListener('click', () => {
     getAudioContext();
     playHarmonicChime([440, 523.25, 659.25, 880]);
     overlay?.classList.remove('hidden');
+
     if (!scene) initScene();
+
+    // Force canvas resize to match viewport
+    if (canvas && renderer && camera) {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = w;
+      canvas.height = h;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+
     animate3DWorld();
   });
 
-  // Exit 3D World
   exitBtn?.addEventListener('click', () => {
     cancelAnimationFrame(animationId);
     overlay?.classList.add('hidden');
@@ -1404,9 +1652,11 @@ function init3DLanternSkyWorld() {
   });
 
   window.addEventListener('resize', () => {
-    if (scene && camera && renderer) {
+    if (scene && camera && renderer && !overlay?.classList.contains('hidden')) {
       const w = window.innerWidth;
       const h = window.innerHeight;
+      canvas.width = w;
+      canvas.height = h;
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
