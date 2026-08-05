@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAudioEngine();
   initThemeManager();
   initDesktopTabNavigation();
+  initSpotlightSearchDashboard();
   initAmbientCanvas();
   initSanctuaryHub();
   initAutonomousAITherapistAura();
@@ -729,4 +730,263 @@ function initSafeJournal() {
     if (bodyInput) bodyInput.value = '';
     playBellSound(750, 'sine', 0.8, 0.08);
   });
+}
+
+/* ==========================================================================
+   16. SPOTLIGHT SEARCH DASHBOARD ENGINE
+   ========================================================================== */
+function initSpotlightSearchDashboard() {
+  const spotlightModal = document.getElementById('spotlight-search-modal');
+  const spotlightTriggerBtn = document.getElementById('open-spotlight-btn');
+  const spotlightInput = document.getElementById('spotlight-input');
+  const spotlightResults = document.getElementById('spotlight-results');
+
+  const spotlightData = [
+    // Sanctuary Navigation & Tabs
+    { title: 'Sanctuary Overview', category: 'Navigation', type: 'nav', target: 'hub', icon: 'home', desc: 'Main clinical wellness sanctuary dashboard' },
+    { title: 'Clinical AI Therapist (Dr. Aura)', category: 'Navigation', type: 'nav', target: 'ai-listener', icon: 'bot', desc: 'Autonomous Rogerian therapy & consultation' },
+    { title: 'Sanctuary Circle Peer Network', category: 'Navigation', type: 'nav', target: 'community', icon: 'users', desc: 'HIPAA-guided moderated peer channels & voice lounges' },
+    { title: 'Cognitive Emotion Studio', category: 'Navigation', type: 'nav', target: 'memory-orbs', icon: 'sparkles', desc: 'Map complex affective states into animated Emotion Orbs' },
+    { title: 'Release Sky Vault', category: 'Navigation', type: 'nav', target: 'lanterns', icon: 'send', desc: 'Release grief & intentions into the starry sky' },
+    { title: 'Autonomic Regulation', category: 'Navigation', type: 'nav', target: 'breathing', icon: 'wind', desc: '4-7-8 parasympathetic & box breathing exercises' },
+    { title: 'Neuro-Acoustic Soundscapes', category: 'Navigation', type: 'nav', target: 'soundscapes', icon: 'music', desc: 'Procedural ambient sound generator & audio' },
+    { title: 'Cognitive Memory Vault', category: 'Navigation', type: 'nav', target: 'memory-jar', icon: 'archive', desc: 'Confidential glass jar memory vault & notes' },
+    { title: 'Clinical Heart Journal', category: 'Navigation', type: 'nav', target: 'journal', icon: 'heart', desc: 'Private encrypted reflective journal' },
+
+    // Clinical Therapy Actions
+    { title: 'Speak with Dr. Aura', category: 'Quick Action', type: 'action', action: 'speak-aura', icon: 'mic', desc: 'Start voice consultation with AI therapist agent' },
+    { title: 'Begin 4-7-8 Parasympathetic Breathing', category: 'Quick Action', type: 'action', action: 'start-breath', icon: 'play', desc: 'Start autonomic regulation breathing cycle' },
+    { title: 'Experience Warm Embrace Ritual', category: 'Quick Action', type: 'action', action: 'hug-embrace', icon: 'heart-handshake', desc: 'Receive a gentle warm embrace' },
+    { title: 'Somatic Tea Mindfulness Pause (30s)', category: 'Quick Action', type: 'action', action: 'brew-tea', icon: 'coffee', desc: '30-second somatic pause' },
+    { title: 'Reflective Reframing Statement', category: 'Quick Action', type: 'action', action: 'new-quote', icon: 'sparkles', desc: 'Generate cognitive reframing reflection' },
+    { title: 'Release Intentional Lantern', category: 'Quick Action', type: 'action', action: 'open-lantern-modal', icon: 'send', desc: 'Write & release a floating lantern' },
+    { title: 'Draw Comfort Note from Vault', category: 'Quick Action', type: 'action', action: 'draw-note', icon: 'sparkles', desc: 'Draw a comfort note from your glass jar' },
+    { title: 'Deposit Note into Memory Jar', category: 'Quick Action', type: 'action', action: 'add-note', icon: 'pen-tool', desc: 'Write a note of gratitude or memory' },
+
+    // Soundscapes Audio
+    { title: 'Window Rain Soundscape', category: 'Soundscapes', type: 'action', action: 'toggle-rain', icon: 'cloud-rain', desc: 'Pink noise window rain frequency' },
+    { title: 'Cozy Campfire Crackle', category: 'Soundscapes', type: 'action', action: 'toggle-campfire', icon: 'flame', desc: 'Warm acoustic campfire crackle' },
+    { title: 'Ocean Waves Rolling Tides', category: 'Soundscapes', type: 'action', action: 'toggle-ocean', icon: 'waves', desc: 'Lowpass ocean waves sound' },
+    { title: 'Forest Breeze Air', category: 'Soundscapes', type: 'action', action: 'toggle-breeze', icon: 'wind', desc: 'Subtle air forest breeze' },
+    { title: 'Harmonic Sine Chimes', category: 'Soundscapes', type: 'action', action: 'toggle-chimes', icon: 'bell', desc: 'Harmonic sine wave chimes' },
+
+    // Peer Channels
+    { title: '# general-sanctuary', category: 'Peer Channels', type: 'nav', target: 'community', channel: 'general', icon: 'message-square', desc: 'Supportive space for peer reflection' },
+    { title: '# family-and-longing', category: 'Peer Channels', type: 'nav', target: 'community', channel: 'family-longing', icon: 'message-square', desc: 'Support for parental detachment & longing' },
+    { title: '# daily-wins-and-warmth', category: 'Peer Channels', type: 'nav', target: 'community', channel: 'daily-wins', icon: 'message-square', desc: 'Sharing daily wins & soft warmth' },
+    { title: '🔊 tea-and-rest-lounge', category: 'Peer Channels', type: 'nav', target: 'community', channel: 'voice-lounge', icon: 'volume-2', desc: 'Voice lounge for talking softly' },
+
+    // Theme Customization
+    { title: 'Luminous Sunset Glass Theme', category: 'Themes', type: 'theme', theme: 'premium-white', icon: 'palette', desc: 'Sunset gradient glassmorphism theme' },
+    { title: 'Midnight Emerald Theme', category: 'Themes', type: 'theme', theme: 'midnight-emerald', icon: 'palette', desc: 'Deep emerald clinical theme' },
+    { title: 'Twilight Sunset Theme', category: 'Themes', type: 'theme', theme: 'twilight-sunset', icon: 'palette', desc: 'Twilight purple theme' },
+    { title: 'Rose Quartz Theme', category: 'Themes', type: 'theme', theme: 'rose-quartz', icon: 'palette', desc: 'Soft rose quartz theme' }
+  ];
+
+  let selectedIndex = 0;
+  let currentFilteredItems = [];
+
+  function openSpotlight() {
+    if (!spotlightModal) return;
+    getAudioContext();
+    playBellSound(700, 'sine', 0.4, 0.05);
+    spotlightModal.classList.remove('hidden');
+    if (spotlightInput) {
+      spotlightInput.value = '';
+      spotlightInput.focus();
+    }
+    renderResults('');
+  }
+
+  function closeSpotlight() {
+    if (!spotlightModal) return;
+    spotlightModal.classList.add('hidden');
+  }
+
+  spotlightTriggerBtn?.addEventListener('click', openSpotlight);
+
+  // Global Keyboard Shortcuts (Cmd+K / Ctrl+K)
+  window.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (spotlightModal?.classList.contains('hidden')) {
+        openSpotlight();
+      } else {
+        closeSpotlight();
+      }
+    } else if (e.key === 'Escape' && !spotlightModal?.classList.contains('hidden')) {
+      closeSpotlight();
+    }
+  });
+
+  spotlightInput?.addEventListener('input', (e) => {
+    renderResults(e.target.value.trim());
+  });
+
+  spotlightInput?.addEventListener('keydown', (e) => {
+    if (currentFilteredItems.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = (selectedIndex + 1) % currentFilteredItems.length;
+      updateHighlight();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = (selectedIndex - 1 + currentFilteredItems.length) % currentFilteredItems.length;
+      updateHighlight();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (currentFilteredItems[selectedIndex]) {
+        executeSpotlightItem(currentFilteredItems[selectedIndex]);
+      }
+    }
+  });
+
+  function renderResults(query) {
+    if (!spotlightResults) return;
+    spotlightResults.innerHTML = '';
+    selectedIndex = 0;
+
+    const lowerQuery = query.toLowerCase();
+    const filtered = spotlightData.filter(item => 
+      item.title.toLowerCase().includes(lowerQuery) ||
+      item.desc.toLowerCase().includes(lowerQuery) ||
+      item.category.toLowerCase().includes(lowerQuery)
+    );
+
+    currentFilteredItems = filtered;
+
+    if (filtered.length === 0) {
+      spotlightResults.innerHTML = `
+        <div class="ios-inset-box text-center" style="padding: 24px;">
+          <p style="color: var(--text-soft); font-size: 0.9rem;">No results found for "${query}". Try searching "Aura", "Rain", "4-7-8", or "Theme".</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Group items by category
+    const grouped = {};
+    filtered.forEach(item => {
+      if (!grouped[item.category]) grouped[item.category] = [];
+      grouped[item.category].push(item);
+    });
+
+    let globalItemIndex = 0;
+
+    Object.keys(grouped).forEach(category => {
+      const groupEl = document.createElement('div');
+      groupEl.className = 'spotlight-group';
+
+      const titleEl = document.createElement('div');
+      titleEl.className = 'spotlight-group-title';
+      titleEl.textContent = category;
+      groupEl.appendChild(titleEl);
+
+      grouped[category].forEach(item => {
+        const itemIdx = globalItemIndex;
+        const itemEl = document.createElement('div');
+        itemEl.className = `spotlight-item ${itemIdx === selectedIndex ? 'selected' : ''}`;
+        itemEl.setAttribute('data-index', itemIdx);
+
+        itemEl.innerHTML = `
+          <div class="spotlight-item-left">
+            <div class="spotlight-item-icon">
+              <i data-lucide="${item.icon}"></i>
+            </div>
+            <div class="spotlight-item-info">
+              <span class="spotlight-item-title">${item.title}</span>
+              <span class="spotlight-item-subtitle">${item.desc}</span>
+            </div>
+          </div>
+          <span class="spotlight-badge">${item.category}</span>
+        `;
+
+        itemEl.addEventListener('click', () => executeSpotlightItem(item));
+        groupEl.appendChild(itemEl);
+        globalItemIndex++;
+      });
+
+      spotlightResults.appendChild(groupEl);
+    });
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function updateHighlight() {
+    const items = spotlightResults.querySelectorAll('.spotlight-item');
+    items.forEach((item, idx) => {
+      item.classList.toggle('selected', idx === selectedIndex);
+      if (idx === selectedIndex) {
+        item.scrollIntoView({ block: 'nearest' });
+      }
+    });
+  }
+
+  function executeSpotlightItem(item) {
+    closeSpotlight();
+    playBellSound(750, 'sine', 0.5, 0.08);
+
+    if (item.type === 'nav') {
+      const btn = document.querySelector(`.nav-tab-btn[data-tab="${item.target}"]`);
+      btn?.click();
+      if (item.channel) {
+        setTimeout(() => {
+          const chanBtn = document.querySelector(`.channel-btn[data-channel="${item.channel}"]`);
+          chanBtn?.click();
+        }, 300);
+      }
+    } else if (item.type === 'theme') {
+      document.body.setAttribute('data-theme', item.theme);
+      const opt = document.querySelector(`.theme-option-btn[data-theme="${item.theme}"]`);
+      if (opt) {
+        document.querySelectorAll('.theme-option-btn').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+      }
+    } else if (item.type === 'action') {
+      switch (item.action) {
+        case 'speak-aura':
+          document.querySelector('.nav-tab-btn[data-tab="ai-listener"]')?.click();
+          setTimeout(() => document.getElementById('start-voice-listen-btn')?.click(), 400);
+          break;
+        case 'start-breath':
+          document.querySelector('.nav-tab-btn[data-tab="breathing"]')?.click();
+          setTimeout(() => document.getElementById('start-breath-btn')?.click(), 400);
+          break;
+        case 'hug-embrace':
+          document.getElementById('hug-btn')?.click();
+          break;
+        case 'brew-tea':
+          document.getElementById('brew-tea-btn')?.click();
+          break;
+        case 'new-quote':
+          document.getElementById('new-quote-btn')?.click();
+          break;
+        case 'open-lantern-modal':
+          document.querySelector('.nav-tab-btn[data-tab="lanterns"]')?.click();
+          setTimeout(() => document.getElementById('open-lantern-modal-btn')?.click(), 400);
+          break;
+        case 'draw-note':
+          document.querySelector('.nav-tab-btn[data-tab="memory-jar"]')?.click();
+          setTimeout(() => document.getElementById('draw-note-btn')?.click(), 400);
+          break;
+        case 'add-note':
+          document.querySelector('.nav-tab-btn[data-tab="memory-jar"]')?.click();
+          setTimeout(() => document.getElementById('add-note-btn')?.click(), 400);
+          break;
+        case 'toggle-rain':
+        case 'toggle-campfire':
+        case 'toggle-ocean':
+        case 'toggle-breeze':
+        case 'toggle-chimes':
+          const soundName = item.action.replace('toggle-', '');
+          document.querySelector('.nav-tab-btn[data-tab="soundscapes"]')?.click();
+          setTimeout(() => {
+            const card = document.querySelector(`.sound-card[data-sound="${soundName}"]`);
+            card?.querySelector('.sound-toggle-btn')?.click();
+          }, 400);
+          break;
+      }
+    }
+  }
 }

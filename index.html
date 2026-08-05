@@ -78,6 +78,11 @@
       </nav>
 
       <div class="header-right-actions">
+        <button id="open-spotlight-btn" class="spotlight-trigger-btn" title="Search Spotlight (Cmd+K)">
+          <i data-lucide="search"></i>
+          <span class="spotlight-trigger-text">Search Sanctuary...</span>
+          <kbd class="spotlight-kbd">⌘K</kbd>
+        </button>
         <span id="header-user-badge" class="header-user-tag"><i data-lucide="user-check" class="icon-inline"></i> Verified Client</span>
         <button id="open-auth-modal-btn" class="ios-icon-btn" title="Account & Survey"><i data-lucide="user"></i></button>
         <button id="theme-toggle-btn" class="ios-icon-btn" title="Color Palettes"><i data-lucide="palette"></i></button>
@@ -931,6 +936,25 @@
           <span class="theme-preview rose-quartz-preview"></span>
           <span>Rose Quartz</span>
         </button>
+      </div>
+    </div>
+  <!-- GLOBAL MACOS SPOTLIGHT SEARCH PALETTE MODAL -->
+  <div id="spotlight-search-modal" class="modal-overlay hidden">
+    <div class="spotlight-palette-card">
+      <div class="spotlight-search-header">
+        <i data-lucide="search" class="spotlight-icon-main"></i>
+        <input type="text" id="spotlight-input" placeholder="Search features, therapy tools, channels, sounds... (e.g. 'Aura', 'Rain', '4-7-8', '#general')" autocomplete="off" />
+        <kbd class="spotlight-esc-kbd">ESC</kbd>
+      </div>
+
+      <div class="spotlight-results-container" id="spotlight-results">
+        <!-- Dynamically rendered Spotlight Search items -->
+      </div>
+
+      <div class="spotlight-footer">
+        <div class="spotlight-hint"><kbd>↑</kbd> <kbd>↓</kbd> Navigate</div>
+        <div class="spotlight-hint"><kbd>↵</kbd> Select</div>
+        <div class="spotlight-hint"><kbd>⌘K</kbd> Toggle</div>
       </div>
     </div>
   </div>
