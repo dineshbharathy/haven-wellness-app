@@ -77,6 +77,130 @@
   --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(244, 114, 182, 0.1);
 }
 
+/* ── LUCIDE PREMIUM ICONS STYLING ── */
+.lucide {
+  width: 1.22em;
+  height: 1.22em;
+  stroke-width: 2.2px;
+  vertical-align: -0.16em;
+  display: inline-block;
+  flex-shrink: 0;
+  transition: transform 0.25s var(--ease), stroke 0.25s var(--ease);
+}
+
+.brand-sparkle-icon {
+  width: 1.35em;
+  height: 1.35em;
+  color: var(--magenta);
+  animation: gentlePulse 3s ease-in-out infinite;
+}
+
+.icon-inline {
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.14em;
+}
+
+.widget-icon .lucide {
+  width: 1.85em;
+  height: 1.85em;
+  color: var(--magenta);
+}
+
+.nav-tab-btn .lucide {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.ios-btn .lucide {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.tea-icon-lg {
+  width: 2.2em !important;
+  height: 2.2em !important;
+  color: var(--coral);
+}
+
+.heart-icon-lg {
+  width: 2.8em !important;
+  height: 2.8em !important;
+  color: var(--magenta);
+  filter: drop-shadow(0 4px 15px rgba(217, 70, 239, 0.4));
+}
+
+.auth-icon-lg {
+  width: 2.4em !important;
+  height: 2.4em !important;
+  color: var(--magenta);
+}
+
+.hug-icon-lg {
+  width: 3.2em !important;
+  height: 3.2em !important;
+  color: var(--coral);
+}
+
+/* ── DIRECTIONAL RAINBOW CURTAIN WIPE ── */
+.rainbow-wipe-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    135deg,
+    #ffcf56 0%,
+    #ff8052 25%,
+    #f472b6 50%,
+    #d946ef 75%,
+    #8b5cf6 100%
+  );
+  box-shadow: 0 0 60px rgba(217, 70, 239, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+/* Wipe Right to Left (when switching to a tab on the right) */
+.rainbow-wipe-curtain.wipe-from-right {
+  animation: wipeRightToLeft 0.52s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* Wipe Left to Right (when switching to a tab on the left) */
+.rainbow-wipe-curtain.wipe-from-left {
+  animation: wipeLeftToRight 0.52s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes wipeRightToLeft {
+  0% {
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+    opacity: 1;
+  }
+  50% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    opacity: 1;
+  }
+  100% {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    opacity: 0;
+  }
+}
+
+@keyframes wipeLeftToRight {
+  0% {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    opacity: 1;
+  }
+  50% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    opacity: 1;
+  }
+  100% {
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+    opacity: 0;
+  }
+}
+
 /* ── BASE ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
