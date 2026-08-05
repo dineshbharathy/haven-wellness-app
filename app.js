@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initAutonomousAITherapistAura();
   initSanctuaryCircleCommunity();
   initEmotionStudio2D();
+  initHandPaintableOrbCanvas();
   initSkyLanterns2DCanvas();
+  init3DLanternSkyWorld();
   initBreathingOasis2D();
   initAudioSpectrumBars();
   initSoundscapes();
@@ -989,4 +991,425 @@ function initSpotlightSearchDashboard() {
       }
     }
   }
+}
+
+/* ==========================================================================
+   17. HAND-PAINTABLE ORB CANVAS & APP-WIDE GRADIENT BINDING ENGINE
+   ========================================================================== */
+function initHandPaintableOrbCanvas() {
+  const canvas = document.getElementById('paint-orb-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const width = canvas.width = 220;
+  const height = canvas.height = 220;
+  const radius = width / 2;
+
+  let isPainting = false;
+  let currentBrushColor = '#d946ef';
+  let paintedColorsList = ['#ffcf56', '#d946ef', '#ff8052'];
+
+  // Initialize Canvas with Soft Radial Base
+  function drawBaseOrb() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Create circular clip path
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(radius, radius, radius - 4, 0, Math.PI * 2);
+    ctx.clip();
+
+    // Base background gradient
+    const bgGrad = ctx.createRadialGradient(radius * 0.7, radius * 0.7, 10, radius, radius, radius);
+    bgGrad.addColorStop(0, '#ffffff');
+    bgGrad.addColorStop(0.4, '#ffcf56');
+    bgGrad.addColorStop(0.75, '#ff8052');
+    bgGrad.addColorStop(1, '#d946ef');
+
+    ctx.fillStyle = bgGrad;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  drawBaseOrb();
+
+  // Paint Swatches & Color Picker
+  const colorBtns = document.querySelectorAll('.paint-color-btn');
+  const customPicker = document.getElementById('custom-brush-color');
+
+  colorBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      colorBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentBrushColor = btn.getAttribute('data-color') || '#d946ef';
+      if (!paintedColorsList.includes(currentBrushColor)) {
+        paintedColorsList.unshift(currentBrushColor);
+      }
+    });
+  });
+
+  customPicker?.addEventListener('input', (e) => {
+    currentBrushColor = e.target.value;
+    if (!paintedColorsList.includes(currentBrushColor)) {
+      paintedColorsList.unshift(currentBrushColor);
+    }
+  });
+
+  // Pointer Painting Events
+  function paintAtPosition(x, y) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(radius, radius, radius - 4, 0, Math.PI * 2);
+    ctx.clip();
+
+    const rad = Math.random() * 25 + 20;
+    const grad = ctx.createRadialGradient(x, y, 0, x, y, rad);
+    grad.addColorStop(0, currentBrushColor);
+    grad.addColorStop(0.6, currentBrushColor + 'aa');
+    grad.addColorStop(1, 'transparent');
+
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(x, y, rad, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Dynamically update CSS preview orb
+    updateCSSOrbPreview();
+  }
+
+  function getCanvasCoords(e) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (e.clientX - rect.left) * (width / rect.width),
+      y: (e.clientY - rect.top) * (height / rect.height)
+    };
+  }
+
+  canvas.addEventListener('pointerdown', (e) => {
+    isPainting = true;
+    const { x, y } = getCanvasCoords(e);
+    paintAtPosition(x, y);
+  });
+
+  canvas.addEventListener('pointermove', (e) => {
+    if (!isPainting) return;
+    const { x, y } = getCanvasCoords(e);
+    paintAtPosition(x, y);
+  });
+
+  window.addEventListener('pointerup', () => { isPainting = false; });
+  window.addEventListener('pointercancel', () => { isPainting = false; });
+
+  document.getElementById('clear-orb-paint-btn')?.addEventListener('click', () => {
+    drawBaseOrb();
+    playBellSound(600, 'sine', 0.5, 0.05);
+    updateCSSOrbPreview();
+  });
+
+  function updateCSSOrbPreview() {
+    const cssOrb = document.getElementById('css-orb');
+    if (!cssOrb) return;
+    const c1 = paintedColorsList[0] || '#ffcf56';
+    const c2 = paintedColorsList[1] || '#d946ef';
+    const c3 = paintedColorsList[2] || '#ff8052';
+    cssOrb.style.background = `radial-gradient(circle at 35% 35%, #ffffff 0%, ${c1} 35%, ${c2} 70%, ${c3} 100%)`;
+  }
+
+  // CRITICAL REQUIREMENT: Apply Painted Gradient to ENTIRE Sanctuary App!
+  document.getElementById('apply-paint-theme-btn')?.addEventListener('click', () => {
+    getAudioContext();
+    playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
+
+    const c1 = paintedColorsList[0] || '#ffcf56';
+    const c2 = paintedColorsList[1] || '#ff8052';
+    const c3 = paintedColorsList[2] || '#f472b6';
+    const c4 = paintedColorsList[3] || '#d946ef';
+
+    // Update CSS Custom Properties App-Wide
+    document.documentElement.style.setProperty('--sun-gold', c1);
+    document.documentElement.style.setProperty('--coral', c2);
+    document.documentElement.style.setProperty('--rose', c3);
+    document.documentElement.style.setProperty('--magenta', c4);
+
+    // Apply smooth glow shift
+    document.body.classList.add('warm-tab-shift');
+    setTimeout(() => document.body.classList.remove('warm-tab-shift'), 800);
+  });
+}
+
+/* ==========================================================================
+   18. DEDICATED 3D LANTERN SKY WORLD (WASD + SPECTATE + CAROUSEL)
+   ========================================================================== */
+function init3DLanternSkyWorld() {
+  const enterBtn = document.getElementById('enter-3d-sky-world-btn');
+  const overlay = document.getElementById('lantern-3d-world-overlay');
+  const canvas = document.getElementById('lantern-world-canvas');
+  const exitBtn = document.getElementById('exit-3d-world-btn');
+  const spectatePanel = document.getElementById('spectate-glass-panel');
+  const closeSpectateBtn = document.getElementById('close-spectate-panel-btn');
+
+  if (!canvas || !window.THREE) return;
+
+  let scene, camera, renderer, animationId;
+  let lanterns = [];
+  let stars;
+  let selectedLanternMesh = null;
+
+  // WASD Controls State
+  const keys = { w: false, a: false, s: false, d: false };
+  let isMouseDown = false;
+  let mouseX = 0, mouseY = 0;
+  let cameraRotation = { yaw: 0, pitch: 0 };
+  let moveSpeed = 0.15;
+
+  function initScene() {
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0a0518, 0.035);
+
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 1000);
+    camera.position.set(0, 0, 12);
+
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Lights
+    const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambient);
+
+    const dirLight = new THREE.DirectionalLight(0xffcf56, 1.5);
+    dirLight.position.set(5, 10, 7);
+    scene.add(dirLight);
+
+    // Starry Particles
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 300;
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount * 3; i += 3) {
+      starPos[i] = (Math.random() - 0.5) * 60;
+      starPos[i + 1] = (Math.random() - 0.5) * 40;
+      starPos[i + 2] = (Math.random() - 0.5) * 60;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffcf56, size: 0.15, transparent: true, opacity: 0.8 });
+    stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+
+    // Create 3D Glowing Lanterns
+    lanterns = [];
+    const colors = [0xffcf56, 0xff8052, 0xd946ef, 0x34d399, 0x60a5fa];
+
+    for (let i = 0; i < 28; i++) {
+      const group = new THREE.Group();
+
+      // Outer Lantern Cylinder Body
+      const bodyGeo = new THREE.CylinderGeometry(0.35, 0.42, 0.8, 16);
+      const bodyMat = new THREE.MeshStandardMaterial({
+        color: colors[i % colors.length],
+        roughness: 0.25,
+        metalness: 0.1,
+        transparent: true,
+        opacity: 0.88,
+        emissive: colors[i % colors.length],
+        emissiveIntensity: 0.4
+      });
+      const body = new THREE.Mesh(bodyGeo, bodyMat);
+      group.add(body);
+
+      // Inner Flame Light Core
+      const flameGeo = new THREE.SphereGeometry(0.15, 16, 16);
+      const flameMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const flame = new THREE.Mesh(flameGeo, flameMat);
+      flame.position.y = -0.1;
+      group.add(flame);
+
+      const pointLight = new THREE.PointLight(colors[i % colors.length], 1.5, 4);
+      pointLight.position.y = -0.1;
+      group.add(pointLight);
+
+      // Position in 3D Space
+      group.position.set(
+        (Math.random() - 0.5) * 22,
+        (Math.random() - 0.5) * 12,
+        (Math.random() - 0.5) * 16 - 2
+      );
+      group.userData = {
+        id: i + 1,
+        floatSpeed: 0.003 + Math.random() * 0.003,
+        swayOffset: Math.random() * Math.PI * 2,
+        date: `Aug ${Math.floor(Math.random() * 5) + 1}, 2026`,
+        title: ['Light of Peace & Warmth', 'Dear Dad • Floating Intention', 'A Soft Memory for Tomorrow', 'Quiet Reflection Sky'][i % 4],
+        note: '"I hold space for the warmth you left behind, and I honor your memory with every quiet sunset."'
+      };
+
+      scene.add(group);
+      lanterns.push(group);
+    }
+  }
+
+  // Event Listeners for WASD Navigation
+  window.addEventListener('keydown', (e) => {
+    if (overlay.classList.contains('hidden')) return;
+    const k = e.key.toLowerCase();
+    if (k in keys) keys[k] = true;
+  });
+
+  window.addEventListener('keyup', (e) => {
+    if (overlay.classList.contains('hidden')) return;
+    const k = e.key.toLowerCase();
+    if (k in keys) keys[k] = false;
+  });
+
+  // Mouse Look Dragging
+  canvas.addEventListener('mousedown', (e) => {
+    isMouseDown = true;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  window.addEventListener('mouseup', () => { isMouseDown = false; });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (!isMouseDown || overlay.classList.contains('hidden')) return;
+    const deltaX = e.clientX - mouseX;
+    const deltaY = e.clientY - mouseY;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    cameraRotation.yaw -= deltaX * 0.003;
+    cameraRotation.pitch -= deltaY * 0.003;
+    cameraRotation.pitch = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, cameraRotation.pitch));
+
+    camera.rotation.set(cameraRotation.pitch, cameraRotation.yaw, 0, 'YXZ');
+  });
+
+  // Scroll Zoom
+  canvas.addEventListener('wheel', (e) => {
+    if (overlay.classList.contains('hidden')) return;
+    camera.position.z += e.deltaY * 0.01;
+    camera.position.z = Math.max(2, Math.min(30, camera.position.z));
+  });
+
+  // Raycaster Spectate Lantern Click
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  canvas.addEventListener('click', (e) => {
+    if (overlay.classList.contains('hidden')) return;
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(lanterns.map(g => g.children[0]));
+
+    if (intersects.length > 0) {
+      const clickedMesh = intersects[0].object.parent;
+      spectateLantern(clickedMesh);
+    }
+  });
+
+  function spectateLantern(lanternGroup) {
+    selectedLanternMesh = lanternGroup;
+    const data = lanternGroup.userData;
+
+    getAudioContext();
+    playHarmonicChime([523.25, 659.25, 783.99]);
+
+    // Animate lantern towards camera left half
+    lanternGroup.position.set(-2.5, 0, camera.position.z - 4);
+
+    // Populate spectate glass panel
+    const dateBadge = document.getElementById('spectate-date-badge');
+    const titleEl = document.getElementById('spectate-title');
+    const noteEl = document.getElementById('spectate-note');
+
+    if (dateBadge) dateBadge.textContent = data.date;
+    if (titleEl) titleEl.textContent = data.title;
+    if (noteEl) noteEl.textContent = data.note;
+
+    spectatePanel?.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  closeSpectateBtn?.addEventListener('click', () => {
+    spectatePanel?.classList.add('hidden');
+  });
+
+  // Spinning 3D Photo Carousel Nav Logic
+  let carouselAngle = 0;
+  const carouselSpinner = document.getElementById('carousel-spinner');
+  document.getElementById('carousel-prev-btn')?.addEventListener('click', () => {
+    carouselAngle += 120;
+    if (carouselSpinner) carouselSpinner.style.transform = `rotateY(${carouselAngle}deg)`;
+    playBellSound(620, 'sine', 0.4, 0.05);
+  });
+  document.getElementById('carousel-next-btn')?.addEventListener('click', () => {
+    carouselAngle -= 120;
+    if (carouselSpinner) carouselSpinner.style.transform = `rotateY(${carouselAngle}deg)`;
+    playBellSound(620, 'sine', 0.4, 0.05);
+  });
+
+  // Animation Frame Loop
+  function animate3DWorld() {
+    animationId = requestAnimationFrame(animate3DWorld);
+
+    // WASD Movement
+    const dir = new THREE.Vector3();
+    camera.getWorldDirection(dir);
+    dir.y = 0; // Move along horizontal plane
+    dir.normalize();
+
+    const sideDir = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)).negate();
+
+    if (keys.w) camera.position.addScaledVector(dir, moveSpeed);
+    if (keys.s) camera.position.addScaledVector(dir, -moveSpeed);
+    if (keys.a) camera.position.addScaledVector(sideDir, -moveSpeed);
+    if (keys.d) camera.position.addScaledVector(sideDir, moveSpeed);
+
+    // Float Lanterns
+    lanterns.forEach(l => {
+      if (l !== selectedLanternMesh) {
+        l.position.y += l.userData.floatSpeed;
+        l.userData.swayOffset += 0.02;
+        l.position.x += Math.sin(l.userData.swayOffset) * 0.005;
+        l.rotation.y += 0.005;
+
+        if (l.position.y > 10) l.position.y = -8;
+      }
+    });
+
+    if (stars) stars.rotation.y += 0.0003;
+
+    renderer.render(scene, camera);
+  }
+
+  // Open 3D World Overlay
+  enterBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playHarmonicChime([440, 523.25, 659.25, 880]);
+    overlay?.classList.remove('hidden');
+    if (!scene) initScene();
+    animate3DWorld();
+  });
+
+  // Exit 3D World
+  exitBtn?.addEventListener('click', () => {
+    cancelAnimationFrame(animationId);
+    overlay?.classList.add('hidden');
+    spectatePanel?.classList.add('hidden');
+  });
+
+  window.addEventListener('resize', () => {
+    if (scene && camera && renderer) {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+  });
 }

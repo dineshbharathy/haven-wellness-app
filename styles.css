@@ -1827,3 +1827,259 @@ blockquote {
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.14); }
+
+/* ── HAND-PAINTABLE ORB CANVAS & CONTROLS ── */
+.paint-orb-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  cursor: crosshair;
+  z-index: 10;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(217, 70, 239, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  touch-action: none;
+}
+
+.paint-controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.paint-swatches-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.paint-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.paint-color-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.paint-color-btn:hover, .paint-color-btn.active {
+  transform: scale(1.2);
+  border-color: var(--text);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.small-color-picker {
+  width: 32px !important;
+  height: 28px !important;
+}
+
+.paint-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── FULL-SCREEN 3D LANTERN SKY WORLD OVERLAY ── */
+.lantern-3d-world-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(ellipse at bottom, #18092c 0%, #050512 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalFadeIn 0.4s var(--ease);
+}
+
+.lantern-3d-world-overlay.hidden {
+  display: none;
+}
+
+#lantern-world-canvas {
+  width: 100vw !important;
+  height: 100vh !important;
+  display: block;
+  cursor: grab;
+}
+
+#lantern-world-canvas:active {
+  cursor: grabbing;
+}
+
+.lantern-world-hud {
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  right: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.hud-controls-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-sm);
+  padding: 8px 18px;
+  box-shadow: var(--inner-light), 0 8px 24px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+}
+
+.hud-keys-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.hud-keys-row kbd {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.hud-divider {
+  opacity: 0.5;
+}
+
+.exit-3d-btn {
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(20px);
+}
+.exit-3d-btn:hover {
+  background: #ffffff !important;
+  color: var(--text) !important;
+}
+
+/* Spectate Glass Panel Overlay */
+.spectate-glass-panel {
+  position: absolute;
+  top: 80px;
+  right: 40px;
+  bottom: 40px;
+  width: 440px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border-radius: var(--r-xl);
+  border: 1.5px solid var(--glass-border);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4), var(--inner-light);
+  padding: 32px 28px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: sheetSlideUp 0.4s var(--ease-bounce);
+}
+
+.spectate-glass-panel.hidden {
+  display: none;
+}
+
+.spectate-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spectate-title {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.spectate-note-body {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--text-muted);
+  line-height: 1.6;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--glass-border-subtle);
+  box-shadow: var(--inner-light);
+}
+
+/* Spinning 3D Photo Carousel */
+.carousel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.carousel-container-3d {
+  width: 100%;
+  height: 180px;
+  perspective: 800px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.carousel-spinner {
+  width: 180px;
+  height: 140px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s var(--ease);
+}
+
+.carousel-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+.carousel-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-card.card-1 { transform: rotateY(0deg) translateZ(120px); }
+.carousel-card.card-2 { transform: rotateY(120deg) translateZ(120px); }
+.carousel-card.card-3 { transform: rotateY(240deg) translateZ(120px); }
+
+.carousel-nav-row {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+

@@ -14,6 +14,9 @@
   <!-- Lucide Icons Premium Library -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
+  <!-- Three.js 3D Engine for 3D Lantern Sky World -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body data-theme="premium-white">
@@ -363,18 +366,37 @@
             
             <div class="orb-preview-header">
               <div class="orb-preview-viewport" id="orb-preview-viewport">
+                <canvas id="paint-orb-canvas" class="paint-orb-canvas" width="220" height="220" title="Click & Drag to Hand-Paint Color Swatches onto the Emotion Orb!"></canvas>
                 <div class="css-orb" id="css-orb">
                   <div class="orb-highlight-reflection"></div>
                 </div>
-                <div class="orb-3d-hint"><i data-lucide="sparkles" class="icon-inline"></i> Animated Affective Emotion Sphere</div>
+                <div class="orb-3d-hint"><i data-lucide="paintbrush" class="icon-inline"></i> Click & Drag to Hand-Paint Emotion Orbs</div>
               </div>
-              <span class="orb-blend-title" id="orb-blend-label">Animated Liquid Orb</span>
+              <span class="orb-blend-title" id="orb-blend-label">Hand-Paintable Affective Orb Canvas</span>
             </div>
 
             <div class="ios-inset-group custom-color-studio-box">
-              <span class="ios-group-label"><i data-lucide="palette" class="icon-inline"></i> COLORING STUDIO & LIGHTING</span>
+              <span class="ios-group-label"><i data-lucide="palette" class="icon-inline"></i> HAND-PAINTING PALETTE & SANCTUARY THEME SYNC</span>
               
-              <div class="color-picker-row">
+              <div class="paint-controls-row">
+                <div class="paint-swatches-group">
+                  <span class="paint-label">Select Brush Emotion Color:</span>
+                  <button class="paint-color-btn active" data-color="#ffcf56" style="background:#ffcf56;" title="Joy (Gold)"></button>
+                  <button class="paint-color-btn" data-color="#ff8052" style="background:#ff8052;" title="Warmth (Coral)"></button>
+                  <button class="paint-color-btn" data-color="#f472b6" style="background:#f472b6;" title="Nostalgia (Rose)"></button>
+                  <button class="paint-color-btn" data-color="#d946ef" style="background:#d946ef;" title="Longing (Magenta)"></button>
+                  <button class="paint-color-btn" data-color="#34d399" style="background:#34d399;" title="Quiet Solitude (Emerald)"></button>
+                  <button class="paint-color-btn" data-color="#60a5fa" style="background:#60a5fa;" title="Peace (Sky Blue)"></button>
+                  <input type="color" id="custom-brush-color" value="#d946ef" class="ios-color-input small-color-picker" title="Custom Color Picker">
+                </div>
+
+                <div class="paint-actions-group">
+                  <button id="clear-orb-paint-btn" class="ios-btn secondary-btn small-btn"><i data-lucide="rotate-ccw"></i> Clear Canvas</button>
+                  <button id="apply-paint-theme-btn" class="ios-btn primary-btn small-btn pulse-glow"><i data-lucide="sparkles"></i> Apply Painted Gradient to Entire App</button>
+                </div>
+              </div>
+
+              <div class="color-picker-row margin-top">
                 <div class="color-picker-item">
                   <label for="orb-primary-color">Primary Light</label>
                   <input type="color" id="orb-primary-color" value="#ffcf56" class="ios-color-input">
@@ -528,6 +550,9 @@
           <div class="lantern-toolbar">
             <button id="open-lantern-modal-btn" class="ios-btn primary-btn">
               <i data-lucide="send"></i> Release Intentional Lantern
+            </button>
+            <button id="enter-3d-sky-world-btn" class="ios-btn secondary-btn pulse-glow">
+              <i data-lucide="sparkles"></i> Enter 3D Lantern World (WASD)
             </button>
             <span class="released-count" id="released-count">0 lanterns floating</span>
           </div>
@@ -955,6 +980,54 @@
         <div class="spotlight-hint"><kbd>↑</kbd> <kbd>↓</kbd> Navigate</div>
         <div class="spotlight-hint"><kbd>↵</kbd> Select</div>
         <div class="spotlight-hint"><kbd>⌘K</kbd> Toggle</div>
+      </div>
+    </div>
+  <!-- DEDICATED FULL-SCREEN 3D LANTERN SKY WORLD OVERLAY -->
+  <div id="lantern-3d-world-overlay" class="lantern-3d-world-overlay hidden">
+    <canvas id="lantern-world-canvas"></canvas>
+    
+    <!-- 3D World Controls HUD -->
+    <div class="lantern-world-hud">
+      <div class="hud-controls-card">
+        <div class="hud-keys-row">
+          <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move Camera
+          <span class="hud-divider">•</span>
+          <i data-lucide="mouse-pointer" class="icon-inline"></i> Drag to Look Around
+          <span class="hud-divider">•</span>
+          <i data-lucide="sparkles" class="icon-inline"></i> Click Lantern to Spectate
+        </div>
+      </div>
+      <button id="exit-3d-world-btn" class="ios-btn secondary-btn small-btn exit-3d-btn">
+        <i data-lucide="arrow-left"></i> Exit 3D World
+      </button>
+    </div>
+
+    <!-- Spectate Glass Panel Overlay -->
+    <div id="spectate-glass-panel" class="spectate-glass-panel hidden">
+      <button id="close-spectate-panel-btn" class="modal-close-btn"><i data-lucide="x"></i></button>
+      
+      <div class="spectate-panel-header">
+        <span id="spectate-date-badge" class="clinical-cert-tag">Aug 5, 2026</span>
+        <span id="spectate-category-pill" class="ios-pill">✨ Released Intention</span>
+      </div>
+
+      <h2 id="spectate-title" class="spectate-title">A Light for Dad & Quiet Peace</h2>
+      <p id="spectate-note" class="spectate-note-body">"I hold space for the warmth you left behind, and I honor your memory with every quiet sunset."</p>
+
+      <!-- Spinning Memory Image Carousel -->
+      <div class="carousel-section">
+        <span class="ios-group-label">SPINNING MEMORY PHOTO CAROUSEL</span>
+        <div class="carousel-container-3d">
+          <div class="carousel-spinner" id="carousel-spinner">
+            <div class="carousel-card card-1"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80" alt="Memory Sunset"></div>
+            <div class="carousel-card card-2"><img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&q=80" alt="Ocean Calm"></div>
+            <div class="carousel-card card-3"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Forest Light"></div>
+          </div>
+        </div>
+        <div class="carousel-nav-row">
+          <button id="carousel-prev-btn" class="ios-btn secondary-btn small-btn"><i data-lucide="chevron-left"></i> Prev Card</button>
+          <button id="carousel-next-btn" class="ios-btn secondary-btn small-btn">Next Card <i data-lucide="chevron-right"></i></button>
+        </div>
       </div>
     </div>
   </div>
