@@ -307,14 +307,48 @@ function initSanctuaryHub() {
     hugModal?.classList.add('hidden');
   });
 
+  const brewTeaBtn = document.getElementById('brew-tea-btn');
+  const teaSteam = document.getElementById('tea-steam');
+  let isSteeping = false;
+  let teaTimer = null;
+
+  brewTeaBtn?.addEventListener('click', () => {
+    getAudioContext();
+    if (isSteeping) return;
+    isSteeping = true;
+
+    playHarmonicChime([440, 554.37, 659.25]);
+    if (teaSteam) teaSteam.style.opacity = '1';
+    
+    let left = 30;
+    brewTeaBtn.innerHTML = `<i data-lucide="timer"></i> Steeping... ${left}s`;
+    
+    teaTimer = setInterval(() => {
+      left--;
+      if (left <= 0) {
+        clearInterval(teaTimer);
+        isSteeping = false;
+        if (teaSteam) teaSteam.style.opacity = '0.5';
+        brewTeaBtn.innerHTML = `<i data-lucide="check"></i> Somatic Tea Prepared`;
+        playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
+        setTimeout(() => {
+          brewTeaBtn.innerHTML = `<i data-lucide="timer"></i> Mindfulness Pause (30s)`;
+          if (window.lucide) window.lucide.createIcons();
+        }, 4000);
+      } else {
+        brewTeaBtn.innerHTML = `<i data-lucide="timer"></i> Steeping... ${left}s`;
+      }
+    }, 1000);
+  });
+
   document.getElementById('open-ai-listener-btn')?.addEventListener('click', () => {
-    document.querySelector('.nav-tab-btn[data-tab="ai-listener"]')?.click();
+    navigateToPage('ai-listener');
   });
   document.getElementById('open-community-tab-btn')?.addEventListener('click', () => {
-    document.querySelector('.nav-tab-btn[data-tab="community"]')?.click();
+    navigateToPage('community');
   });
   document.getElementById('open-storybook-tab-btn')?.addEventListener('click', () => {
-    document.querySelector('.nav-tab-btn[data-tab="memory-orbs"]')?.click();
+    navigateToPage('memory-orbs');
   });
 }
 
@@ -361,6 +395,18 @@ function initAutonomousAITherapistAura() {
       if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
     }
     if (window.lucide) window.lucide.createIcons();
+  });
+
+  document.querySelectorAll('.ai-chip-btn').forEach(chip => {
+    chip.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(640, 'sine', 0.4, 0.05);
+      const promptText = chip.getAttribute('data-prompt');
+      if (textInput && promptText) {
+        textInput.value = promptText;
+        handleSendMessage();
+      }
+    });
   });
 
   sendTextBtn?.addEventListener('click', handleSendMessage);
