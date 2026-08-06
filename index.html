@@ -26,24 +26,66 @@
   <!-- Atmospheric Soft Glow Canvas -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Full Computer Desktop Application Shell -->
-  <div id="app" class="desktop-app-shell">
+  <!-- ================= MACOS SEQUOIA DESKTOP ENVIRONMENT ================= -->
+  <div id="macos-desktop-environment" class="macos-desktop-environment">
     
-    <!-- Top Application Header Bar (macOS Optical Glass Toolbar) -->
-    <header class="app-desktop-header mac-window-header">
-      <!-- macOS Traffic Lights (Close, Minimize, Zoom) -->
-      <div class="mac-traffic-lights" title="macOS Window Controls">
-        <span class="traffic-dot close" id="mac-close-btn" title="Close Application"></span>
-        <span class="traffic-dot minimize" id="mac-minimize-btn" title="Minimize Window"></span>
-        <span class="traffic-dot zoom" id="mac-zoom-btn" title="Full Screen Zoom"></span>
+    <!-- 1. TOP MACOS NATIVE SYSTEM MENU BAR -->
+    <header class="macos-menu-bar" id="macos-menu-bar">
+      <div class="macos-menu-left">
+        <div class="menu-item apple-logo-item" id="apple-menu-trigger" title="Apple System Menu">
+          <span class="apple-logo-icon"></span>
+          <!-- Apple Dropdown Menu -->
+          <div id="apple-dropdown-menu" class="macos-dropdown-menu hidden">
+            <div class="dropdown-menu-item bold-item">About Haven Sanctuary</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-menu-item">System Settings...</div>
+            <div class="dropdown-menu-item">App Store...</div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-menu-item">Sleep</div>
+            <div class="dropdown-menu-item">Restart...</div>
+            <div class="dropdown-menu-item">Shut Down...</div>
+          </div>
+        </div>
+        <span class="menu-item app-title-item"><strong>Haven</strong></span>
+        <span class="menu-item hide-mobile">File</span>
+        <span class="menu-item hide-mobile">Edit</span>
+        <span class="menu-item hide-mobile">View</span>
+        <span class="menu-item hide-mobile">Sanctuary</span>
+        <span class="menu-item hide-mobile">Window</span>
+        <span class="menu-item hide-mobile">Help</span>
       </div>
 
-      <div class="nav-brand-container">
-        <div class="brand-logo">
-          <i data-lucide="command" class="brand-sparkle-icon"></i>
-          <span class="brand-name">Haven</span>
-        </div>
+      <div class="macos-menu-right">
+        <span class="menu-status-pill"><i data-lucide="shield-check" class="icon-inline"></i> HIPAA Active</span>
+        <span class="menu-status-pill hide-mobile"><i data-lucide="bluetooth" class="icon-inline"></i> Spatial Audio</span>
+        <button id="menu-spotlight-btn" class="menu-spotlight-btn" title="Open Spotlight (Cmd+K)">
+          <i data-lucide="search"></i>
+          <kbd>⌘K</kbd>
+        </button>
+        <span class="menu-icon-item" id="menu-control-center-trigger" title="Control Center"><i data-lucide="sliders"></i></span>
+        <span class="menu-status-pill hide-mobile"><i data-lucide="battery-charging" class="icon-inline"></i> 98%</span>
+        <span class="menu-item clock-item" id="macos-clock-display">Thu Aug 6 5:32 PM</span>
       </div>
+    </header>
+
+    <!-- 2. FULL COMPUTER DESKTOP APPLICATION SHELL -->
+    <div id="app" class="desktop-app-shell mac-window-shell">
+      
+      <!-- Top Application Header Bar (macOS Optical Glass Toolbar) -->
+      <header class="app-desktop-header mac-window-header">
+        <!-- macOS Traffic Lights (Close, Minimize, Zoom) -->
+        <div class="mac-traffic-lights" title="macOS Window Controls">
+          <span class="traffic-dot close" id="mac-close-btn" title="Close Window"></span>
+          <span class="traffic-dot minimize" id="mac-minimize-btn" title="Minimize Window"></span>
+          <span class="traffic-dot zoom" id="mac-zoom-btn" title="Full Screen Zoom"></span>
+        </div>
+
+        <div class="nav-brand-container">
+          <div class="brand-logo">
+            <i data-lucide="command" class="brand-sparkle-icon"></i>
+            <span class="brand-name">Haven</span>
+          </div>
+        </div>
 
       <div class="header-right-actions">
         <div class="header-spotlight-wrapper">
@@ -1112,13 +1154,80 @@
             <div class="carousel-card card-3"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Forest Light"></div>
           </div>
         </div>
-        <div class="carousel-nav-row">
-          <button id="carousel-prev-btn" class="ios-btn secondary-btn small-btn"><i data-lucide="chevron-left"></i> Prev Card</button>
-          <button id="carousel-next-btn" class="ios-btn secondary-btn small-btn">Next Card <i data-lucide="chevron-right"></i></button>
         </div>
       </div>
     </div>
   </div>
+  <!-- END OF MAC WINDOW SHELL -->
+
+  <!-- 3. MACOS SEQUOIA FLOATING OPTICAL GLASS DOCK -->
+  <div id="macos-dock" class="macos-dock-container">
+    <div class="macos-dock-glass">
+      <button class="dock-app-icon active" data-dock-target="hub" title="Sanctuary Overview">
+        <div class="dock-icon-inner icon-hub"><i data-lucide="layout"></i></div>
+        <span class="dock-app-tooltip">Sanctuary Overview</span>
+        <span class="dock-active-dot"></span>
+      </button>
+
+      <button class="dock-app-icon" data-dock-target="ai-listener" title="Dr. Aura AI Therapist">
+        <div class="dock-icon-inner icon-ai"><i data-lucide="sparkles"></i></div>
+        <span class="dock-app-tooltip">Dr. Aura AI</span>
+        <span class="dock-active-dot"></span>
+      </button>
+
+      <button class="dock-app-icon" data-dock-target="community" title="Sanctuary Circle Peer Network">
+        <div class="dock-icon-inner icon-community"><i data-lucide="message-square"></i></div>
+        <span class="dock-app-tooltip">Peer Network</span>
+        <span class="dock-active-dot"></span>
+      </button>
+
+      <button class="dock-app-icon" data-dock-target="memory-orbs" title="Cognitive Emotion Studio">
+        <div class="dock-icon-inner icon-orbs"><i data-lucide="palette"></i></div>
+        <span class="dock-app-tooltip">Emotion Studio</span>
+        <span class="dock-active-dot"></span>
+      </button>
+
+      <button class="dock-app-icon" data-dock-target="lanterns" title="Release Sky 3D World">
+        <div class="dock-icon-inner icon-lanterns"><i data-lucide="send"></i></div>
+        <span class="dock-app-tooltip">Release Sky 3D</span>
+        <span class="dock-active-dot"></span>
+      </button>
+
+      <button class="dock-app-icon" data-dock-target="breathing" title="Autonomic Regulation">
+        <div class="dock-icon-inner icon-breathing"><i data-lucide="wind"></i></div>
+        <span class="dock-app-tooltip">Regulation</span>
+        <span class="dock-active-dot"></span>
+      </button>
+
+      <button class="dock-app-icon" data-dock-target="soundscapes" title="Neuro-Acoustic Soundscapes">
+        <div class="dock-icon-inner icon-soundscapes"><i data-lucide="music"></i></div>
+        <span class="dock-app-tooltip">Spatial Audio</span>
+        <span class="dock-active-dot"></span>
+      </button>
+
+      <button class="dock-app-icon" data-dock-target="memory-jar" title="Cognitive Memory Vault">
+        <div class="dock-icon-inner icon-vault"><i data-lucide="archive"></i></div>
+        <span class="dock-app-tooltip">Memory Vault</span>
+        <span class="dock-active-dot"></span>
+      </button>
+
+      <button class="dock-app-icon" data-dock-target="journal" title="Clinical Heart Journal">
+        <div class="dock-icon-inner icon-journal"><i data-lucide="book-open"></i></div>
+        <span class="dock-app-tooltip">Heart Journal</span>
+        <span class="dock-active-dot"></span>
+      </button>
+
+      <div class="dock-divider"></div>
+
+      <button class="dock-app-icon trash-icon" title="Trash / Clear Local Storage" id="dock-trash-btn">
+        <div class="dock-icon-inner icon-trash"><i data-lucide="trash-2"></i></div>
+        <span class="dock-app-tooltip">Bin Vault</span>
+      </button>
+    </div>
+  </div>
+
+  </div>
+  <!-- END OF MACOS DESKTOP ENVIRONMENT -->
 
   <script type="module" src="./app.js"></script>
 </body>

@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.lucide.createIcons();
   }
 
+  initMacOSDesktopEnvironment();
+  initMacOSDockNavigation();
   initMacOSWindowControls();
   initDesktopResolutionDetector();
   initAudioEngine();
@@ -106,6 +108,11 @@ function navigateToPage(targetPageId) {
       if (pageTitle) pageTitle.textContent = pageMeta[targetPageId].title;
       if (pageSubtitle) pageSubtitle.textContent = pageMeta[targetPageId].subtitle;
     }
+
+    const dockIcons = document.querySelectorAll('.dock-app-icon[data-dock-target]');
+    dockIcons.forEach(icon => {
+      icon.classList.toggle('active', icon.getAttribute('data-dock-target') === targetPageId);
+    });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (window.lucide) window.lucide.createIcons();
@@ -1681,6 +1688,96 @@ function initMacOSWindowControls() {
   document.addEventListener('click', (e) => {
     if (controlCenterPopover && !controlCenterPopover.contains(e.target) && e.target !== controlCenterBtn) {
       controlCenterPopover.classList.add('hidden');
+    }
+  });
+}
+
+/* ==========================================================================
+   19. MACOS SEQUOIA DESKTOP ENVIRONMENT & MENU BAR
+   ========================================================================== */
+function initMacOSDesktopEnvironment() {
+  const clockEl = document.getElementById('macos-clock-display');
+  const appleTrigger = document.getElementById('apple-menu-trigger');
+  const appleMenu = document.getElementById('apple-dropdown-menu');
+  const menuSpotlightBtn = document.getElementById('menu-spotlight-btn');
+  const menuControlCenterTrigger = document.getElementById('menu-control-center-trigger');
+  const controlCenterPopover = document.getElementById('mac-control-center-popover');
+
+  function updateMacOSClock() {
+    if (!clockEl) return;
+    const now = new Date();
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    
+    const dayName = days[now.getDay()];
+    const monthName = months[now.getMonth()];
+    const dateNum = now.getDate();
+    
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+
+    clockEl.textContent = `${dayName} ${monthName} ${dateNum}  ${hours}:${minutes} ${ampm}`;
+  }
+
+  updateMacOSClock();
+  setInterval(updateMacOSClock, 10000);
+
+  appleTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    getAudioContext();
+    playBellSound(600, 'sine', 0.3, 0.04);
+    appleMenu?.classList.toggle('hidden');
+  });
+
+  menuSpotlightBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.getElementById('open-spotlight-btn')?.click();
+  });
+
+  menuControlCenterTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    getAudioContext();
+    playBellSound(640, 'sine', 0.4, 0.05);
+    controlCenterPopover?.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (appleMenu && !appleMenu.contains(e.target) && e.target !== appleTrigger) {
+      appleMenu.classList.add('hidden');
+    }
+  });
+}
+
+/* ==========================================================================
+   20. MACOS SEQUOIA FLOATING OPTICAL GLASS DOCK NAVIGATION
+   ========================================================================== */
+function initMacOSDockNavigation() {
+  const dockIcons = document.querySelectorAll('.dock-app-icon[data-dock-target]');
+  const trashBtn = document.getElementById('dock-trash-btn');
+
+  dockIcons.forEach(icon => {
+    icon.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(750, 'sine', 0.5, 0.06);
+
+      const targetPageId = icon.getAttribute('data-dock-target');
+
+      dockIcons.forEach(i => i.classList.remove('active'));
+      icon.classList.add('active');
+
+      if (targetPageId) {
+        navigateToPage(targetPageId);
+      }
+    });
+  });
+
+  trashBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playBellSound(440, 'triangle', 0.6, 0.08);
+    if (confirm('Clean local temporary logs & refresh macOS Sanctuary vault?')) {
+      playHarmonicChime([523.25, 659.25, 783.99]);
     }
   });
 }
