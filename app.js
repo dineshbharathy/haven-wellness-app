@@ -1615,15 +1615,16 @@ function init3DLanternSkyWorld() {
     scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x0a0518, 0.03);
 
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
     const w = window.innerWidth;
     const h = window.innerHeight;
 
     camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 1000);
     camera.position.set(0, 0, 12);
 
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile });
     renderer.setSize(w, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
 
     const ambient = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambient);
@@ -1633,7 +1634,7 @@ function init3DLanternSkyWorld() {
     scene.add(dirLight);
 
     const starGeo = new THREE.BufferGeometry();
-    const starCount = 350;
+    const starCount = isMobile ? 100 : 350;
     const starPos = new Float32Array(starCount * 3);
     for (let i = 0; i < starCount * 3; i += 3) {
       starPos[i] = (Math.random() - 0.5) * 60;
@@ -1641,14 +1642,15 @@ function init3DLanternSkyWorld() {
       starPos[i + 2] = (Math.random() - 0.5) * 60;
     }
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    const starMat = new THREE.PointsMaterial({ color: 0xffcf56, size: 0.16, transparent: true, opacity: 0.8 });
+    const starMat = new THREE.PointsMaterial({ color: 0xffcf56, size: isMobile ? 0.2 : 0.16, transparent: true, opacity: 0.8 });
     stars = new THREE.Points(starGeo, starMat);
     scene.add(stars);
 
     lanterns = [];
     const colors = [0xffcf56, 0xff8052, 0xd946ef, 0x34d399, 0x60a5fa];
+    const initialLanternCount = isMobile ? 14 : 28;
 
-    for (let i = 0; i < 28; i++) {
+    for (let i = 0; i < initialLanternCount; i++) {
       createLanternMesh(
         (Math.random() - 0.5) * 22,
         (Math.random() - 0.5) * 12,
