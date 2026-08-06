@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
    1. CALM MICRO-SUBTLE CARD TILT PHYSICS ENGINE
    ========================================================================== */
 function initSubtle3DCardPhysics() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.matchMedia('(pointer: fine)').matches) return;
   const subtleCards = document.querySelectorAll('.subtle-3d-card');
 
   subtleCards.forEach(card => {
@@ -232,6 +233,13 @@ function initThemeManager() {
       playBellSound(440, 'sine', 0.3, 0.04);
     });
   });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    document.querySelectorAll('.modal-overlay:not(.hidden), .header-spotlight-dropdown:not(.hidden), .mac-control-center-popover:not(.hidden)').forEach(element => {
+      element.classList.add('hidden');
+    });
+  });
 }
 
 /* ==========================================================================
@@ -240,6 +248,10 @@ function initThemeManager() {
 function initAmbientCanvas() {
   const canvas = document.getElementById('ambient-canvas');
   if (!canvas) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    canvas.remove();
+    return;
+  }
   const ctx = canvas.getContext('2d');
 
   let width = canvas.width = window.innerWidth;
