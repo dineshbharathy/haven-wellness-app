@@ -220,6 +220,18 @@ function initThemeManager() {
       playBellSound(600, 'sine', 0.6, 0.06);
     });
   });
+
+  document.querySelectorAll('.modal-close-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modalId = btn.getAttribute('data-modal');
+      if (modalId) {
+        document.getElementById(modalId)?.classList.add('hidden');
+      } else {
+        btn.closest('.modal-overlay')?.classList.add('hidden');
+      }
+      playBellSound(440, 'sine', 0.3, 0.04);
+    });
+  });
 }
 
 /* ==========================================================================
@@ -630,6 +642,23 @@ function initEmotionStudio2D() {
   const orbTitleInput = document.getElementById('orb-title-input');
   const orbNoteInput = document.getElementById('orb-note-input');
   const saveOrbBtn = document.getElementById('save-memory-orb-btn');
+
+  const viewBtns = document.querySelectorAll('.segmented-btn[data-orb-view]');
+  const subviews = document.querySelectorAll('.orb-subview');
+
+  viewBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(680, 'sine', 0.4, 0.05);
+      const targetView = btn.getAttribute('data-orb-view');
+      viewBtns.forEach(b => b.classList.remove('active'));
+      subviews.forEach(s => s.classList.remove('active'));
+
+      btn.classList.add('active');
+      const activeSub = document.getElementById(`orb-view-${targetView}`);
+      if (activeSub) activeSub.classList.add('active');
+    });
+  });
 
   const emotionColorMap = {
     'joy': '#ffcf56',

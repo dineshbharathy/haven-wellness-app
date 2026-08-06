@@ -68,33 +68,6 @@
       </div>
     </header>
 
-      <div class="header-right-actions">
-        <div class="header-spotlight-wrapper">
-          <button id="open-spotlight-btn" class="spotlight-trigger-btn" title="Search Spotlight (Cmd+K)">
-            <i data-lucide="search"></i>
-            <span class="spotlight-trigger-text">Spotlight</span>
-            <kbd class="spotlight-kbd">⌘K</kbd>
-          </button>
-          
-          <!-- Integrated Header Spotlight Dropdown Bar -->
-          <div id="header-spotlight-dropdown" class="header-spotlight-dropdown hidden">
-            <div class="dropdown-search-box">
-              <i data-lucide="search"></i>
-              <input type="text" id="dropdown-search-input" placeholder="Type to search features, tools, soundscapes..." autocomplete="off" />
-              <kbd class="spotlight-esc-kbd">ESC</kbd>
-            </div>
-            <div class="dropdown-items-list" id="dropdown-items-list">
-              <!-- Dynamically populated -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Apple Control Center Toggle Button -->
-        <button id="open-control-center-btn" class="ios-icon-btn" title="macOS Control Center"><i data-lucide="sliders"></i></button>
-        <button id="open-auth-modal-btn" class="ios-icon-btn" title="Account Settings"><i data-lucide="user"></i></button>
-        <button id="theme-toggle-btn" class="ios-icon-btn" title="Color Palettes"><i data-lucide="palette"></i></button>
-      </div>
-
       <!-- macOS Control Center Popover Widget -->
       <div id="mac-control-center-popover" class="mac-control-center-popover hidden">
         <div class="control-center-header">
