@@ -54,7 +54,9 @@
 /* ── APPLE DESIGN AWARD (ADA) VIEWPORT ── */
 .ada-app-viewport {
   position: relative;
-  width: 100vw;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
   min-height: 100vh;
   overflow-x: hidden;
   padding-bottom: 120px;
