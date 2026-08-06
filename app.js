@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.lucide.createIcons();
   }
 
-  initADANavigation();
+  initMacOSDesktopEnvironment();
+  initMacOSDockNavigation();
+  initMacOSWindowControls();
   initDesktopResolutionDetector();
   initAudioEngine();
   initThemeManager();
@@ -35,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
    1. CALM MICRO-SUBTLE CARD TILT PHYSICS ENGINE
    ========================================================================== */
 function initSubtle3DCardPhysics() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.matchMedia('(pointer: fine)').matches) return;
   const subtleCards = document.querySelectorAll('.subtle-3d-card');
 
   subtleCards.forEach(card => {
@@ -94,7 +95,7 @@ function navigateToPage(targetPageId) {
   const curtain = document.getElementById('rainbow-wipe-curtain');
 
   getAudioContext();
-  playHarmonicChime([523.25, 659.25, 783.99]);
+  playBellSound(720, 'sine', 0.5, 0.05);
 
   const switchContent = () => {
     allPanes.forEach(pane => pane.classList.remove('active'));
@@ -108,9 +109,9 @@ function navigateToPage(targetPageId) {
       if (pageSubtitle) pageSubtitle.textContent = pageMeta[targetPageId].subtitle;
     }
 
-    const navPills = document.querySelectorAll('.ada-nav-pill[data-nav-target]');
-    navPills.forEach(pill => {
-      pill.classList.toggle('active', pill.getAttribute('data-nav-target') === targetPageId);
+    const dockIcons = document.querySelectorAll('.dock-app-icon[data-dock-target]');
+    dockIcons.forEach(icon => {
+      icon.classList.toggle('active', icon.getAttribute('data-dock-target') === targetPageId);
     });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -126,51 +127,16 @@ function navigateToPage(targetPageId) {
   if (curtain) {
     curtain.className = 'rainbow-wipe-curtain wipe-from-right';
     setTimeout(switchContent, 250);
-    setTimeout(() => { curtain.className = 'rainbow-wipe-curtain'; }, 600);
+    setTimeout(() => { curtain.className = 'rainbow-wipe-curtain'; }, 550);
   } else {
     switchContent();
   }
 }
 
-function initADANavigation() {
-  const navPills = document.querySelectorAll('.ada-nav-pill');
-  navPills.forEach(pill => {
-    pill.addEventListener('click', (e) => {
-      getAudioContext();
-      playHarmonicChime([523.25, 659.25, 783.99]);
-
-      const href = pill.getAttribute('href');
-      const targetId = pill.getAttribute('data-nav-target');
-      const curtain = document.getElementById('rainbow-wipe-curtain');
-
-      if (targetId && document.getElementById(`tab-${targetId}`)) {
-        e.preventDefault();
-        navigateToPage(targetId);
-      } else if (href && href !== '#') {
-        e.preventDefault();
-        if (curtain) curtain.className = 'rainbow-wipe-curtain wipe-from-right';
-        setTimeout(() => {
-          window.location.href = href;
-        }, 220);
-      }
-    });
-  });
-
+function initDesktopTabNavigation() {
   document.querySelectorAll('.back-to-hub-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const curtain = document.getElementById('rainbow-wipe-curtain');
-      getAudioContext();
-      playHarmonicChime([523.25, 659.25, 783.99]);
-      if (document.getElementById('tab-hub')) {
-        e.preventDefault();
-        navigateToPage('hub');
-      } else {
-        e.preventDefault();
-        if (curtain) curtain.className = 'rainbow-wipe-curtain wipe-from-right';
-        setTimeout(() => {
-          window.location.href = './index.html';
-        }, 220);
-      }
+    btn.addEventListener('click', () => {
+      navigateToPage('hub');
     });
   });
 }
@@ -246,25 +212,6 @@ function initThemeManager() {
       playBellSound(600, 'sine', 0.6, 0.06);
     });
   });
-
-  document.querySelectorAll('.modal-close-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const modalId = btn.getAttribute('data-modal');
-      if (modalId) {
-        document.getElementById(modalId)?.classList.add('hidden');
-      } else {
-        btn.closest('.modal-overlay')?.classList.add('hidden');
-      }
-      playBellSound(440, 'sine', 0.3, 0.04);
-    });
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape') return;
-    document.querySelectorAll('.modal-overlay:not(.hidden), .header-spotlight-dropdown:not(.hidden), .mac-control-center-popover:not(.hidden)').forEach(element => {
-      element.classList.add('hidden');
-    });
-  });
 }
 
 /* ==========================================================================
@@ -273,10 +220,6 @@ function initThemeManager() {
 function initAmbientCanvas() {
   const canvas = document.getElementById('ambient-canvas');
   if (!canvas) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    canvas.remove();
-    return;
-  }
   const ctx = canvas.getContext('2d');
 
   let width = canvas.width = window.innerWidth;
@@ -680,23 +623,6 @@ function initEmotionStudio2D() {
   const orbNoteInput = document.getElementById('orb-note-input');
   const saveOrbBtn = document.getElementById('save-memory-orb-btn');
 
-  const viewBtns = document.querySelectorAll('.segmented-btn[data-orb-view]');
-  const subviews = document.querySelectorAll('.orb-subview');
-
-  viewBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      getAudioContext();
-      playBellSound(680, 'sine', 0.4, 0.05);
-      const targetView = btn.getAttribute('data-orb-view');
-      viewBtns.forEach(b => b.classList.remove('active'));
-      subviews.forEach(s => s.classList.remove('active'));
-
-      btn.classList.add('active');
-      const activeSub = document.getElementById(`orb-view-${targetView}`);
-      if (activeSub) activeSub.classList.add('active');
-    });
-  });
-
   const emotionColorMap = {
     'joy': '#ffcf56',
     'sadness': '#60a5fa',
@@ -841,58 +767,12 @@ function initBreathingOasis2D() {
   let isBreathing = false;
   let breathTimer = null;
   let currentMode = 'relax';
-  let meditationMusicInstance = null;
 
   const modes = {
     'relax': { name: '4-7-8 Parasympathetic', inhale: 4, hold: 7, exhale: 8 },
     'box': { name: '4-4-4 Box Breathing', inhale: 4, hold: 4, exhale: 4 },
     'calm': { name: '4-6 Vagal Resonator', inhale: 4, hold: 0, exhale: 6 }
   };
-
-  function startCalmingMeditationMusic() {
-    try {
-      const ctx = getAudioContext();
-      const osc1 = ctx.createOscillator();
-      const osc2 = ctx.createOscillator();
-      const osc3 = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc1.type = 'sine';
-      osc2.type = 'sine';
-      osc3.type = 'triangle';
-
-      osc1.frequency.setValueAtTime(216, ctx.currentTime);
-      osc2.frequency.setValueAtTime(324, ctx.currentTime);
-      osc3.frequency.setValueAtTime(432, ctx.currentTime);
-
-      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.07, ctx.currentTime + 2.5);
-
-      osc1.connect(gain);
-      osc2.connect(gain);
-      osc3.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc1.start();
-      osc2.start();
-      osc3.start();
-
-      return {
-        stop: () => {
-          try {
-            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.5);
-            setTimeout(() => {
-              osc1.stop();
-              osc2.stop();
-              osc3.stop();
-            }, 1500);
-          } catch (e) {}
-        }
-      };
-    } catch (e) {
-      return null;
-    }
-  }
 
   modeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -909,7 +789,6 @@ function initBreathingOasis2D() {
 
     if (isBreathing) {
       if (startBtn) startBtn.innerHTML = '<i data-lucide="square"></i> Stop Regulation';
-      meditationMusicInstance = startCalmingMeditationMusic();
       runBreathCycle();
     } else {
       stopBreathCycle();
@@ -920,10 +799,6 @@ function initBreathingOasis2D() {
   function stopBreathCycle() {
     isBreathing = false;
     clearTimeout(breathTimer);
-    if (meditationMusicInstance) {
-      meditationMusicInstance.stop();
-      meditationMusicInstance = null;
-    }
     if (startBtn) startBtn.innerHTML = '<i data-lucide="play"></i> Begin Autonomic Regulation';
     if (breathCircle) breathCircle.className = 'breath-circle';
     if (phaseEl) phaseEl.textContent = 'Ready';

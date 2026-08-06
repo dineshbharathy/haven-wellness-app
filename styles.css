@@ -51,110 +51,255 @@
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ── APPLE DESIGN AWARD (ADA) VIEWPORT ── */
-.ada-app-viewport {
+/* ── MACOS SEQUOIA DESKTOP ENVIRONMENT ── */
+.macos-desktop-environment {
   position: relative;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  min-height: 100vh;
-  overflow-x: hidden;
-  padding-bottom: 120px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-/* ── STICKY TOP OPTICAL GLASS HEADER ── */
-.ada-top-header {
-  position: sticky;
-  top: 12px;
-  margin: 12px auto 28px;
-  width: calc(100% - 32px);
-  max-width: 1400px;
-  height: 64px;
-  padding: 0 24px;
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(60px) saturate(220%);
-  -webkit-backdrop-filter: blur(60px) saturate(220%);
-  border-radius: var(--r-lg);
-  border: 1.5px solid rgba(255, 255, 255, 0.95);
-  box-shadow: var(--glass-glow), var(--inner-light);
-  z-index: 1000;
+/* ── 1. MACOS TOP SYSTEM MENU BAR ── */
+.macos-menu-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.52);
+  backdrop-filter: blur(40px) saturate(210%);
+  -webkit-backdrop-filter: blur(40px) saturate(210%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text);
+  z-index: 2500;
+  user-select: none;
 }
 
-/* ── IOS 18 / VISIONOS FLOATING OPTICAL GLASS NAV CAPSULE ── */
-.ada-glass-nav-capsule {
+.macos-menu-left, .macos-menu-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.menu-item {
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.15s var(--ease);
+}
+.menu-item:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.apple-logo-item {
+  font-size: 1.05rem;
+  line-height: 1;
+  position: relative;
+}
+
+.menu-status-pill {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.menu-spotlight-btn {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+.menu-spotlight-btn:hover {
+  background: #ffffff;
+  color: var(--sf-blue);
+}
+
+.menu-icon-item {
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+}
+
+.macos-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 220px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(50px) saturate(210%);
+  -webkit-backdrop-filter: blur(50px) saturate(210%);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  padding: 6px 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 3000;
+}
+.macos-dropdown-menu.hidden { display: none; }
+
+.dropdown-menu-item {
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s var(--ease);
+}
+.dropdown-menu-item.bold-item { font-weight: 700; }
+.dropdown-menu-item:hover {
+  background: var(--sf-blue);
+  color: #ffffff;
+}
+.dropdown-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.06);
+  margin: 4px 0;
+}
+
+/* ── 2. MACOS WINDOW SHELL ── */
+.mac-window-shell {
+  margin: 42px auto 95px;
+  width: calc(100vw - 32px);
+  max-width: 1440px;
+  height: calc(100vh - 140px);
+  border-radius: 20px;
+  box-shadow: 0 40px 100px rgba(15, 23, 42, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 3. MACOS FLOATING OPTICAL GLASS DOCK ── */
+.macos-dock-container {
   position: fixed;
-  bottom: 20px;
+  bottom: 14px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2500;
   pointer-events: auto;
 }
 
-.ada-nav-pills-row {
+.macos-dock-glass {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  background: rgba(255, 255, 255, 0.76);
-  backdrop-filter: blur(50px) saturate(220%);
-  -webkit-backdrop-filter: blur(50px) saturate(220%);
-  border: 1.5px solid rgba(255, 255, 255, 0.92);
-  border-radius: 36px;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.98);
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(40px) saturate(220%);
+  -webkit-backdrop-filter: blur(40px) saturate(220%);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  border-radius: 26px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  transition: all 0.3s var(--ease);
 }
 
-.ada-nav-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  border-radius: 24px;
-  border: none;
+.dock-app-icon {
+  position: relative;
   background: transparent;
-  color: var(--text-muted);
-  font-family: var(--font-body);
-  font-size: 0.88rem;
-  font-weight: 500;
+  border: none;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   outline: none;
-  transition: all 0.25s var(--ease);
+  transition: transform 0.25s var(--ease-bounce);
 }
 
-.ada-nav-pill i {
-  font-size: 1.05rem;
-  transition: transform 0.2s var(--ease);
-}
-
-.ada-nav-pill:hover {
-  color: var(--sf-blue);
-  background: rgba(0, 122, 255, 0.08);
-  transform: translateY(-2px);
-}
-
-.ada-nav-pill:hover i {
-  transform: scale(1.15);
-}
-
-.ada-nav-pill.active {
-  background: var(--sf-blue);
+.dock-icon-inner {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
   color: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: transform 0.25s var(--ease-bounce), box-shadow 0.25s var(--ease);
+}
+
+.icon-hub { background: linear-gradient(135deg, #007aff, #5856d6); }
+.icon-ai { background: linear-gradient(135deg, #af52de, #ff2d55); }
+.icon-community { background: linear-gradient(135deg, #34c759, #30b0c7); }
+.icon-orbs { background: linear-gradient(135deg, #ff9500, #ff2d55); }
+.icon-lanterns { background: linear-gradient(135deg, #5856d6, #007aff); }
+.icon-breathing { background: linear-gradient(135deg, #5ac8fa, #34c759); }
+.icon-soundscapes { background: linear-gradient(135deg, #af52de, #007aff); }
+.icon-vault { background: linear-gradient(135deg, #ff9500, #5856d6); }
+.icon-journal { background: linear-gradient(135deg, #ff2d55, #af52de); }
+.icon-trash { background: linear-gradient(135deg, #94a3b8, #64748b); }
+
+.dock-app-icon:hover {
+  transform: scale(1.32) translateY(-14px);
+}
+.dock-app-icon:hover .dock-icon-inner {
+  box-shadow: 0 14px 30px rgba(0, 122, 255, 0.35);
+}
+
+.dock-app-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(12px);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
   font-weight: 600;
-  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.35);
-  transform: translateY(-2px);
+  padding: 4px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: all 0.2s var(--ease);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.ada-nav-pill.active i {
-  color: #ffffff;
+.dock-app-icon:hover .dock-app-tooltip {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-@media (max-width: 900px) {
-  .ada-nav-pill span { display: none; }
-  .ada-nav-pill { padding: 12px 14px; }
+.dock-active-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--text);
+  border-radius: 50%;
+  margin-top: 4px;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+.dock-app-icon.active .dock-active-dot {
+  opacity: 1;
+}
+
+.dock-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.12);
+  margin: 0 2px;
 }
 
 /* ── MACOS SEQUOIA WINDOW HEADER & TRAFFIC LIGHTS ── */
@@ -780,14 +925,16 @@ body {
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
 
-  /* Pristine visionOS / macOS Sequoia Optical Mesh Canvas */
-  background-color: #f6f7fc;
+  /* Multi-layer warm gradient with noise */
+  background-color: #fffbf5;
   background-image:
-    radial-gradient(at 10% 10%, rgba(0, 122, 255, 0.08) 0px, transparent 50%),
-    radial-gradient(at 90% 10%, rgba(175, 82, 222, 0.08) 0px, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(255, 45, 85, 0.05) 0px, transparent 50%),
-    radial-gradient(at 20% 90%, rgba(52, 199, 89, 0.06) 0px, transparent 50%),
-    radial-gradient(at 80% 90%, rgba(255, 149, 0, 0.06) 0px, transparent 50%);
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 15% 5%, rgba(255, 207, 86, 0.28) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 15%, rgba(217, 70, 239, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 45%, rgba(255, 82, 82, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 80%, rgba(244, 114, 182, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 25% 85%, rgba(255, 128, 82, 0.15) 0%, transparent 50%),
+    linear-gradient(160deg, #fffbeb 0%, #fff5f5 30%, #fef3ff 60%, #faf5ff 100%);
   background-attachment: fixed;
 
   transition: filter 0.7s var(--ease);
@@ -944,30 +1091,30 @@ body.warm-tab-shift {
 
 /* ── GLASS CARDS ── */
 .pro-card {
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(40px) saturate(210%);
-  -webkit-backdrop-filter: blur(40px) saturate(210%);
-  border: 1px solid rgba(255, 255, 255, 0.92);
-  border-radius: var(--r-xl);
-  padding: 32px;
-  display: flex; flex-direction: column; gap: 24px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.98);
+  background: var(--glass);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  display: flex; flex-direction: column; gap: 20px;
+  box-shadow: var(--glass-glow), var(--inner-light);
   position: relative; overflow: hidden;
-  transition: all 0.35s var(--ease);
+  transition: all 0.4s var(--ease);
 }
 
 .pro-card::before {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
   pointer-events: none; z-index: 0;
   border-radius: inherit;
 }
 
 .pro-card:hover {
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.07), inset 0 1px 0 #ffffff;
-  transform: translateY(-3px);
+  background: var(--glass-hover);
+  box-shadow: var(--glass-glow-hover), var(--inner-light);
+  transform: translateY(-2px);
 }
 
 .relative-z { position: relative; z-index: 5; }
@@ -1078,24 +1225,24 @@ blockquote {
 .small-btn { padding: 7px 14px; font-size: 0.8rem; border-radius: 10px; width: auto; }
 
 .primary-btn {
-  background: linear-gradient(135deg, #007aff 0%, #0058e6 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--sun-gold) 0%, var(--coral) 45%, var(--magenta) 100%);
+  color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.32),
+  box-shadow: 0 4px 16px rgba(217, 70, 239, 0.25),
               inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .primary-btn::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, transparent 50%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
   pointer-events: none; border-radius: inherit;
 }
 
 .primary-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 122, 255, 0.42),
-              inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(217, 70, 239, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
 .pulse-glow {
@@ -2437,107 +2584,3 @@ blockquote {
   justify-content: space-between;
 }
 
-
-/* Final interaction and responsive polish */
-:root {
-  --surface-page: #f7f8fc;
-  --line-soft: rgba(15, 23, 42, 0.08);
-  --shadow-card: 0 18px 50px rgba(15, 23, 42, 0.07), 0 2px 10px rgba(15, 23, 42, 0.03);
-}
-
-body {
-  background-color: var(--surface-page);
-  background-image:
-    radial-gradient(circle at 12% 0%, rgba(255, 219, 138, 0.18), transparent 32%),
-    radial-gradient(circle at 88% 8%, rgba(129, 140, 248, 0.14), transparent 28%),
-    linear-gradient(180deg, #fbfcff 0%, #f5f7fb 100%);
-}
-
-.skip-link {
-  position: fixed;
-  top: 12px;
-  left: 16px;
-  z-index: 10000;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: var(--text);
-  color: #fff;
-  font-size: 0.82rem;
-  font-weight: 700;
-  transform: translateY(-150%);
-  transition: transform 160ms var(--ease);
-}
-
-.skip-link:focus { transform: translateY(0); }
-
-:where(button, a, input, textarea, select):focus-visible {
-  outline: 3px solid rgba(0, 122, 255, 0.38);
-  outline-offset: 3px;
-}
-
-.ada-top-header,
-.ada-nav-pills-row {
-  border-color: rgba(255, 255, 255, 0.78);
-  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08), var(--inner-light);
-}
-
-.desktop-main-content {
-  width: min(100% - 32px, 1240px);
-  margin-inline: auto;
-  padding-inline: 0;
-}
-
-.desktop-page-title-row { max-width: 780px; margin-bottom: 8px; }
-.desktop-page-title { letter-spacing: -0.045em; }
-.desktop-page-subtitle { max-width: 680px; color: #64748b; }
-
-.pro-card {
-  border-color: var(--line-soft);
-  box-shadow: var(--shadow-card), var(--inner-light);
-}
-
-.pro-card:hover {
-  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.1), var(--inner-light);
-}
-
-.ios-btn,
-.ios-icon-btn,
-.spotlight-trigger-btn,
-.ada-nav-pill,
-.ios-link-btn { min-height: 42px; }
-
-.ios-btn { letter-spacing: -0.01em; }
-
-@media (max-width: 768px) {
-  .ada-top-header {
-    top: 8px;
-    width: calc(100% - 20px);
-    margin: 8px auto 18px;
-    padding: 0 14px;
-    border-radius: 22px;
-  }
-
-  .brand-name { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .header-right-actions { gap: 6px; }
-  .spotlight-trigger-text, .spotlight-kbd { display: none; }
-  .spotlight-trigger-btn { padding: 0 10px; }
-  .header-spotlight-dropdown { position: fixed; top: 82px; left: 10px; right: 10px; width: auto; }
-  .desktop-main-content { width: min(100% - 20px, 680px); }
-  .desktop-page-title { font-size: clamp(1.8rem, 9vw, 2.35rem); }
-  .welcome-card { padding: 22px; }
-  .pro-card { border-radius: 24px; padding: 22px; }
-  .ada-glass-nav-capsule { bottom: max(12px, env(safe-area-inset-bottom)); width: calc(100% - 20px); }
-  .ada-nav-pills-row { justify-content: space-between; padding: 5px; }
-  .ada-nav-pill { flex: 1; justify-content: center; padding: 11px 8px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-  .rainbow-wipe-curtain { display: none; }
-}
