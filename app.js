@@ -339,7 +339,8 @@ function initAutonomousAITherapistAura() {
 
   let isListening = false;
   let speechSynthEnabled = true;
-  let geminiApiKey = localStorage.getItem('haven_gemini_api_key') || '';
+  const DEFAULT_API_KEY = (import.meta.env && import.meta.env.VITE_OPENROUTER_API_KEY) ? import.meta.env.VITE_OPENROUTER_API_KEY : '';
+  let geminiApiKey = localStorage.getItem('haven_gemini_api_key') || DEFAULT_API_KEY;
   let elevenlabsApiKey = localStorage.getItem('haven_elevenlabs_api_key') || '';
 
   // Populate inputs if saved keys exist
@@ -350,7 +351,11 @@ function initAutonomousAITherapistAura() {
   function updateApiStatusBanner() {
     if (!apiStatusBanner) return;
     if (geminiApiKey) {
-      apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Google Gemini 1.5 Pro/Flash Active • Clinical Rogerian AI Live</strong></span>`;
+      if (geminiApiKey.startsWith('sk-or-')) {
+        apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>OpenRouter Live Neural API Active • Generative AI Therapist Live</strong></span>`;
+      } else {
+        apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Google Gemini 1.5 Active • Generative AI Therapist Live</strong></span>`;
+      }
     } else {
       apiStatusBanner.innerHTML = `<span><i data-lucide="shield-check" class="icon-inline"></i> <strong>HIPAA-Compliant Encryption • Person-Centered Rogerian Framework Active</strong></span>`;
     }
@@ -368,7 +373,7 @@ function initAutonomousAITherapistAura() {
   });
 
   saveApiKeysBtn?.addEventListener('click', () => {
-    geminiApiKey = geminiKeyInput?.value.trim() || '';
+    geminiApiKey = geminiKeyInput?.value.trim() || DEFAULT_API_KEY;
     elevenlabsApiKey = elevenlabsKeyInput?.value.trim() || '';
 
     localStorage.setItem('haven_gemini_api_key', geminiApiKey);
@@ -420,24 +425,56 @@ function initAutonomousAITherapistAura() {
     appendBubble('You', val, 'user-bubble');
     textInput.value = '';
 
-    if (geminiApiKey) {
-      // Call Google Gemini 1.5 Flash REST API
+    const activeKey = geminiApiKey || DEFAULT_API_KEY;
+
+    if (activeKey) {
       const loadingBubble = appendBubble('Dr. Aura (AI Therapist Agent)', 'Thinking softly...', 'aura-bubble pulse-glow');
       try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{
-              parts: [{
-                text: `You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user's emotion with deep empathy, person-centered reflection, gentle comfort, and therapeutic presence in 2-3 warm sentences.\n\nUser: "${val}"`
+        let text = '';
+
+        if (activeKey.startsWith('sk-or-')) {
+          // OpenRouter API Call
+          const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${activeKey}`,
+              'HTTP-Referer': window.location.href,
+              'X-Title': 'Haven Sanctuary Dr. Aura'
+            },
+            body: JSON.stringify({
+              model: 'google/gemini-2.0-flash-lite-preview-02-05:free',
+              messages: [
+                {
+                  role: 'system',
+                  content: 'You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user\'s emotion with deep empathy, person-centered reflection, gentle comfort, and therapeutic presence in 2-3 warm sentences.'
+                },
+                {
+                  role: 'user',
+                  content: val
+                }
+              ]
+            })
+          });
+          const data = await response.json();
+          text = data.choices?.[0]?.message?.content || "I hear you deeply. How does it feel to put that into words right now?";
+        } else {
+          // Google Gemini 1.5 Direct REST API Call
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{
+                parts: [{
+                  text: `You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user's emotion with deep empathy, person-centered reflection, gentle comfort, and therapeutic presence in 2-3 warm sentences.\n\nUser: "${val}"`
+                }]
               }]
-            }]
-          })
-        });
-        const data = await response.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "I hear you deeply. How does it feel to put that into words right now?";
-        
+            })
+          });
+          const data = await response.json();
+          text = data.candidates?.[0]?.content?.parts?.[0]?.text || "I hear you deeply. How does it feel to put that into words right now?";
+        }
+
         loadingBubble.remove();
         appendBubble('Dr. Aura (AI Therapist Agent)', text, 'aura-bubble');
         playBellSound(520, 'sine', 1.0, 0.08);
