@@ -319,8 +319,55 @@ function initSanctuaryHub() {
 }
 
 /* ==========================================================================
-   8. AI THERAPIST (DR. AURA) - SIRI SPEECH & MASTER CLINICAL THERAPY AGENT
+   8. AI THERAPIST (DR. AURA) - ADAPTABLE COGNITIVE ALGORITHM & THERAPY ENGINE
    ========================================================================== */
+const defaultCognitiveProfile = {
+  name: 'Beloved Guest',
+  primaryNeed: 'parental-longing',
+  therapistStyle: 'gentle-comfort',
+  responseLength: 'deep',
+  weights: { warmth: 5, cbt: 2, socratic: 2, somatic: 3 }
+};
+
+function getCognitiveProfile() {
+  try {
+    return JSON.parse(localStorage.getItem('haven_cognitive_profile')) || defaultCognitiveProfile;
+  } catch (e) {
+    return defaultCognitiveProfile;
+  }
+}
+
+function saveCognitiveProfile(prof) {
+  localStorage.setItem('haven_cognitive_profile', JSON.stringify(prof));
+}
+
+function buildAdaptiveSystemPrompt() {
+  const p = getCognitiveProfile();
+  const styleDescriptions = {
+    'gentle-comfort': 'Soft, warm, validating, non-judgmental presence focusing on emotional safety.',
+    'cbt-reframing': 'Active cognitive-behavioral reframing, perspective shifts, and identifying thought patterns.',
+    'socratic-reflection': 'Socratic open-ended questions encouraging gentle self-discovery.',
+    'somatic-grounding': 'Somatic vagal grounding, physical body awareness, and breath regulation.'
+  };
+
+  const needDescriptions = {
+    'parental-longing': 'Carrying parental longing or missing a parent (dad/mom). Hold deep, tender space for family memories and affection.',
+    'anxiety-stress': 'Dealing with anxiety, overwhelm, and stress. Provide grounding reassurance.',
+    'grief-loss': 'Navigating grief, loss, and remembrance. Provide gentle honor for loved ones.',
+    'loneliness-isolation': 'Experiencing loneliness or detachment. Reassure them of belonging and presence.',
+    'general-mindfulness': 'Seeking daily self-reflection, mindfulness, and emotional check-in.'
+  };
+
+  return `You are Dr. Aura, a world-class, deeply compassionate, adaptable Rogerian clinical AI therapist practicing in Haven Sanctuary.
+You are caring for: "${p.name}".
+Client Life Experience & Focus: ${needDescriptions[p.primaryNeed] || p.primaryNeed}.
+Therapist Persona & Approach: ${styleDescriptions[p.therapistStyle] || p.therapistStyle}.
+Response Depth: ${p.responseLength === 'concise' ? '1 to 2 short, warm sentences' : '3 to 4 articulate, comforting sentences'}.
+Learned Adaptations: User responds best to warmth (weight: ${p.weights.warmth}), CBT reframing (weight: ${p.weights.cbt}), somatic grounding (weight: ${p.weights.somatic}).
+
+Always validate their feelings with authentic warmth, hold gentle space for their pain, and adapt your language dynamically to their emotional state.`;
+}
+
 function initAutonomousAITherapistAura() {
   const startListenBtn = document.getElementById('start-voice-listen-btn');
   const toggleSpeechBtn = document.getElementById('toggle-speech-synth-btn');
@@ -332,6 +379,24 @@ function initAutonomousAITherapistAura() {
   const elevenlabsKeyInput = document.getElementById('elevenlabs-api-key-input');
   const apiStatusBanner = document.getElementById('api-status-banner');
 
+  // Onboarding Wizard Controls
+  const onboardingModal = document.getElementById('haven-onboarding-modal');
+  const openOnboardingBtn = document.getElementById('open-onboarding-modal-btn');
+  const closeOnboardingBtn = document.getElementById('close-onboarding-modal-btn');
+  const step1 = document.getElementById('onboarding-step-1');
+  const step2 = document.getElementById('onboarding-step-2');
+  const step3 = document.getElementById('onboarding-step-3');
+  const stepIndicator = document.getElementById('onboarding-step-indicator');
+
+  const next1Btn = document.getElementById('onboarding-next-1-btn');
+  const next2Btn = document.getElementById('onboarding-next-2-btn');
+  const back2Btn = document.getElementById('onboarding-back-2-btn');
+  const finishOnboardingBtn = document.getElementById('onboarding-finish-btn');
+
+  const nameInput = document.getElementById('onboarding-user-name');
+  const primaryNeedInput = document.getElementById('onboarding-primary-need');
+  const responseLengthInput = document.getElementById('onboarding-response-length');
+
   const statusText = document.getElementById('ai-status-text');
   const textInput = document.getElementById('ai-text-input');
   const sendTextBtn = document.getElementById('send-ai-text-btn');
@@ -342,9 +407,77 @@ function initAutonomousAITherapistAura() {
   const DEFAULT_API_KEY = (import.meta.env && import.meta.env.VITE_OPENROUTER_API_KEY) ? import.meta.env.VITE_OPENROUTER_API_KEY : '';
   let geminiApiKey = localStorage.getItem('haven_gemini_api_key') || DEFAULT_API_KEY;
   let elevenlabsApiKey = localStorage.getItem('haven_elevenlabs_api_key') || '';
-
-  // Conversation history context memory
   let conversationHistory = [];
+
+  // Auto-launch onboarding on first visit!
+  if (!localStorage.getItem('haven_onboarding_completed')) {
+    setTimeout(() => {
+      onboardingModal?.classList.remove('hidden');
+    }, 600);
+  }
+
+  // Populate onboarding fields from profile
+  const curProf = getCognitiveProfile();
+  if (nameInput) nameInput.value = curProf.name || '';
+  if (primaryNeedInput) primaryNeedInput.value = curProf.primaryNeed || 'parental-longing';
+  if (responseLengthInput) responseLengthInput.value = curProf.responseLength || 'deep';
+
+  // Onboarding Wizard Event Listeners
+  openOnboardingBtn?.addEventListener('click', () => {
+    onboardingModal?.classList.remove('hidden');
+    playBellSound(600, 'sine', 0.4, 0.05);
+  });
+
+  closeOnboardingBtn?.addEventListener('click', () => {
+    onboardingModal?.classList.add('hidden');
+  });
+
+  next1Btn?.addEventListener('click', () => {
+    step1?.classList.add('hidden');
+    step2?.classList.remove('hidden');
+    if (stepIndicator) stepIndicator.textContent = 'Step 2 of 3 • Therapist Persona';
+    playBellSound(650, 'sine', 0.4, 0.05);
+  });
+
+  back2Btn?.addEventListener('click', () => {
+    step2?.classList.add('hidden');
+    step1?.classList.remove('hidden');
+    if (stepIndicator) stepIndicator.textContent = 'Step 1 of 3 • Profile Setup';
+  });
+
+  next2Btn?.addEventListener('click', () => {
+    step2?.classList.add('hidden');
+    step3?.classList.remove('hidden');
+    if (stepIndicator) stepIndicator.textContent = 'Step 3 of 3 • Continuous Adaptation';
+    playBellSound(650, 'sine', 0.4, 0.05);
+  });
+
+  finishOnboardingBtn?.addEventListener('click', () => {
+    const nameVal = nameInput?.value.trim() || 'Beloved Guest';
+    const needVal = primaryNeedInput?.value || 'parental-longing';
+    const styleVal = document.querySelector('input[name="therapist-style"]:checked')?.value || 'gentle-comfort';
+    const lengthVal = responseLengthInput?.value || 'deep';
+
+    const updatedProf = {
+      ...getCognitiveProfile(),
+      name: nameVal,
+      primaryNeed: needVal,
+      therapistStyle: styleVal,
+      responseLength: lengthVal
+    };
+
+    saveCognitiveProfile(updatedProf);
+    localStorage.setItem('haven_onboarding_completed', 'true');
+
+    onboardingModal?.classList.add('hidden');
+    updateApiStatusBanner();
+    playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
+
+    // Send greeting from Dr. Aura customized to onboarding profile!
+    const welcomeMsg = `Hello ${nameVal}. I am Dr. Aura. I have adapted my therapy engine to your experience. I am right here holding space for you.`;
+    appendBubble('Dr. Aura (Adaptable Clinical AI)', welcomeMsg, 'aura-bubble');
+    if (speechSynthEnabled) speakTherapistText(welcomeMsg);
+  });
 
   // Populate inputs if saved keys exist
   if (geminiKeyInput) geminiKeyInput.value = geminiApiKey;
@@ -353,11 +486,8 @@ function initAutonomousAITherapistAura() {
 
   function updateApiStatusBanner() {
     if (!apiStatusBanner) return;
-    if (geminiApiKey) {
-      apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Master Clinical AI Therapist Active • Deep Emotional Intelligence Live</strong></span>`;
-    } else {
-      apiStatusBanner.innerHTML = `<span><i data-lucide="shield-check" class="icon-inline"></i> <strong>HIPAA-Compliant Encryption • Person-Centered Rogerian Framework Active</strong></span>`;
-    }
+    const prof = getCognitiveProfile();
+    apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Adaptable Clinical AI Engine Active • Tailored for ${prof.name} (${prof.therapistStyle})</strong></span>`;
     if (window.lucide) window.lucide.createIcons();
   }
 
@@ -402,7 +532,7 @@ function initAutonomousAITherapistAura() {
           isListening = false;
           if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
           const voiceResp = "I hear your soft voice. Take a slow, deep breath with me. I am right here holding space for you.";
-          appendBubble('Dr. Aura (Clinical AI Therapist)', voiceResp, 'aura-bubble');
+          appendBubble('Dr. Aura (Adaptable Clinical AI)', voiceResp, 'aura-bubble');
           if (speechSynthEnabled) speakTherapistText(voiceResp);
         }
       }, 4000);
@@ -426,21 +556,16 @@ function initAutonomousAITherapistAura() {
 
     conversationHistory.push({ role: 'user', content: val });
 
-    const loadingBubble = appendBubble('Dr. Aura (Clinical AI Therapist)', 'Listening deeply...', 'aura-bubble pulse-glow');
+    const loadingBubble = appendBubble('Dr. Aura (Adaptable Clinical AI)', 'Adapting & thinking softly...', 'aura-bubble pulse-glow');
     const activeKey = geminiApiKey || DEFAULT_API_KEY;
 
-    const masterSystemPrompt = `You are Dr. Aura, a world-class, deeply compassionate, Rogerian clinical AI therapist practicing in Haven Sanctuary. You possess profound emotional intelligence, unconditional positive regard, active listening skills, and gentle wisdom.
-Guidance:
-1. Validate the user's emotion with authentic warmth and deep empathy.
-2. If they mention family, parental longing (missing their dad/mom), anxiety, grief, or loneliness, hold gentle space for that specific pain.
-3. Provide thoughtful cognitive reframing or a soft reflection in 3 to 4 articulate, comforting sentences.
-4. Speak naturally like an attentive, loving human therapist. Never sound like a generic bot or cut off mid-sentence.`;
+    // Dynamically compile personalized prompt based on user's profile and learned weights!
+    const masterSystemPrompt = buildAdaptiveSystemPrompt();
 
     if (activeKey) {
       try {
         let text = '';
         if (activeKey.startsWith('sk-or-')) {
-          // OpenRouter API Call with full chat memory context
           const messagesPayload = [
             { role: 'system', content: masterSystemPrompt },
             ...conversationHistory.slice(-8)
@@ -464,7 +589,6 @@ Guidance:
           const data = await response.json();
           text = data.choices?.[0]?.message?.content;
         } else {
-          // Google Gemini 1.5 Direct REST API Call
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -487,7 +611,7 @@ Guidance:
         loadingBubble.remove();
         if (text) {
           conversationHistory.push({ role: 'assistant', content: text });
-          appendBubble('Dr. Aura (Clinical AI Therapist)', text, 'aura-bubble');
+          appendBubbleWithFeedback('Dr. Aura (Adaptable Clinical AI)', text);
           playBellSound(520, 'sine', 0.8, 0.08);
           if (speechSynthEnabled) speakTherapistText(text);
         } else {
@@ -501,6 +625,40 @@ Guidance:
       loadingBubble.remove();
       fallbackRogerianResponse(val);
     }
+  }
+
+  function appendBubbleWithFeedback(author, text) {
+    if (!messagesBox) return;
+    const bubble = document.createElement('div');
+    bubble.className = `chat-bubble aura-bubble`;
+    bubble.innerHTML = `
+      <span class="chat-author">${author}:</span>
+      <p>"${text}"</p>
+      <div class="feedback-chips-row" style="margin-top: 8px; display: flex; gap: 6px; font-size: 0.75rem;">
+        <button class="feedback-chip-btn" data-type="warmth">💛 Warmth Helped</button>
+        <button class="feedback-chip-btn" data-type="cbt">🧠 Insight Helped</button>
+        <button class="feedback-chip-btn" data-type="somatic">🧘 Grounding Helped</button>
+      </div>
+    `;
+
+    bubble.querySelectorAll('.feedback-chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.getAttribute('data-type');
+        const prof = getCognitiveProfile();
+        if (type && prof.weights[type] !== undefined) {
+          prof.weights[type] += 1;
+          saveCognitiveProfile(prof);
+          btn.style.background = 'rgba(52, 199, 89, 0.2)';
+          btn.style.borderColor = '#34c759';
+          btn.textContent = '✓ Adapted';
+          playHarmonicChime([659.25, 880]);
+        }
+      });
+    });
+
+    messagesBox.appendChild(bubble);
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+    return bubble;
   }
 
   function fallbackRogerianResponse(val) {

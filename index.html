@@ -261,6 +261,9 @@
             <button id="open-aura-api-modal-btn" class="ios-icon-btn" title="Dr. Aura API Key Settings">
               <i data-lucide="key"></i>
             </button>
+            <button id="open-onboarding-modal-btn" class="ios-btn secondary-btn small-btn" title="Configure Adaptable AI Cognitive Profile">
+              <i data-lucide="sliders"></i> Adaptive AI Profile
+            </button>
           </div>
 
           <div id="api-status-banner" class="api-status-banner">
@@ -1030,6 +1033,131 @@
           <i data-lucide="check-circle"></i> Save API Credentials
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Interactive Onboarding & Adaptive Profile Discovery Modal -->
+  <div id="haven-onboarding-modal" class="modal-overlay hidden">
+    <div class="pro-card modal-card glass-modal" style="width: 520px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="user-avatar-mini" style="background: linear-gradient(135deg, var(--sf-purple), var(--sf-pink));"><i data-lucide="sparkles"></i></span>
+          <h3 style="font-family: var(--font-serif); font-size: 1.4rem;">Dr. Aura & Helpy • Onboarding</h3>
+        </div>
+        <button id="close-onboarding-modal-btn" class="modal-close-btn"><i data-lucide="x"></i></button>
+      </div>
+
+      <!-- Onboarding Step Indicator -->
+      <div class="ios-segmented-control" style="margin-bottom: 20px;">
+        <span id="onboarding-step-indicator" class="ios-pill active" style="font-size: 0.78rem;">Step 1 of 3 • Profile Setup</span>
+      </div>
+
+      <!-- STEP 1: Name & Emotional Need -->
+      <div id="onboarding-step-1" class="onboarding-step">
+        <div class="ios-inset-box" style="margin-bottom: 16px;">
+          <p style="font-size: 0.92rem; color: var(--text); line-height: 1.5;">
+            "Welcome to Haven Sanctuary. I am <strong>Dr. Aura</strong>. To adapt my therapy and language to your unique life experiences, please share a little about yourself."
+          </p>
+        </div>
+
+        <div class="ios-input-group" style="display: flex; flex-direction: column; gap: 14px;">
+          <div>
+            <label style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">What should Dr. Aura call you?</label>
+            <input type="text" id="onboarding-user-name" class="ios-input" placeholder="Your name or preferred title..." />
+          </div>
+
+          <div>
+            <label style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">What primary experience or goal brings you here today?</label>
+            <select id="onboarding-primary-need" class="ios-input" style="padding: 10px;">
+              <option value="parental-longing">Parental Longing / Missing a Parent (Dad/Mom)</option>
+              <option value="anxiety-stress">Anxiety, Overwhelm & Stress Regulation</option>
+              <option value="grief-loss">Grief, Loss & Remembrance</option>
+              <option value="loneliness-isolation">Loneliness & Emotional Isolation</option>
+              <option value="general-mindfulness">General Daily Self-Reflection & Mindfulness</option>
+            </select>
+          </div>
+
+          <button id="onboarding-next-1-btn" class="ios-btn primary-btn pulse-glow margin-top" style="width: 100%;">
+            Next: Choose Therapist Persona <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Desired Therapist Response Style -->
+      <div id="onboarding-step-2" class="onboarding-step hidden">
+        <div class="ios-inset-box" style="margin-bottom: 16px;">
+          <p style="font-size: 0.92rem; color: var(--text); line-height: 1.5;">
+            "How would you prefer Dr. Aura to respond to your emotions?"
+          </p>
+        </div>
+
+        <div class="ios-input-group" style="display: flex; flex-direction: column; gap: 10px;">
+          <label class="ios-list-row" style="cursor: pointer; padding: 12px;">
+            <input type="radio" name="therapist-style" value="gentle-comfort" checked style="margin-right: 10px;" />
+            <div>
+              <strong>🛋️ Gentle Nurturing Comfort</strong>
+              <span style="display: block; font-size: 0.78rem; color: var(--text-muted);">Soft, warm, validating, unconditional non-judgmental presence.</span>
+            </div>
+          </label>
+
+          <label class="ios-list-row" style="cursor: pointer; padding: 12px;">
+            <input type="radio" name="therapist-style" value="cbt-reframing" style="margin-right: 10px;" />
+            <div>
+              <strong>🧠 Cognitive CBT Reframing</strong>
+              <span style="display: block; font-size: 0.78rem; color: var(--text-muted);">Active perspective shifts, identifying cognitive patterns & insights.</span>
+            </div>
+          </label>
+
+          <label class="ios-list-row" style="cursor: pointer; padding: 12px;">
+            <input type="radio" name="therapist-style" value="socratic-reflection" style="margin-right: 10px;" />
+            <div>
+              <strong>❓ Socratic Discovery</strong>
+              <span style="display: block; font-size: 0.78rem; color: var(--text-muted);">Asking gentle, open-ended questions to explore your inner self.</span>
+            </div>
+          </label>
+
+          <label class="ios-list-row" style="cursor: pointer; padding: 12px;">
+            <input type="radio" name="therapist-style" value="somatic-grounding" style="margin-right: 10px;" />
+            <div>
+              <strong>🧘 Somatic & Vagal Grounding</strong>
+              <span style="display: block; font-size: 0.78rem; color: var(--text-muted);">Focusing on physical sensations, breath awareness & safety.</span>
+            </div>
+          </label>
+
+          <div style="display: flex; gap: 10px; margin-top: 12px;">
+            <button id="onboarding-back-2-btn" class="ios-btn secondary-btn small-btn" style="flex: 1;"><i data-lucide="arrow-left"></i> Back</button>
+            <button id="onboarding-next-2-btn" class="ios-btn primary-btn small-btn" style="flex: 2;">Next: Response Depth <i data-lucide="arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Response Length & Learning Confirmation -->
+      <div id="onboarding-step-3" class="onboarding-step hidden">
+        <div class="ios-inset-box" style="margin-bottom: 16px;">
+          <p style="font-size: 0.92rem; color: var(--text); line-height: 1.5;">
+            "Dr. Aura's adaptive algorithm will continuously learn from your feedback to tailor every reflection."
+          </p>
+        </div>
+
+        <div class="ios-input-group" style="display: flex; flex-direction: column; gap: 12px;">
+          <label style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted); display: block;">Preferred Response Length:</label>
+          <select id="onboarding-response-length" class="ios-input" style="padding: 10px;">
+            <option value="concise">Concise & Focused (1-2 sentences)</option>
+            <option value="deep" selected>Deep & Comprehensive (3-4 sentences)</option>
+          </select>
+
+          <div class="ios-inset-box" style="background: rgba(52, 199, 89, 0.1); border-color: rgba(52, 199, 89, 0.3); margin-top: 8px;">
+            <span style="color: #278a3e; font-size: 0.84rem; font-weight: 600;">
+              ✓ Continuous Adaptation Active: Dr. Aura will learn from your message feedback ratings.
+            </span>
+          </div>
+
+          <button id="onboarding-finish-btn" class="ios-btn primary-btn pulse-glow margin-top" style="width: 100%;">
+            <i data-lucide="check-circle"></i> Activate Adaptive Cognitive Algorithm
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 

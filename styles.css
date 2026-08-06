@@ -2309,3 +2309,40 @@ blockquote {
   justify-content: space-between;
 }
 
+/* ── ADAPTIVE COGNITIVE ALGORITHM & FEEDBACK CHIPS ── */
+.feedback-chips-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+}
+
+.feedback-chip-btn {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--r-sm);
+  padding: 4px 10px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+
+.feedback-chip-btn:hover {
+  background: #ffffff;
+  color: var(--text);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.onboarding-step {
+  animation: fadeIn 0.3s var(--ease);
+}
+
+.onboarding-step.hidden {
+  display: none;
+}
+
