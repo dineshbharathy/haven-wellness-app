@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.lucide.createIcons();
   }
 
-  initMacOSDesktopEnvironment();
-  initMacOSDockNavigation();
   initMacOSWindowControls();
   initDesktopResolutionDetector();
   initAudioEngine();
@@ -108,11 +106,6 @@ function navigateToPage(targetPageId) {
       if (pageTitle) pageTitle.textContent = pageMeta[targetPageId].title;
       if (pageSubtitle) pageSubtitle.textContent = pageMeta[targetPageId].subtitle;
     }
-
-    const dockIcons = document.querySelectorAll('.dock-app-icon[data-dock-target]');
-    dockIcons.forEach(icon => {
-      icon.classList.toggle('active', icon.getAttribute('data-dock-target') === targetPageId);
-    });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (window.lucide) window.lucide.createIcons();
@@ -314,65 +307,77 @@ function initSanctuaryHub() {
     hugModal?.classList.add('hidden');
   });
 
-  const brewTeaBtn = document.getElementById('brew-tea-btn');
-  const teaSteam = document.getElementById('tea-steam');
-  let isSteeping = false;
-  let teaTimer = null;
-
-  brewTeaBtn?.addEventListener('click', () => {
-    getAudioContext();
-    if (isSteeping) return;
-    isSteeping = true;
-
-    playHarmonicChime([440, 554.37, 659.25]);
-    if (teaSteam) teaSteam.style.opacity = '1';
-    
-    let left = 30;
-    brewTeaBtn.innerHTML = `<i data-lucide="timer"></i> Steeping... ${left}s`;
-    
-    teaTimer = setInterval(() => {
-      left--;
-      if (left <= 0) {
-        clearInterval(teaTimer);
-        isSteeping = false;
-        if (teaSteam) teaSteam.style.opacity = '0.5';
-        brewTeaBtn.innerHTML = `<i data-lucide="check"></i> Somatic Tea Prepared`;
-        playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
-        setTimeout(() => {
-          brewTeaBtn.innerHTML = `<i data-lucide="timer"></i> Mindfulness Pause (30s)`;
-          if (window.lucide) window.lucide.createIcons();
-        }, 4000);
-      } else {
-        brewTeaBtn.innerHTML = `<i data-lucide="timer"></i> Steeping... ${left}s`;
-      }
-    }, 1000);
-  });
-
   document.getElementById('open-ai-listener-btn')?.addEventListener('click', () => {
-    navigateToPage('ai-listener');
+    document.querySelector('.nav-tab-btn[data-tab="ai-listener"]')?.click();
   });
   document.getElementById('open-community-tab-btn')?.addEventListener('click', () => {
-    navigateToPage('community');
+    document.querySelector('.nav-tab-btn[data-tab="community"]')?.click();
   });
   document.getElementById('open-storybook-tab-btn')?.addEventListener('click', () => {
-    navigateToPage('memory-orbs');
+    document.querySelector('.nav-tab-btn[data-tab="memory-orbs"]')?.click();
   });
 }
 
 /* ==========================================================================
-   8. AI THERAPIST (DR. AURA) - SIRI SPEECH & THERAPY AGENT
+   8. AI THERAPIST (DR. AURA) - SIRI SPEECH & THERAPY AGENT (GEMINI 1.5 POWERED)
    ========================================================================== */
 function initAutonomousAITherapistAura() {
   const startListenBtn = document.getElementById('start-voice-listen-btn');
   const toggleSpeechBtn = document.getElementById('toggle-speech-synth-btn');
+  const openApiModalBtn = document.getElementById('open-aura-api-modal-btn');
+  const closeApiModalBtn = document.getElementById('close-aura-api-modal-btn');
+  const saveApiKeysBtn = document.getElementById('save-aura-api-keys-btn');
+  const apiModal = document.getElementById('dr-aura-api-modal');
+  const geminiKeyInput = document.getElementById('gemini-api-key-input');
+  const elevenlabsKeyInput = document.getElementById('elevenlabs-api-key-input');
+  const apiStatusBanner = document.getElementById('api-status-banner');
+
   const statusText = document.getElementById('ai-status-text');
   const textInput = document.getElementById('ai-text-input');
   const sendTextBtn = document.getElementById('send-ai-text-btn');
   const messagesBox = document.getElementById('ai-chat-messages');
-  const auraCore = document.querySelector('.aura-core');
 
   let isListening = false;
   let speechSynthEnabled = true;
+  let geminiApiKey = localStorage.getItem('haven_gemini_api_key') || '';
+  let elevenlabsApiKey = localStorage.getItem('haven_elevenlabs_api_key') || '';
+
+  // Populate inputs if saved keys exist
+  if (geminiKeyInput) geminiKeyInput.value = geminiApiKey;
+  if (elevenlabsKeyInput) elevenlabsKeyInput.value = elevenlabsApiKey;
+  updateApiStatusBanner();
+
+  function updateApiStatusBanner() {
+    if (!apiStatusBanner) return;
+    if (geminiApiKey) {
+      apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Google Gemini 1.5 Pro/Flash Active • Clinical Rogerian AI Live</strong></span>`;
+    } else {
+      apiStatusBanner.innerHTML = `<span><i data-lucide="shield-check" class="icon-inline"></i> <strong>HIPAA-Compliant Encryption • Person-Centered Rogerian Framework Active</strong></span>`;
+    }
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  // Open / Close API Settings Modal
+  openApiModalBtn?.addEventListener('click', () => {
+    apiModal?.classList.remove('hidden');
+    playBellSound(600, 'sine', 0.4, 0.05);
+  });
+
+  closeApiModalBtn?.addEventListener('click', () => {
+    apiModal?.classList.add('hidden');
+  });
+
+  saveApiKeysBtn?.addEventListener('click', () => {
+    geminiApiKey = geminiKeyInput?.value.trim() || '';
+    elevenlabsApiKey = elevenlabsKeyInput?.value.trim() || '';
+
+    localStorage.setItem('haven_gemini_api_key', geminiApiKey);
+    localStorage.setItem('haven_elevenlabs_api_key', elevenlabsApiKey);
+
+    updateApiStatusBanner();
+    apiModal?.classList.add('hidden');
+    playHarmonicChime([523.25, 659.25, 783.99]);
+  });
 
   toggleSpeechBtn?.addEventListener('click', () => {
     speechSynthEnabled = !speechSynthEnabled;
@@ -404,46 +409,63 @@ function initAutonomousAITherapistAura() {
     if (window.lucide) window.lucide.createIcons();
   });
 
-  document.querySelectorAll('.ai-chip-btn').forEach(chip => {
-    chip.addEventListener('click', () => {
-      getAudioContext();
-      playBellSound(640, 'sine', 0.4, 0.05);
-      const promptText = chip.getAttribute('data-prompt');
-      if (textInput && promptText) {
-        textInput.value = promptText;
-        handleSendMessage();
-      }
-    });
-  });
-
   sendTextBtn?.addEventListener('click', handleSendMessage);
   textInput?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') handleSendMessage();
   });
 
-  function handleSendMessage() {
+  async function handleSendMessage() {
     const val = textInput.value.trim();
     if (!val) return;
     appendBubble('You', val, 'user-bubble');
     textInput.value = '';
 
-    setTimeout(() => {
-      const lower = val.toLowerCase();
-      let resp = "I hear you deeply. What you are experiencing is completely valid. How does it feel to put that into words right now?";
-
-      if (lower.includes('dad') || lower.includes('father') || lower.includes('longing')) {
-        resp = "Parental longing is a profound, tender emotion. Missing your dad shows how deeply you hold love in your heart. I am here to hold space for that love with you.";
-      } else if (lower.includes('lonely') || lower.includes('alone')) {
-        resp = "Feeling lonely can feel heavy, but in this sanctuary, you are truly never alone. Let's take a soft breathing pause together.";
-      } else if (lower.includes('anxious') || lower.includes('scared') || lower.includes('stress')) {
-        resp = "When anxiety feels like a tide, bring your awareness to your feet on the ground. You are safe in this quiet moment.";
+    if (geminiApiKey) {
+      // Call Google Gemini 1.5 Flash REST API
+      const loadingBubble = appendBubble('Dr. Aura (AI Therapist Agent)', 'Thinking softly...', 'aura-bubble pulse-glow');
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: `You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user's emotion with deep empathy, person-centered reflection, gentle comfort, and therapeutic presence in 2-3 warm sentences.\n\nUser: "${val}"`
+              }]
+            }]
+          })
+        });
+        const data = await response.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "I hear you deeply. How does it feel to put that into words right now?";
+        
+        loadingBubble.remove();
+        appendBubble('Dr. Aura (AI Therapist Agent)', text, 'aura-bubble');
+        playBellSound(520, 'sine', 1.0, 0.08);
+        if (speechSynthEnabled) speakTherapistText(text);
+      } catch (err) {
+        loadingBubble.remove();
+        fallbackRogerianResponse(val);
       }
+    } else {
+      setTimeout(() => fallbackRogerianResponse(val), 800);
+    }
+  }
 
-      appendBubble('Dr. Aura (AI Therapist Agent)', resp, 'aura-bubble');
-      playBellSound(520, 'sine', 1.0, 0.08);
+  function fallbackRogerianResponse(val) {
+    const lower = val.toLowerCase();
+    let resp = "I hear you deeply. What you are experiencing is completely valid. How does it feel to put that into words right now?";
 
-      if (speechSynthEnabled) speakTherapistText(resp);
-    }, 1000);
+    if (lower.includes('dad') || lower.includes('father') || lower.includes('longing')) {
+      resp = "Parental longing is a profound, tender emotion. Missing your dad shows how deeply you hold love in your heart. I am here to hold space for that love with you.";
+    } else if (lower.includes('lonely') || lower.includes('alone')) {
+      resp = "Feeling lonely can feel heavy, but in this sanctuary, you are truly never alone. Let's take a soft breathing pause together.";
+    } else if (lower.includes('anxious') || lower.includes('scared') || lower.includes('stress')) {
+      resp = "When anxiety feels like a tide, bring your awareness to your feet on the ground. You are safe in this quiet moment.";
+    }
+
+    appendBubble('Dr. Aura (AI Therapist Agent)', resp, 'aura-bubble');
+    playBellSound(520, 'sine', 1.0, 0.08);
+    if (speechSynthEnabled) speakTherapistText(resp);
   }
 
   function appendBubble(author, text, bubbleClass) {
@@ -1688,107 +1710,6 @@ function initMacOSWindowControls() {
   document.addEventListener('click', (e) => {
     if (controlCenterPopover && !controlCenterPopover.contains(e.target) && e.target !== controlCenterBtn) {
       controlCenterPopover.classList.add('hidden');
-    }
-  });
-}
-
-/* ==========================================================================
-   19. MACOS SEQUOIA DESKTOP ENVIRONMENT & MENU BAR
-   ========================================================================== */
-function initMacOSDesktopEnvironment() {
-  const clockEl = document.getElementById('macos-clock-display');
-  const appleTrigger = document.getElementById('apple-menu-trigger');
-  const appleMenu = document.getElementById('apple-dropdown-menu');
-  const menuSpotlightBtn = document.getElementById('menu-spotlight-btn');
-  const menuControlCenterTrigger = document.getElementById('menu-control-center-trigger');
-  const controlCenterPopover = document.getElementById('mac-control-center-popover');
-  const toggleDesktopBtn = document.getElementById('toggle-desktop-mode-btn');
-  const desktopBtnText = document.getElementById('desktop-mode-btn-text');
-
-  toggleDesktopBtn?.addEventListener('click', () => {
-    getAudioContext();
-    playBellSound(680, 'sine', 0.4, 0.05);
-    const isActive = document.body.classList.toggle('macos-desktop-sim-active');
-    if (desktopBtnText) {
-      desktopBtnText.textContent = isActive ? 'Full Screen' : 'Desktop View';
-    }
-  });
-
-  function updateMacOSClock() {
-    if (!clockEl) return;
-    const now = new Date();
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
-    const dayName = days[now.getDay()];
-    const monthName = months[now.getMonth()];
-    const dateNum = now.getDate();
-    
-    let hours = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-
-    clockEl.textContent = `${dayName} ${monthName} ${dateNum}  ${hours}:${minutes} ${ampm}`;
-  }
-
-  updateMacOSClock();
-  setInterval(updateMacOSClock, 10000);
-
-  appleTrigger?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    getAudioContext();
-    playBellSound(600, 'sine', 0.3, 0.04);
-    appleMenu?.classList.toggle('hidden');
-  });
-
-  menuSpotlightBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    document.getElementById('open-spotlight-btn')?.click();
-  });
-
-  menuControlCenterTrigger?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    getAudioContext();
-    playBellSound(640, 'sine', 0.4, 0.05);
-    controlCenterPopover?.classList.toggle('hidden');
-  });
-
-  document.addEventListener('click', (e) => {
-    if (appleMenu && !appleMenu.contains(e.target) && e.target !== appleTrigger) {
-      appleMenu.classList.add('hidden');
-    }
-  });
-}
-
-/* ==========================================================================
-   20. MACOS SEQUOIA FLOATING OPTICAL GLASS DOCK NAVIGATION
-   ========================================================================== */
-function initMacOSDockNavigation() {
-  const dockIcons = document.querySelectorAll('.dock-app-icon[data-dock-target]');
-  const trashBtn = document.getElementById('dock-trash-btn');
-
-  dockIcons.forEach(icon => {
-    icon.addEventListener('click', () => {
-      getAudioContext();
-      playBellSound(750, 'sine', 0.5, 0.06);
-
-      const targetPageId = icon.getAttribute('data-dock-target');
-
-      dockIcons.forEach(i => i.classList.remove('active'));
-      icon.classList.add('active');
-
-      if (targetPageId) {
-        navigateToPage(targetPageId);
-      }
-    });
-  });
-
-  trashBtn?.addEventListener('click', () => {
-    getAudioContext();
-    playBellSound(440, 'triangle', 0.6, 0.08);
-    if (confirm('Clean local temporary logs & refresh macOS Sanctuary vault?')) {
-      playHarmonicChime([523.25, 659.25, 783.99]);
     }
   });
 }
