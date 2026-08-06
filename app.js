@@ -433,7 +433,7 @@ function initAutonomousAITherapistAura() {
         let text = '';
 
         if (activeKey.startsWith('sk-or-')) {
-          // OpenRouter API Call
+          // OpenRouter Lightning Fast REST API Call
           const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -444,10 +444,12 @@ function initAutonomousAITherapistAura() {
             },
             body: JSON.stringify({
               model: 'google/gemini-2.0-flash-lite-preview-02-05:free',
+              max_tokens: 120,
+              temperature: 0.5,
               messages: [
                 {
                   role: 'system',
-                  content: 'You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user\'s emotion with deep empathy, person-centered reflection, gentle comfort, and therapeutic presence in 2-3 warm sentences.'
+                  content: 'You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user\'s emotion with deep empathy and gentle comfort in 2 short, warm sentences.'
                 },
                 {
                   role: 'user',
@@ -459,16 +461,20 @@ function initAutonomousAITherapistAura() {
           const data = await response.json();
           text = data.choices?.[0]?.message?.content || "I hear you deeply. How does it feel to put that into words right now?";
         } else {
-          // Google Gemini 1.5 Direct REST API Call
+          // Google Gemini 1.5 Direct REST API Call (Ultra-fast tokens limit)
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               contents: [{
                 parts: [{
-                  text: `You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user's emotion with deep empathy, person-centered reflection, gentle comfort, and therapeutic presence in 2-3 warm sentences.\n\nUser: "${val}"`
+                  text: `You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user's emotion with deep empathy and gentle comfort in 2 short, warm sentences.\n\nUser: "${val}"`
                 }]
-              }]
+              }],
+              generationConfig: {
+                maxOutputTokens: 120,
+                temperature: 0.5
+              }
             })
           });
           const data = await response.json();
@@ -477,14 +483,14 @@ function initAutonomousAITherapistAura() {
 
         loadingBubble.remove();
         appendBubble('Dr. Aura (AI Therapist Agent)', text, 'aura-bubble');
-        playBellSound(520, 'sine', 1.0, 0.08);
+        playBellSound(520, 'sine', 0.8, 0.08);
         if (speechSynthEnabled) speakTherapistText(text);
       } catch (err) {
         loadingBubble.remove();
         fallbackRogerianResponse(val);
       }
     } else {
-      setTimeout(() => fallbackRogerianResponse(val), 800);
+      fallbackRogerianResponse(val);
     }
   }
 
