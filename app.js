@@ -1702,6 +1702,17 @@ function initMacOSDesktopEnvironment() {
   const menuSpotlightBtn = document.getElementById('menu-spotlight-btn');
   const menuControlCenterTrigger = document.getElementById('menu-control-center-trigger');
   const controlCenterPopover = document.getElementById('mac-control-center-popover');
+  const toggleDesktopBtn = document.getElementById('toggle-desktop-mode-btn');
+  const desktopBtnText = document.getElementById('desktop-mode-btn-text');
+
+  toggleDesktopBtn?.addEventListener('click', () => {
+    getAudioContext();
+    playBellSound(680, 'sine', 0.4, 0.05);
+    const isActive = document.body.classList.toggle('macos-desktop-sim-active');
+    if (desktopBtnText) {
+      desktopBtnText.textContent = isActive ? 'Full Screen' : 'Desktop View';
+    }
+  });
 
   function updateMacOSClock() {
     if (!clockEl) return;
