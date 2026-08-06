@@ -43,54 +43,63 @@
     </header>
 
     <main class="desktop-main-content" id="main-content">
+      <!-- Crisis Safety Banner -->
+      <div class="safety-trust-banner" role="region" aria-label="Crisis Support Notice">
+        <div class="safety-banner-text">
+          <i data-lucide="heart-pulse" aria-hidden="true"></i>
+          <span><strong>24/7 Crisis Support:</strong> If you are experiencing distress, call or text <strong>988</strong> anytime for free, confidential support.</span>
+        </div>
+        <a href="tel:988" class="ios-btn btn-danger small-btn" style="text-decoration: none;">
+          <i data-lucide="phone-call" aria-hidden="true"></i> Call 988 Lifeline
+        </a>
+      </div>
+
       <div class="desktop-page-title-row">
         <h1 class="desktop-page-title" id="page-title">Clinical Heart Journal</h1>
         <p class="desktop-page-subtitle" id="page-subtitle">Private, local-encrypted affective check-in and confidential reflective journal.</p>
       </div>
 
-      <section id="tab-journal" class="tab-pane active">
+      <section id="tab-journal" class="tab-pane active" aria-labelledby="page-title">
         <div class="page-nav-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
           <a href="./index.html" class="ios-btn secondary-btn small-btn" style="text-decoration: none;">
-            <i data-lucide="arrow-left"></i> Back to Sanctuary Overview
+            <i data-lucide="arrow-left" aria-hidden="true"></i> Back to Sanctuary Overview
           </a>
           <span class="ios-pill" style="font-size: 0.78rem;"><kbd style="font-family: var(--font-body); font-weight: 700;">⌘K</kbd> Open Spotlight to Switch Pages</span>
         </div>
 
-        <div class="pro-card subtle-3d-card">
-          <h3>Affective Heart State Check-In</h3>
+        <div class="pro-card">
+          <h3 style="font-size: var(--text-xl); font-weight: 600; margin-bottom: 16px;">Affective Heart State Check-In</h3>
           
-          <div class="journal-2d-viewport">
-            <div class="heart-prism-2d" id="heart-prism-2d">
-              <div class="heart-pulse-ring ring-1"></div>
-              <div class="heart-pulse-ring ring-2"></div>
-              <div class="heart-icon-center"><i data-lucide="heart" class="heart-icon-lg"></i></div>
-            </div>
+          <div class="ios-group-label" style="display: block; font-size: var(--text-xs); font-weight: 700; color: var(--text-soft); margin-bottom: 12px;">HOW ARE YOU FEELING RIGHT NOW?</div>
+          <div class="emotion-picker-grid" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;">
+            <button class="emotion-btn ios-btn secondary-btn small-btn" data-emotion="missing"><span class="emo-emoji">💛</span> Missing Someone</button>
+            <button class="emotion-btn ios-btn secondary-btn small-btn" data-emotion="seeking-warmth"><span class="emo-emoji">🌸</span> Seeking Warmth</button>
+            <button class="emotion-btn ios-btn secondary-btn small-btn" data-emotion="overwhelmed"><span class="emo-emoji">🌊</span> Overwhelmed</button>
+            <button class="emotion-btn ios-btn secondary-btn small-btn" data-emotion="quiet"><span class="emo-emoji">🩶</span> Quiet Reflection</button>
+            <button class="emotion-btn ios-btn secondary-btn small-btn" data-emotion="peaceful"><span class="emo-emoji">✨</span> Soft Peace</button>
           </div>
 
-          <div class="ios-group-label">HOW ARE YOU FEELING RIGHT NOW?</div>
-          <div class="emotion-picker-grid">
-            <button class="emotion-btn" data-emotion="missing"><span class="emo-emoji">💛</span> Missing Someone</button>
-            <button class="emotion-btn" data-emotion="seeking-warmth"><span class="emo-emoji">🌸</span> Seeking Warmth</button>
-            <button class="emotion-btn" data-emotion="overwhelmed"><span class="emo-emoji">🌊</span> Overwhelmed</button>
-            <button class="emotion-btn" data-emotion="quiet"><span class="emo-emoji">🩶</span> Quiet Reflection</button>
-            <button class="emotion-btn" data-emotion="peaceful"><span class="emo-emoji">✨</span> Soft Peace</button>
-          </div>
-
-          <div id="heart-validation-box" class="ios-inset-box hidden margin-top">
-            <span class="ios-group-label">CLINICAL HEART VALIDATION</span>
-            <p id="validation-text">Your feelings are deeply valid and deserving of unconditional gentleness.</p>
+          <div id="heart-validation-box" class="ios-inset-box hidden margin-top" style="background: var(--accent-light); padding: 16px; border-radius: var(--r-md); margin-bottom: 24px;">
+            <span class="ios-group-label" style="display: block; font-size: var(--text-xs); font-weight: 700; color: var(--accent); margin-bottom: 4px;">CLINICAL HEART VALIDATION</span>
+            <p id="validation-text" style="color: var(--text-primary); font-size: var(--text-sm);">Your feelings are deeply valid and deserving of unconditional gentleness.</p>
           </div>
 
           <div class="ios-input-group margin-top">
-            <span class="ios-group-label">CONFIDENTIAL JOURNAL ENTRY</span>
-            <input type="text" id="journal-title" class="ios-input" placeholder="Title your reflection...">
-            <textarea id="journal-body" class="ios-input ios-textarea" rows="4" placeholder="Write freely into your confidential local-encrypted journal..."></textarea>
-            <button id="save-journal-btn" class="ios-btn primary-btn pulse-glow"><i data-lucide="lock"></i> Save Encrypted Reflection</button>
+            <span class="ios-group-label" style="display: block; font-size: var(--text-xs); font-weight: 700; color: var(--text-soft); margin-bottom: 12px;">CONFIDENTIAL JOURNAL ENTRY (LOCAL ENCRYPTED)</span>
+            <div style="margin-bottom: 16px;">
+              <label for="journal-title" class="form-label">Reflection Title</label>
+              <input type="text" id="journal-title" class="ios-input" placeholder="Title your reflection...">
+            </div>
+            <div style="margin-bottom: 20px;">
+              <label for="journal-body" class="form-label">Reflective Notes</label>
+              <textarea id="journal-body" class="ios-input ios-textarea" rows="4" placeholder="Write freely into your confidential local-encrypted journal..."></textarea>
+            </div>
+            <button id="save-journal-btn" class="ios-btn primary-btn"><i data-lucide="lock" aria-hidden="true"></i> Save Encrypted Reflection</button>
           </div>
 
-          <div class="ios-inset-group margin-top">
-            <span class="ios-group-label">PREVIOUS JOURNAL REFLECTIONS</span>
-            <div id="journal-entries-list"></div>
+          <div class="ios-inset-group margin-top" style="margin-top: 32px;">
+            <span class="ios-group-label" style="display: block; font-size: var(--text-xs); font-weight: 700; color: var(--text-soft); margin-bottom: 12px;">PREVIOUS JOURNAL REFLECTIONS</span>
+            <div id="journal-entries-list" role="feed" aria-label="Saved Journal Entries"></div>
           </div>
         </div>
       </section>

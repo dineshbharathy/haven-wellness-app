@@ -43,39 +43,51 @@
     </header>
 
     <main class="desktop-main-content" id="main-content">
-      <div class="desktop-page-title-row">
-        <h1 class="desktop-page-title" id="page-title">Autonomic Regulation</h1>
-        <p class="desktop-page-subtitle" id="page-subtitle">Evidence-based parasympathetic vagal stimulation and box breathing regulation with procedural 432Hz meditation music.</p>
+      <!-- Crisis Safety Banner -->
+      <div class="safety-trust-banner" role="region" aria-label="Crisis Support Notice">
+        <div class="safety-banner-text">
+          <i data-lucide="heart-pulse" aria-hidden="true"></i>
+          <span><strong>24/7 Crisis Support:</strong> If you are experiencing distress, call or text <strong>988</strong> anytime for free, confidential support.</span>
+        </div>
+        <a href="tel:988" class="ios-btn btn-danger small-btn" style="text-decoration: none;">
+          <i data-lucide="phone-call" aria-hidden="true"></i> Call 988 Lifeline
+        </a>
       </div>
 
-      <section id="tab-breathing" class="tab-pane active">
+      <div class="desktop-page-title-row">
+        <h1 class="desktop-page-title" id="page-title">Autonomic Vagal Regulation</h1>
+        <p class="desktop-page-subtitle" id="page-subtitle">Evidence-based parasympathetic vagal stimulation, 4-7-8 box breathing, and procedural 432Hz meditation audio.</p>
+      </div>
+
+      <section id="tab-breathing" class="tab-pane active" aria-labelledby="page-title">
         <div class="page-nav-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
           <a href="./index.html" class="ios-btn secondary-btn small-btn" style="text-decoration: none;">
-            <i data-lucide="arrow-left"></i> Back to Sanctuary Overview
+            <i data-lucide="arrow-left" aria-hidden="true"></i> Back to Sanctuary Overview
           </a>
           <span class="ios-pill" style="font-size: 0.78rem;"><kbd style="font-family: var(--font-body); font-weight: 700;">⌘K</kbd> Open Spotlight to Switch Pages</span>
         </div>
 
-        <div class="pro-card breathing-card subtle-3d-card">
-          <div class="ios-segmented-control">
-            <button class="mode-btn active" data-mode="relax">4-7-8 Parasympathetic</button>
-            <button class="mode-btn" data-mode="box">4-4-4 Box Breathing</button>
-            <button class="mode-btn" data-mode="calm">4-6 Vagal Resonator</button>
+        <div class="signature-breathing-field">
+          <div class="mode-selector-row" style="display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center;" role="tablist" aria-label="Breathing Modalities">
+            <button class="mode-btn ios-btn secondary-btn small-btn active" data-mode="relax" role="tab" aria-selected="true">4-7-8 Parasympathetic</button>
+            <button class="mode-btn ios-btn secondary-btn small-btn" data-mode="box" role="tab" aria-selected="false">4-4-4 Box Breathing</button>
+            <button class="mode-btn ios-btn secondary-btn small-btn" data-mode="calm" role="tab" aria-selected="false">4-6 Vagal Resonator</button>
           </div>
 
-          <div class="breathing-viewport">
-            <div class="breath-circle" id="breath-circle">
-              <div class="breath-circle-inner"></div>
-            </div>
-            <div class="breath-text-overlay">
-              <span id="breath-phase">Ready</span>
-              <span id="breath-timer">--</span>
+          <div class="breathing-diaphragm" id="breath-circle" aria-live="polite" aria-label="Breathing Animation Circle">
+            <div class="breathing-text-group" style="text-align: center;">
+              <div class="breathing-phase-label" id="breath-phase">Ready</div>
+              <div class="breathing-timer-count" id="breath-timer">--</div>
             </div>
           </div>
 
-          <div class="breathing-guidance">
-            <p id="breath-instruction">Tap start when you are ready to begin autonomic breathing regulation with calming 432Hz meditation music.</p>
-            <button id="start-breath-btn" class="ios-btn primary-btn pulse-glow"><i data-lucide="play"></i> Begin Autonomic Regulation</button>
+          <div class="breathing-guidance" style="margin-top: 24px; max-width: 60ch;">
+            <p id="breath-instruction" style="color: var(--text-muted); font-size: var(--text-sm); margin-bottom: 16px;">
+              Select a breathing rhythm and tap start to begin vagal autonomic regulation with 432Hz meditation audio.
+            </p>
+            <button id="start-breath-btn" class="ios-btn primary-btn" style="padding: 14px 28px;">
+              <i data-lucide="play" aria-hidden="true"></i> Begin Autonomic Regulation
+            </button>
           </div>
         </div>
       </section>

@@ -43,63 +43,67 @@
     </header>
 
     <main class="desktop-main-content" id="main-content">
-      <div class="desktop-page-title-row">
-        <h1 class="desktop-page-title" id="page-title">Clinical AI Therapist (Dr. Aura)</h1>
-        <p class="desktop-page-subtitle" id="page-subtitle">Autonomous Rogerian AI therapist trained in active listening, empathy, and speech synthesis.</p>
+      <!-- Crisis Safety & Privacy Disclaimer Banner -->
+      <div class="safety-trust-banner" role="region" aria-label="Crisis Support and Privacy Notice">
+        <div class="safety-banner-text">
+          <i data-lucide="heart-pulse" aria-hidden="true"></i>
+          <span><strong>24/7 Crisis Support:</strong> If you are experiencing an emergency, call or text <strong>988</strong> immediately. Dr. Aura is an AI reflective companion, not a licensed medical provider.</span>
+        </div>
+        <a href="tel:988" class="ios-btn btn-danger small-btn" style="text-decoration: none;">
+          <i data-lucide="phone-call" aria-hidden="true"></i> Call 988 Lifeline
+        </a>
       </div>
 
-      <section id="tab-ai-listener" class="tab-pane active">
+      <div class="desktop-page-title-row">
+        <h1 class="desktop-page-title" id="page-title">Clinical AI Therapist (Dr. Aura)</h1>
+        <p class="desktop-page-subtitle" id="page-subtitle">Confidential AI reflective companion for active listening, empathetic reflection, and cognitive reframing.</p>
+      </div>
+
+      <section id="tab-ai-listener" class="tab-pane active" aria-labelledby="page-title">
         <div class="page-nav-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
           <a href="./index.html" class="ios-btn secondary-btn small-btn" style="text-decoration: none;">
-            <i data-lucide="arrow-left"></i> Back to Sanctuary Overview
+            <i data-lucide="arrow-left" aria-hidden="true"></i> Back to Sanctuary Overview
           </a>
           <span class="ios-pill" style="font-size: 0.78rem;"><kbd style="font-family: var(--font-body); font-weight: 700;">⌘K</kbd> Open Spotlight to Switch Pages</span>
         </div>
 
-        <div class="pro-card ai-main-card subtle-3d-card">
-          <div class="ai-listener-hero">
-            <div class="aura-orb-container" id="aura-orb-container">
-              <div class="apple-intelligence-iris" id="aura-orb">
-                <div class="iris-glow-layer layer-1"></div>
-                <div class="iris-glow-layer layer-2"></div>
-                <div class="iris-glow-layer layer-3"></div>
-                <div class="aura-core"><i data-lucide="sparkles" class="siri-icon"></i></div>
-              </div>
-            </div>
-            <h3 id="ai-status-text">Dr. Aura • Apple Intelligence Clinical Agent</h3>
-            <p class="ai-subtitle">Autonomous Clinical AI Therapist Agent. Rogerian person-centered reflection & speech synthesis.</p>
+        <div class="pro-card ai-main-card">
+          <div class="ai-listener-hero" style="text-align: center; margin-bottom: 24px;">
+            <h3 id="ai-status-text" style="font-size: var(--text-xl); font-weight: 600;">Dr. Aura • AI Reflective Companion</h3>
+            <p class="ai-subtitle" style="color: var(--text-muted); font-size: var(--text-sm); margin-top: 4px;">Confidential active listening, emotional validation, and cognitive reframing.</p>
           </div>
 
-          <div class="ai-controls-bar">
-            <button id="start-voice-listen-btn" class="ios-btn primary-btn pulse-glow">
-              <i data-lucide="mic"></i> Tap to Speak with Dr. Aura
+          <div class="ai-controls-bar" style="display: flex; justify-content: center; gap: 12px; margin-bottom: 20px;">
+            <button id="start-voice-listen-btn" class="ios-btn primary-btn">
+              <i data-lucide="mic" aria-hidden="true"></i> Tap to Speak with Dr. Aura
             </button>
-            <button id="toggle-speech-synth-btn" class="ios-icon-btn active" title="Toggle Therapist Voice Agent">
-              <i data-lucide="volume-2"></i>
+            <button id="toggle-speech-synth-btn" class="ios-icon-btn active" title="Toggle Therapist Voice Agent" aria-label="Toggle Speech Synthesis">
+              <i data-lucide="volume-2" aria-hidden="true"></i>
             </button>
           </div>
 
-          <div id="api-status-banner" class="api-status-banner">
-            <span><i data-lucide="shield-check" class="icon-inline"></i> <strong>HIPAA-Compliant Encryption • Person-Centered Rogerian Framework Active</strong></span>
+          <div id="api-status-banner" class="api-status-banner" style="background: var(--bg-surface-subtle); padding: 12px 16px; border-radius: var(--r-sm); margin-bottom: 20px; font-size: var(--text-xs); color: var(--text-muted); text-align: center;">
+            <span><i data-lucide="lock" class="icon-inline" aria-hidden="true"></i> <strong>Confidential Local Encryption Active • Person-Centered Reflection Framework</strong></span>
           </div>
 
           <div class="ios-inset-group ai-chat-container">
-            <span class="ios-group-label">CONFIDENTIAL THERAPEUTIC TRANSCRIPT</span>
-            <div id="ai-chat-messages" class="ai-chat-messages">
-              <div class="chat-bubble aura-bubble">
-                <span class="chat-author">Dr. Aura (AI Therapist Agent):</span>
-                <p>"Hello dear. I am Dr. Aura. I am here to provide a safe, non-judgmental space for whatever you are carrying—whether it's longing for your dad, feeling detached, or just needing someone to listen. How are you feeling today?"</p>
+            <span class="ios-group-label" style="display: block; font-size: var(--text-xs); font-weight: 700; color: var(--text-soft); margin-bottom: 12px;">CONFIDENTIAL REFLECTIVE TRANSCRIPT</span>
+            <div id="ai-chat-messages" class="ai-chat-messages" role="log" aria-live="polite" aria-label="Therapeutic Chat History">
+              <div class="chat-bubble aura-bubble" style="background: var(--accent-light); padding: 16px; border-radius: var(--r-md); margin-bottom: 12px;">
+                <span class="chat-author" style="font-weight: 700; color: var(--accent); display: block; margin-bottom: 4px;">Dr. Aura (AI Companion):</span>
+                <p style="color: var(--text-primary);">"Hello dear. I am Dr. Aura. I am here to provide a safe, non-judgmental space for whatever you are carrying today—whether you're feeling overwhelmed, missing someone deeply, or seeking quiet clarity. How are you feeling right now?"</p>
               </div>
             </div>
 
-            <div class="ai-suggestion-chips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; margin-top: 6px;">
-              <button class="ai-chip-btn ios-pill" data-prompt="I am missing my dad deeply today and feel detached."><i data-lucide="heart" class="icon-inline"></i> Missing My Dad</button>
-              <button class="ai-chip-btn ios-pill" data-prompt="Feeling overwhelmed by stress and anxiety right now."><i data-lucide="wind" class="icon-inline"></i> Feeling Overwhelmed</button>
-              <button class="ai-chip-btn ios-pill" data-prompt="Help me reframe my negative thoughts into soft peace."><i data-lucide="sparkles" class="icon-inline"></i> Positive Reframing</button>
-              <button class="ai-chip-btn ios-pill" data-prompt="I just need a quiet space to feel heard and validated."><i data-lucide="sun" class="icon-inline"></i> Quiet Reflection</button>
+            <div class="ai-suggestion-chips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; margin-top: 12px;">
+              <button class="ai-chip-btn ios-pill" data-prompt="I am missing my loved one deeply today and feel detached."><i data-lucide="heart" class="icon-inline" aria-hidden="true"></i> Missing Someone</button>
+              <button class="ai-chip-btn ios-pill" data-prompt="Feeling overwhelmed by stress and anxiety right now."><i data-lucide="wind" class="icon-inline" aria-hidden="true"></i> Feeling Overwhelmed</button>
+              <button class="ai-chip-btn ios-pill" data-prompt="Help me reframe my negative thoughts into soft peace."><i data-lucide="sparkles" class="icon-inline" aria-hidden="true"></i> Positive Reframing</button>
+              <button class="ai-chip-btn ios-pill" data-prompt="I just need a quiet space to feel heard and validated."><i data-lucide="sun" class="icon-inline" aria-hidden="true"></i> Quiet Reflection</button>
             </div>
 
-            <div class="ai-input-row">
+            <div class="ai-input-row" style="display: flex; gap: 10px;">
+              <label for="ai-text-input" class="sr-only">Express your feelings safely to Dr. Aura</label>
               <input type="text" id="ai-text-input" class="ios-input" placeholder="Express your feelings safely to Dr. Aura...">
               <button id="send-ai-text-btn" class="ios-btn primary-btn small-btn">Send</button>
             </div>

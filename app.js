@@ -899,8 +899,8 @@ function initBreathingOasis2D() {
       meditationMusicInstance.stop();
       meditationMusicInstance = null;
     }
-    if (startBtn) startBtn.innerHTML = '<i data-lucide="play"></i> Begin Autonomic Regulation';
-    if (breathCircle) breathCircle.className = 'breath-circle';
+    if (startBtn) startBtn.innerHTML = '<i data-lucide="play" aria-hidden="true"></i> Begin Autonomic Regulation';
+    if (breathCircle) breathCircle.className = 'breathing-diaphragm';
     if (phaseEl) phaseEl.textContent = 'Ready';
     if (timerEl) timerEl.textContent = '--';
     if (window.lucide) window.lucide.createIcons();
@@ -911,30 +911,31 @@ function initBreathingOasis2D() {
     const config = modes[currentMode];
 
     if (phaseEl) phaseEl.textContent = 'Inhale Softly...';
-    if (breathCircle) breathCircle.className = 'breath-circle inhale';
+    if (breathCircle) breathCircle.className = 'breathing-diaphragm inhale';
     playBellSound(440, 'sine', config.inhale, 0.08);
     countdownPhase(config.inhale, () => {
       if (!isBreathing) return;
 
       if (config.hold > 0) {
         if (phaseEl) phaseEl.textContent = 'Hold & Pause...';
-        if (breathCircle) breathCircle.className = 'breath-circle hold';
+        if (breathCircle) breathCircle.className = 'breathing-diaphragm hold';
         countdownPhase(config.hold, () => {
           if (!isBreathing) return;
-          doExhale(config);
+          if (phaseEl) phaseEl.textContent = 'Exhale Gently...';
+          if (breathCircle) breathCircle.className = 'breathing-diaphragm exhale';
+          playBellSound(330, 'sine', config.exhale, 0.08);
+          countdownPhase(config.exhale, () => {
+            if (isBreathing) runBreathCycle();
+          });
         });
       } else {
-        doExhale(config);
+        if (phaseEl) phaseEl.textContent = 'Exhale Gently...';
+        if (breathCircle) breathCircle.className = 'breathing-diaphragm exhale';
+        playBellSound(330, 'sine', config.exhale, 0.08);
+        countdownPhase(config.exhale, () => {
+          if (isBreathing) runBreathCycle();
+        });
       }
-    });
-  }
-
-  function doExhale(config) {
-    if (phaseEl) phaseEl.textContent = 'Exhale Slowly...';
-    if (breathCircle) breathCircle.className = 'breath-circle exhale';
-    playBellSound(330, 'sine', config.exhale, 0.06);
-    countdownPhase(config.exhale, () => {
-      if (isBreathing) runBreathCycle();
     });
   }
 
