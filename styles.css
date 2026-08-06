@@ -780,16 +780,14 @@ body {
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
 
-  /* Multi-layer warm gradient with noise */
-  background-color: #fffbf5;
+  /* Pristine visionOS / macOS Sequoia Optical Mesh Canvas */
+  background-color: #f6f7fc;
   background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse at 15% 5%, rgba(255, 207, 86, 0.28) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 15%, rgba(217, 70, 239, 0.18) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 45%, rgba(255, 82, 82, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 75% 80%, rgba(244, 114, 182, 0.18) 0%, transparent 50%),
-    radial-gradient(ellipse at 25% 85%, rgba(255, 128, 82, 0.15) 0%, transparent 50%),
-    linear-gradient(160deg, #fffbeb 0%, #fff5f5 30%, #fef3ff 60%, #faf5ff 100%);
+    radial-gradient(at 10% 10%, rgba(0, 122, 255, 0.08) 0px, transparent 50%),
+    radial-gradient(at 90% 10%, rgba(175, 82, 222, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(255, 45, 85, 0.05) 0px, transparent 50%),
+    radial-gradient(at 20% 90%, rgba(52, 199, 89, 0.06) 0px, transparent 50%),
+    radial-gradient(at 80% 90%, rgba(255, 149, 0, 0.06) 0px, transparent 50%);
   background-attachment: fixed;
 
   transition: filter 0.7s var(--ease);
@@ -946,30 +944,30 @@ body.warm-tab-shift {
 
 /* ── GLASS CARDS ── */
 .pro-card {
-  background: var(--glass);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--r-lg);
-  padding: 28px;
-  display: flex; flex-direction: column; gap: 20px;
-  box-shadow: var(--glass-glow), var(--inner-light);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(40px) saturate(210%);
+  -webkit-backdrop-filter: blur(40px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  border-radius: var(--r-xl);
+  padding: 32px;
+  display: flex; flex-direction: column; gap: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.98);
   position: relative; overflow: hidden;
-  transition: all 0.4s var(--ease);
+  transition: all 0.35s var(--ease);
 }
 
 .pro-card::before {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
   pointer-events: none; z-index: 0;
   border-radius: inherit;
 }
 
 .pro-card:hover {
-  background: var(--glass-hover);
-  box-shadow: var(--glass-glow-hover), var(--inner-light);
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.07), inset 0 1px 0 #ffffff;
+  transform: translateY(-3px);
 }
 
 .relative-z { position: relative; z-index: 5; }
@@ -1080,24 +1078,24 @@ blockquote {
 .small-btn { padding: 7px 14px; font-size: 0.8rem; border-radius: 10px; width: auto; }
 
 .primary-btn {
-  background: linear-gradient(135deg, var(--sun-gold) 0%, var(--coral) 45%, var(--magenta) 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #007aff 0%, #0058e6 100%);
+  color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 16px rgba(217, 70, 239, 0.25),
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.32),
               inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .primary-btn::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, transparent 50%);
   pointer-events: none; border-radius: inherit;
 }
 
 .primary-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(217, 70, 239, 0.35),
-              inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 122, 255, 0.42),
+              inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .pulse-glow {
