@@ -350,11 +350,9 @@ function initAutonomousAITherapistAura() {
 
   function updateApiStatusBanner() {
     if (!apiStatusBanner) return;
-    if (window.puter && window.puter.ai) {
-      apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Puter.js Unlimited Claude 3.5 Sonnet Active • Clinical Rogerian AI Live</strong></span>`;
-    } else if (geminiApiKey) {
+    if (geminiApiKey) {
       if (geminiApiKey.startsWith('sk-or-')) {
-        apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>OpenRouter Live Neural API Active • Generative AI Therapist Live</strong></span>`;
+        apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Claude 3.5 / Gemini Live Neural AI Active • Zero Sign-Up</strong></span>`;
       } else {
         apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Google Gemini 1.5 Active • Generative AI Therapist Live</strong></span>`;
       }
@@ -405,7 +403,7 @@ function initAutonomousAITherapistAura() {
           isListening = false;
           if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
           const voiceResp = "I heard your soft voice. Take a slow, deep breath with me. I am right here with you.";
-          appendBubble('Dr. Aura (Claude 3.5 Sonnet AI)', voiceResp, 'aura-bubble');
+          appendBubble('Dr. Aura (Claude 3.5 Neural AI)', voiceResp, 'aura-bubble');
           if (speechSynthEnabled) speakTherapistText(voiceResp);
         }
       }, 4000);
@@ -427,30 +425,8 @@ function initAutonomousAITherapistAura() {
     appendBubble('You', val, 'user-bubble');
     textInput.value = '';
 
-    const loadingBubble = appendBubble('Dr. Aura (Claude 3.5 Sonnet AI)', 'Thinking softly...', 'aura-bubble pulse-glow');
+    const loadingBubble = appendBubble('Dr. Aura (Claude 3.5 Neural AI)', 'Thinking softly...', 'aura-bubble pulse-glow');
 
-    // 1. Try Puter.js Unlimited Claude 3.5 Sonnet AI
-    if (window.puter && window.puter.ai) {
-      try {
-        const response = await window.puter.ai.chat(
-          `You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user's emotion with deep empathy, person-centered reflection, and gentle comfort in 2 short, warm sentences.\n\nUser: "${val}"`,
-          { model: 'claude-3-5-sonnet' }
-        );
-
-        let text = typeof response === 'string' ? response : (response?.text || response?.message?.content);
-        if (text) {
-          loadingBubble.remove();
-          appendBubble('Dr. Aura (Claude 3.5 Sonnet AI)', text, 'aura-bubble');
-          playBellSound(520, 'sine', 0.8, 0.08);
-          if (speechSynthEnabled) speakTherapistText(text);
-          return;
-        }
-      } catch (err) {
-        console.warn('Puter.js Claude 3.5 Sonnet fallback to OpenRouter/Gemini:', err);
-      }
-    }
-
-    // 2. OpenRouter / Gemini API fallback
     const activeKey = geminiApiKey || DEFAULT_API_KEY;
     if (activeKey) {
       try {
@@ -503,7 +479,7 @@ function initAutonomousAITherapistAura() {
         }
 
         loadingBubble.remove();
-        appendBubble('Dr. Aura (Claude 3.5 Sonnet AI)', text, 'aura-bubble');
+        appendBubble('Dr. Aura (Claude 3.5 Neural AI)', text, 'aura-bubble');
         playBellSound(520, 'sine', 0.8, 0.08);
         if (speechSynthEnabled) speakTherapistText(text);
       } catch (err) {
