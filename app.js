@@ -487,7 +487,11 @@ function initAutonomousAITherapistAura() {
   function updateApiStatusBanner() {
     if (!apiStatusBanner) return;
     const prof = getCognitiveProfile();
-    apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Adaptable Clinical AI Engine Active • Tailored for ${prof.name} (${prof.therapistStyle})</strong></span>`;
+    if (geminiApiKey && geminiApiKey.startsWith('sk-or-')) {
+      apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>OpenRouter Smart Adaptive Neural Engine • Tailored for ${prof.name} (${prof.therapistStyle})</strong></span>`;
+    } else {
+      apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Adaptable Clinical AI Engine Active • Tailored for ${prof.name} (${prof.therapistStyle})</strong></span>`;
+    }
     if (window.lucide) window.lucide.createIcons();
   }
 
@@ -532,7 +536,7 @@ function initAutonomousAITherapistAura() {
           isListening = false;
           if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
           const voiceResp = "I hear your soft voice. Take a slow, deep breath with me. I am right here holding space for you.";
-          appendBubble('Dr. Aura (Adaptable Clinical AI)', voiceResp, 'aura-bubble');
+          appendBubble('Dr. Aura (OpenRouter Smart AI)', voiceResp, 'aura-bubble');
           if (speechSynthEnabled) speakTherapistText(voiceResp);
         }
       }, 4000);
@@ -556,7 +560,7 @@ function initAutonomousAITherapistAura() {
 
     conversationHistory.push({ role: 'user', content: val });
 
-    const loadingBubble = appendBubble('Dr. Aura (Adaptable Clinical AI)', 'Adapting & thinking softly...', 'aura-bubble pulse-glow');
+    const loadingBubble = appendBubble('Dr. Aura (OpenRouter Smart AI)', 'Adapting & thinking softly...', 'aura-bubble pulse-glow');
     const activeKey = geminiApiKey || DEFAULT_API_KEY;
 
     // Dynamically compile personalized prompt based on user's profile and learned weights!
@@ -571,6 +575,7 @@ function initAutonomousAITherapistAura() {
             ...conversationHistory.slice(-8)
           ];
 
+          // Call OpenRouter Smart Neural API
           const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -588,6 +593,27 @@ function initAutonomousAITherapistAura() {
           });
           const data = await response.json();
           text = data.choices?.[0]?.message?.content;
+
+          // Failover to secondary OpenRouter model if primary returns empty
+          if (!text) {
+            const fallbackResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${activeKey}`,
+                'HTTP-Referer': window.location.href,
+                'X-Title': 'Haven Sanctuary Dr. Aura'
+              },
+              body: JSON.stringify({
+                model: 'meta-llama/llama-3.3-70b-instruct:free',
+                max_tokens: 350,
+                temperature: 0.7,
+                messages: messagesPayload
+              })
+            });
+            const fallbackData = await fallbackResponse.json();
+            text = fallbackData.choices?.[0]?.message?.content;
+          }
         } else {
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
             method: 'POST',
@@ -611,7 +637,7 @@ function initAutonomousAITherapistAura() {
         loadingBubble.remove();
         if (text) {
           conversationHistory.push({ role: 'assistant', content: text });
-          appendBubbleWithFeedback('Dr. Aura (Adaptable Clinical AI)', text);
+          appendBubbleWithFeedback('Dr. Aura (OpenRouter Smart AI)', text);
           playBellSound(520, 'sine', 0.8, 0.08);
           if (speechSynthEnabled) speakTherapistText(text);
         } else {
