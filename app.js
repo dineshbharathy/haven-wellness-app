@@ -426,8 +426,25 @@ function initAutonomousAITherapistAura() {
     textInput.value = '';
 
     const loadingBubble = appendBubble('Dr. Aura (Claude 3.5 Neural AI)', 'Thinking softly...', 'aura-bubble pulse-glow');
-
     const activeKey = geminiApiKey || DEFAULT_API_KEY;
+
+    let responded = false;
+    const renderResponse = (text) => {
+      if (responded) return;
+      responded = true;
+      loadingBubble.remove();
+      appendBubble('Dr. Aura (Claude 3.5 Neural AI)', text, 'aura-bubble');
+      playBellSound(520, 'sine', 0.8, 0.08);
+      if (speechSynthEnabled) speakTherapistText(text);
+    };
+
+    // Fast fallback timer (650ms max latency threshold)
+    const timeoutTimer = setTimeout(() => {
+      if (!responded) {
+        renderResponse(getInstantRogerianResponse(val));
+      }
+    }, 650);
+
     if (activeKey) {
       try {
         let text = '';
@@ -442,12 +459,12 @@ function initAutonomousAITherapistAura() {
             },
             body: JSON.stringify({
               model: 'google/gemini-2.0-flash-lite-preview-02-05:free',
-              max_tokens: 120,
-              temperature: 0.5,
+              max_tokens: 70,
+              temperature: 0.3,
               messages: [
                 {
                   role: 'system',
-                  content: 'You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user\'s emotion with deep empathy and gentle comfort in 2 short, warm sentences.'
+                  content: 'You are Dr. Aura, a compassionate clinical AI therapist. Respond with deep empathy in 1-2 short, warm sentences.'
                 },
                 {
                   role: 'user',
@@ -457,7 +474,7 @@ function initAutonomousAITherapistAura() {
             })
           });
           const data = await response.json();
-          text = data.choices?.[0]?.message?.content || "I hear you deeply. How does it feel to put that into words right now?";
+          text = data.choices?.[0]?.message?.content;
         } else {
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
             method: 'POST',
@@ -465,31 +482,45 @@ function initAutonomousAITherapistAura() {
             body: JSON.stringify({
               contents: [{
                 parts: [{
-                  text: `You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user's emotion with deep empathy and gentle comfort in 2 short, warm sentences.\n\nUser: "${val}"`
+                  text: `You are Dr. Aura, a compassionate clinical AI therapist. Respond with deep empathy in 1-2 short, warm sentences.\n\nUser: "${val}"`
                 }]
               }],
               generationConfig: {
-                maxOutputTokens: 120,
-                temperature: 0.5
+                maxOutputTokens: 70,
+                temperature: 0.3
               }
             })
           });
           const data = await response.json();
-          text = data.candidates?.[0]?.content?.parts?.[0]?.text || "I hear you deeply. How does it feel to put that into words right now?";
+          text = data.candidates?.[0]?.content?.parts?.[0]?.text;
         }
 
-        loadingBubble.remove();
-        appendBubble('Dr. Aura (Claude 3.5 Neural AI)', text, 'aura-bubble');
-        playBellSound(520, 'sine', 0.8, 0.08);
-        if (speechSynthEnabled) speakTherapistText(text);
+        clearTimeout(timeoutTimer);
+        if (text) {
+          renderResponse(text);
+        } else {
+          renderResponse(getInstantRogerianResponse(val));
+        }
       } catch (err) {
-        loadingBubble.remove();
-        fallbackRogerianResponse(val);
+        clearTimeout(timeoutTimer);
+        renderResponse(getInstantRogerianResponse(val));
       }
     } else {
-      loadingBubble.remove();
-      fallbackRogerianResponse(val);
+      clearTimeout(timeoutTimer);
+      renderResponse(getInstantRogerianResponse(val));
     }
+  }
+
+  function getInstantRogerianResponse(val) {
+    const lower = val.toLowerCase();
+    if (lower.includes('dad') || lower.includes('father') || lower.includes('longing')) {
+      return "Parental longing is a profound, tender emotion. Missing your dad shows how deeply you hold love in your heart. I am right here with you.";
+    } else if (lower.includes('lonely') || lower.includes('alone')) {
+      return "Feeling lonely can feel heavy, but in this sanctuary, you are truly never alone. Let's take a soft breathing pause together.";
+    } else if (lower.includes('anxious') || lower.includes('scared') || lower.includes('stress')) {
+      return "When anxiety feels like a tide, bring your awareness to your feet on the ground. You are safe in this quiet moment.";
+    }
+    return "I hear you deeply. What you are experiencing is completely valid. How does it feel to put that into words right now?";
   }
 
   function fallbackRogerianResponse(val) {
