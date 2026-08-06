@@ -67,6 +67,7 @@
         </div>
 
         <!-- Apple Control Center Toggle Button -->
+        <button id="night-mode-toggle-btn" class="ios-icon-btn" title="Toggle Deep Space Night Mode"><i data-lucide="moon"></i></button>
         <button id="open-control-center-btn" class="ios-icon-btn" title="macOS Control Center"><i data-lucide="sliders"></i></button>
         <button id="open-auth-modal-btn" class="ios-icon-btn" title="Account Settings"><i data-lucide="user"></i></button>
         <button id="theme-toggle-btn" class="ios-icon-btn" title="Color Palettes"><i data-lucide="palette"></i></button>
@@ -93,11 +94,11 @@
               <span>Connected</span>
             </div>
           </div>
-          <div class="control-widget-card active">
+          <div id="control-center-night-mode-widget" class="control-widget-card" title="Toggle Deep Space Night Mode">
             <i data-lucide="moon"></i>
             <div>
-              <strong>Do Not Disturb</strong>
-              <span>Sanctuary Mode</span>
+              <strong>Night Mode</strong>
+              <span id="control-center-night-status">Deep Obsidian</span>
             </div>
           </div>
           <div class="control-widget-card">
@@ -1180,9 +1181,9 @@
           <span class="theme-preview twilight-sunset-preview"></span>
           <span>Twilight Sunset</span>
         </button>
-        <button class="theme-option-btn" data-theme="rose-quartz">
-          <span class="theme-preview rose-quartz-preview"></span>
-          <span>Rose Quartz</span>
+        <button class="theme-option-btn" data-theme="night-mode">
+          <span class="theme-preview" style="background: linear-gradient(135deg, #07090e, #1e1b4b, #5856d6);"></span>
+          <span>Deep Space Night Mode</span>
         </button>
       </div>
     </div>

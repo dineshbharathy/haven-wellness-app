@@ -2382,3 +2382,80 @@ blockquote {
   }
 }
 
+/* ── DEEP SPACE OBSIDIAN NIGHT MODE ENGINE ── */
+body[data-theme="night-mode"],
+body.night-mode {
+  --glass: rgba(15, 23, 42, 0.84);
+  --glass-hover: rgba(30, 41, 59, 0.92);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-subtle: rgba(255, 255, 255, 0.08);
+  --glass-glow: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --glass-glow-hover: 0 24px 60px rgba(0, 0, 0, 0.8);
+  --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
+  --text: #f8fafc;
+  --text-muted: #cbd5e1;
+  --text-soft: #64748b;
+  --text-white: #ffffff;
+
+  background-color: #07090e !important;
+  background-image: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #0f172a 45%, #07090e 100%) !important;
+  color: #f8fafc !important;
+  transition: background 0.4s var(--ease), color 0.4s var(--ease);
+}
+
+body[data-theme="night-mode"] .pro-card,
+body[data-theme="night-mode"] .glass-panel,
+body[data-theme="night-mode"] .ios-sheet-modal,
+body[data-theme="night-mode"] .glass-modal,
+body[data-theme="night-mode"] .mac-window-header,
+body[data-theme="night-mode"] .mac-control-center-popover,
+body.night-mode .pro-card,
+body.night-mode .glass-panel,
+body.night-mode .ios-sheet-modal,
+body.night-mode .glass-modal,
+body.night-mode .mac-window-header,
+body.night-mode .mac-control-center-popover {
+  background: rgba(15, 23, 42, 0.86) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+body[data-theme="night-mode"] .ios-inset-box,
+body[data-theme="night-mode"] .ios-input,
+body[data-theme="night-mode"] .chat-bubble,
+body.night-mode .ios-inset-box,
+body.night-mode .ios-input,
+body.night-mode .chat-bubble {
+  background: rgba(30, 41, 59, 0.65) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #f8fafc !important;
+}
+
+body[data-theme="night-mode"] .chat-bubble.aura-bubble,
+body.night-mode .chat-bubble.aura-bubble {
+  background: rgba(99, 102, 241, 0.22) !important;
+  border-color: rgba(129, 140, 248, 0.35) !important;
+}
+
+body[data-theme="night-mode"] .desktop-page-title,
+body[data-theme="night-mode"] h1,
+body[data-theme="night-mode"] h2,
+body[data-theme="night-mode"] h3,
+body[data-theme="night-mode"] h4,
+body.night-mode .desktop-page-title,
+body.night-mode h1,
+body.night-mode h2,
+body.night-mode h3,
+body.night-mode h4 {
+  color: #f8fafc !important;
+}
+
+body[data-theme="night-mode"] .desktop-page-subtitle,
+body[data-theme="night-mode"] p,
+body.night-mode .desktop-page-subtitle,
+body.night-mode p {
+  color: #cbd5e1 !important;
+}
+

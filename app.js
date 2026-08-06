@@ -187,19 +187,68 @@ function playHeartbeatChord() {
 }
 
 /* ==========================================================================
-   5. THEME MANAGER
+   5. THEME MANAGER & NIGHT MODE CONTROLLER
    ========================================================================== */
 function initThemeManager() {
   const themeModal = document.getElementById('theme-modal');
-  const openThemeBtn = document.getElementById('open-theme-modal-btn');
+  const openThemeBtn = document.getElementById('theme-toggle-btn');
   const themeOptions = document.querySelectorAll('.theme-option-btn');
+
+  const nightToggleBtn = document.getElementById('night-mode-toggle-btn');
+  const controlCenterNightWidget = document.getElementById('control-center-night-mode-widget');
+  const controlCenterNightStatus = document.getElementById('control-center-night-status');
+
+  let isNightMode = localStorage.getItem('haven_night_mode') === 'true';
+
+  const applyNightModeState = (active) => {
+    isNightMode = active;
+    localStorage.setItem('haven_night_mode', isNightMode ? 'true' : 'false');
+
+    if (isNightMode) {
+      document.body.setAttribute('data-theme', 'night-mode');
+      nightToggleBtn?.classList.add('active');
+      controlCenterNightWidget?.classList.add('active');
+      if (controlCenterNightStatus) controlCenterNightStatus.textContent = 'Night Mode Active';
+      if (nightToggleBtn) nightToggleBtn.innerHTML = '<i data-lucide="sun"></i>';
+    } else {
+      const savedTheme = localStorage.getItem('haven_saved_theme') || 'premium-white';
+      document.body.setAttribute('data-theme', savedTheme);
+      nightToggleBtn?.classList.remove('active');
+      controlCenterNightWidget?.classList.remove('active');
+      if (controlCenterNightStatus) controlCenterNightStatus.textContent = 'Daylight Mode';
+      if (nightToggleBtn) nightToggleBtn.innerHTML = '<i data-lucide="moon"></i>';
+    }
+    if (window.lucide) window.lucide.createIcons();
+  };
+
+  // Check initial state
+  if (isNightMode) {
+    applyNightModeState(true);
+  }
+
+  nightToggleBtn?.addEventListener('click', () => {
+    getAudioContext();
+    applyNightModeState(!isNightMode);
+    playBellSound(isNightMode ? 440 : 880, 'sine', 0.6, 0.08);
+  });
+
+  controlCenterNightWidget?.addEventListener('click', () => {
+    getAudioContext();
+    applyNightModeState(!isNightMode);
+    playBellSound(isNightMode ? 440 : 880, 'sine', 0.6, 0.08);
+  });
 
   openThemeBtn?.addEventListener('click', () => themeModal?.classList.remove('hidden'));
 
   themeOptions.forEach(opt => {
     opt.addEventListener('click', () => {
       const theme = opt.getAttribute('data-theme');
-      document.body.setAttribute('data-theme', theme);
+      if (theme === 'night-mode') {
+        applyNightModeState(true);
+      } else {
+        localStorage.setItem('haven_saved_theme', theme);
+        applyNightModeState(false);
+      }
       themeOptions.forEach(o => o.classList.remove('active'));
       opt.classList.add('active');
       playBellSound(600, 'sine', 0.6, 0.06);
