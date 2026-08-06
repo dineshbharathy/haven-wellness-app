@@ -350,7 +350,9 @@ function initAutonomousAITherapistAura() {
 
   function updateApiStatusBanner() {
     if (!apiStatusBanner) return;
-    if (geminiApiKey) {
+    if (window.puter && window.puter.ai) {
+      apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Puter.js Unlimited Claude 3.5 Sonnet Active • Clinical Rogerian AI Live</strong></span>`;
+    } else if (geminiApiKey) {
       if (geminiApiKey.startsWith('sk-or-')) {
         apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>OpenRouter Live Neural API Active • Generative AI Therapist Live</strong></span>`;
       } else {
@@ -403,7 +405,7 @@ function initAutonomousAITherapistAura() {
           isListening = false;
           if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
           const voiceResp = "I heard your soft voice. Take a slow, deep breath with me. I am right here with you.";
-          appendBubble('Dr. Aura (AI Therapist Agent)', voiceResp, 'aura-bubble');
+          appendBubble('Dr. Aura (Claude 3.5 Sonnet AI)', voiceResp, 'aura-bubble');
           if (speechSynthEnabled) speakTherapistText(voiceResp);
         }
       }, 4000);
@@ -425,15 +427,35 @@ function initAutonomousAITherapistAura() {
     appendBubble('You', val, 'user-bubble');
     textInput.value = '';
 
-    const activeKey = geminiApiKey || DEFAULT_API_KEY;
+    const loadingBubble = appendBubble('Dr. Aura (Claude 3.5 Sonnet AI)', 'Thinking softly...', 'aura-bubble pulse-glow');
 
+    // 1. Try Puter.js Unlimited Claude 3.5 Sonnet AI
+    if (window.puter && window.puter.ai) {
+      try {
+        const response = await window.puter.ai.chat(
+          `You are Dr. Aura, a compassionate, gentle, Rogerian clinical AI therapist in Haven Sanctuary. Respond to the user's emotion with deep empathy, person-centered reflection, and gentle comfort in 2 short, warm sentences.\n\nUser: "${val}"`,
+          { model: 'claude-3-5-sonnet' }
+        );
+
+        let text = typeof response === 'string' ? response : (response?.text || response?.message?.content);
+        if (text) {
+          loadingBubble.remove();
+          appendBubble('Dr. Aura (Claude 3.5 Sonnet AI)', text, 'aura-bubble');
+          playBellSound(520, 'sine', 0.8, 0.08);
+          if (speechSynthEnabled) speakTherapistText(text);
+          return;
+        }
+      } catch (err) {
+        console.warn('Puter.js Claude 3.5 Sonnet fallback to OpenRouter/Gemini:', err);
+      }
+    }
+
+    // 2. OpenRouter / Gemini API fallback
+    const activeKey = geminiApiKey || DEFAULT_API_KEY;
     if (activeKey) {
-      const loadingBubble = appendBubble('Dr. Aura (AI Therapist Agent)', 'Thinking softly...', 'aura-bubble pulse-glow');
       try {
         let text = '';
-
         if (activeKey.startsWith('sk-or-')) {
-          // OpenRouter Lightning Fast REST API Call
           const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -461,7 +483,6 @@ function initAutonomousAITherapistAura() {
           const data = await response.json();
           text = data.choices?.[0]?.message?.content || "I hear you deeply. How does it feel to put that into words right now?";
         } else {
-          // Google Gemini 1.5 Direct REST API Call (Ultra-fast tokens limit)
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -482,7 +503,7 @@ function initAutonomousAITherapistAura() {
         }
 
         loadingBubble.remove();
-        appendBubble('Dr. Aura (AI Therapist Agent)', text, 'aura-bubble');
+        appendBubble('Dr. Aura (Claude 3.5 Sonnet AI)', text, 'aura-bubble');
         playBellSound(520, 'sine', 0.8, 0.08);
         if (speechSynthEnabled) speakTherapistText(text);
       } catch (err) {
@@ -490,6 +511,7 @@ function initAutonomousAITherapistAura() {
         fallbackRogerianResponse(val);
       }
     } else {
+      loadingBubble.remove();
       fallbackRogerianResponse(val);
     }
   }
