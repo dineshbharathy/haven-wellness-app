@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.lucide.createIcons();
   }
 
-  initMacOSDesktopEnvironment();
-  initMacOSDockNavigation();
-  initMacOSWindowControls();
+  initADANavigation();
   initDesktopResolutionDetector();
   initAudioEngine();
   initThemeManager();
@@ -109,9 +107,9 @@ function navigateToPage(targetPageId) {
       if (pageSubtitle) pageSubtitle.textContent = pageMeta[targetPageId].subtitle;
     }
 
-    const dockIcons = document.querySelectorAll('.dock-app-icon[data-dock-target]');
-    dockIcons.forEach(icon => {
-      icon.classList.toggle('active', icon.getAttribute('data-dock-target') === targetPageId);
+    const navPills = document.querySelectorAll('.ada-nav-pill[data-nav-target]');
+    navPills.forEach(pill => {
+      pill.classList.toggle('active', pill.getAttribute('data-nav-target') === targetPageId);
     });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -133,7 +131,17 @@ function navigateToPage(targetPageId) {
   }
 }
 
-function initDesktopTabNavigation() {
+function initADANavigation() {
+  const navPills = document.querySelectorAll('.ada-nav-pill[data-nav-target]');
+  navPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      getAudioContext();
+      playBellSound(750, 'sine', 0.5, 0.06);
+      const targetId = pill.getAttribute('data-nav-target');
+      if (targetId) navigateToPage(targetId);
+    });
+  });
+
   document.querySelectorAll('.back-to-hub-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       navigateToPage('hub');
