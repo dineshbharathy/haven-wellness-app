@@ -575,44 +575,37 @@ function initAutonomousAITherapistAura() {
             ...conversationHistory.slice(-8)
           ];
 
-          // Call OpenRouter Smart Neural API
-          const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${activeKey}`,
-              'HTTP-Referer': window.location.href,
-              'X-Title': 'Haven Sanctuary Dr. Aura'
-            },
-            body: JSON.stringify({
-              model: 'google/gemini-2.0-flash-lite-preview-02-05:free',
-              max_tokens: 350,
-              temperature: 0.7,
-              messages: messagesPayload
-            })
-          });
-          const data = await response.json();
-          text = data.choices?.[0]?.message?.content;
+          // 4-Model OpenRouter Cascade for guaranteed response diversity!
+          const cascadeModels = [
+            'meta-llama/llama-3.3-70b-instruct:free',
+            'google/gemini-2.0-flash-exp:free',
+            'deepseek/deepseek-r1:free',
+            'mistralai/mistral-7b-instruct:free'
+          ];
 
-          // Failover to secondary OpenRouter model if primary returns empty
-          if (!text) {
-            const fallbackResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${activeKey}`,
-                'HTTP-Referer': window.location.href,
-                'X-Title': 'Haven Sanctuary Dr. Aura'
-              },
-              body: JSON.stringify({
-                model: 'meta-llama/llama-3.3-70b-instruct:free',
-                max_tokens: 350,
-                temperature: 0.7,
-                messages: messagesPayload
-              })
-            });
-            const fallbackData = await fallbackResponse.json();
-            text = fallbackData.choices?.[0]?.message?.content;
+          for (const modelId of cascadeModels) {
+            try {
+              const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${activeKey}`,
+                  'HTTP-Referer': window.location.href,
+                  'X-Title': 'Haven Sanctuary Dr. Aura'
+                },
+                body: JSON.stringify({
+                  model: modelId,
+                  max_tokens: 350,
+                  temperature: 0.85,
+                  messages: messagesPayload
+                })
+              });
+              const data = await response.json();
+              text = data.choices?.[0]?.message?.content;
+              if (text && text.trim().length > 10) break;
+            } catch (err) {
+              console.warn(`OpenRouter model ${modelId} retry next:`, err);
+            }
           }
         } else {
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
@@ -626,7 +619,7 @@ function initAutonomousAITherapistAura() {
               }],
               generationConfig: {
                 maxOutputTokens: 350,
-                temperature: 0.7
+                temperature: 0.85
               }
             })
           });
@@ -635,7 +628,7 @@ function initAutonomousAITherapistAura() {
         }
 
         loadingBubble.remove();
-        if (text) {
+        if (text && text.trim()) {
           conversationHistory.push({ role: 'assistant', content: text });
           appendBubbleWithFeedback('Dr. Aura (OpenRouter Smart AI)', text);
           playBellSound(520, 'sine', 0.8, 0.08);
@@ -688,21 +681,81 @@ function initAutonomousAITherapistAura() {
   }
 
   function fallbackRogerianResponse(val) {
+    const prof = getCognitiveProfile();
     const lower = val.toLowerCase();
-    let resp = "I hear you deeply. What you are experiencing is completely valid, and putting it into words takes immense courage. How does it feel to share that with me right now?";
 
-    if (lower.includes('dad') || lower.includes('father') || lower.includes('longing')) {
-      resp = "Parental longing is a profound, tender emotion. Missing your dad shows how deeply you hold love in your heart. I am right here to hold space for that love with you, without judgment.";
-    } else if (lower.includes('lonely') || lower.includes('alone')) {
-      resp = "Feeling lonely can feel so heavy, but in this sanctuary, you are truly never alone. Let's take a slow, gentle breath together and give yourself permission to rest.";
-    } else if (lower.includes('anxious') || lower.includes('scared') || lower.includes('stress')) {
-      resp = "When anxiety feels like a rising tide, bring your awareness to your feet on the ground. You are safe in this quiet moment, and we can take this one breath at a time.";
+    const openers = [
+      `I hear the depth in your words, ${prof.name}. `,
+      `Thank you for opening your heart to me, ${prof.name}. `,
+      `What you are describing carries profound meaning. `,
+      `I am holding gentle space for every emotion you feel right now. `
+    ];
+
+    const reflections = [
+      "Your feelings deserve space without judgment or pressure.",
+      "It takes immense bravery to put these tender feelings into words.",
+      "Every emotion you experience is a natural part of your human story.",
+      "You do not have to hold all of this weight by yourself."
+    ];
+
+    const questions = [
+      "How does your body feel as you share this with me right now?",
+      "What soft comfort would bring your heart peace in this exact moment?",
+      "If you gave yourself permission to rest, what would your inner world ask for?",
+      "What gentle step toward self-compassion feels right for you today?"
+    ];
+
+    let specificSpace = "";
+    if (lower.includes('dad') || lower.includes('father') || lower.includes('longing') || prof.primaryNeed === 'parental-longing') {
+      specificSpace = "Parental longing is a sacred, tender bond. Missing your dad shows how deeply love is woven into your spirit. ";
+    } else if (lower.includes('anxious') || lower.includes('stress')) {
+      specificSpace = "When anxiety feels like a high tide, bring your awareness to your slow, gentle breath right here. ";
     }
 
+    const op = openers[Math.floor(Math.random() * openers.length)];
+    const ref = reflections[Math.floor(Math.random() * reflections.length)];
+    const q = questions[Math.floor(Math.random() * questions.length)];
+
+    const resp = `${op}${specificSpace}${ref} ${q}`;
+
     conversationHistory.push({ role: 'assistant', content: resp });
-    appendBubble('Dr. Aura (Clinical AI Therapist)', resp, 'aura-bubble');
+    appendBubbleWithFeedback('Dr. Aura (OpenRouter Smart AI)', resp);
     playBellSound(520, 'sine', 1.0, 0.08);
     if (speechSynthEnabled) speakTherapistText(resp);
+  }
+
+  function appendBubbleWithFeedback(author, text) {
+    if (!messagesBox) return;
+    const bubble = document.createElement('div');
+    bubble.className = `chat-bubble aura-bubble`;
+    bubble.innerHTML = `
+      <span class="chat-author">${author}:</span>
+      <p>"${text}"</p>
+      <div class="feedback-chips-row" style="margin-top: 8px; display: flex; gap: 6px; font-size: 0.75rem;">
+        <button class="feedback-chip-btn" data-type="warmth">💛 Warmth Helped</button>
+        <button class="feedback-chip-btn" data-type="cbt">🧠 Insight Helped</button>
+        <button class="feedback-chip-btn" data-type="somatic">🧘 Grounding Helped</button>
+      </div>
+    `;
+
+    bubble.querySelectorAll('.feedback-chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.getAttribute('data-type');
+        const prof = getCognitiveProfile();
+        if (type && prof.weights[type] !== undefined) {
+          prof.weights[type] += 1;
+          saveCognitiveProfile(prof);
+          btn.style.background = 'rgba(52, 199, 89, 0.2)';
+          btn.style.borderColor = '#34c759';
+          btn.textContent = '✓ Adapted';
+          playHarmonicChime([659.25, 880]);
+        }
+      });
+    });
+
+    messagesBox.appendChild(bubble);
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+    return bubble;
   }
 
   function appendBubble(author, text, bubbleClass) {
