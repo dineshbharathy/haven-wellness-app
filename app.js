@@ -93,7 +93,7 @@ function navigateToPage(targetPageId) {
   const curtain = document.getElementById('rainbow-wipe-curtain');
 
   getAudioContext();
-  playBellSound(720, 'sine', 0.5, 0.05);
+  playHarmonicChime([523.25, 659.25, 783.99]);
 
   const switchContent = () => {
     allPanes.forEach(pane => pane.classList.remove('active'));
@@ -125,7 +125,7 @@ function navigateToPage(targetPageId) {
   if (curtain) {
     curtain.className = 'rainbow-wipe-curtain wipe-from-right';
     setTimeout(switchContent, 250);
-    setTimeout(() => { curtain.className = 'rainbow-wipe-curtain'; }, 550);
+    setTimeout(() => { curtain.className = 'rainbow-wipe-curtain'; }, 600);
   } else {
     switchContent();
   }
@@ -775,12 +775,58 @@ function initBreathingOasis2D() {
   let isBreathing = false;
   let breathTimer = null;
   let currentMode = 'relax';
+  let meditationMusicInstance = null;
 
   const modes = {
     'relax': { name: '4-7-8 Parasympathetic', inhale: 4, hold: 7, exhale: 8 },
     'box': { name: '4-4-4 Box Breathing', inhale: 4, hold: 4, exhale: 4 },
     'calm': { name: '4-6 Vagal Resonator', inhale: 4, hold: 0, exhale: 6 }
   };
+
+  function startCalmingMeditationMusic() {
+    try {
+      const ctx = getAudioContext();
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const osc3 = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc1.type = 'sine';
+      osc2.type = 'sine';
+      osc3.type = 'triangle';
+
+      osc1.frequency.setValueAtTime(216, ctx.currentTime);
+      osc2.frequency.setValueAtTime(324, ctx.currentTime);
+      osc3.frequency.setValueAtTime(432, ctx.currentTime);
+
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.07, ctx.currentTime + 2.5);
+
+      osc1.connect(gain);
+      osc2.connect(gain);
+      osc3.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc1.start();
+      osc2.start();
+      osc3.start();
+
+      return {
+        stop: () => {
+          try {
+            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.5);
+            setTimeout(() => {
+              osc1.stop();
+              osc2.stop();
+              osc3.stop();
+            }, 1500);
+          } catch (e) {}
+        }
+      };
+    } catch (e) {
+      return null;
+    }
+  }
 
   modeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -797,6 +843,7 @@ function initBreathingOasis2D() {
 
     if (isBreathing) {
       if (startBtn) startBtn.innerHTML = '<i data-lucide="square"></i> Stop Regulation';
+      meditationMusicInstance = startCalmingMeditationMusic();
       runBreathCycle();
     } else {
       stopBreathCycle();
@@ -807,6 +854,10 @@ function initBreathingOasis2D() {
   function stopBreathCycle() {
     isBreathing = false;
     clearTimeout(breathTimer);
+    if (meditationMusicInstance) {
+      meditationMusicInstance.stop();
+      meditationMusicInstance = null;
+    }
     if (startBtn) startBtn.innerHTML = '<i data-lucide="play"></i> Begin Autonomic Regulation';
     if (breathCircle) breathCircle.className = 'breath-circle';
     if (phaseEl) phaseEl.textContent = 'Ready';
