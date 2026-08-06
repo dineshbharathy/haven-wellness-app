@@ -2,7 +2,14 @@
    HAVEN WELLNESS SANCTUARY — STEVE JOBS MASTERPIECE ENGINE (PURE & BEAUTIFUL)
    ========================================================================== */
 
+import { encryptText, decryptText } from './crypto-engine.js';
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Register Service Worker for PWA Offline Functionality
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+
   // Initialize Lucide Icons
   if (window.lucide) {
     window.lucide.createIcons();
@@ -1156,20 +1163,50 @@ function initSafeJournal() {
     });
   });
 
-  saveBtn?.addEventListener('click', () => {
-    const title = titleInput?.value.trim();
+  let savedEntries = JSON.parse(localStorage.getItem('haven_journal_entries') || '[]');
+
+  async function renderEntries() {
+    if (!entriesList) return;
+    entriesList.innerHTML = '';
+    for (const item of savedEntries) {
+      const decryptedBody = await decryptText(item.body);
+      const decryptedTitle = await decryptText(item.title);
+      const entry = document.createElement('div');
+      entry.className = 'ios-inset-box margin-top';
+      entry.style.background = 'var(--bg-surface-subtle)';
+      entry.style.padding = '16px';
+      entry.style.borderRadius = 'var(--r-md)';
+      entry.style.marginBottom = '12px';
+      entry.innerHTML = `<div style="display:flex; justify-between: space-between; align-items: center; margin-bottom: 6px;"><strong style="color: var(--text-primary);">${decryptedTitle || 'Untitled Reflection'}</strong><span style="font-size: var(--text-xs); color: var(--text-soft);">${item.date}</span></div><p style="color: var(--text-muted); font-size: var(--text-sm); line-height: 1.5;">${decryptedBody}</p>`;
+      entriesList.appendChild(entry);
+    }
+  }
+
+  saveBtn?.addEventListener('click', async () => {
+    const title = titleInput?.value.trim() || 'Untitled Reflection';
     const body = bodyInput?.value.trim();
     if (!body) return;
 
-    const entry = document.createElement('div');
-    entry.className = 'ios-inset-box margin-top';
-    entry.innerHTML = `<strong>${title || 'Untitled Check-In'}</strong> (${new Date().toLocaleDateString()})<p>${body}</p>`;
-    entriesList?.prepend(entry);
+    const encryptedTitle = await encryptText(title);
+    const encryptedBody = await encryptText(body);
+
+    const newEntry = {
+      id: Date.now(),
+      title: encryptedTitle,
+      body: encryptedBody,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    };
+
+    savedEntries.unshift(newEntry);
+    localStorage.setItem('haven_journal_entries', JSON.stringify(savedEntries));
 
     if (titleInput) titleInput.value = '';
     if (bodyInput) bodyInput.value = '';
     playBellSound(750, 'sine', 0.8, 0.08);
+    renderEntries();
   });
+
+  renderEntries();
 }
 
 /* ==========================================================================
