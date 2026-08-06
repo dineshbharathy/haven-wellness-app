@@ -20,7 +20,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <link rel="stylesheet" href="./styles.css">
-  <link rel="manifest" href="./manifest.json">
 </head>
 <body data-theme="premium-white">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -34,32 +33,31 @@
   <div id="app" class="ada-app-viewport">
     
     <!-- TOP FLOATING OPTICAL GLASS HEADER -->
-    <header class="ada-top-header" role="banner">
+    <header class="ada-top-header">
       <div class="nav-brand-container">
-        <a href="./index.html" class="brand-logo" style="text-decoration: none;">
-          <i data-lucide="shield-heart" class="brand-sparkle-icon" aria-hidden="true"></i>
+        <div class="brand-logo">
+          <i data-lucide="sparkles" class="brand-sparkle-icon"></i>
           <span class="brand-name">Haven Sanctuary</span>
-          <span class="ios-pill pro-badge" style="margin-left: 8px; font-size: 0.72rem;">Reflective Sanctuary</span>
-        </a>
+          <span class="ios-pill pro-badge" style="margin-left: 8px; font-size: 0.72rem;">Clinical Grade</span>
+        </div>
       </div>
 
       <div class="header-right-actions">
-        <span class="ios-pill hide-mobile" style="font-size: 0.78rem;"><i data-lucide="lock" class="icon-inline" aria-hidden="true"></i> Local Encryption</span>
-        <span class="ios-pill hide-mobile" style="font-size: 0.78rem;"><i data-lucide="headphones" class="icon-inline" aria-hidden="true"></i> Spatial Audio</span>
+        <span class="ios-pill hide-mobile" style="font-size: 0.78rem;"><i data-lucide="shield-check" class="icon-inline"></i> HIPAA Encrypted</span>
+        <span class="ios-pill hide-mobile" style="font-size: 0.78rem;"><i data-lucide="bluetooth" class="icon-inline"></i> Spatial Audio</span>
         
         <div class="header-spotlight-wrapper">
-          <button id="open-spotlight-btn" class="spotlight-trigger-btn" title="Search Spotlight (Cmd+K)" aria-label="Open Search Spotlight">
-            <i data-lucide="search" aria-hidden="true"></i>
-            <span class="spotlight-trigger-text">Search</span>
+          <button id="open-spotlight-btn" class="spotlight-trigger-btn" title="Search Spotlight (Cmd+K)">
+            <i data-lucide="search"></i>
+            <span class="spotlight-trigger-text">Spotlight</span>
             <kbd class="spotlight-kbd">⌘K</kbd>
           </button>
           
           <!-- Integrated Header Spotlight Dropdown Bar -->
-          <div id="header-spotlight-dropdown" class="header-spotlight-dropdown hidden" role="region" aria-label="Spotlight Search Results">
+          <div id="header-spotlight-dropdown" class="header-spotlight-dropdown hidden">
             <div class="dropdown-search-box">
-              <i data-lucide="search" aria-hidden="true"></i>
-              <label for="dropdown-search-input" class="sr-only">Search sanctuary features</label>
-              <input type="text" id="dropdown-search-input" placeholder="Search exercises, Dr. Aura, soundscapes..." autocomplete="off" />
+              <i data-lucide="search"></i>
+              <input type="text" id="dropdown-search-input" placeholder="Type to search features, tools, soundscapes..." autocomplete="off" />
               <kbd class="spotlight-esc-kbd">ESC</kbd>
             </div>
             <div class="dropdown-items-list" id="dropdown-items-list">
@@ -68,120 +66,161 @@
           </div>
         </div>
 
-        <button id="open-theme-modal-btn" class="ios-icon-btn" title="Theme Selector" aria-label="Select Theme"><i data-lucide="palette" aria-hidden="true"></i></button>
+        <button id="open-theme-modal-btn" class="ios-icon-btn" title="Theme Selector"><i data-lucide="palette"></i></button>
+        <button id="open-control-center-btn" class="ios-icon-btn" title="Control Center"><i data-lucide="sliders"></i></button>
+      </div>
+    </header>
+
+      <!-- macOS Control Center Popover Widget -->
+      <div id="mac-control-center-popover" class="mac-control-center-popover hidden">
+        <div class="control-center-header">
+          <span>macOS Control Center</span>
+          <i data-lucide="sliders" class="icon-inline"></i>
+        </div>
+        <div class="control-center-grid">
+          <div class="control-widget-card active">
+            <i data-lucide="wifi"></i>
+            <div>
+              <strong>HIPAA Network</strong>
+              <span>Encrypted 256-bit</span>
+            </div>
+          </div>
+          <div class="control-widget-card active">
+            <i data-lucide="bluetooth"></i>
+            <div>
+              <strong>Spatial Audio</strong>
+              <span>Connected</span>
+            </div>
+          </div>
+          <div class="control-widget-card active">
+            <i data-lucide="moon"></i>
+            <div>
+              <strong>Do Not Disturb</strong>
+              <span>Sanctuary Mode</span>
+            </div>
+          </div>
+          <div class="control-widget-card">
+            <i data-lucide="sun"></i>
+            <div>
+              <strong>Display Brightness</strong>
+              <span>Auto Luminous</span>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
     <!-- Main Responsive Viewport -->
     <main id="main-content" class="desktop-main-content">
       
-      <!-- Crisis Safety & Privacy Disclaimer Banner -->
-      <div class="safety-trust-banner" role="region" aria-label="Crisis Support and Privacy Notice">
-        <div class="safety-banner-text">
-          <i data-lucide="heart-pulse" aria-hidden="true"></i>
-          <span><strong>24/7 Crisis Support:</strong> If you are experiencing an emergency, call or text <strong>988</strong> immediately. Dr. Aura is a confidential AI reflective companion, not a medical provider.</span>
-        </div>
-        <a href="tel:988" class="ios-btn btn-danger small-btn" style="text-decoration: none;">
-          <i data-lucide="phone-call" aria-hidden="true"></i> Call 988 Lifeline
-        </a>
-      </div>
-
       <!-- Page Title Box -->
       <div class="desktop-page-title-row">
         <h1 class="desktop-page-title" id="page-title">Sanctuary Overview</h1>
-        <p class="desktop-page-subtitle" id="page-subtitle">A calm, private space for guided emotional regulation, AI reflection, and peer community.</p>
+        <p class="desktop-page-subtitle" id="page-subtitle">Evidence-based emotional regulation, autonomous Rogerian therapy, and peer support network.</p>
       </div>
 
       <!-- ================= TAB 1: HUB / HOME ================= -->
-      <section id="tab-hub" class="tab-pane active" aria-labelledby="page-title">
+      <section id="tab-hub" class="tab-pane active">
         
-        <!-- Hero Welcome Card -->
-        <div class="pro-card welcome-card">
-          <div class="welcome-header">
-            <div class="clinical-meta-row" style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
-              <span class="ios-pill" id="time-greeting">Private Sanctuary Session</span>
-              <span class="ios-pill" style="color: var(--accent);"><i data-lucide="lock" class="icon-inline" aria-hidden="true"></i> Confidential & Local</span>
+        <!-- Hero Welcome Card with Animated 2D Background -->
+        <div class="pro-card welcome-card subtle-3d-card">
+          <div class="hero-anim-bg">
+            <div class="floating-orb orb-1"></div>
+            <div class="floating-orb orb-2"></div>
+            <div class="floating-orb orb-3"></div>
+            <div class="floating-orb orb-4"></div>
+            <div class="floating-orb orb-5"></div>
+          </div>
+
+          <div class="welcome-header relative-z">
+            <div class="clinical-meta-row">
+              <span class="ios-pill pro-badge" id="time-greeting">Autonomic Regulation Active</span>
+              <span class="clinical-cert-tag">✓ Peer-Reviewed Modalities</span>
             </div>
-            <h2>Welcome to your private wellness sanctuary.</h2>
-            <p class="reading-path" style="margin-top: 8px; color: var(--text-muted);">
-              Designed around person-centered reflection, cognitive reframing, and parasympathetic vagal regulation. Explore your session options below.
-            </p>
+            <h2>Welcome to your clinical wellness sanctuary.</h2>
+            <p>Designed under Rogerian person-centered principles, cognitive-behavioral grounding, and beautiful animated visuals.</p>
           </div>
           
-          <div class="ios-inset-group daily-quote-box margin-top">
-            <span class="ios-group-label" style="display: block; font-size: var(--text-xs); font-weight: 700; color: var(--text-soft); margin-bottom: 6px;">THERAPEUTIC REFLECTION & COGNITIVE REFRAMING</span>
-            <blockquote id="daily-quote" style="font-family: var(--font-serif); font-size: var(--text-lg); font-style: italic; color: var(--text-primary); margin-bottom: 8px;">
-              "It is okay to miss what isn't there, and still hold space for all the warmth that surrounds you."
-            </blockquote>
-            <button id="new-quote-btn" class="ios-btn secondary-btn small-btn">
-              <i data-lucide="sparkles" class="icon-inline" aria-hidden="true"></i> Next Reframing Quote
+          <div class="ios-inset-group daily-quote-box relative-z">
+            <span class="ios-group-label">THERAPEUTIC REFLECTION & COGNITIVE REFRAMING</span>
+            <blockquote id="daily-quote">"It's okay to miss what isn't there, and still hold space for all the warmth that surrounds you."</blockquote>
+            <button id="new-quote-btn" class="ios-link-btn"><i data-lucide="sparkles" class="icon-inline"></i> Reflective Reframing</button>
+          </div>
+        </div>
+
+        <!-- AI Therapist & Community Quick Banners -->
+        <div class="adaptive-grid-4col">
+          
+          <div class="pro-card ai-banner-card grid-span-2 subtle-3d-card">
+            <div class="ai-banner-content">
+              <div class="ai-orb-mini-pulse"></div>
+              <div class="ai-banner-text">
+                <h3>Dr. Aura — Clinical AI Therapist Agent</h3>
+                <p>Autonomous Rogerian active listening, emotional validation, and cognitive reframing.</p>
+              </div>
+            </div>
+            <button id="open-ai-listener-btn" class="ios-btn primary-btn pulse-glow">
+              <i data-lucide="mic"></i> Begin Consultation with Dr. Aura
             </button>
           </div>
-        </div>
 
-        <!-- Task-Based Primary Action Cards Grid -->
-        <div class="adaptive-grid-4col margin-top">
-          
-          <!-- Primary Card: Dr. Aura AI Therapist -->
-          <div class="pro-card grid-span-6">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-              <span class="ios-pill" style="background: var(--accent-light); color: var(--accent); font-weight: 700;">AI COMPANION</span>
-              <span class="ios-pill"><i data-lucide="shield-check" class="icon-inline" aria-hidden="true"></i> Confidential</span>
+          <div class="pro-card community-banner-card grid-span-2 subtle-3d-card">
+            <div class="ai-banner-content">
+              <div class="widget-icon"><i data-lucide="users"></i></div>
+              <div class="ai-banner-text">
+                <h3>Sanctuary Circle — Peer Support Network</h3>
+                <p>HIPAA-guided moderated peer channels, shared attachment support, and voice calls.</p>
+              </div>
             </div>
-            <h3 style="font-size: var(--text-xl); font-weight: 600; margin-bottom: 8px;">Dr. Aura — AI Reflective Companion</h3>
-            <p style="color: var(--text-muted); font-size: var(--text-sm); line-height: 1.55; margin-bottom: 20px;">
-              Engage in private, non-judgmental active listening and cognitive reframing using your voice or text keyboard.
-            </p>
-            <a href="./therapist.html" class="ios-btn primary-btn" style="text-decoration: none; width: 100%;">
-              <i data-lucide="sparkles" aria-hidden="true"></i> Begin Private Session with Dr. Aura
-            </a>
-          </div>
-
-          <!-- Card 2: Guided Emotional Regulation -->
-          <div class="pro-card grid-span-6">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-              <span class="ios-pill" style="background: var(--bg-surface-subtle); color: var(--text-primary); font-weight: 700;">SELF-GUIDED EXERCISE</span>
-              <span class="ios-pill">432Hz Sound</span>
-            </div>
-            <h3 style="font-size: var(--text-xl); font-weight: 600; margin-bottom: 8px;">Autonomic Vagal Regulation</h3>
-            <p style="color: var(--text-muted); font-size: var(--text-sm); line-height: 1.55; margin-bottom: 20px;">
-              Evidence-based parasympathetic 4-7-8 and box breathing with procedural 432Hz meditation audio.
-            </p>
-            <a href="./breathing.html" class="ios-btn secondary-btn" style="text-decoration: none; width: 100%;">
-              <i data-lucide="wind" aria-hidden="true"></i> Open Breathing Field
-            </a>
+            <button id="open-community-tab-btn" class="ios-btn secondary-btn">
+              <i data-lucide="message-square"></i> Enter Peer Network
+            </button>
           </div>
 
         </div>
 
-        <!-- Task-Based Secondary Action Cards -->
+        <!-- Adaptive Responsive Grid -->
         <div class="adaptive-grid-4col margin-top">
           
-          <div class="pro-card grid-span-4">
-            <span class="ios-pill" style="margin-bottom: 12px; display: inline-block;">PEER SUPPORT</span>
-            <h3 style="font-size: var(--text-lg); font-weight: 600; margin-bottom: 6px;">Sanctuary Circle</h3>
-            <p style="color: var(--text-muted); font-size: var(--text-sm); margin-bottom: 16px;">Moderated peer network for shared attachment support and voice lounges.</p>
-            <a href="./peers.html" class="ios-btn secondary-btn small-btn" style="text-decoration: none;">
-              <i data-lucide="users" aria-hidden="true"></i> Enter Peer Support
-            </a>
+          <div class="pro-card widget-card storybook-widget subtle-3d-card">
+            <div class="widget-icon"><i data-lucide="palette"></i></div>
+            <h3>Cognitive Emotion Studio</h3>
+            <p>Map complex affective states into animated Emotion Orbs.</p>
+            <button id="open-storybook-tab-btn" class="ios-btn secondary-btn">
+              <i data-lucide="sparkles"></i> Open Emotion Studio
+            </button>
           </div>
 
-          <div class="pro-card grid-span-4">
-            <span class="ios-pill" style="margin-bottom: 12px; display: inline-block;">CREATIVE EXPRESSION</span>
-            <h3 style="font-size: var(--text-lg); font-weight: 600; margin-bottom: 6px;">Cognitive Emotion Studio</h3>
-            <p style="color: var(--text-muted); font-size: var(--text-sm); margin-bottom: 16px;">Map complex affective states into animated emotion orbs and storybooks.</p>
-            <a href="./emotion-studio.html" class="ios-btn secondary-btn small-btn" style="text-decoration: none;">
-              <i data-lucide="palette" aria-hidden="true"></i> Open Studio
-            </a>
+          <div class="pro-card widget-card hug-widget subtle-3d-card">
+            <div class="widget-icon"><i data-lucide="heart-handshake"></i></div>
+            <h3>Affection & Warmth Ritual</h3>
+            <div class="hug-badge"><span id="hug-count">0</span> warmth embraces recorded</div>
+            <button id="hug-btn" class="ios-btn primary-btn pulse-glow">
+              <i data-lucide="heart"></i> Experience Warm Embrace
+            </button>
           </div>
 
-          <div class="pro-card grid-span-4">
-            <span class="ios-pill" style="margin-bottom: 12px; display: inline-block;">CONFIDENTIAL VAULT</span>
-            <h3 style="font-size: var(--text-lg); font-weight: 600; margin-bottom: 6px;">Encrypted Heart Journal</h3>
-            <p style="color: var(--text-muted); font-size: var(--text-sm); margin-bottom: 16px;">Private local-encrypted journal entries and memory vaults for gratitude notes.</p>
-            <a href="./journal.html" class="ios-btn secondary-btn small-btn" style="text-decoration: none;">
-              <i data-lucide="lock" aria-hidden="true"></i> Open Journal
-            </a>
+          <div class="pro-card widget-card tea-widget subtle-3d-card">
+            <div class="widget-icon"><i data-lucide="coffee"></i></div>
+            <h3>Somatic Tea Mindfulness</h3>
+            <div class="tea-cup-display">
+              <div class="tea-steam" id="tea-steam"><span>~</span><span>~</span><span>~</span></div>
+              <div class="tea-cup"><i data-lucide="coffee" class="tea-icon-lg"></i></div>
+            </div>
+            <button id="brew-tea-btn" class="ios-btn secondary-btn">
+              <i data-lucide="timer"></i> Mindfulness Pause (30s)
+            </button>
+          </div>
+
+          <div class="pro-card widget-card affirmation-widget subtle-3d-card">
+            <div class="widget-icon"><i data-lucide="flower-2"></i></div>
+            <h3>Positive Reframing</h3>
+            <div class="ios-inset-box" id="affirmation-box">
+              <p id="affirmation-text">"I am deserving of affection, peace, and soft quiet happiness."</p>
+            </div>
+            <button id="flip-affirmation-btn" class="ios-btn outline-btn">
+              <i data-lucide="refresh-cw"></i> Next Reframing Statement
+            </button>
           </div>
 
         </div>

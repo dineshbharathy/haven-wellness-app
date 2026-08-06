@@ -2,14 +2,7 @@
    HAVEN WELLNESS SANCTUARY — STEVE JOBS MASTERPIECE ENGINE (PURE & BEAUTIFUL)
    ========================================================================== */
 
-import { encryptText, decryptText } from './crypto-engine.js';
-
 document.addEventListener('DOMContentLoaded', () => {
-  // Register Service Worker for PWA Offline Functionality
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  }
-
   // Initialize Lucide Icons
   if (window.lucide) {
     window.lucide.createIcons();
@@ -140,19 +133,44 @@ function navigateToPage(targetPageId) {
 }
 
 function initADANavigation() {
-  const navPills = document.querySelectorAll('.ada-nav-pill[data-nav-target]');
+  const navPills = document.querySelectorAll('.ada-nav-pill');
   navPills.forEach(pill => {
-    pill.addEventListener('click', () => {
+    pill.addEventListener('click', (e) => {
       getAudioContext();
-      playBellSound(750, 'sine', 0.5, 0.06);
+      playHarmonicChime([523.25, 659.25, 783.99]);
+
+      const href = pill.getAttribute('href');
       const targetId = pill.getAttribute('data-nav-target');
-      if (targetId) navigateToPage(targetId);
+      const curtain = document.getElementById('rainbow-wipe-curtain');
+
+      if (targetId && document.getElementById(`tab-${targetId}`)) {
+        e.preventDefault();
+        navigateToPage(targetId);
+      } else if (href && href !== '#') {
+        e.preventDefault();
+        if (curtain) curtain.className = 'rainbow-wipe-curtain wipe-from-right';
+        setTimeout(() => {
+          window.location.href = href;
+        }, 220);
+      }
     });
   });
 
   document.querySelectorAll('.back-to-hub-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      navigateToPage('hub');
+    btn.addEventListener('click', (e) => {
+      const curtain = document.getElementById('rainbow-wipe-curtain');
+      getAudioContext();
+      playHarmonicChime([523.25, 659.25, 783.99]);
+      if (document.getElementById('tab-hub')) {
+        e.preventDefault();
+        navigateToPage('hub');
+      } else {
+        e.preventDefault();
+        if (curtain) curtain.className = 'rainbow-wipe-curtain wipe-from-right';
+        setTimeout(() => {
+          window.location.href = './index.html';
+        }, 220);
+      }
     });
   });
 }
@@ -906,8 +924,8 @@ function initBreathingOasis2D() {
       meditationMusicInstance.stop();
       meditationMusicInstance = null;
     }
-    if (startBtn) startBtn.innerHTML = '<i data-lucide="play" aria-hidden="true"></i> Begin Autonomic Regulation';
-    if (breathCircle) breathCircle.className = 'breathing-diaphragm';
+    if (startBtn) startBtn.innerHTML = '<i data-lucide="play"></i> Begin Autonomic Regulation';
+    if (breathCircle) breathCircle.className = 'breath-circle';
     if (phaseEl) phaseEl.textContent = 'Ready';
     if (timerEl) timerEl.textContent = '--';
     if (window.lucide) window.lucide.createIcons();
@@ -918,31 +936,30 @@ function initBreathingOasis2D() {
     const config = modes[currentMode];
 
     if (phaseEl) phaseEl.textContent = 'Inhale Softly...';
-    if (breathCircle) breathCircle.className = 'breathing-diaphragm inhale';
+    if (breathCircle) breathCircle.className = 'breath-circle inhale';
     playBellSound(440, 'sine', config.inhale, 0.08);
     countdownPhase(config.inhale, () => {
       if (!isBreathing) return;
 
       if (config.hold > 0) {
         if (phaseEl) phaseEl.textContent = 'Hold & Pause...';
-        if (breathCircle) breathCircle.className = 'breathing-diaphragm hold';
+        if (breathCircle) breathCircle.className = 'breath-circle hold';
         countdownPhase(config.hold, () => {
           if (!isBreathing) return;
-          if (phaseEl) phaseEl.textContent = 'Exhale Gently...';
-          if (breathCircle) breathCircle.className = 'breathing-diaphragm exhale';
-          playBellSound(330, 'sine', config.exhale, 0.08);
-          countdownPhase(config.exhale, () => {
-            if (isBreathing) runBreathCycle();
-          });
+          doExhale(config);
         });
       } else {
-        if (phaseEl) phaseEl.textContent = 'Exhale Gently...';
-        if (breathCircle) breathCircle.className = 'breathing-diaphragm exhale';
-        playBellSound(330, 'sine', config.exhale, 0.08);
-        countdownPhase(config.exhale, () => {
-          if (isBreathing) runBreathCycle();
-        });
+        doExhale(config);
       }
+    });
+  }
+
+  function doExhale(config) {
+    if (phaseEl) phaseEl.textContent = 'Exhale Slowly...';
+    if (breathCircle) breathCircle.className = 'breath-circle exhale';
+    playBellSound(330, 'sine', config.exhale, 0.06);
+    countdownPhase(config.exhale, () => {
+      if (isBreathing) runBreathCycle();
     });
   }
 
@@ -1163,50 +1180,20 @@ function initSafeJournal() {
     });
   });
 
-  let savedEntries = JSON.parse(localStorage.getItem('haven_journal_entries') || '[]');
-
-  async function renderEntries() {
-    if (!entriesList) return;
-    entriesList.innerHTML = '';
-    for (const item of savedEntries) {
-      const decryptedBody = await decryptText(item.body);
-      const decryptedTitle = await decryptText(item.title);
-      const entry = document.createElement('div');
-      entry.className = 'ios-inset-box margin-top';
-      entry.style.background = 'var(--bg-surface-subtle)';
-      entry.style.padding = '16px';
-      entry.style.borderRadius = 'var(--r-md)';
-      entry.style.marginBottom = '12px';
-      entry.innerHTML = `<div style="display:flex; justify-between: space-between; align-items: center; margin-bottom: 6px;"><strong style="color: var(--text-primary);">${decryptedTitle || 'Untitled Reflection'}</strong><span style="font-size: var(--text-xs); color: var(--text-soft);">${item.date}</span></div><p style="color: var(--text-muted); font-size: var(--text-sm); line-height: 1.5;">${decryptedBody}</p>`;
-      entriesList.appendChild(entry);
-    }
-  }
-
-  saveBtn?.addEventListener('click', async () => {
-    const title = titleInput?.value.trim() || 'Untitled Reflection';
+  saveBtn?.addEventListener('click', () => {
+    const title = titleInput?.value.trim();
     const body = bodyInput?.value.trim();
     if (!body) return;
 
-    const encryptedTitle = await encryptText(title);
-    const encryptedBody = await encryptText(body);
-
-    const newEntry = {
-      id: Date.now(),
-      title: encryptedTitle,
-      body: encryptedBody,
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    };
-
-    savedEntries.unshift(newEntry);
-    localStorage.setItem('haven_journal_entries', JSON.stringify(savedEntries));
+    const entry = document.createElement('div');
+    entry.className = 'ios-inset-box margin-top';
+    entry.innerHTML = `<strong>${title || 'Untitled Check-In'}</strong> (${new Date().toLocaleDateString()})<p>${body}</p>`;
+    entriesList?.prepend(entry);
 
     if (titleInput) titleInput.value = '';
     if (bodyInput) bodyInput.value = '';
     playBellSound(750, 'sine', 0.8, 0.08);
-    renderEntries();
   });
-
-  renderEntries();
 }
 
 /* ==========================================================================

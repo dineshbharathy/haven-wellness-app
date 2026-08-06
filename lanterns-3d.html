@@ -68,6 +68,76 @@
         </div>
       </section>
     </main>
+
+    <!-- FULL SCREEN 3D WEBGL LANTERN WORLD OVERLAY -->
+    <div id="lantern-3d-world-overlay" class="lantern-3d-world-overlay hidden">
+      <canvas id="lantern-world-canvas"></canvas>
+
+      <div class="lantern-world-hud">
+        <div class="hud-controls-card">
+          <div class="hud-keys-row">
+            <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move Camera
+            <span class="hud-divider">•</span>
+            <i data-lucide="mouse-pointer" class="icon-inline"></i> Drag to Look
+            <span class="hud-divider">•</span>
+            <i data-lucide="sparkles" class="icon-inline"></i> Click Lantern to Spectate
+          </div>
+        </div>
+        <div class="hud-actions-group">
+          <button id="open-release-3d-modal-btn" class="ios-btn primary-btn small-btn release-3d-btn pulse-glow">
+            <i data-lucide="plus-circle"></i> Release New 3D Lantern
+          </button>
+          <button id="exit-3d-world-btn" class="ios-btn secondary-btn small-btn exit-3d-btn">
+            <i data-lucide="arrow-left"></i> Exit 3D World
+          </button>
+        </div>
+      </div>
+
+      <!-- Release New 3D Lantern Modal -->
+      <div id="release-3d-lantern-modal" class="modal-overlay hidden">
+        <div class="pro-card modal-card glass-modal" style="width: 440px;">
+          <div class="lantern-modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.4rem;"><i data-lucide="send" class="icon-inline"></i> Release Floating 3D Lantern</h3>
+            <button id="close-release-3d-modal-btn" class="modal-close-btn"><i data-lucide="x"></i></button>
+          </div>
+          <div class="ios-input-group margin-top" style="display: flex; flex-direction: column; gap: 12px;">
+            <input type="text" id="release-3d-title-input" class="ios-input" placeholder="Title of Intention (e.g. Peace & Warmth)..." />
+            <textarea id="release-3d-note-input" class="ios-input ios-textarea" rows="3" placeholder="Write your intention or reflection..."></textarea>
+            <div class="color-picker-row" style="display: flex; align-items: center; justify-content: space-between;">
+              <label style="font-size: 0.84rem; font-weight: 600; color: var(--text-muted);">Lantern Light Glow:</label>
+              <input type="color" id="release-3d-color-input" value="#ffcf56" class="ios-color-input" />
+            </div>
+            <button id="confirm-release-3d-btn" class="ios-btn primary-btn pulse-glow margin-top" style="width: 100%;">
+              <i data-lucide="sparkles"></i> Cast 3D Lantern Into Sky
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spectate Glass Panel Overlay -->
+      <div id="spectate-glass-panel" class="spectate-glass-panel hidden">
+        <button id="close-spectate-panel-btn" class="modal-close-btn"><i data-lucide="x"></i></button>
+        
+        <div class="spectate-panel-header">
+          <span id="spectate-date-badge" class="clinical-cert-tag">Aug 5, 2026</span>
+          <span id="spectate-category-pill" class="ios-pill">✨ Released Intention</span>
+        </div>
+
+        <h2 id="spectate-title" class="spectate-title">A Light for Dad & Quiet Peace</h2>
+        <p id="spectate-note" class="spectate-note-body">"I hold space for the warmth you left behind, and I honor your memory with every quiet sunset."</p>
+
+        <div class="carousel-section">
+          <span class="ios-group-label">SPINNING MEMORY PHOTO CAROUSEL</span>
+          <div class="carousel-container-3d">
+            <div class="carousel-spinner" id="carousel-spinner">
+              <div class="carousel-card card-1"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80" alt="Memory Sunset"></div>
+              <div class="carousel-card card-2"><img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&q=80" alt="Ocean Calm"></div>
+              <div class="carousel-card card-3"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Forest Light"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <nav class="ada-glass-nav-capsule" id="ada-glass-nav-capsule">
