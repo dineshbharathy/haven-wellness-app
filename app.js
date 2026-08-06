@@ -319,7 +319,7 @@ function initSanctuaryHub() {
 }
 
 /* ==========================================================================
-   8. AI THERAPIST (DR. AURA) - SIRI SPEECH & THERAPY AGENT (GEMINI 1.5 POWERED)
+   8. AI THERAPIST (DR. AURA) - SIRI SPEECH & MASTER CLINICAL THERAPY AGENT
    ========================================================================== */
 function initAutonomousAITherapistAura() {
   const startListenBtn = document.getElementById('start-voice-listen-btn');
@@ -343,6 +343,9 @@ function initAutonomousAITherapistAura() {
   let geminiApiKey = localStorage.getItem('haven_gemini_api_key') || DEFAULT_API_KEY;
   let elevenlabsApiKey = localStorage.getItem('haven_elevenlabs_api_key') || '';
 
+  // Conversation history context memory
+  let conversationHistory = [];
+
   // Populate inputs if saved keys exist
   if (geminiKeyInput) geminiKeyInput.value = geminiApiKey;
   if (elevenlabsKeyInput) elevenlabsKeyInput.value = elevenlabsApiKey;
@@ -351,11 +354,7 @@ function initAutonomousAITherapistAura() {
   function updateApiStatusBanner() {
     if (!apiStatusBanner) return;
     if (geminiApiKey) {
-      if (geminiApiKey.startsWith('sk-or-')) {
-        apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Claude 3.5 / Gemini Live Neural AI Active • Zero Sign-Up</strong></span>`;
-      } else {
-        apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Google Gemini 1.5 Active • Generative AI Therapist Live</strong></span>`;
-      }
+      apiStatusBanner.innerHTML = `<span><i data-lucide="sparkles" class="icon-inline"></i> <strong>Master Clinical AI Therapist Active • Deep Emotional Intelligence Live</strong></span>`;
     } else {
       apiStatusBanner.innerHTML = `<span><i data-lucide="shield-check" class="icon-inline"></i> <strong>HIPAA-Compliant Encryption • Person-Centered Rogerian Framework Active</strong></span>`;
     }
@@ -402,8 +401,8 @@ function initAutonomousAITherapistAura() {
         if (isListening) {
           isListening = false;
           if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
-          const voiceResp = "I heard your soft voice. Take a slow, deep breath with me. I am right here with you.";
-          appendBubble('Dr. Aura (Claude 3.5 Neural AI)', voiceResp, 'aura-bubble');
+          const voiceResp = "I hear your soft voice. Take a slow, deep breath with me. I am right here holding space for you.";
+          appendBubble('Dr. Aura (Clinical AI Therapist)', voiceResp, 'aura-bubble');
           if (speechSynthEnabled) speakTherapistText(voiceResp);
         }
       }, 4000);
@@ -425,30 +424,28 @@ function initAutonomousAITherapistAura() {
     appendBubble('You', val, 'user-bubble');
     textInput.value = '';
 
-    const loadingBubble = appendBubble('Dr. Aura (Claude 3.5 Neural AI)', 'Thinking softly...', 'aura-bubble pulse-glow');
+    conversationHistory.push({ role: 'user', content: val });
+
+    const loadingBubble = appendBubble('Dr. Aura (Clinical AI Therapist)', 'Listening deeply...', 'aura-bubble pulse-glow');
     const activeKey = geminiApiKey || DEFAULT_API_KEY;
 
-    let responded = false;
-    const renderResponse = (text) => {
-      if (responded) return;
-      responded = true;
-      loadingBubble.remove();
-      appendBubble('Dr. Aura (Claude 3.5 Neural AI)', text, 'aura-bubble');
-      playBellSound(520, 'sine', 0.8, 0.08);
-      if (speechSynthEnabled) speakTherapistText(text);
-    };
-
-    // Fast fallback timer (650ms max latency threshold)
-    const timeoutTimer = setTimeout(() => {
-      if (!responded) {
-        renderResponse(getInstantRogerianResponse(val));
-      }
-    }, 650);
+    const masterSystemPrompt = `You are Dr. Aura, a world-class, deeply compassionate, Rogerian clinical AI therapist practicing in Haven Sanctuary. You possess profound emotional intelligence, unconditional positive regard, active listening skills, and gentle wisdom.
+Guidance:
+1. Validate the user's emotion with authentic warmth and deep empathy.
+2. If they mention family, parental longing (missing their dad/mom), anxiety, grief, or loneliness, hold gentle space for that specific pain.
+3. Provide thoughtful cognitive reframing or a soft reflection in 3 to 4 articulate, comforting sentences.
+4. Speak naturally like an attentive, loving human therapist. Never sound like a generic bot or cut off mid-sentence.`;
 
     if (activeKey) {
       try {
         let text = '';
         if (activeKey.startsWith('sk-or-')) {
+          // OpenRouter API Call with full chat memory context
+          const messagesPayload = [
+            { role: 'system', content: masterSystemPrompt },
+            ...conversationHistory.slice(-8)
+          ];
+
           const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -459,35 +456,27 @@ function initAutonomousAITherapistAura() {
             },
             body: JSON.stringify({
               model: 'google/gemini-2.0-flash-lite-preview-02-05:free',
-              max_tokens: 70,
-              temperature: 0.3,
-              messages: [
-                {
-                  role: 'system',
-                  content: 'You are Dr. Aura, a compassionate clinical AI therapist. Respond with deep empathy in 1-2 short, warm sentences.'
-                },
-                {
-                  role: 'user',
-                  content: val
-                }
-              ]
+              max_tokens: 350,
+              temperature: 0.7,
+              messages: messagesPayload
             })
           });
           const data = await response.json();
           text = data.choices?.[0]?.message?.content;
         } else {
+          // Google Gemini 1.5 Direct REST API Call
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               contents: [{
                 parts: [{
-                  text: `You are Dr. Aura, a compassionate clinical AI therapist. Respond with deep empathy in 1-2 short, warm sentences.\n\nUser: "${val}"`
+                  text: `${masterSystemPrompt}\n\nUser: "${val}"`
                 }]
               }],
               generationConfig: {
-                maxOutputTokens: 70,
-                temperature: 0.3
+                maxOutputTokens: 350,
+                temperature: 0.7
               }
             })
           });
@@ -495,47 +484,39 @@ function initAutonomousAITherapistAura() {
           text = data.candidates?.[0]?.content?.parts?.[0]?.text;
         }
 
-        clearTimeout(timeoutTimer);
+        loadingBubble.remove();
         if (text) {
-          renderResponse(text);
+          conversationHistory.push({ role: 'assistant', content: text });
+          appendBubble('Dr. Aura (Clinical AI Therapist)', text, 'aura-bubble');
+          playBellSound(520, 'sine', 0.8, 0.08);
+          if (speechSynthEnabled) speakTherapistText(text);
         } else {
-          renderResponse(getInstantRogerianResponse(val));
+          fallbackRogerianResponse(val);
         }
       } catch (err) {
-        clearTimeout(timeoutTimer);
-        renderResponse(getInstantRogerianResponse(val));
+        loadingBubble.remove();
+        fallbackRogerianResponse(val);
       }
     } else {
-      clearTimeout(timeoutTimer);
-      renderResponse(getInstantRogerianResponse(val));
+      loadingBubble.remove();
+      fallbackRogerianResponse(val);
     }
-  }
-
-  function getInstantRogerianResponse(val) {
-    const lower = val.toLowerCase();
-    if (lower.includes('dad') || lower.includes('father') || lower.includes('longing')) {
-      return "Parental longing is a profound, tender emotion. Missing your dad shows how deeply you hold love in your heart. I am right here with you.";
-    } else if (lower.includes('lonely') || lower.includes('alone')) {
-      return "Feeling lonely can feel heavy, but in this sanctuary, you are truly never alone. Let's take a soft breathing pause together.";
-    } else if (lower.includes('anxious') || lower.includes('scared') || lower.includes('stress')) {
-      return "When anxiety feels like a tide, bring your awareness to your feet on the ground. You are safe in this quiet moment.";
-    }
-    return "I hear you deeply. What you are experiencing is completely valid. How does it feel to put that into words right now?";
   }
 
   function fallbackRogerianResponse(val) {
     const lower = val.toLowerCase();
-    let resp = "I hear you deeply. What you are experiencing is completely valid. How does it feel to put that into words right now?";
+    let resp = "I hear you deeply. What you are experiencing is completely valid, and putting it into words takes immense courage. How does it feel to share that with me right now?";
 
     if (lower.includes('dad') || lower.includes('father') || lower.includes('longing')) {
-      resp = "Parental longing is a profound, tender emotion. Missing your dad shows how deeply you hold love in your heart. I am here to hold space for that love with you.";
+      resp = "Parental longing is a profound, tender emotion. Missing your dad shows how deeply you hold love in your heart. I am right here to hold space for that love with you, without judgment.";
     } else if (lower.includes('lonely') || lower.includes('alone')) {
-      resp = "Feeling lonely can feel heavy, but in this sanctuary, you are truly never alone. Let's take a soft breathing pause together.";
+      resp = "Feeling lonely can feel so heavy, but in this sanctuary, you are truly never alone. Let's take a slow, gentle breath together and give yourself permission to rest.";
     } else if (lower.includes('anxious') || lower.includes('scared') || lower.includes('stress')) {
-      resp = "When anxiety feels like a tide, bring your awareness to your feet on the ground. You are safe in this quiet moment.";
+      resp = "When anxiety feels like a rising tide, bring your awareness to your feet on the ground. You are safe in this quiet moment, and we can take this one breath at a time.";
     }
 
-    appendBubble('Dr. Aura (AI Therapist Agent)', resp, 'aura-bubble');
+    conversationHistory.push({ role: 'assistant', content: resp });
+    appendBubble('Dr. Aura (Clinical AI Therapist)', resp, 'aura-bubble');
     playBellSound(520, 'sine', 1.0, 0.08);
     if (speechSynthEnabled) speakTherapistText(resp);
   }
@@ -547,14 +528,20 @@ function initAutonomousAITherapistAura() {
     bubble.innerHTML = `<span class="chat-author">${author}:</span><p>"${text}"</p>`;
     messagesBox.appendChild(bubble);
     messagesBox.scrollTop = messagesBox.scrollHeight;
+    return bubble;
   }
 
   function speakTherapistText(text) {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.9;
-    utterance.pitch = 1.0;
+    utterance.rate = 0.88;
+    utterance.pitch = 1.02;
+
+    const voices = window.speechSynthesis.getVoices();
+    const targetVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Karen') || v.name.includes('Natural')));
+    if (targetVoice) utterance.voice = targetVoice;
+
     window.speechSynthesis.speak(utterance);
   }
 }
