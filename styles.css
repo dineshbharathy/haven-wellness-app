@@ -2382,26 +2382,30 @@ blockquote {
   }
 }
 
-/* ── DEEP SPACE OBSIDIAN NIGHT MODE ENGINE ── */
+/* ── DEEP SPACE OBSIDIAN HYPER-PREMIUM NIGHT MODE ENGINE ── */
 body[data-theme="night-mode"],
 body.night-mode {
-  --glass: rgba(15, 23, 42, 0.84);
-  --glass-hover: rgba(30, 41, 59, 0.92);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-subtle: rgba(255, 255, 255, 0.08);
-  --glass-glow: 0 16px 48px rgba(0, 0, 0, 0.6);
-  --glass-glow-hover: 0 24px 60px rgba(0, 0, 0, 0.8);
-  --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --glass: rgba(13, 18, 30, 0.78);
+  --glass-hover: rgba(22, 30, 48, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-subtle: rgba(255, 255, 255, 0.09);
+  --glass-glow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  --glass-glow-hover: 0 30px 80px rgba(0, 0, 0, 0.85);
+  --inner-light: inset 0 1px 0 rgba(255, 255, 255, 0.16);
 
   --text: #f8fafc;
   --text-muted: #cbd5e1;
   --text-soft: #64748b;
   --text-white: #ffffff;
 
-  background-color: #07090e !important;
-  background-image: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #0f172a 45%, #07090e 100%) !important;
+  background-color: #05070c !important;
+  background-image: 
+    radial-gradient(circle at 50% -10%, rgba(99, 102, 241, 0.22) 0%, rgba(30, 27, 75, 0.55) 30%, rgba(15, 23, 42, 0.95) 70%, #05070c 100%),
+    radial-gradient(circle at 10% 80%, rgba(192, 132, 252, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.1) 0%, transparent 45%) !important;
+  background-attachment: fixed !important;
   color: #f8fafc !important;
-  transition: background 0.4s var(--ease), color 0.4s var(--ease);
+  transition: background 0.6s var(--ease), color 0.6s var(--ease);
 }
 
 body[data-theme="night-mode"] .pro-card,
@@ -2416,10 +2420,13 @@ body.night-mode .ios-sheet-modal,
 body.night-mode .glass-modal,
 body.night-mode .mac-window-header,
 body.night-mode .mac-control-center-popover {
-  background: rgba(15, 23, 42, 0.86) !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(13, 18, 30, 0.78) !important;
+  backdrop-filter: blur(50px) saturate(240%) !important;
+  -webkit-backdrop-filter: blur(50px) saturate(240%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.13) !important;
   color: #f8fafc !important;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 24px rgba(99, 102, 241, 0.06) !important;
+  transition: all 0.4s var(--ease);
 }
 
 body[data-theme="night-mode"] .ios-inset-box,
@@ -2428,15 +2435,29 @@ body[data-theme="night-mode"] .chat-bubble,
 body.night-mode .ios-inset-box,
 body.night-mode .ios-input,
 body.night-mode .chat-bubble {
-  background: rgba(30, 41, 59, 0.65) !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(26, 35, 53, 0.65) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: #f8fafc !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.05) !important;
 }
 
 body[data-theme="night-mode"] .chat-bubble.aura-bubble,
 body.night-mode .chat-bubble.aura-bubble {
-  background: rgba(99, 102, 241, 0.22) !important;
-  border-color: rgba(129, 140, 248, 0.35) !important;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.2)) !important;
+  border: 1px solid rgba(129, 140, 248, 0.4) !important;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+body[data-theme="night-mode"] .chat-bubble.user-bubble,
+body.night-mode .chat-bubble.user-bubble {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(99, 102, 241, 0.25)) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+}
+
+body[data-theme="night-mode"] .iris-glow-layer,
+body.night-mode .iris-glow-layer {
+  background: conic-gradient(from 0deg, #818cf8, #38bdf8, #f472b6, #c084fc, #818cf8) !important;
+  filter: blur(18px) !important;
 }
 
 body[data-theme="night-mode"] .desktop-page-title,
@@ -2450,6 +2471,7 @@ body.night-mode h2,
 body.night-mode h3,
 body.night-mode h4 {
   color: #f8fafc !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6) !important;
 }
 
 body[data-theme="night-mode"] .desktop-page-subtitle,
@@ -2457,5 +2479,20 @@ body[data-theme="night-mode"] p,
 body.night-mode .desktop-page-subtitle,
 body.night-mode p {
   color: #cbd5e1 !important;
+}
+
+body[data-theme="night-mode"] .ios-btn.primary-btn,
+body.night-mode .ios-btn.primary-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+}
+
+body[data-theme="night-mode"] .ios-btn.secondary-btn,
+body.night-mode .ios-btn.secondary-btn {
+  background: rgba(30, 41, 59, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #f8fafc !important;
 }
 
