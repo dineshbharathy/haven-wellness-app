@@ -218,6 +218,7 @@ function initThemeManager() {
       if (controlCenterNightStatus) controlCenterNightStatus.textContent = 'Daylight Mode';
       if (nightToggleBtn) nightToggleBtn.innerHTML = '<i data-lucide="moon"></i>';
     }
+    window.dispatchEvent(new CustomEvent('havenThemeChanged', { detail: { isNightMode } }));
     if (window.lucide) window.lucide.createIcons();
   };
 
