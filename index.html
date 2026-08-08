@@ -476,6 +476,18 @@
                 <div class="orb-3d-hint"><i data-lucide="paintbrush" class="icon-inline"></i> Click & Drag to Hand-Paint Emotion Orbs</div>
               </div>
               <span class="orb-blend-title" id="orb-blend-label">Hand-Paintable Affective Orb Canvas</span>
+              
+              <!-- Live Affective Resonance & Archetype Indicator -->
+              <div class="ios-inset-box affective-resonance-card" style="margin-top: 14px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;">
+                <div>
+                  <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Affective Archetype</span>
+                  <h4 id="affective-archetype-name" style="font-size: 1.05rem; font-weight: 800; color: var(--sf-purple); margin: 2px 0 0 0;">Nostalgic Longing & Warmth</h4>
+                </div>
+                <div style="text-align: right;">
+                  <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Resonance Score</span>
+                  <div id="affective-resonance-score" style="font-size: 1.15rem; font-weight: 800; color: var(--sf-green);">92% Equilibrium</div>
+                </div>
+              </div>
             </div>
 
             <div class="ios-inset-group custom-color-studio-box">
@@ -495,6 +507,7 @@
 
                 <div class="paint-actions-group">
                   <button id="clear-orb-paint-btn" class="ios-btn secondary-btn small-btn"><i data-lucide="rotate-ccw"></i> Clear Canvas</button>
+                  <button id="save-orb-to-storybook-btn" class="ios-btn secondary-btn small-btn" style="background: rgba(175, 82, 222, 0.15); color: var(--sf-purple); font-weight: 600;"><i data-lucide="bookmark"></i> Deposit Sphere into Storybook</button>
                   <button id="apply-paint-theme-btn" class="ios-btn primary-btn small-btn pulse-glow"><i data-lucide="sparkles"></i> Apply Painted Gradient to Entire App</button>
                 </div>
               </div>

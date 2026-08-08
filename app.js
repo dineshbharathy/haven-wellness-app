@@ -1662,6 +1662,71 @@ function initHandPaintableOrbCanvas() {
     cssOrb.style.background = `radial-gradient(circle at 35% 35%, #ffffff 0%, ${c1} 35%, ${c2} 70%, ${c3} 100%)`;
   }
 
+  // Save hand-painted memory sphere into Storybook
+  document.getElementById('save-orb-to-storybook-btn')?.addEventListener('click', () => {
+    getAudioContext();
+    playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
+
+    const storybookViewBtn = document.querySelector('.segmented-btn[data-orb-view="storybook"]');
+    if (storybookViewBtn) storybookViewBtn.click();
+  });
+
+  // Emotion sliders sound synthesis and archetype calculation
+  const emoRanges = document.querySelectorAll('.emo-range');
+  const archetypeEl = document.getElementById('affective-archetype-name');
+  const scoreEl = document.getElementById('affective-resonance-score');
+
+  const emoFrequencies = {
+    joy: 523.25,
+    sadness: 392.00,
+    nostalgia: 440.00,
+    solitude: 349.23,
+    anger: 293.66,
+    hope: 587.33
+  };
+
+  emoRanges.forEach(range => {
+    range.addEventListener('input', () => {
+      const emo = range.getAttribute('data-emo');
+      const val = parseInt(range.value);
+      getAudioContext();
+
+      if (emo && emoFrequencies[emo]) {
+        playBellSound(emoFrequencies[emo] + (val * 1.5), 'sine', 0.3, 0.04);
+      }
+
+      // Recalculate Archetype
+      let totalVal = 0;
+      let maxEmo = 'joy';
+      let maxVal = 0;
+
+      emoRanges.forEach(r => {
+        const v = parseInt(r.value);
+        totalVal += v;
+        const e = r.getAttribute('data-emo');
+        if (v > maxVal) {
+          maxVal = v;
+          maxEmo = e;
+        }
+      });
+
+      const archetypeNames = {
+        joy: 'Luminous Joy & Warmth',
+        sadness: 'Tender Nostalgic Longing',
+        nostalgia: 'Deep Memory Reflection',
+        solitude: 'Quiet Vagal Solitude',
+        anger: 'Active Cathartic Renewal',
+        hope: 'Ascending Hope & Light'
+      };
+
+      if (archetypeEl) archetypeEl.textContent = archetypeNames[maxEmo] || 'Affective Harmony';
+      if (scoreEl) {
+        const score = Math.min(Math.round((totalVal / 600) * 100 + 40), 98);
+        scoreEl.textContent = `${score}% Equilibrium`;
+      }
+    });
+  });
+
   document.getElementById('apply-paint-theme-btn')?.addEventListener('click', () => {
     getAudioContext();
     playHarmonicChime([523.25, 659.25, 783.99, 1046.50]);
