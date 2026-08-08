@@ -2630,3 +2630,143 @@ body.night-mode .feedback-chip-btn:hover {
   border: none !important;
 }
 
+/* ── DIA-INSPIRED CHROMATIC GLASS & FLOATING CO-PILOT DOCK ── */
+.dia-ai-copilot-dock {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: auto;
+  max-width: 90vw;
+  animation: floatDockUp 0.6s var(--ease-bounce);
+}
+
+@keyframes floatDockUp {
+  0% { transform: translate(-50%, 60px); opacity: 0; }
+  100% { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.dia-dock-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: rgba(13, 18, 30, 0.85);
+  backdrop-filter: blur(40px) saturate(220%);
+  -webkit-backdrop-filter: blur(40px) saturate(220%);
+  border-radius: var(--r-xl);
+  border: 1.5px solid transparent;
+  background-image: linear-gradient(rgba(13, 18, 30, 0.88), rgba(13, 18, 30, 0.88)), linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(99, 102, 241, 0.6), rgba(56, 189, 248, 0.6), rgba(244, 114, 182, 0.5));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.2);
+}
+
+.dia-siri-pulse {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #38bdf8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+  flex-shrink: 0;
+}
+
+.dia-pulse-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(99, 102, 241, 0.6);
+  animation: diaPulse 2.4s linear infinite;
+}
+
+.dia-pulse-ring.ring-2 {
+  animation-delay: 1.2s;
+}
+
+@keyframes diaPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.dia-prompt-input-group {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-lg);
+  padding: 4px 6px 4px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  width: 320px;
+}
+
+.dia-input {
+  background: transparent;
+  border: none;
+  color: #f8fafc;
+  font-size: 0.86rem;
+  width: 100%;
+  outline: none;
+}
+
+.dia-input::placeholder {
+  color: #94a3b8;
+}
+
+.dia-send-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease);
+  flex-shrink: 0;
+}
+
+.dia-send-btn:hover {
+  transform: scale(1.1);
+}
+
+.dia-chips-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.dia-chips-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.dia-chip-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--r-md);
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dia-chip-btn:hover {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: #818cf8;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+

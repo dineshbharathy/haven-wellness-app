@@ -2157,10 +2157,75 @@ function initBiometricNeuralPulseEngine() {
   }, 2500);
 }
 
-// Auto-invoke Biometric Engine
+// Auto-invoke Biometric Engine & Dia Co-Pilot
 document.addEventListener('DOMContentLoaded', () => {
   initBiometricNeuralPulseEngine();
+  initDiaCopilotDock();
 });
 setTimeout(() => {
   initBiometricNeuralPulseEngine();
+  initDiaCopilotDock();
 }, 800);
+
+/* ==========================================================================
+   DIA-INSPIRED OMNIPRESENT AI CO-PILOT DOCK ENGINE
+   ========================================================================== */
+function initDiaCopilotDock() {
+  const dockInput = document.getElementById('dia-copilot-input');
+  const sendBtn = document.getElementById('dia-copilot-send-btn');
+  const chipBtns = document.querySelectorAll('.dia-chip-btn');
+  const siriTrigger = document.getElementById('dia-siri-trigger');
+
+  function handleDiaPrompt(promptText) {
+    if (!promptText || !promptText.trim()) return;
+    getAudioContext();
+    playHarmonicChime([600, 800, 1000]);
+
+    if (promptText.includes('lantern')) {
+      const openReleaseBtn = document.getElementById('open-release-3d-modal-btn');
+      if (openReleaseBtn) openReleaseBtn.click();
+      else navigateToPage('tab-3d-world');
+      return;
+    }
+
+    if (promptText.includes('breath') || promptText.includes('4-7-8')) {
+      navigateToPage('tab-breathing');
+      return;
+    }
+
+    // Default: Route directly to Dr. Aura clinical AI!
+    navigateToPage('tab-ai-listener');
+    const aiInput = document.getElementById('ai-text-input');
+    const aiSendBtn = document.getElementById('send-ai-text-btn');
+
+    if (aiInput && aiSendBtn) {
+      aiInput.value = promptText;
+      setTimeout(() => aiSendBtn.click(), 300);
+    }
+  }
+
+  sendBtn?.addEventListener('click', () => {
+    handleDiaPrompt(dockInput?.value);
+    if (dockInput) dockInput.value = '';
+  });
+
+  dockInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      handleDiaPrompt(dockInput.value);
+      dockInput.value = '';
+    }
+  });
+
+  chipBtns.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const prompt = chip.getAttribute('data-prompt');
+      handleDiaPrompt(prompt);
+    });
+  });
+
+  siriTrigger?.addEventListener('click', () => {
+    navigateToPage('tab-ai-listener');
+    const startVoiceBtn = document.getElementById('start-voice-listen-btn');
+    if (startVoiceBtn) startVoiceBtn.click();
+  });
+}
