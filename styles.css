@@ -2807,3 +2807,28 @@ body.night-mode .dia-chip-btn:hover {
   transform: translateY(-1px);
 }
 
+/* ==========================================================================
+   ACCESSIBILITY, FOCUS STATES, & REDUCED MOTION SUPPORT
+   ========================================================================== */
+
+:focus-visible {
+  outline: 3px solid var(--sf-blue) !important;
+  outline-offset: 3px !important;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.4) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

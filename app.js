@@ -577,22 +577,22 @@ function initAutonomousAITherapistAura() {
     getAudioContext();
     isListening = !isListening;
     if (isListening) {
-      if (statusText) statusText.textContent = 'Dr. Aura • Listening softly...';
+      if (statusText) statusText.textContent = 'Aura • Listening softly...';
       if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="square"></i> Listening... Speak Now';
       playHarmonicChime([523.25, 659.25]);
 
       setTimeout(() => {
         if (isListening) {
           isListening = false;
-          if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
+          if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to speak with Aura';
           const voiceResp = "I hear your soft voice. Take a slow, deep breath with me. I am right here holding space for you.";
-          appendBubble('Dr. Aura (OpenRouter Smart AI)', voiceResp, 'aura-bubble');
+          appendBubble('Aura (Reflective Companion)', voiceResp, 'aura-bubble');
           if (speechSynthEnabled) speakTherapistText(voiceResp);
         }
       }, 4000);
     } else {
-      if (statusText) statusText.textContent = 'Dr. Aura • Apple Intelligence Clinical Agent';
-      if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to Speak with Dr. Aura';
+      if (statusText) statusText.textContent = 'Aura • your reflective companion';
+      if (startListenBtn) startListenBtn.innerHTML = '<i data-lucide="mic"></i> Tap to speak with Aura';
     }
     if (window.lucide) window.lucide.createIcons();
   });
@@ -610,7 +610,7 @@ function initAutonomousAITherapistAura() {
 
     conversationHistory.push({ role: 'user', content: val });
 
-    const loadingBubble = appendBubble('Dr. Aura (OpenRouter Smart AI)', 'Adapting & thinking softly...', 'aura-bubble pulse-glow');
+    const loadingBubble = appendBubble('Aura (Reflective Companion)', 'Thinking softly...', 'aura-bubble pulse-glow');
     const activeKey = geminiApiKey || DEFAULT_API_KEY;
 
     // Dynamically compile personalized prompt based on user's profile and learned weights!
@@ -641,7 +641,7 @@ function initAutonomousAITherapistAura() {
                   'Content-Type': 'application/json',
                   'Authorization': `Bearer ${activeKey}`,
                   'HTTP-Referer': window.location.href,
-                  'X-Title': 'Haven Sanctuary Dr. Aura'
+                  'X-Title': 'Haven Aura Companion'
                 },
                 body: JSON.stringify({
                   model: modelId,
@@ -680,7 +680,7 @@ function initAutonomousAITherapistAura() {
         loadingBubble.remove();
         if (text && text.trim()) {
           conversationHistory.push({ role: 'assistant', content: text });
-          appendBubbleWithFeedback('Dr. Aura (OpenRouter Smart AI)', text);
+          appendBubbleWithFeedback('Aura (Reflective Companion)', text);
           playBellSound(520, 'sine', 0.8, 0.08);
           if (speechSynthEnabled) speakTherapistText(text);
         } else {
