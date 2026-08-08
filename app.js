@@ -2061,3 +2061,41 @@ function initMacOSWindowControls() {
     }
   });
 }
+
+/* ==========================================================================
+   BIOMETRIC NEURAL HRV & HEART RATE SIMULATION ENGINE
+   ========================================================================== */
+function initBiometricNeuralPulseEngine() {
+  const bpmEl = document.getElementById('live-bpm-value');
+  const hrvEl = document.getElementById('live-hrv-value');
+  const toneEl = document.getElementById('live-vagal-tone');
+
+  if (!bpmEl || !hrvEl) return;
+
+  let currentBPM = 68;
+  let currentHRV = 74;
+
+  setInterval(() => {
+    const bpmDelta = (Math.random() - 0.5) * 4;
+    currentBPM = Math.min(Math.max(Math.round(currentBPM + bpmDelta), 62), 74);
+    
+    const hrvDelta = (Math.random() - 0.5) * 6;
+    currentHRV = Math.min(Math.max(Math.round(currentHRV + hrvDelta), 68), 84);
+
+    bpmEl.innerHTML = `${currentBPM} <span style="font-size: 0.8rem; font-weight: 500;">BPM</span>`;
+    hrvEl.innerHTML = `${currentHRV} <span style="font-size: 0.8rem; font-weight: 500;">ms</span>`;
+
+    if (toneEl) {
+      toneEl.textContent = currentHRV > 72 ? 'Optimal' : 'Regulating';
+      toneEl.style.color = currentHRV > 72 ? 'var(--sf-green)' : 'var(--sf-amber)';
+    }
+  }, 2500);
+}
+
+// Auto-invoke Biometric Engine
+document.addEventListener('DOMContentLoaded', () => {
+  initBiometricNeuralPulseEngine();
+});
+setTimeout(() => {
+  initBiometricNeuralPulseEngine();
+}, 800);

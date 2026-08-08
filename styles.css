@@ -2588,3 +2588,45 @@ body.night-mode .feedback-chip-btn:hover {
   border-color: #818cf8 !important;
 }
 
+/* ── APPLE VISIONOS VOLUMETRIC SPATIAL REFRACTION GLASS & BIOMETRIC PULSE ── */
+.subtle-3d-card {
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease) !important;
+  will-change: transform;
+}
+
+.subtle-3d-card:hover {
+  transform: translateY(-3px) scale3d(1.008, 1.008, 1.008) !important;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12), var(--inner-light), 0 0 30px rgba(99, 102, 241, 0.12) !important;
+}
+
+.pulse-dot-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--sf-green);
+  display: inline-block;
+  box-shadow: 0 0 12px var(--sf-green);
+  animation: pulseGreen 1.8s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7); }
+  70% { transform: scale(1.15); box-shadow: 0 0 0 10px rgba(52, 199, 89, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); }
+}
+
+.glow-pill {
+  background: rgba(255, 45, 85, 0.12) !important;
+  color: var(--sf-pink) !important;
+  border: 1px solid rgba(255, 45, 85, 0.25) !important;
+  font-weight: 600 !important;
+}
+
+.glow-gold-btn {
+  background: linear-gradient(135deg, #ff9500, #ff2d55) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 8px 24px rgba(255, 149, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+  border: none !important;
+}
+
